@@ -5,13 +5,13 @@ Hier ne kurze Zusammenfassung was mir grad so zu Java einfällt und woran wir un
 
 ### Naming Conventions
 * Wir sollten alle Variablen, Methoden und Klassen auf englisch benennen. 
-* Das gängige Schema ist camelCase für Variablen und Methodennamen und ein großer Anfangbuchstabe für Klassennamen. Jedes neue Wort des Namens bis auf das erste wird am Anfang groß geschrieben, Grammatik spielt hier keine Rolle. 
-* Underscores oder so vor Namen sind in Java atypisch. 
-* Zahlen in Namen werden ausgeschrieben, also nameOne, nameTwo usw.
-* Alle Namen sollten sprechend sein statt kryptisch und dürfen auch mal länger ausfallen. Faustregel: je öfter das Objekt benutzt wird, desto kürzer der Name. 
-* Klassennamen sind Nomen: ArticleController, CarModel usw., ebenso davon erstellte Objekte
-* Methodennamen sind Verben/Tätigkeitsbeschreibungen: getCarColor, evualuateUserInput etc.
-* Variablen enthalten Eigenschaften, es sollten also Nomen sein: color, size usw. Da sie als Teil des Klassenmodells im Kontext stehen, können sie meistens kurz sein. Wenn ich car.color aufrufe ist ja klar, dass sich color auf das Objekt car bezieht. Deshalb hier keine Redundanz carColor, dann wäre der Aufruf car.carColor
+* Das gängige Schema ist `camelCase` für Variablen und Methodennamen und ein großer Anfangbuchstabe für Klassennamen. Jedes neue Wort des Namens bis auf das erste wird am Anfang groß geschrieben, Grammatik spielt hier keine Rolle. 
+* Underscores oder so vor `_namen` sind in Java atypisch. 
+* Zahlen in Namen werden ausgeschrieben, also `nameOne, nameTwo` usw.
+* Alle Namen sollten sprechend sein statt kryptisch und dürfen auch mal länger ausfallen. Aber Faustregel: je öfter das Objekt benutzt wird, desto kürzer der Name. 
+* Klassennamen sind Nomen: `ArticleController, CarModel` usw., ebenso davon erstellte Objekte
+* Methodennamen sind Verben/Tätigkeitsbeschreibungen: `getCarColor, evualuateUserInput` etc.
+* Variablen enthalten Eigenschaften, es sollten also Nomen sein: color, size usw. Da sie als Teil des Klassenmodells im Kontext stehen, können sie meistens kurz sein. Wenn ich `car.color` aufrufe ist ja klar, dass sich color auf das Objekt car bezieht. Deshalb hier keine Redundanz carColor, dann wäre der Aufruf `car.carColor`
 
 ### Kommentare
 Da kann man sicher lange diskutieren, aber best practice ist inzwischen so wenige Kommentare wie nötig. Außer für API Dokus oder Tutorials gelten aus Sicht vieler modernerer Statements im Netz un von Leuten mit denen ich gearbeitet habe diese Punkte:
@@ -49,8 +49,20 @@ Auch hier kurz ungeordnet meine Gedanken dazu
 * wer welche Tickets übernimmt können wir im Team besprechen
 
 ### Kanban
-Die Tickets können manuell in den nächsten Block gezogen werden, bei codebezogenen Tickets ändert sich der Status automatisch (s.u.). Jedem Ticket ist eine Person zugewiesen, bevor es als DONE deklariert wird, sollte diese Person es auf INREVIEW setzen und einen Reviewer zuweisen. Erst dann kann es vom Reviewer auf DONE gestellt werden.
+* Die Tickets können manuell in den nächsten Block gezogen werden, bei codebezogenen Tickets ändert sich der Status automatisch (s.u.). 
+* Jedem Ticket ist eine Person zugewiesen, bevor es als DONE deklariert wird, sollte diese Person es auf INREVIEW setzen und einen Reviewer zuweisen. Erst dann kann es vom Reviewer auf DONE gestellt werden.
+* Andere können wie üblich mit @username verlinkt werden, Tickets werden mit #Ticketnummer direkt verlinkt
 
 ### SCM
+Wirkt erstmal teilweise kontraintuitiv, ist aber ein Traum wenn man es mal kennengelernt hat - auch für kleine und private Projekte. Der Flow ist grundsätzlich so:
+* Ein Bug- oder Improvementticket wird erstellt
+* wenn mit der Bearbeitung begonnen wird, wird ein Branch aus Development mit der Ticketnummer gezogen
+* das remoterepo wird lokal synchronisiert (ggfs clone beim ersten mal)
+* der erstellte Branch wird ausgechekt und bearbeitet
+* commits können erstmal nur lokal erstellt werden oder direkt gepusht werden - allerdings NUR in den aktuellen Branch
+* Wenn das Ticket fertig bearbeitet ist, wenn ein Pull Request (PR) erstellt mit dem Ziel development. Dem PR wird ein Reviewer zugewiesen.
+* Wenn der Reviewer den PR freigibt, wird der Branch in development gemergt.
+* Wichtig: es sollen immer nur die Tasks des einen Tickets in dem Branch bearbeitet werden um Versionskonflikte zu vermeiden.
+* also: Branch ziehen, checkout, bearbeiten, commit, push, PR, Review, merge
 
 
