@@ -36,6 +36,7 @@ Nutzt den Debugger so oft es geht. Also Breakpoint(s) und step by step durch. Ke
 ### Laufzeitfehler
 Java ist da ziemlich gut, weil typensicher, aber passieren kann es trotzdem, vor allem durch falsche Konvertierungen und null pointer. Deshalb ist am Ende das Testen so wichtig, da müssen die Tester grade bei Nutzereingaben versuchen, das Ding kaputt zu machen (Edge Cases anyone?).
 
+
 ## Projektmanagement
 Auch hier kurz ungeordnet meine Gedanken dazu
 
@@ -46,4 +47,10 @@ Auch hier kurz ungeordnet meine Gedanken dazu
 * Ein Issue muss dem Projekt Altenheim zugewiesen werden
 * wenn mögloch sollte ein Issue einem Meilenstein zugewiesen werden
 * wer welche Tickets übernimmt können wir im Team besprechen
+
+### Kanban
+Die Tickets können manuell in den nächsten Block gezogen werden, bei codebezogenen Tickets ändert sich der Status automatisch (s.u.). Jedem Ticket ist eine Person zugewiesen, bevor es als DONE deklariert wird, sollte diese Person es auf INREVIEW setzen und einen Reviewer zuweisen. Erst dann kann es vom Reviewer auf DONE gestellt werden.
+
+### SCM
+
 
