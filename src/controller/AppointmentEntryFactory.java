@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.concurrent.ThreadLocalRandom;
 import interfaces.IAppointmentEntryFactory;
-import interfaces.ICalendarEntriesModel;
 import interfaces.ICalendarEntryModel;
 import models.CalendarEntryModel;
 
