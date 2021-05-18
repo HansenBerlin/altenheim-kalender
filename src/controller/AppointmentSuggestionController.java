@@ -1,4 +1,4 @@
-﻿package controller;
+package controller;
 
 import java.util.Calendar;
 import java.util.Iterator;
@@ -26,17 +26,7 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 
     public int testFunction()
     {
-//        int days = 0;
-//        for (ICalendarEntryModel entry : allEntries.getAllRandomDates()) 
-//        {
-//            if (entry != null)
-//            {
-//                days += entry.getDate(true).get(Calendar.DAY_OF_YEAR); 
-//            	System.out.println(entry.getDate(true).get(Calendar.DAY_OF_YEAR));
-//            }
-//        }
-        
-//        return days;
+
     	boolean[] tage = new boolean[365];
     	int erster_Termin = 23;
     	int intervall = 60;
@@ -87,12 +77,12 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 		{
     		return 0;
 		}
+        int days = 0;
+        for (ICalendarEntryModel entry : allEntries.getAllRandomDates()) 
+        {
+            if (entry != null)            
+                days += entry.getStartDate().get(Calendar.DAY_OF_YEAR);  
+        }
+        return days;
     }
-
-    public void testFunctionTwo()
-    {
-        administrateEntries.createDefinedEntry(new int[]{1, 10, 2021}, new int[]{1, 10, 2021}, 
-            new int[]{10, 15}, new int[]{12, 30}, "Custom Entry", allEntries);        
-    }
-    
 }

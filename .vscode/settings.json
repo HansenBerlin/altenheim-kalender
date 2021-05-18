@@ -1,5 +1,10 @@
 {
     "java.project.sourcePaths": [
-        "src"
+        "src",
+        "unittests"
+    ],
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
     ]
+    
 }
