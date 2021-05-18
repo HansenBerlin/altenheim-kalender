@@ -26,16 +26,17 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
         int days = 0;
         for (ICalendarEntryModel entry : allEntries.getAllRandomDates()) 
         {
-            if (entry != null)
-                days += entry.getDate(true).get(Calendar.DAY_OF_YEAR);            
+            if (entry != null)            
+                days += entry.getStartDate().get(Calendar.DAY_OF_YEAR);  
         }
         return days;
     }
 
     public void testFunctionTwo()
     {
-        administrateEntries.createDefinedEntry(new int[]{1, 10, 2021}, new int[]{1, 10, 2021}, 
-            new int[]{10, 15}, new int[]{12, 30}, "Custom Entry", allEntries);        
+        var newEntry = administrateEntries.createDefinedEntry(new int[]{2021, 10, 1}, 
+            new int[]{2021, 10, 1}, new int[]{10, 15}, new int[]{12, 30}, "Custom Entry");  
+        allEntries.saveDate(true, newEntry);      
     }
     
 }

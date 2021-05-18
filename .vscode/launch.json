@@ -9,13 +9,6 @@
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "Launch Main",
-            "request": "launch",
-            "mainClass": "Main",
-            "projectName": "altenheimUntilDeath_OOP_Sem2_ea4210e1"
         }
     ]
 }

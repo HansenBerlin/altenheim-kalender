@@ -10,11 +10,8 @@ import models.CalendarEntryModel;
 
 public class AppointmentEntryFactory implements IAppointmentEntryFactory
 {
-    private ICalendarEntryModel newEntry;
-
-    public AppointmentEntryFactory(ICalendarEntryModel newEntry)
+    public AppointmentEntryFactory()
     {
-        this.newEntry = newEntry;
     }
 
     public ICalendarEntryModel[] createRandomDates() 
@@ -42,7 +39,7 @@ public class AppointmentEntryFactory implements IAppointmentEntryFactory
     
     private ICalendarEntryModel createRandomEntry() 
     {
-        var startDate = new GregorianCalendar(rG(1,31), rG(1,12), rG(2021,2021), rG(1,18), rG(0,59), rG(0,59));
+        var startDate = new GregorianCalendar(rG(2021,2021), rG(1,12), rG(1,31), rG(1,18), rG(0,59), rG(0,59));
         var endDate = startDate;
         endDate.set(Calendar.HOUR, rG(19, 23));        
         ICalendarEntryModel newEntry = new CalendarEntryModel(startDate, endDate, "Test" + rG(1, 100000));
@@ -50,17 +47,17 @@ public class AppointmentEntryFactory implements IAppointmentEntryFactory
     }
 
 
-    public boolean createDefinedEntry(int[] startDate, int[] endDate, int[] startTime, 
-        int[] endTime, String entryName, ICalendarEntriesModel savedEntries) 
+    public ICalendarEntryModel createDefinedEntry(int[] startDate, int[] endDate, int[] startTime, 
+        int[] endTime, String entryName) 
     {
         if (startDate.length != 3 || endDate.length != 3 || startTime.length != 2 || endTime.length != 2)
-            return false;
-        var startAppointment = new GregorianCalendar(startDate[0], startDate[1], startDate[2], startTime[0], startTime[1]);
-        var endAppointment = new GregorianCalendar(endDate[0], endDate[1], endDate[2], startTime[0], startTime[1]);
+            return null;
+        var startAppointment = new GregorianCalendar(startDate[0], startDate[1]-1, startDate[2], startTime[0], startTime[1]);
+        var endAppointment = new GregorianCalendar(endDate[0], endDate[1]-1, endDate[2], endTime[0], endTime[1]);
+        ICalendarEntryModel newEntry = new CalendarEntryModel();
         newEntry.resetDates(startAppointment, endAppointment);
         newEntry.resetAppointmentEntryName(entryName);
-        savedEntries.saveDate(true, newEntry);
-        return true;
+        return newEntry;
     }
 
 
