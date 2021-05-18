@@ -30,7 +30,7 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
     	boolean[] days = new boolean[365];
     	int firstDate = 23;
     	int interval = 60;
-    	int spread = 2;
+    	int spread = 3;
     	int maxOffers = 4;
     	for (int i = 0; i < days.length; i++) 
     	{
