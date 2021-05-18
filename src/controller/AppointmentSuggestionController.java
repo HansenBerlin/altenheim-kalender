@@ -19,70 +19,70 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
         this.allEntries = allEntries;
         this.administrateEntries = administrateEntries;
         
-        // Ã¼bergebens Interface beinhaltet Arrays fÃ¼r random generierte Termine
-        // und fÃ¼r jeden 7ten Tag ('Sonntag') Kannste dir mit den ensprechenden Methoden
+        // übergebens Interface beinhaltet Arrays für random generierte Termine
+        // und für jeden 7ten Tag ('Sonntag') Kannste dir mit den ensprechenden Methoden
         // komplett rausholen oder nur spezifische Tage
     }
 
     public int testFunction()
     {
 
-    	boolean[] tage = new boolean[365];
-    	int erster_Termin = 23;
-    	int intervall = 60;
-    	int streuung = 2;
-    	int max_TerminevorschlÃ¤ge = 3;
-    	for (int i = 0; i < tage.length; i++) 
+    	boolean[] days = new boolean[365];
+    	int firstDate = 23;
+    	int interval = 60;
+    	int spread = 2;
+    	int maxOffers = 4;
+    	for (int i = 0; i < days.length; i++) 
     	{
 			if (Math.random()<= 0.5) 
 			{
-				tage[i]= true;
+				days[i]= true;
 			}
 			else 
 			{
-				tage[i]=false;
+				days[i]=false;
 				
 			}
 		}
-    	LinkedList<Integer> mÃ¶gliche_termine = new LinkedList<Integer>();
-    	if (tage[erster_Termin+intervall] && erster_Termin+intervall%7!=0) {
-			mÃ¶gliche_termine.add(erster_Termin+intervall);
-		}
-    	for (int i = 1; i < streuung; i++) 
+    	LinkedList<Integer> mögliche_termine = new LinkedList<Integer>();
+    	
+    	for (int i = 0; i < spread; i++) 
     	{
-			if (tage[erster_Termin+intervall-i] && (erster_Termin+intervall-i)%7!=0) {
-				mÃ¶gliche_termine.add(erster_Termin+intervall-i);
+			if (days[firstDate+interval-i] && (firstDate+interval-i)%7!=0 && (firstDate+interval-i)>=firstDate && (firstDate+interval-i)<= days.length) {
+				mögliche_termine.add(firstDate+interval-i);
 			}
-			if (tage[erster_Termin+intervall+i] && (erster_Termin+intervall+i)%7!=0) {
-				mÃ¶gliche_termine.add(erster_Termin+intervall+i);
+			if (days[firstDate+interval+i] && (firstDate+interval+i)%7!=0 && (firstDate+interval+i)>=firstDate && (firstDate+interval+i)<= days.length) {
+				mögliche_termine.add(firstDate+interval+i);
 			}
-			if (mÃ¶gliche_termine.size()>=max_TerminevorschlÃ¤ge) {
+			if (mögliche_termine.size()>=maxOffers) {
 				break;
 			}
 		}
-    	if (mÃ¶gliche_termine.size()==0) 
+    	if (mögliche_termine.size()==0) 
     	{
 			System.out.println("Es gibt keine Termine, die in das Streufeld fallen.");
 		}
-    	for (int i = 0; i < mÃ¶gliche_termine.size(); i++) {
-			System.out.println("Der Tag: "+mÃ¶gliche_termine.get(i)+" ist frei: "+tage[mÃ¶gliche_termine.get(i)]);
+    	for (int i = 0; i < mögliche_termine.size(); i++) {
+			System.out.println("Der Tag: "+mögliche_termine.get(i)+" ist frei: "+days[mögliche_termine.get(i)]);
 		}
     	
     	
-    	if (mÃ¶gliche_termine.get(0)!=null) 
+    	if (mögliche_termine.get(0)!=null) 
     	{
-    		return mÃ¶gliche_termine.get(0);
+    		return mögliche_termine.get(0);
 		}
     	else 
 		{
     		return 0;
 		}
-        int days = 0;
-        for (ICalendarEntryModel entry : allEntries.getAllRandomDates()) 
-        {
-            if (entry != null)            
-                days += entry.getStartDate().get(Calendar.DAY_OF_YEAR);  
-        }
-        return days;
     }
+
+	@Override
+	public void testFunctionTwo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+    
 }
