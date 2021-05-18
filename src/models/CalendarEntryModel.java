@@ -12,7 +12,6 @@ public class CalendarEntryModel implements ICalendarEntryModel
 
     public CalendarEntryModel()
     {
-
     }
 
     public CalendarEntryModel(GregorianCalendar startDate2, GregorianCalendar endDate2, String appointmentEntryName)
@@ -33,17 +32,18 @@ public class CalendarEntryModel implements ICalendarEntryModel
         appointmentEntryName = entry;
     }
 
-    public GregorianCalendar getDate(boolean getStartDate)
+    public GregorianCalendar getStartDate()
     {
-        if (getStartDate)
-            return startDate;
-        else
+        return startDate;        
+    }
+
+    public GregorianCalendar getEndDate()
+    {        
             return endDate;
     }
 
     public String getAppointmentEntryName()
     {
         return appointmentEntryName;
-    }
-    
+    }    
 }
