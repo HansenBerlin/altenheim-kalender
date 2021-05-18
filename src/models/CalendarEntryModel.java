@@ -2,11 +2,18 @@
 
 import java.util.GregorianCalendar;
 
-public class CalendarEntryModel
+import interfaces.ICalendarEntryModel;
+
+public class CalendarEntryModel implements ICalendarEntryModel
 {
     private GregorianCalendar startDate;
     private GregorianCalendar endDate;
     private String appointmentEntryName;
+
+    public CalendarEntryModel()
+    {
+
+    }
 
     public CalendarEntryModel(GregorianCalendar startDate2, GregorianCalendar endDate2, String appointmentEntryName)
     {

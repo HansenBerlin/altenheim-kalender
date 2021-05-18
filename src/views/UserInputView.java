@@ -17,6 +17,9 @@ public class UserInputView
     public void askForUserInputInLoop()
     {
         System.out.println(suggestion.testFunction());
+        suggestion.testFunctionTwo();
+        System.out.println(suggestion.testFunction());
+
         // starte hier die Logik für den Input
     }
     

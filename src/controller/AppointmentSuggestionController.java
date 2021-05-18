@@ -1,18 +1,20 @@
 ﻿package controller;
 
 import java.util.Calendar;
-
+import interfaces.IAppointmentEntryFactory;
 import interfaces.IAppointmentSuggestionController;
 import interfaces.ICalendarEntriesModel;
-import models.CalendarEntryModel;
+import interfaces.ICalendarEntryModel;
 
 public class AppointmentSuggestionController implements IAppointmentSuggestionController
 {
     private ICalendarEntriesModel allEntries;
+    private IAppointmentEntryFactory administrateEntries;
 
-    public AppointmentSuggestionController(ICalendarEntriesModel allEntries)
+    public AppointmentSuggestionController(ICalendarEntriesModel allEntries, IAppointmentEntryFactory administrateEntries)
     {
         this.allEntries = allEntries;
+        this.administrateEntries = administrateEntries;
         
         // übergebens Interface beinhaltet Arrays für random generierte Termine
         // und für jeden 7ten Tag ('Sonntag') Kannste dir mit den ensprechenden Methoden
@@ -22,12 +24,18 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
     public int testFunction()
     {
         int days = 0;
-        for (CalendarEntryModel entry : allEntries.getAllRandomDates()) 
+        for (ICalendarEntryModel entry : allEntries.getAllRandomDates()) 
         {
             if (entry != null)
-                days += entry.getDate(true).get(Calendar.DAY_OF_WEEK);            
+                days += entry.getDate(true).get(Calendar.DAY_OF_YEAR);            
         }
         return days;
+    }
+
+    public void testFunctionTwo()
+    {
+        administrateEntries.createDefinedEntry(new int[]{1, 10, 2021}, new int[]{1, 10, 2021}, 
+            new int[]{10, 15}, new int[]{12, 30}, "Custom Entry", allEntries);        
     }
     
 }

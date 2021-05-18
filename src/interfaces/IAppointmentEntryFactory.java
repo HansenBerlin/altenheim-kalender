@@ -1,9 +1,9 @@
 ﻿package interfaces;
 
-import models.CalendarEntryModel;
-
 public interface IAppointmentEntryFactory 
 {
-    public CalendarEntryModel[] createRandomDates();
-    public CalendarEntryModel[] createFixedDates();    
+    public ICalendarEntryModel[] createRandomDates();
+    public ICalendarEntryModel[] createFixedDates();    
+    public boolean createDefinedEntry(int[] startDate, int[] endDate, int[] startTime, 
+        int[] endTime, String entryName, ICalendarEntriesModel savedEntries);
 }
