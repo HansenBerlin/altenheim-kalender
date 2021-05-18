@@ -44,32 +44,32 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 				
 			}
 		}
-    	LinkedList<Integer> mögliche_termine = new LinkedList<Integer>();
+    	LinkedList<Integer> possible_dates = new LinkedList<Integer>();
     	
     	for (int i = 0; i < spread; i++) 
     	{
 			if (days[firstDate+interval-i] && (firstDate+interval-i)%7!=0 && (firstDate+interval-i)>=firstDate && (firstDate+interval-i)<= days.length) {
-				mögliche_termine.add(firstDate+interval-i);
+				possible_dates.add(firstDate+interval-i);
 			}
 			if (days[firstDate+interval+i] && (firstDate+interval+i)%7!=0 && (firstDate+interval+i)>=firstDate && (firstDate+interval+i)<= days.length) {
-				mögliche_termine.add(firstDate+interval+i);
+				possible_dates.add(firstDate+interval+i);
 			}
-			if (mögliche_termine.size()>=maxOffers) {
+			if (possible_dates.size()>=maxOffers) {
 				break;
 			}
 		}
-    	if (mögliche_termine.size()==0) 
+    	if (possible_dates.size()==0) 
     	{
 			System.out.println("Es gibt keine Termine, die in das Streufeld fallen.");
 		}
-    	for (int i = 0; i < mögliche_termine.size(); i++) {
-			System.out.println("Der Tag: "+mögliche_termine.get(i)+" ist frei: "+days[mögliche_termine.get(i)]);
+    	for (int i = 0; i < possible_dates.size(); i++) {
+			System.out.println("Der Tag: "+possible_dates.get(i)+" ist frei: "+days[possible_dates.get(i)]);
 		}
     	
     	
-    	if (mögliche_termine.get(0)!=null) 
+    	if (possible_dates.get(0)!=null) 
     	{
-    		return mögliche_termine.get(0);
+    		return possible_dates.get(0);
 		}
     	else 
 		{
