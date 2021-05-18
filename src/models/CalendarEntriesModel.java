@@ -1,12 +1,15 @@
 ﻿package models;
 
+import java.util.Calendar;
+
 import interfaces.IAppointmentEntryFactory;
 import interfaces.ICalendarEntriesModel;
+import interfaces.ICalendarEntryModel;
 
 public class CalendarEntriesModel implements ICalendarEntriesModel
 {
-    private CalendarEntryModel[] savedRandomDates;
-    private CalendarEntryModel[] savedSundays;
+    private ICalendarEntryModel[] savedRandomDates;
+    private ICalendarEntryModel[] savedSundays;
 
     public CalendarEntriesModel(IAppointmentEntryFactory entryFactory)
     {
@@ -14,23 +17,31 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
         savedSundays = entryFactory.createFixedDates();
     }
 
-    public CalendarEntryModel[] getAllRandomDates()
+    public ICalendarEntryModel[] getAllRandomDates()
     {
         return savedRandomDates;
     }
 
-    public CalendarEntryModel[] getAllFixedDates()
+    public ICalendarEntryModel[] getAllFixedDates()
     {
         return savedSundays;
     }
 
-    public CalendarEntryModel getSpecificRandomDate(int day)
+    public ICalendarEntryModel getSpecificRandomDate(int day)
     {
         return savedRandomDates[day];
     }
 
-    public CalendarEntryModel getSpecificFixedDate(int day)
+    public ICalendarEntryModel getSpecificFixedDate(int day)
     {
         return savedSundays[day];
+    }
+
+    public void saveDate(boolean saveToSavedRandomDates, ICalendarEntryModel newEntry)
+    {
+        if (saveToSavedRandomDates)        
+            savedRandomDates[newEntry.getDate(true).get(Calendar.DAY_OF_YEAR)] = newEntry;        
+        else
+            savedSundays[newEntry.getDate(true).get(Calendar.DAY_OF_YEAR)] = newEntry;  
     }
 }
