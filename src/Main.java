@@ -9,6 +9,7 @@ import models.CalendarEntriesModel;
 import models.CalendarEntryModel;
 import views.OpeningHoursTestView;
 import views.UserInputView;
+import views.WayFinding;
 
 public class Main 
 {
@@ -25,8 +26,13 @@ public class Main
         //var mailTest = new MailCreationController("testmail@test.de", "Arzttermin", 
         //    "Ich brauche einen Termin am ... um ...\nMit freundlichem Gruß");
         //mailTest.sendMail();
-
         //var testOpeningApi = new OpeningHoursTestView();
         //testOpeningApi.userInputSearchQuery();
+
+//        var testOpeningApi = new OpeningHoursTestView();
+//        testOpeningApi.userInputSearchQuery();
+        var testWayApi = new WayFinding();
+        testWayApi.userInputSearchQuery();
+
     }
 }
