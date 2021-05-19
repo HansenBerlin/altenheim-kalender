@@ -7,6 +7,7 @@ import interfaces.ICalendarEntriesModel;
 import models.CalendarEntriesModel;
 import views.OpeningHoursTestView;
 import views.UserInputView;
+import views.WayFinding;
 
 public class Main 
 {
@@ -22,7 +23,9 @@ public class Main
         //    "Ich brauche einen Termin am ... um ...\nMit freundlichem Gruß");
         //mailTest.sendMail();
 
-        var testOpeningApi = new OpeningHoursTestView();
-        testOpeningApi.userInputSearchQuery();
+//        var testOpeningApi = new OpeningHoursTestView();
+//        testOpeningApi.userInputSearchQuery();
+        var testWayApi = new WayFinding();
+        testWayApi.userInputSearchQuery();
     }
 }
