@@ -40,8 +40,8 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
     public void saveDate(boolean saveToSavedRandomDates, ICalendarEntryModel newEntry)
     {
         if (saveToSavedRandomDates)        
-            savedRandomDates[newEntry.getDate(true).get(Calendar.DAY_OF_YEAR)] = newEntry;        
+            savedRandomDates[newEntry.getStartDate().get(Calendar.DAY_OF_YEAR)] = newEntry;        
         else
-            savedSundays[newEntry.getDate(true).get(Calendar.DAY_OF_YEAR)] = newEntry;  
+            savedSundays[newEntry.getStartDate().get(Calendar.DAY_OF_YEAR)] = newEntry;  
     }
 }
