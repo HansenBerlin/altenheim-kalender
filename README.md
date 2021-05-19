@@ -83,7 +83,7 @@ Wirkt erstmal teilweise kontraintuitiv, ist aber ein Traum wenn man es mal kenne
 ## Testing
 Können wir im Rahmen eines kleinen Projektes sicherlich nicht in Gänze abdecken, aber im Sinne der Best Practices und zumal es ja auch (sinnvollerweise) explizit verlangt wird sollten wir uns drauf einigen wie wir da vorgehen. Möglichkeiten:
 * Pfadüberdeckung usw. (wie im 1. Sem. durchgenommen): das kann man relativ schnell mit Tools abbilden, kenne das nur für VS, bei VS Code oder Eclipse gibts das aber sicherlich auch. Sollten wir also machen.
-* Unit Testing: mehr Arbeit, weil die Tests selber auch geschrieben werden müssen. Mit JUnit gibts da aber ein ausgereiftes Framework. Wäre vielleicht als Übung für den ein oder anderen gar nicht schlecht, da lernt man viel über Codestruktur. Wenn wir das machen ist der Vorteil:
+* Unit Testing: mehr Arbeit, weil die Tests selber auch geschrieben werden müssen. Mit JUnit gibts da aber ein ausgereiftes Framework. Wäre vielleicht als Übung für den ein oder anderen gar nicht schlecht, da lernt man viel über Codestruktur. Wenn wir das machen ist der Vorteil, dass wir das schön in eine CD Pipeline einbauen können. Zudem zwingt einen testbarer Code zu einer sauberen Struktur, Dependency Injection entkoppelt mit Interfaces ale Bestandteile sauber und macht den Code testbar, bietet aber auch weitere Vorteile. 
 * CD/AT (Continuos Delivery und Automated Testing). Da würde man dann eine Testpipeline bauen und vor jedem Build den Code da durch jagen. Ist schnell eingerichtet, hab aber grad keine freien Serverkapazitäten. Mal sehen...
 * Integrationstests: lassen wir aus
 * Selenium und UI Tests: können wir auch auslassen
