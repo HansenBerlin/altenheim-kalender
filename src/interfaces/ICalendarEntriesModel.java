@@ -2,10 +2,9 @@
 
 public interface ICalendarEntriesModel 
 {
-    public ICalendarEntryModel[] getAllRandomDates();
-    public ICalendarEntryModel[] getAllFixedDates();
-    public ICalendarEntryModel getSpecificRandomDate(int day);
-    public ICalendarEntryModel getSpecificFixedDate(int day);
-    public void saveDate(boolean saveToSavedRandomDates, ICalendarEntryModel newEntry);
-
+    public ICalendarEntryModel[][][] getYear();
+    public ICalendarEntryModel getSpecificDate(int month, int day, int hour, int minute);
+    public void saveDate(ICalendarEntryModel newEntry);
+    public void printCalendarDates(int numberOfEntriesToPrint);
+    public void initializeYear();
 }
