@@ -17,6 +17,7 @@ Hier ne kurze Zusammenfassung was mir grad so zu Java einfällt und woran wir un
 * Methodennamen sind Verben/Tätigkeitsbeschreibungen: `getCarColor, evualuateUserInput` etc.
 * Variablen enthalten Eigenschaften, es sollten also Nomen sein: color, size usw. Da sie als Teil des Klassenmodells im Kontext stehen, können sie meistens kurz sein. Wenn ich `car.color` aufrufe ist ja klar, dass sich color auf das Objekt car bezieht. Deshalb hier keine Redundanz carColor, dann wäre der Aufruf `car.carColor`
 * Wegwerfvariablen wie Laufvariablen und (teilweise) lokale Variablen sind davon ausgenommen. Hier reicht auch ein Buchstabe, wie in for`(i = 0; i < xy; i++){}`
+* keine Redundanz des Typs im Namen: also nicht String userInputString, sondern einfach String userInput
 
 ### Kommentare
 Da kann man sicher lange diskutieren, aber best practice ist inzwischen so wenige Kommentare wie nötig. Außer für API Dokus oder Tutorials gelten aus Sicht vieler modernerer Statements im Netz un von Leuten mit denen ich gearbeitet habe diese Punkte:
