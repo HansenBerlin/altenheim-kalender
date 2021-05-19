@@ -5,6 +5,7 @@ import interfaces.IAppointmentEntryFactory;
 import interfaces.IAppointmentSuggestionController;
 import interfaces.ICalendarEntriesModel;
 import models.CalendarEntriesModel;
+import views.OpeningHoursTestView;
 import views.UserInputView;
 
 public class Main 
@@ -20,5 +21,8 @@ public class Main
         //var mailTest = new MailCreationController("testmail@test.de", "Arzttermin", 
         //    "Ich brauche einen Termin am ... um ...\nMit freundlichem Gruß");
         //mailTest.sendMail();
+
+        var testOpeningApi = new OpeningHoursTestView();
+        testOpeningApi.userInputSearchQuery();
     }
 }
