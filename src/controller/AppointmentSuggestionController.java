@@ -27,8 +27,7 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 		var freeTime = 0;
 		var freeTime1 = 0;
 		int hoursBeforOpen = ((int) Math.ceil(travelTime / 60)) + 1;
-		appointmentDuration = ((appointmentDuration % 15 == 0) ? appointmentDuration
-				: ((appointmentDuration / 15 + 1) * 15));
+		appointmentDuration +=  15 - appointmentDuration%15 ;
 
 		for (int day = 0; day < spread; day++) {
 			freeTime = 0;
