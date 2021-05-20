@@ -17,31 +17,50 @@ public class GoogleAPIController implements IGoogleAPIController
     private final String FINDDESTINATIONSQUERY= "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=AIzaSyCjdv5ViLvdzCNTKXB2FZ-fhSkI_0OUZ9w";
 
     
-    public String showOpeningHours(String locationSearchUserInput) throws IOException, InterruptedException
+    public String showOpeningHours(String locationSearchUserInput)
     {          
         String input = locationSearchUserInput.replaceAll(" ", "%20");
-        String searchQuery = String.format(FINDPLACEQUERY, input);
+        String searchQuery = String.format(FINDPLACEQUERY, input);        
 
-        var jsonResponse = httpRequest(searchQuery);
-        var id = parseJsonForLocationId(jsonResponse);        
-        var jsonResponse2 = httpRequest(String.format(OPENINGHOURSQUERY, id));
-        return parseJsonForOpeningHours(jsonResponse2);
+        try 
+        {
+            var jsonResponse = httpRequest(searchQuery);
+            var id = parseJsonForLocationId(jsonResponse);        
+            var jsonResponseDetail = httpRequest(String.format(OPENINGHOURSQUERY, id)); 
+            return parseJsonForOpeningHours(jsonResponseDetail);           
+        } 
+        catch (IOException | InterruptedException e) 
+        {
+            e.printStackTrace();
+            return "Ungültige\nOrtseingabe";
+        }       
     }
 
-    public int[] searchForDestinationDistance(String startAt, String destination) throws IOException, InterruptedException
+
+    public int[] searchForDestinationDistance(String startAt, String destination)
     {
         int[] returnValues = new int[2];
         startAt = startAt.replaceAll(" ", "%20");
         destination = destination.replaceAll(" ", "%20");
         String searchQuery = String.format(FINDDESTINATIONSQUERY, startAt, destination);
-        var jsonBody = httpRequest(searchQuery);
-        var json = new JSONObject(jsonBody);
-        var elements = json.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);        
-        returnValues[0] = elements.getJSONObject("duration").getInt("value");        
-        returnValues[1] = elements.getJSONObject("distance").getInt("value");
+        try 
+        {            
+            var jsonBody = httpRequest(searchQuery);
+            var json = new JSONObject(jsonBody);
+            var elements = json.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);        
+            returnValues[0] = elements.getJSONObject("duration").getInt("value");        
+            returnValues[1] = elements.getJSONObject("distance").getInt("value");            
+        } 
+        catch (IOException | InterruptedException e) 
+        {
+            e.printStackTrace();
+            returnValues[0] = -1;
+            returnValues[1] = -1;
+        }
 
         return returnValues;
     } 
+
 
     private String httpRequest(String requestString) throws IOException, InterruptedException
     {
@@ -53,6 +72,7 @@ public class GoogleAPIController implements IGoogleAPIController
         else
             return "";       
     }
+
 
     private String parseJsonForLocationId(String jsonBody)
     {
@@ -67,6 +87,7 @@ public class GoogleAPIController implements IGoogleAPIController
         }
         return locationId.get(0);
     }
+    
 
     private String parseJsonForOpeningHours(String jsonBody)
     {

@@ -27,11 +27,11 @@ public class MailCreationController implements IMailCreationController
             body = templates.getTemplateTwo();
         
         body = body.replace("[Datum]", date);
-        body = body.replace("[Zeit]", time);
+        body = body.replace("[Uhrzeit]", time);
 
         return body;
     }
-    
+
 
     private String encodeUrl(String uri) 
     {

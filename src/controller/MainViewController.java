@@ -2,6 +2,7 @@
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.Date;
 import interfaces.IAppointmentEntryFactory;
 import interfaces.IAppointmentSuggestionController;
 import interfaces.ICalendarEntriesModel;
@@ -15,9 +16,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import models.CalendarEntriesModel;
-import views.OpeningHoursTestView;
-import views.UserInputView;
-import views.WayFinding;
+import views.MainCalendarView;
 
 public class MainViewController 
 {
@@ -31,7 +30,7 @@ public class MainViewController
     private DatePicker datePickerStartDate;
  
     @FXML
-    private TextField textFieldRecipient, textFieldSubject, textFieldStartLocation, textFieldDestination,
+    private TextField textFieldRecipient, textFieldSubject, textFieldStartLocation, textFieldDestination, textFieldTime,
                       textFieldSearchFromDay, textFieldInterval, textFieldTolerance, textFieldAvailableDatesCount;
     
     @FXML
@@ -45,13 +44,13 @@ public class MainViewController
     private Text textOpeningHoursStartLocation, textOpeningHoursDestination, textDurationToDestination, textAvailableDates;
 
     @FXML
-    public void initialize()
+    private void initialize()
     {
         googleApis = new GoogleAPIController();
         mailController = new MailCreationController();
         entryFactory = new AppointmentEntryFactory();
         savedEntries = new CalendarEntriesModel(entryFactory);
-        suggestion = new AppointmentSuggestionController(savedEntries, entryFactory);     
+        suggestion = new AppointmentSuggestionController(savedEntries, entryFactory); 
     }  
     
     @FXML
@@ -60,13 +59,25 @@ public class MainViewController
         var button = (Button)event.getSource();
 
         if (button.equals(buttonSendMail))
-            sendMail(false);
-        else if (button.equals(buttonTemplateOne) || button.equals(buttonTemplateTwo))
-            sendMail(true);
+            sendMail(0);
+        else if (button.equals(buttonTemplateOne))
+            sendMail(1);
+        else if (button.equals(buttonTemplateTwo))
+            sendMail(2);
         else if (button.equals(buttonShowOpeningHours))
-            checkApis();
+        {
+            var openingHoursStartLocation = googleApis.showOpeningHours(textFieldStartLocation.getText());
+            var openingHoursDestination = googleApis.showOpeningHours(textFieldDestination.getText());
+            textOpeningHoursStartLocation.setText(openingHoursStartLocation);
+            textOpeningHoursDestination.setText(openingHoursDestination);
+        }
         else if (button.equals(buttonShowDurationToDestination))
-            checkApis();
+        {            
+            var timeToDestination = googleApis.searchForDestinationDistance(
+                textFieldStartLocation.getText(), textFieldDestination.getText());
+            int timeInMinutes = (timeToDestination[0] - timeToDestination[0]%60)/60;
+            textDurationToDestination.setText(String.valueOf(timeInMinutes) + " min");
+        }
         else if (button.equals(buttonShowAvaliableDates))
             checkAvaliableDates();
         else if (button.equals(buttonOpenCalendar))
@@ -77,32 +88,13 @@ public class MainViewController
 
     private void sendMail(int useTemplateNumber) throws IOException, URISyntaxException
     {
-        String mailBody = textAreaMailBody.getText();
-        String subject = textFieldSubject.getText();
-        String recipient = textFieldRecipient.getText();
-        String date = datePickerStartDate.getValue().of(year, month, dayOfMonth)
-        String bodyProcessed = mailController.processPlaceholders(mailBody, date, time, useTemplateNumber)
-
-
-        if (useTemplate)
-        {
-
-        }
-        else
-        {
-            mailController = new MailCreationController(textFieldRecipient.getText(), 
-                textFieldSubject.getText(), textAreaMailBody.getText());
-            mailController.sendMail();
-        }
-    }
-
-    private void checkApis() throws IOException, InterruptedException
-    {
-        var googleApi = new 
-        var openingHours = new OpeningHoursTestView();
-        openingHours.userInputSearchQuery();
-        var distanceToDestination = new WayFinding();
-        distanceToDestination.userInputSearchQuery(); 
+        var mailBody = textAreaMailBody.getText();
+        var subject = textFieldSubject.getText();
+        var recipient = textFieldRecipient.getText();
+        var time = textFieldTime.getText();
+        var date = datePickerStartDate.getValue();
+        String bodyProcessed = mailController.processPlaceholders(mailBody, date.toString(), time, useTemplateNumber);
+        mailController.sendMail(recipient, subject, bodyProcessed);        
     }
 
     private void checkAvaliableDates()
@@ -112,7 +104,8 @@ public class MainViewController
 
     private void openCalendar()
     {
-
+        var calendar = new MainCalendarView();
+        calendar.startCalendar();
     }
 
 }
