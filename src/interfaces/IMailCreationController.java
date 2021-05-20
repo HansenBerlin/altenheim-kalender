@@ -5,5 +5,6 @@ import java.net.URISyntaxException;
 
 public interface IMailCreationController 
 {
-    public void sendMail() throws IOException, URISyntaxException;    
+    public void sendMail(String recipient, String subject, String body) throws IOException, URISyntaxException;
+    public String processPlaceholders(String body, String date, String time, int template);
 }

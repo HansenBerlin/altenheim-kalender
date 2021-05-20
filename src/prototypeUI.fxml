@@ -29,35 +29,25 @@
                         <Insets top="20.0" />
                      </VBox.margin>
                   </Text>
-                  <HBox alignment="TOP_CENTER" prefHeight="100.0">
+                  <HBox alignment="TOP_CENTER">
                      <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="250.0">
+                        <VBox alignment="TOP_CENTER">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Startdatum">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Terminwunsch">
                                  <VBox.margin>
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Text>
-                              <DatePicker fx:id="datePickerStartDate" onAction="#datePickerChange" prefWidth="195.0" />
-                           </children>
-                           <HBox.margin>
-                              <Insets top="20.0" />
-                           </HBox.margin>
-                        </VBox>
-                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="250.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enddatum">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <DatePicker fx:id="datePickerEndDate" onAction="#datePickerChange" prefWidth="195.0" />
+                              <DatePicker fx:id="datePickerStartDate" prefWidth="430.0" />
                            </children>
                            <HBox.margin>
                               <Insets top="20.0" />
                            </HBox.margin>
                         </VBox>
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
                   </HBox>
                   <TextField fx:id="textFieldRecipient" promptText="Empfänger">
                      <VBox.margin>
@@ -97,7 +87,7 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="textAreaMailBody" prefHeight="200.0" prefWidth="460.0" promptText="Mailtext " />
+                                    <TextArea fx:id="textAreaMailBody" prefHeight="200.0" prefWidth="460.0" promptText="Mailtext: Bitte als Platzhalter [Datum] und [Uhrzeit] eingeben um die Werte zu ersetzen." />
                                  </children>
                               </AnchorPane>
                         </content>
