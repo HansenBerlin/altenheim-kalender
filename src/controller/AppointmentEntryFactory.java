@@ -8,41 +8,77 @@ import interfaces.ICalendarEntryModel;
 import models.CalendarEntryModel;
 
 public class AppointmentEntryFactory implements IAppointmentEntryFactory
-{
+{    
+
     public AppointmentEntryFactory()
     {
     }
 
-    public ICalendarEntryModel[] createRandomDates() 
-    {
-        ICalendarEntryModel[] calendarEntries = new CalendarEntryModel[365];
-        for (int i = 0; i < calendarEntries.length; i++) 
-        {
-            if (rG(1,4) == 1)
-                calendarEntries[i] = createRandomEntry();            
-        }
-        return calendarEntries;        
-    }
 
-    public ICalendarEntryModel[] createFixedDates() 
+    public ICalendarEntryModel[][][] createRandomDatesForOneYear() 
     {
-        ICalendarEntryModel[] calendarEntries = new CalendarEntryModel[365];
-        for (int i = 0; i < calendarEntries.length; i++) 
-        {
-            if (i%7 == 0)
-                calendarEntries[i] = createRandomEntry();            
-        }
-        return calendarEntries;         
-    }
+        var year = new ICalendarEntryModel[365][24][60];
 
+        var createdEntries = createEntrys();
+        for (var entry : createdEntries) 
+        {
+            int startHours = entry.getStartDate().get(Calendar.HOUR_OF_DAY);
+            int endHours = entry.getEndDate().get(Calendar.HOUR_OF_DAY);
+            int startMinutes = entry.getStartDate().get(Calendar.MINUTE);
+            int endMinutes = entry.getEndDate().get(Calendar.MINUTE);
+            int day = entry.getEndDate().get(Calendar.DAY_OF_YEAR);
+
+            for (int hour = 0; hour < 24; hour++) 
+            {
+                if (startHours == endHours)
+                {
+                    for (int minute = startMinutes; minute < endMinutes; minute++)
+                    {
+                        year[day-1][hour][minute] = entry;
+                    }
+                    break;
+                }                    
+
+                else if (hour == startHours)                
+                    for (int minute = startMinutes; minute < 60; minute++)
+                    {
+                        year[day-1][hour][minute] = entry;
+                    }                                         
+
+                else if (hour == endHours)                
+                    for (int minute = 0; minute < endMinutes; minute++)    
+                    {
+                        year[day-1][hour][minute] = entry; 
+                    }                                        
+                  
+                else if (hour > startHours && hour < endHours)                
+                    for (int minute = 0; minute < 60; minute++)    
+                    {
+                        year[day-1][hour][minute] = entry;
+                    }                
+            }            
+        }
+        return year;
+    }
     
-    private ICalendarEntryModel createRandomEntry() 
+    
+    public CalendarEntryModel[] createEntrys() 
     {
-        var startDate = new GregorianCalendar(rG(2021,2021), rG(1,12), rG(1,31), rG(1,18), rG(0,59), rG(0,59));
-        var endDate = startDate;
-        endDate.set(Calendar.HOUR, rG(19, 23));        
-        ICalendarEntryModel newEntry = new CalendarEntryModel(startDate, endDate, "Test" + rG(1, 100000));
-        return newEntry;
+        int position = 0;
+        var allEntrys = new CalendarEntryModel[120];
+        for (int i = 0; i < 12; i++) 
+        {
+            for (int j = 1; j <= 28; j+=rG(1,4)) 
+            {
+                if (position >= 120)
+                    return allEntrys;
+                var startDate = new GregorianCalendar(rG(2021,2021), rG(i,i), rG(j,j), rG(1,18), rG(0,59));
+                var endDate = new GregorianCalendar(rG(2021,2021), rG(i,i), rG(j,j), rG(19,23), rG(0,59));               
+                allEntrys[position] = new CalendarEntryModel(startDate, endDate, "Test" + rG(1, 100000));     
+                position++;   
+            }            
+        }
+        return allEntrys;
     }
 
 

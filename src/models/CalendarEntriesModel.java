@@ -1,47 +1,77 @@
 ﻿package models;
 
 import java.util.Calendar;
-
 import interfaces.IAppointmentEntryFactory;
 import interfaces.ICalendarEntriesModel;
 import interfaces.ICalendarEntryModel;
 
 public class CalendarEntriesModel implements ICalendarEntriesModel
-{
-    private ICalendarEntryModel[] savedRandomDates;
-    private ICalendarEntryModel[] savedSundays;
+{    
+    private ICalendarEntryModel[][][] year;
+    private IAppointmentEntryFactory entryFactory;   
 
     public CalendarEntriesModel(IAppointmentEntryFactory entryFactory)
     {
-        savedRandomDates = entryFactory.createFixedDates();
-        savedSundays = entryFactory.createFixedDates();
+        this.entryFactory = entryFactory;  
+    }    
+
+    public void initializeYear()
+    {
+        this.year = entryFactory.createRandomDatesForOneYear();
     }
 
-    public ICalendarEntryModel[] getAllRandomDates()
+    public ICalendarEntryModel[][][] getYear()
     {
-        return savedRandomDates;
+        return year;
+    }    
+
+    public ICalendarEntryModel getSpecificDate(int month, int day, int hour, int minute)
+    {
+        return year[(month-1)*day][hour][minute];
     }
 
-    public ICalendarEntryModel[] getAllFixedDates()
+    public void saveDate(ICalendarEntryModel newEntry)
     {
-        return savedSundays;
+       // nach Schema der Logik in der Factory implementieren  
     }
 
-    public ICalendarEntryModel getSpecificRandomDate(int day)
+    public void printCalendarDates(int numberOfEntriesToPrint)
     {
-        return savedRandomDates[day];
-    }
+        String tempEntryName = "";
 
-    public ICalendarEntryModel getSpecificFixedDate(int day)
-    {
-        return savedSundays[day];
-    }
-
-    public void saveDate(boolean saveToSavedRandomDates, ICalendarEntryModel newEntry)
-    {
-        if (saveToSavedRandomDates)        
-            savedRandomDates[newEntry.getStartDate().get(Calendar.DAY_OF_YEAR)] = newEntry;        
-        else
-            savedSundays[newEntry.getStartDate().get(Calendar.DAY_OF_YEAR)] = newEntry;  
+        for (ICalendarEntryModel[][] day : year) 
+        {            
+            if (day != null)
+            {     
+                for (ICalendarEntryModel[] hour : day) 
+                {                    
+                    if (hour != null)
+                    {
+                        for (var entry : hour) 
+                        {
+                            if (entry != null)
+                            {
+                                if (!entry.getAppointmentEntryName().equals(tempEntryName))
+                                {
+                                    System.out.println("--------------------------------");
+                                    System.out.println("Eintrag: " + entry.getAppointmentEntryName());
+                                    System.out.println("Start: Tag/Jahr:      " + entry.getStartDate().get(Calendar.DAY_OF_YEAR));
+                                    System.out.println("Start: Tag/Woche:     " + entry.getStartDate().get(Calendar.DAY_OF_WEEK));
+                                    System.out.println("Ende: Tag/Woche:      " + entry.getEndDate().get(Calendar.DAY_OF_WEEK));
+                                    System.out.println(String.format("Start: %s:%s Uhr", entry.getStartDate().get(Calendar.HOUR_OF_DAY), entry.getStartDate().get(Calendar.MINUTE)));
+                                    System.out.println(String.format("Ende:  %s:%s Uhr", entry.getEndDate().get(Calendar.HOUR_OF_DAY), entry.getEndDate().get(Calendar.MINUTE)));
+                                    
+                                    numberOfEntriesToPrint--;
+                                }
+                                tempEntryName = entry.getAppointmentEntryName();    
+                            }
+                        }  
+                    } 
+                } 
+            } 
+            if (numberOfEntriesToPrint <= 0)
+                break;
+                     
+        }        
     }
 }
