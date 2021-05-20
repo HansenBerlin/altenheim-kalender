@@ -1,88 +1,129 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
-import java.util.LinkedList;
-
+import java.util.GregorianCalendar;
+import java.util.List;
 import interfaces.IAppointmentEntryFactory;
 import interfaces.IAppointmentSuggestionController;
 import interfaces.ICalendarEntriesModel;
-import interfaces.ICalendarEntryModel;
+import models.CalendarEntryModel;
 
-public class AppointmentSuggestionController implements IAppointmentSuggestionController
-{
-    private ICalendarEntriesModel allEntries;
-    private IAppointmentEntryFactory administrateEntries;
-    
-    public AppointmentSuggestionController(ICalendarEntriesModel allEntries, IAppointmentEntryFactory administrateEntries)
-    {
-        this.allEntries = allEntries;
-        this.administrateEntries = administrateEntries;
-        
-        // übergebens Interface beinhaltet Arrays für random generierte Termine
-        // und für jeden 7ten Tag ('Sonntag') Kannste dir mit den ensprechenden Methoden
-        // komplett rausholen oder nur spezifische Tage
-    }
+public class AppointmentSuggestionController implements IAppointmentSuggestionController {
+	private ICalendarEntriesModel allEntries;
+	private IAppointmentEntryFactory administrateEntries;
+	
+	public AppointmentSuggestionController(ICalendarEntriesModel allEntries,
+			IAppointmentEntryFactory administrateEntries) {
+		this.allEntries = allEntries;
+		this.administrateEntries = administrateEntries;
 
-    public int testFunction()
-    {
-
-    	boolean[] days = new boolean[365];
-    	int firstDate = 23;
-    	int interval = 60;
-    	int spread = 3;
-    	int maxOffers = 4;
-    	for (int i = 0; i < days.length; i++) 
-    	{
-			if (Math.random()<= 0.5) 
-			{
-				days[i]= true;
-			}
-			else 
-			{
-				days[i]=false;
-				
-			}
-		}
-    	LinkedList<Integer> possible_dates = new LinkedList<Integer>();
-    	
-    	for (int i = 0; i < spread; i++) 
-    	{
-			if (days[firstDate+interval-i] && (firstDate+interval-i)%7!=0 && (firstDate+interval-i)>=firstDate && (firstDate+interval-i)<= days.length) {
-				possible_dates.add(firstDate+interval-i);
-			}
-			if (days[firstDate+interval+i] && (firstDate+interval+i)%7!=0 && (firstDate+interval+i)>=firstDate && (firstDate+interval+i)<= days.length) {
-				possible_dates.add(firstDate+interval+i);
-			}
-			if (possible_dates.size()>=maxOffers) {
-				break;
-			}
-		}
-    	if (possible_dates.size()==0) 
-    	{
-			System.out.println("Es gibt keine Termine, die in das Streufeld fallen.");
-		}
-    	for (int i = 0; i < possible_dates.size(); i++) {
-			System.out.println("Der Tag: "+possible_dates.get(i)+" ist frei: "+days[possible_dates.get(i)]);
-		}
-    	
-    	
-    	if (possible_dates.get(0)!=null) 
-    	{
-    		return possible_dates.get(0);
-		}
-    	else 
-		{
-    		return 0;
-		}
-    }
-
-	@Override
-	public void testFunctionTwo() {
-		// TODO Auto-generated method stub
-		
 	}
 
+	public List<CalendarEntryModel> getAvailableAppointments(int firstDate, int interval, int spread, int maxOffers,
+			int appointmentDuration, int travelTime, int institutionOpen, int institutionClose) {
+		List<CalendarEntryModel> possibleCalendarEntrys = new ArrayList<CalendarEntryModel>();
+		var planetAppointmentDay = firstDate + interval;
+		var freeTime = 0;
+		var freeTime1 = 0;
+		int hoursBeforOpen = ((int) Math.ceil(travelTime / 60)) + 1;
+		appointmentDuration +=  15 - appointmentDuration%15 ;
 
-    
+		for (int day = 0; day < spread; day++) {
+			freeTime = 0;
+			freeTime1 = 0;
+
+			for (int hour = institutionOpen - hoursBeforOpen; hour < institutionClose; hour++) 
+			{
+				for (int min = 0; min < 60; min++) 
+				{
+					if (hour < institutionOpen && min < 60 - ((int) Math.ceil(travelTime % 60))) 
+					{
+						min = 60 - (int) (travelTime % 60);
+					}
+
+					if (allEntries.getSpecificDate(planetAppointmentDay + day, hour, min) == null
+							&& freeTime <= appointmentDuration + travelTime) 
+					{
+						freeTime++;
+						if (freeTime > appointmentDuration + travelTime) 
+						{
+							maxOffers--;
+							if (maxOffers >= 0)
+								prepareAppointment(appointmentDuration, travelTime, planetAppointmentDay + day, hour,
+										min);
+
+							freeTime = 0;
+						}
+					} else 
+					{
+						freeTime = 0;
+					}
+					if (allEntries.getSpecificDate(planetAppointmentDay - day, hour, min) == null
+							&& freeTime1 <= appointmentDuration + travelTime && day != 0) {
+						freeTime1++;
+						if (freeTime1 > appointmentDuration + travelTime) 
+						{
+							maxOffers--;
+							if (maxOffers >= 0)
+								possibleCalendarEntrys.add(prepareAppointment(appointmentDuration, travelTime,
+										planetAppointmentDay - day, hour, min));
+							freeTime1 = 0;
+						}
+					} else {
+						freeTime1 = 0;
+					}
+				}
+			}
+		}	
+		return possibleCalendarEntrys;
+	}
+
+	private CalendarEntryModel prepareAppointment(int appointmentDuration, int travelTime, int day, int hour, int min) {
+		int minAppointment = 0;
+		int minAppointmentTravel = 0;
+		
+		if ((min - (int) (appointmentDuration % 60)) < 0) 
+		{
+			if (min - (int) ((appointmentDuration + travelTime) % 60) < 0) 
+			{
+				minAppointment = min + 60 - (int) (appointmentDuration % 60);
+				minAppointmentTravel = min + 60 - (int) ((appointmentDuration + travelTime) % 60);
+			} else 
+			{
+				minAppointment = min + 60 - (int) (appointmentDuration % 60);
+				minAppointmentTravel = min - (int) ((appointmentDuration + travelTime) % 60);
+			}
+
+		} else 
+		{
+			if (min - (int) ((appointmentDuration + travelTime) % 60) < 0) 
+			{
+				minAppointment = min - (int) (appointmentDuration % 60);
+				minAppointmentTravel = min + 60 - (int) ((appointmentDuration + travelTime) % 60);
+
+			} else 
+			{
+				minAppointment = min - (int) (appointmentDuration % 60);
+				minAppointmentTravel = min - (int) ((appointmentDuration + travelTime) % 60);
+			}
+		}
+		
+		GregorianCalendar gregorianCalendar = new GregorianCalendar();
+		gregorianCalendar.set(Calendar.DAY_OF_YEAR, day);
+		var month = gregorianCalendar.get(Calendar.MONTH);
+		var dayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_MONTH);
+		var hourStart = hour - (int) Math.ceil((appointmentDuration + travelTime) / 60);
+
+		return (CalendarEntryModel) administrateEntries.createDefinedEntry(new int[] { 2021, month, dayOfMonth },
+				new int[] { 2021, month, dayOfMonth }, new int[] { hourStart, minAppointmentTravel },
+				new int[] { hour, min }, "Vorschlag", travelTime);
+
+//				System.out.println(
+//				String.format("Der Terminvorschlag ist am %s von %s bis %s und die Anreise beginnt um %s", day,
+//						String.format("%s:%s", hour - (int) Math.ceil(appointmentDuration / 60), minAppointment),
+//						String.format("%s:%s", hour, min),
+//						String.format("%s:%s", hour - (int) Math.ceil((appointmentDuration + travelTime) / 60), minAppointmentTravel)));
+
+	}
 }

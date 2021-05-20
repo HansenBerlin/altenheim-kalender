@@ -9,9 +9,11 @@ public class CalendarEntryModel implements ICalendarEntryModel
     private GregorianCalendar startDate;
     private GregorianCalendar endDate;
     private String appointmentEntryName;
+    private int travelTime;
 
-    public CalendarEntryModel()
+    public CalendarEntryModel(int travelTime)
     {
+    	this.travelTime = travelTime;
     }
 
     public CalendarEntryModel(GregorianCalendar startDate2, GregorianCalendar endDate2, String appointmentEntryName)
@@ -20,6 +22,7 @@ public class CalendarEntryModel implements ICalendarEntryModel
         this.endDate = endDate2;
         this.appointmentEntryName = appointmentEntryName;
     }
+
 
     public void resetDates(GregorianCalendar startDate, GregorianCalendar endDate)
     {
