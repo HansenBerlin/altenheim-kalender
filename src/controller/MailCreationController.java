@@ -2,10 +2,13 @@
 
 import java.awt.*;
 import java.net.*;
+
+import interfaces.IMailCreationController;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class MailCreationController 
+public class MailCreationController implements IMailCreationController
 {
     private String recipient;
     private String subject;
