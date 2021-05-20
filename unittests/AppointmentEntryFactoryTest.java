@@ -1,14 +1,41 @@
 ﻿import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import controller.AppointmentEntryFactory;
 import java.util.Calendar;
 
-public class TestClass 
+public class AppointmentEntryFactoryTest 
 {
     @Test
-    void testBaseCase() 
+    void createEntries_twoArrays_arraysShouldDiffer()
+    {
+        var appointmentFactory = new AppointmentEntryFactory();
+        var arrayOne = appointmentFactory.createEntrys();
+        var arrayTwo = appointmentFactory.createEntrys();
+
+        Assert.assertNotEquals(arrayOne, arrayTwo);        
+    }
+
+    @Test
+    void createEntries_noParams_arrayShouldNotContainNullObjects()
+    {
+        boolean isNull = false;
+        var appointmentFactory = new AppointmentEntryFactory();
+        var arrayOne = appointmentFactory.createEntrys();
+
+        for (var entry : arrayOne) 
+        {
+            if (entry == null)
+                isNull = true;            
+        }
+
+        Assert.assertFalse(isNull);    
+    }
+
+    @Test
+    void createDefinedEntry_standardDates_accordingDatesInDateObjects() 
     {
         var appointmentFactory = new AppointmentEntryFactory();
         var result = appointmentFactory.createDefinedEntry(new int[]{2000,1,1}, 
