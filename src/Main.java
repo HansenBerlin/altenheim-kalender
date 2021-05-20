@@ -89,8 +89,8 @@ public class Main extends Application
         var mailTest = new MailCreationController("testmail@test.de", "Arzttermin", 
             "Ich brauche einen Termin am ... um ...\nMit freundlichem Gruß");
         mailTest.sendMail();
-           var testOpeningApi = new OpeningHoursTestView();
-           testOpeningApi.userInputSearchQuery();
+        var testOpeningApi = new OpeningHoursTestView();
+        testOpeningApi.userInputSearchQuery();
         userInteraction.askForUserInputInLoop(); 
         var testWayApi = new WayFinding();
         testWayApi.userInputSearchQuery();

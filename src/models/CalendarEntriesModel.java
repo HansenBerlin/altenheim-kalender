@@ -25,9 +25,9 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
         return year;
     }    
 
-    public ICalendarEntryModel getSpecificDate(int month, int day, int hour, int minute)
+    public ICalendarEntryModel getSpecificDate(int day, int hour, int minute)
     {
-        return year[(month-1)*day][hour][minute];
+        return year[day][hour][minute];
     }
 
     public void saveDate(ICalendarEntryModel newEntry)
