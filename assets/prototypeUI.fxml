@@ -38,7 +38,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Text>
-                              <DatePicker prefWidth="195.0" />
+                              <DatePicker fx:id="datePickerStartDate" onAction="#datePickerChange" prefWidth="195.0" />
                            </children>
                            <HBox.margin>
                               <Insets top="20.0" />
@@ -51,7 +51,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Text>
-                              <DatePicker prefWidth="195.0" />
+                              <DatePicker fx:id="datePickerEndDate" onAction="#datePickerChange" prefWidth="195.0" />
                            </children>
                            <HBox.margin>
                               <Insets top="20.0" />
@@ -59,12 +59,12 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <TextField promptText="Empfänger">
+                  <TextField fx:id="textFieldRecipient" promptText="Empfänger">
                      <VBox.margin>
                         <Insets bottom="10.0" left="20.0" right="20.0" />
                      </VBox.margin>
                   </TextField>
-                  <TextField promptText="Betreff">
+                  <TextField fx:id="textFieldSubject" promptText="Betreff">
                      <VBox.margin>
                         <Insets left="20.0" right="20.0" />
                      </VBox.margin>
@@ -77,12 +77,12 @@
                                  <children>
                                     <HBox alignment="TOP_CENTER" prefHeight="186.0" prefWidth="430.0">
                                        <children>
-                                          <Button mnemonicParsing="false" prefHeight="140.0" prefWidth="125.0" text="Template 1 laden">
+                                          <Button fx:id="buttonTemplateOne" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="140.0" prefWidth="125.0" text="Template 1 laden">
                                              <HBox.margin>
                                                 <Insets top="20.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Button mnemonicParsing="false" prefHeight="140.0" prefWidth="125.0" text="Template 2 laden">
+                                          <Button fx:id="buttonTemplateTwo" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="140.0" prefWidth="125.0" text="Template 2 laden">
                                              <HBox.margin>
                                                 <Insets left="20.0" top="20.0" />
                                              </HBox.margin>
@@ -97,7 +97,7 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea prefHeight="200.0" prefWidth="460.0" promptText="Mailtext " />
+                                    <TextArea fx:id="textAreaMailBody" prefHeight="200.0" prefWidth="460.0" promptText="Mailtext " />
                                  </children>
                               </AnchorPane>
                         </content>
@@ -107,7 +107,7 @@
                         <Insets left="20.0" right="20.0" top="10.0" />
                      </VBox.margin>
                   </Accordion>
-                  <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="430.0" text="MAIL VERSENDEN">
+                  <Button mnemonicParsing="false" onAction="#buttonClicked" prefHeight="100.0" prefWidth="430.0" text="MAIL VERSENDEN">
                      <VBox.margin>
                         <Insets top="30.0" />
                      </VBox.margin>
@@ -135,24 +135,24 @@
                               <Insets bottom="20.0" top="2.0" />
                            </VBox.margin>
                         </VBox>
-                        <TextField promptText="Startort (Ort, Straße, Land)">
+                        <TextField fx:id="textFieldStartLocation" promptText="Startort (Ort, Straße, Land)">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" />
                            </VBox.margin>
                         </TextField>
-                        <TextField promptText="Startort (Ort, Straße, Land)">
+                        <TextField fx:id="textFieldDestination" promptText="Zielort (Ort, Straße, Land)">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" top="10.0" />
                            </VBox.margin>
                         </TextField>
                         <HBox alignment="TOP_CENTER">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" text="Öffnungszeiten anzeigen">
+                              <Button fx:id="buttonShowOpeningHours" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="30.0" prefWidth="200.0" text="Öffnungszeiten anzeigen">
                                  <HBox.margin>
                                     <Insets right="30.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" text="Fahrtdauer anzeigen" />
+                              <Button fx:id="buttonShowDurationToDestination" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="30.0" prefWidth="200.0" text="Fahrtdauer anzeigen" />
                            </children>
                            <VBox.margin>
                               <Insets top="20.0" />
@@ -163,7 +163,7 @@
                               <AnchorPane prefHeight="200.0" prefWidth="145.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Öffnungszeiten 1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                    <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Montag 12-14" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+                                    <Text fx:id="textOpeningHoursStartLocation" layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Montag 12-14" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
                                        <font>
                                           <Font size="10.0" />
                                        </font>
@@ -173,7 +173,7 @@
                               <AnchorPane prefHeight="200.0" prefWidth="145.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Öffnungszweiten 2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                    <Text layoutX="20.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Montag 12-14" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+                                    <Text fx:id="textOpeningHoursDestination" layoutX="20.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Montag 12-14" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
                                        <font>
                                           <Font size="10.0" />
                                        </font>
@@ -183,7 +183,7 @@
                               <AnchorPane prefHeight="200.0" prefWidth="145.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fahrtzeit" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                    <Text layoutX="20.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="33 Minuten" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+                                    <Text fx:id="textDurationToDestination" layoutX="20.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="33 Minuten" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
                                        <font>
                                           <Font size="10.0" />
                                        </font>
@@ -216,22 +216,22 @@
                               <Insets left="20.0" right="20.0" top="20.0" />
                            </VBox.margin>
                            <children>
-                              <TextField promptText="Suche ab Tag">
+                              <TextField fx:id="textFieldSearchFromDay" promptText="Suche ab Tag">
                                  <HBox.margin>
                                     <Insets right="5.0" />
                                  </HBox.margin>
                               </TextField>
-                              <TextField promptText="Intervall">
+                              <TextField fx:id="textFieldInterval" promptText="Intervall">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin>
                               </TextField>
-                              <TextField promptText="Abweichung">
+                              <TextField fx:id="textFieldTolerance" promptText="Abweichung">
                                  <HBox.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin>
                               </TextField>
-                              <TextField promptText="Anzeige Anzahl">
+                              <TextField fx:id="textFieldAvailableDatesCount" promptText="Anzeige Anzahl">
                                  <HBox.margin>
                                     <Insets left="5.0" />
                                  </HBox.margin>
@@ -240,12 +240,12 @@
                         </HBox>
                         <HBox>
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Zeige freie Termine">
+                              <Button fx:id="buttonShowAvaliableDates" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="30.0" prefWidth="210.0" text="Zeige freie Termine">
                                  <HBox.margin>
                                     <Insets right="30.0" />
                                  </HBox.margin>
                               </Button>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tag 1, 4, 6">
+                              <Text fx:id="textAvailableDates" strokeType="OUTSIDE" strokeWidth="0.0" text="Tag 1, 4, 6">
                                  <HBox.margin>
                                     <Insets top="5.0" />
                                  </HBox.margin>
@@ -274,7 +274,7 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </Text>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" text="ÖFFNEN">
+                        <Button fx:id="buttonOpenCalendar" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="30.0" prefWidth="200.0" text="ÖFFNEN">
                            <VBox.margin>
                               <Insets bottom="20.0" top="20.0" />
                            </VBox.margin>
