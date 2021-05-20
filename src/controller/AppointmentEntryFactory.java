@@ -83,13 +83,13 @@ public class AppointmentEntryFactory implements IAppointmentEntryFactory
 
 
     public ICalendarEntryModel createDefinedEntry(int[] startDate, int[] endDate, int[] startTime, 
-        int[] endTime, String entryName) 
+        int[] endTime, String entryName, int travelTime) 
     {
         if (startDate.length != 3 || endDate.length != 3 || startTime.length != 2 || endTime.length != 2)
             return null;
         var startAppointment = new GregorianCalendar(startDate[0], startDate[1]-1, startDate[2], startTime[0], startTime[1]);
         var endAppointment = new GregorianCalendar(endDate[0], endDate[1]-1, endDate[2], endTime[0], endTime[1]);
-        ICalendarEntryModel newEntry = new CalendarEntryModel();
+        ICalendarEntryModel newEntry = new CalendarEntryModel(travelTime);
         newEntry.resetDates(startAppointment, endAppointment);
         newEntry.resetAppointmentEntryName(entryName);
         return newEntry;

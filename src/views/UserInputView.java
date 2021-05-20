@@ -17,16 +17,16 @@ public class UserInputView
     public void askForUserInputInLoop()
     {
     	
-		int firstDate = 20;
-		int interval = 60;
-		int spread = 3;
+		int firstDate = 5;
+		int interval = 0;
+		int spread = 4;
 		int maxOffers = 4;
 		int appointmentDuration = 147;
 		int travelTime = 38;
 		int institutionOpen = 11;
 		int institutionClose = 17;
-        System.out.println(suggestion.testFunction(firstDate, interval, spread, maxOffers, appointmentDuration, travelTime, institutionOpen, institutionClose));
-        suggestion.testFunctionTwo();
+        System.out.println(suggestion.getAvailableAppointments(firstDate, interval, spread, maxOffers, appointmentDuration, travelTime, institutionOpen, institutionClose).size());
+        
 //        System.out.println(suggestion.testFunction());
 
         // starte hier die Logik für den Input
