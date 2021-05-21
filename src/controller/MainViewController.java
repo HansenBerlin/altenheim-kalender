@@ -3,6 +3,8 @@
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.Date;
+import java.util.List;
+
 import interfaces.IAppointmentEntryFactory;
 import interfaces.IAppointmentSuggestionController;
 import interfaces.ICalendarEntriesModel;
@@ -16,6 +18,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import models.CalendarEntriesModel;
+import models.CalendarEntryModel;
 import views.MainCalendarView;
 
 public class MainViewController 
@@ -25,6 +28,7 @@ public class MainViewController
     private IAppointmentSuggestionController suggestion;
     private IMailCreationController mailController;
     private IGoogleAPIController googleApis;
+    private List<CalendarEntryModel> suggestions;
 
     @FXML
     private DatePicker datePickerStartDate;
@@ -76,14 +80,12 @@ public class MainViewController
             var timeToDestination = googleApis.searchForDestinationDistance(
                 textFieldStartLocation.getText(), textFieldDestination.getText());
             int timeInMinutes = (timeToDestination[0] - timeToDestination[0]%60)/60;
-            textDurationToDestination.setText(String.valueOf(timeInMinutes) + " min");
+            textDurationToDestination.setText(String.valueOf(timeInMinutes));
         }
         else if (button.equals(buttonShowAvaliableDates))
             checkAvaliableDates();
         else if (button.equals(buttonOpenCalendar))
             openCalendar();
-        
-
     }   
 
     private void sendMail(int useTemplateNumber) throws IOException, URISyntaxException
@@ -99,13 +101,20 @@ public class MainViewController
 
     private void checkAvaliableDates()
     {
+        int fromDay = Integer.parseInt(textFieldSearchFromDay.getText());
+        int interval = Integer.parseInt(textFieldInterval.getText());
+        int tolerance = Integer.parseInt(textFieldTolerance.getText());
+        int count = Integer.parseInt(textFieldAvailableDatesCount.getText());
+        int duration = Integer.parseInt(textDurationToDestination.getText());
+        suggestions = suggestion.getAvailableAppointments(fromDay, interval, tolerance, count, 60, duration, 8, 20);
+        //suggestions = suggestion.getAvailableAppointments(10, 10, 4, 50, 60, 30, 8, 18);
 
     }
 
     private void openCalendar()
     {
         var calendar = new MainCalendarView();
-        calendar.startCalendar();
+        calendar.startCalendar(suggestions);
     }
 
 }
