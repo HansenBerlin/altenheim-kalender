@@ -15,8 +15,7 @@ public class Main extends Application
         Parent root = FXMLLoader.load(getClass().getResource("prototypeUI.fxml"));
         primaryStage.setScene(new Scene(root));    
         primaryStage.setTitle("Kalender Prototype"); 
-        primaryStage.show(); 
-        
+        primaryStage.show();         
     }
     
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException
