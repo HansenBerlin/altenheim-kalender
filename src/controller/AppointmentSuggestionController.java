@@ -35,6 +35,7 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 
 			for (int hour = institutionOpen - hoursBeforOpen; hour < institutionClose; hour++) 
 			{
+				
 				for (int min = 0; min < 60; min++) 
 				{
 					if (hour < institutionOpen && min < 60 - ((int) Math.ceil(travelTime % 60))) 
@@ -49,11 +50,16 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 						if (freeTime > appointmentDuration + travelTime) 
 						{
 							maxOffers--;
-							if (maxOffers >= 0)
-								prepareAppointment(appointmentDuration, travelTime, planetAppointmentDay + day, hour,
-										min);
+							if (maxOffers >= 0) {
+								possibleCalendarEntrys.add(prepareAppointment(appointmentDuration, travelTime, planetAppointmentDay + day, hour,
+										min));
+								
+								freeTime = 0;
+							}else {
+								break;
+							}
 
-							freeTime = 0;
+							
 						}
 					} else 
 					{
@@ -65,10 +71,13 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 						if (freeTime1 > appointmentDuration + travelTime) 
 						{
 							maxOffers--;
-							if (maxOffers >= 0)
+							if (maxOffers >= 0) {
 								possibleCalendarEntrys.add(prepareAppointment(appointmentDuration, travelTime,
 										planetAppointmentDay - day, hour, min));
-							freeTime1 = 0;
+								freeTime1 = 0;
+							}else {
+								break;
+							}
 						}
 					} else {
 						freeTime1 = 0;
@@ -113,17 +122,19 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 		gregorianCalendar.set(Calendar.DAY_OF_YEAR, day);
 		var month = gregorianCalendar.get(Calendar.MONTH);
 		var dayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_MONTH);
-		var hourStart = hour - (int) Math.ceil((appointmentDuration + travelTime) / 60);
-
+		int hourStart = hour - (int) Math.ceil((appointmentDuration + travelTime-min) / (double)60);
+		
+//		System.out.println(
+//				String.format("Der Terminvorschlag ist am %s von %s bis %s und die Anreise beginnt um %s", day,
+//						String.format("%s:%s", (int)(hour - (int) Math.ceil((appointmentDuration -min)/ (double)60)), minAppointment),
+//						String.format("%s:%s", hour, min),
+//						String.format("%s:%s", (int)(hour -  Math.ceil((appointmentDuration + travelTime -min) / (double)60)), minAppointmentTravel)));
+//		System.out.println();
 		return (CalendarEntryModel) administrateEntries.createDefinedEntry(new int[] { 2021, month+1, dayOfMonth },
 				new int[] { 2021, month+1, dayOfMonth }, new int[] { hourStart, minAppointmentTravel },
 				new int[] { hour, min }, "Vorschlag", travelTime);
 
-//				System.out.println(
-//				String.format("Der Terminvorschlag ist am %s von %s bis %s und die Anreise beginnt um %s", day,
-//						String.format("%s:%s", hour - (int) Math.ceil(appointmentDuration / 60), minAppointment),
-//						String.format("%s:%s", hour, min),
-//						String.format("%s:%s", hour - (int) Math.ceil((appointmentDuration + travelTime) / 60), minAppointmentTravel)));
+				
 
 	}
 }
