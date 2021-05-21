@@ -1,7 +1,6 @@
 ﻿package models;
 
 import java.util.GregorianCalendar;
-
 import interfaces.ICalendarEntryModel;
 
 public class CalendarEntryModel implements ICalendarEntryModel
