@@ -8,6 +8,7 @@ import java.util.List;
 import interfaces.IAppointmentEntryFactory;
 import interfaces.IAppointmentSuggestionController;
 import interfaces.ICalendarEntriesModel;
+import interfaces.ICalendarEntryModel;
 import interfaces.IGoogleAPIController;
 import interfaces.IMailCreationController;
 import javafx.event.ActionEvent;
@@ -29,6 +30,7 @@ public class MainViewController
     private IMailCreationController mailController;
     private IGoogleAPIController googleApis;
     private List<CalendarEntryModel> suggestions;
+    private ICalendarEntryModel[] dummys;
 
     @FXML
     private DatePicker datePickerStartDate;
@@ -53,6 +55,7 @@ public class MainViewController
         googleApis = new GoogleAPIController();
         mailController = new MailCreationController();
         entryFactory = new AppointmentEntryFactory();
+        dummys = entryFactory.getDummyEntries();
         savedEntries = new CalendarEntriesModel(entryFactory);
         suggestion = new AppointmentSuggestionController(savedEntries, entryFactory); 
     }  
@@ -114,7 +117,7 @@ public class MainViewController
     private void openCalendar()
     {
         var calendar = new MainCalendarView();
-        calendar.startCalendar(suggestions);
+        calendar.startCalendar(suggestions, dummys);
     }
 
 }

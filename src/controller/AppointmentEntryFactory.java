@@ -10,9 +10,16 @@ import models.CalendarEntryModel;
 
 public class AppointmentEntryFactory implements IAppointmentEntryFactory
 {    
+    private ICalendarEntryModel[] dummyEntries;
     
     public AppointmentEntryFactory()
     {
+        this.dummyEntries = createEntrys();
+    }
+
+    public ICalendarEntryModel[] getDummyEntries()
+    {
+        return dummyEntries;
     }
 
 
@@ -20,7 +27,7 @@ public class AppointmentEntryFactory implements IAppointmentEntryFactory
     {
         var year = new ICalendarEntryModel[365][24][60];
 
-        var createdEntries = createEntrys();
+        var createdEntries = dummyEntries;
         for (var entry : createdEntries) 
         {
             int startHours = entry.getStartDate().get(Calendar.HOUR_OF_DAY);

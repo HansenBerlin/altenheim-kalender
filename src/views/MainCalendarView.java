@@ -9,6 +9,7 @@ import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.CalendarView;
 import controller.AppointmentEntryFactory;
+import interfaces.ICalendarEntryModel;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -16,17 +17,14 @@ import models.CalendarEntryModel;
 
 public class MainCalendarView 
 {
-    public void startCalendar(List<CalendarEntryModel> suggestions)
+    public void startCalendar(List<CalendarEntryModel> suggestions, ICalendarEntryModel[] dummys)
     {
         var stage = new Stage();
         var calendarView = new CalendarView();
         var dummyEntries = new Calendar("Dummys");
-        var smartAppointments = new Calendar("Smart Appointments");
+        var smartAppointments = new Calendar("Smart Appointments");      
 
-        var createDummys = new AppointmentEntryFactory();
-        var listEntrys = createDummys.createEntrys();
-
-        for (CalendarEntryModel entry : listEntrys) 
+        for (ICalendarEntryModel entry : dummys) 
         {
             var newEntry = new Entry<>();
             newEntry.changeStartDate(entry.getStartDate().toZonedDateTime().toLocalDate());
