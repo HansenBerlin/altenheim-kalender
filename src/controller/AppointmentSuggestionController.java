@@ -129,7 +129,7 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 //						String.format("%s:%s", (int)(hour - (int) Math.ceil((appointmentDuration -min)/ (double)60)), minAppointment),
 //						String.format("%s:%s", hour, min),
 //						String.format("%s:%s", (int)(hour -  Math.ceil((appointmentDuration + travelTime -min) / (double)60)), minAppointmentTravel)));
-//		System.out.println();
+
 		return (CalendarEntryModel) administrateEntries.createDefinedEntry(new int[] { 2021, month+1, dayOfMonth },
 				new int[] { 2021, month+1, dayOfMonth }, new int[] { hourStart, minAppointmentTravel },
 				new int[] { hour, min }, "Vorschlag", travelTime);
