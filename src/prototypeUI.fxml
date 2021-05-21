@@ -258,16 +258,11 @@
                         </HBox>
                         <HBox>
                            <children>
-                              <Button fx:id="buttonShowAvaliableDates" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="30.0" prefWidth="210.0" text="Zeige freie Termine">
+                              <Button fx:id="buttonShowAvaliableDates" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="30.0" prefWidth="450.0" text="Errechne freie Termine">
                                  <HBox.margin>
-                                    <Insets right="30.0" />
+                                    <Insets right="20.0" />
                                  </HBox.margin>
                               </Button>
-                              <Text fx:id="textAvailableDates" strokeType="OUTSIDE" strokeWidth="0.0" text="Tag 1, 4, 6">
-                                 <HBox.margin>
-                                    <Insets top="5.0" />
-                                 </HBox.margin>
-                              </Text>
                            </children>
                            <VBox.margin>
                               <Insets bottom="20.0" top="20.0" />

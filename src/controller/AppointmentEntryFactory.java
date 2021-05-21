@@ -7,9 +7,10 @@ import interfaces.IAppointmentEntryFactory;
 import interfaces.ICalendarEntryModel;
 import models.CalendarEntryModel;
 
+
 public class AppointmentEntryFactory implements IAppointmentEntryFactory
 {    
-
+    
     public AppointmentEntryFactory()
     {
     }

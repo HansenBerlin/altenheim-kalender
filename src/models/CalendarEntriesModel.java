@@ -27,7 +27,14 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
 
     public ICalendarEntryModel getSpecificDate(int day, int hour, int minute)
     {
-        return year[day][hour][minute];
+        try 
+        {            
+            return year[day][hour][minute];
+        } 
+        catch (Exception e) 
+        {
+            return null;    
+        }
     }
 
     public void saveDate(ICalendarEntryModel newEntry)
