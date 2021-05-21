@@ -115,8 +115,8 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 		var dayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_MONTH);
 		var hourStart = hour - (int) Math.ceil((appointmentDuration + travelTime) / 60);
 
-		return (CalendarEntryModel) administrateEntries.createDefinedEntry(new int[] { 2021, month, dayOfMonth },
-				new int[] { 2021, month, dayOfMonth }, new int[] { hourStart, minAppointmentTravel },
+		return (CalendarEntryModel) administrateEntries.createDefinedEntry(new int[] { 2021, month+1, dayOfMonth },
+				new int[] { 2021, month+1, dayOfMonth }, new int[] { hourStart, minAppointmentTravel },
 				new int[] { hour, min }, "Vorschlag", travelTime);
 
 //				System.out.println(
