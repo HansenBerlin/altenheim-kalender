@@ -1,4 +1,6 @@
-# Welcome to Altenheim
+[![Java CI with Maven](https://github.com/HansenBerlin/altenheim-kalender/actions/workflows/maven.yml/badge.svg)](https://github.com/HansenBerlin/altenheim-kalender/actions/workflows/maven.yml)
+
+# Welcome to Altenheim-Kalender
 
 * [Coding best practices](#coding-best-practices) 
 * [Projektmanagement](#projektmanagement)
