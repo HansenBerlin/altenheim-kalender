@@ -5,6 +5,7 @@
 * [Coding best practices](#coding-best-practices) 
 * [Projektmanagement](#projektmanagement)
 * [Testing](#testing)
+* [Automatiierung]
 
 ## Coding best practices
 Hier ne kurze Zusammenfassung was mir grad so zu Java einfällt und woran wir uns als Übung halten sollten.
