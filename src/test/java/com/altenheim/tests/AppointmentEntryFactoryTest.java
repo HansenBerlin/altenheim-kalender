@@ -31,7 +31,7 @@ public class AppointmentEntryFactoryTest
             if (entry == null)
                 isNull = true;            
         }
-
+        isNull = true;
         Assertions.assertFalse(isNull);    
     }
 
@@ -46,7 +46,7 @@ public class AppointmentEntryFactoryTest
     {
         var appointmentFactory = new AppointmentEntryFactory();
         var result = appointmentFactory.createDefinedEntry(new int[]{2000,1,1}, 
-            new int[]{2000,1,1}, new int[]{10,00},new int[]{12,00}, "test", 0);
+            new int[]{2000,10,1}, new int[]{10,00},new int[]{12,00}, "test", 0);
         
         Assertions.assertAll(            
                         () -> assertEquals("test", result.getAppointmentEntryName()),
