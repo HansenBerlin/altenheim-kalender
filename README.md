@@ -1,7 +1,6 @@
 ![Build and Test](https://github.com/HansenBerlin/altenheim-kalender/workflows/Build%20and%20Unit%20Tests/badge.svg) 
 ![Linter](https://github.com/HansenBerlin/altenheim-kalender/workflows/Lint%20Code%20Base/badge.svg) 
-![Code Inspector](https://www.code-inspector.com/project/22906/score/svg) 
-![Code](https://github.com/HansenBerlin/altenheim-kalender/workflows/Code%20Quality/badge.svg)
+[![CodeFactor](https://www.codefactor.io/repository/github/hansenberlin/altenheim-kalender/badge?s=5bd89400cabda15caf2b73c36cb34c22492ee272)](https://www.codefactor.io/repository/github/hansenberlin/altenheim-kalender)
 
 # Welcome to Altenheim-Kalender
 
