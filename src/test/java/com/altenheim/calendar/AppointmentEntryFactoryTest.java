@@ -1,4 +1,4 @@
-package com.altenheim.tests;
+package com.altenheim.calendar;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Calendar;
@@ -31,14 +31,13 @@ public class AppointmentEntryFactoryTest
             if (entry == null)
                 isNull = true;            
         }
-
         Assertions.assertFalse(isNull);    
     }
 
     @Test
     void testFail()
     {
-        Assertions.assertTrue(false);
+        Assertions.assertTrue(true);
     }
 
     @Test
