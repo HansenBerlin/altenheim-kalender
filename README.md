@@ -1,5 +1,4 @@
-![Build and Test](https://github.com/HansenBerlin/altenheim-kalender/workflows/Build%20and%20Unit%20Tests/badge.svg) 
-[![CodeFactor](https://www.codefactor.io/repository/github/hansenberlin/altenheim-kalender/badge?s=5bd89400cabda15caf2b73c36cb34c22492ee272)](https://www.codefactor.io/repository/github/hansenberlin/altenheim-kalender)
+[![Build and Unit Tests](https://github.com/HansenBerlin/altenheim-kalender/actions/workflows/maven.yml/badge.svg?branch=development)](https://github.com/HansenBerlin/altenheim-kalender/actions/workflows/maven.yml) [![CodeFactor](https://www.codefactor.io/repository/github/hansenberlin/altenheim-kalender/badge?s=5bd89400cabda15caf2b73c36cb34c22492ee272)](https://www.codefactor.io/repository/github/hansenberlin/altenheim-kalender)
 
 # Welcome to Altenheim-Kalender
 
