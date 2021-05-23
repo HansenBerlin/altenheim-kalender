@@ -9,7 +9,7 @@ import com.altenheim.calendar.models.CalendarEntryModel;
 
 public class AppointmentEntryFactory implements IAppointmentEntryFactory
 {    
-    private ICalendarEntryModel[] dummyEntries;
+    private final ICalendarEntryModel[] dummyEntries;
     
     public AppointmentEntryFactory()
     {
