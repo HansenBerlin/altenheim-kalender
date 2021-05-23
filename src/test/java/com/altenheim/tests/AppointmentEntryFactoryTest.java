@@ -38,7 +38,7 @@ public class AppointmentEntryFactoryTest
     @Test
     void testFail()
     {
-        Assertions.assertTrue(true);
+        Assertions.assertTrue(false);
     }
 
     @Test
