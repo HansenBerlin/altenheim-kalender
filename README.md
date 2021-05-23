@@ -1,4 +1,4 @@
-[![JUnit](https://github.com/HansenBerlin/altenheim-kalender/actions/workflows/maven.yml/badge.svg)](https://github.com/HansenBerlin/altenheim-kalender/actions/workflows/maven.yml) ![Linter](https://github.com/HansenBerlin/altenheim-kalender/workflows/Linter/badge.svg) ![Score](https://www.code-inspector.com/project/22906/score/svg)
+![Build & Unit Tests](https://github.com/HansenBerlin/altenheim-kalender/actions/workflows/maven.yml/badge.svg) ![Linter](https://github.com/HansenBerlin/altenheim-kalender/workflows/Linter/badge.svg) ![Code Inspector](https://www.code-inspector.com/project/22906/score/svg)
 
 # Welcome to Altenheim-Kalender
 
