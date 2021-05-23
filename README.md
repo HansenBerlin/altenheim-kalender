@@ -8,6 +8,7 @@
 * [Coding best practices](#coding-best-practices) 
 * [Projektmanagement](#projektmanagement)
 * [Testing](#testing)
+* [Continous Integration](#continous-integration)
 
 ## Coding best practices
 Hier ne kurze Zusammenfassung was mir grad so zu Java einfällt und woran wir uns als Übung halten sollten.
@@ -92,3 +93,6 @@ Können wir im Rahmen eines kleinen Projektes sicherlich nicht in Gänze abdecke
 * Integrationstests: lassen wir aus
 * Selenium und UI Tests: können wir auch auslassen
 * manuelles Usertesting: machen wir selber, können aber vor Abgabe aber auch mal den Großmuttertest machen
+
+## Continous Integration
+---
