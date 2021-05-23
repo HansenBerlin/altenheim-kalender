@@ -13,9 +13,9 @@ import org.json.*;
 
 public class GoogleAPIController implements IGoogleAPIController
 {
-    private final String FINDPLACEQUERY= "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=%s&inputtype=textquery&fields=place_id&key=AIzaSyCjdv5ViLvdzCNTKXB2FZ-fhSkI_0OUZ9w";
-    private final String OPENINGHOURSQUERY = "https://maps.googleapis.com/maps/api/place/details/json?place_id=%s&fields=opening_hours&key=AIzaSyCjdv5ViLvdzCNTKXB2FZ-fhSkI_0OUZ9w";
-    private final String FINDDESTINATIONSQUERY= "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=AIzaSyCjdv5ViLvdzCNTKXB2FZ-fhSkI_0OUZ9w";
+    private static String FINDPLACEQUERY= "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=%s&inputtype=textquery&fields=place_id&key=AIzaSyCjdv5ViLvdzCNTKXB2FZ-fhSkI_0OUZ9w";
+    private static String OPENINGHOURSQUERY = "https://maps.googleapis.com/maps/api/place/details/json?place_id=%s&fields=opening_hours&key=AIzaSyCjdv5ViLvdzCNTKXB2FZ-fhSkI_0OUZ9w";
+    private static String FINDDESTINATIONSQUERY= "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=AIzaSyCjdv5ViLvdzCNTKXB2FZ-fhSkI_0OUZ9w";
 
     
     public String showOpeningHours(String locationSearchUserInput)
@@ -41,9 +41,9 @@ public class GoogleAPIController implements IGoogleAPIController
     public int[] searchForDestinationDistance(String startAt, String destination)
     {
         int[] returnValues = new int[2];
-        startAt = startAt.replaceAll(" ", "%20");
-        destination = destination.replaceAll(" ", "%20");
-        String searchQuery = String.format(FINDDESTINATIONSQUERY, startAt, destination);
+        var start = startAt.replaceAll(" ", "%20");
+        var end = destination.replaceAll(" ", "%20");
+        String searchQuery = String.format(FINDDESTINATIONSQUERY, start, end);
         try 
         {            
             var jsonBody = httpRequest(searchQuery);
