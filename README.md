@@ -1,6 +1,6 @@
 [![JUnit](https://github.com/HansenBerlin/altenheim-kalender/actions/workflows/maven.yml/badge.svg)](https://github.com/HansenBerlin/altenheim-kalender/actions/workflows/maven.yml)
 
-[Code Grade](https://www.code-inspector.com/project/22906/status/svg)
+[![Code Grade](https://www.code-inspector.com/project/22906/status/svg)
 
 # Welcome to Altenheim-Kalender
 
