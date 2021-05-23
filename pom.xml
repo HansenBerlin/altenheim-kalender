@@ -23,8 +23,13 @@
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.8.0-M1</version>
       <scope>test</scope>
-      <testSourceDirectory>src/test/java/com/altenheim/calendar</testSourceDirectory>
     </dependency> 
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.8.0-M1</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-controls</artifactId>
