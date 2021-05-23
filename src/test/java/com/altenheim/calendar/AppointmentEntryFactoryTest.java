@@ -1,4 +1,4 @@
-package com.altenheim.tests;
+package com.altenheim.calendar;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Calendar;
