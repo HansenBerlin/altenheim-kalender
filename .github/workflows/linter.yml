@@ -1,4 +1,4 @@
-name: Linter
+name: Lint Code Base
 
 on:
   pull_request:
