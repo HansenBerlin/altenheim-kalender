@@ -36,6 +36,12 @@ public class AppointmentEntryFactoryTest
     }
 
     @Test
+    void testFail()
+    {
+        Assertions.assertTrue(false);
+    }
+
+    @Test
     void createDefinedEntry_standardDates_accordingDatesInDateObjects() 
     {
         var appointmentFactory = new AppointmentEntryFactory();
