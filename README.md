@@ -2,6 +2,9 @@
 
 ![Code Grade](https://www.code-inspector.com/project/22906/score/svg)
 
+[![GitHub Super-Linter](https://github.com/HansenBerlin/altenheim-kalender/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
+
 # Welcome to Altenheim-Kalender
 
 * [Coding best practices](#coding-best-practices) 
