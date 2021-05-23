@@ -76,6 +76,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
+          <testSourceDirectory>src/test/java/com/altenheim/calendar</testSourceDirectory>
           <version>2.22.1</version>
         </plugin>
         <plugin>
