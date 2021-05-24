@@ -2,7 +2,7 @@
 &ensp;&ensp;&ensp;&ensp;
 ![](https://img.shields.io/badge/version-prototype-blue)  ![](https://img.shields.io/github/languages/code-size/hansenberlin/altenheim-kalender)
 &ensp;&ensp;&ensp;&ensp;
-![GitHub issues](https://img.shields.io/github/issues/hansenberlin/altenheim-kalender) ![GitHub closed issues](https://img.shields.io/github/issues-closed/hansenberlin/altenheim-kalender) ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/hansenberlin/altenheim-kalender)
+![GitHub issues](https://img.shields.io/github/issues/hansenberlin/altenheim-kalender) ![GitHub closed issues](https://img.shields.io/github/issues-closed/hansenberlin/altenheim-kalender) 
 
 # Welcome to Altenheim-Kalender
 
