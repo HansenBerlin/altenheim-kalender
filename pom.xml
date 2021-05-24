@@ -101,5 +101,12 @@
         </plugin>        
       </plugins>
     </pluginManagement>
+    <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/hansenberlin/altenheim-calendar</url>
+    </repository>
+  </distributionManagement>
   </build>
 </project>
