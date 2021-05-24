@@ -100,13 +100,13 @@
           <version>3.0.0</version>
         </plugin>        
       </plugins>
-    </pluginManagement>
-    <distributionManagement>
+    </pluginManagement>    
+  </build>
+  <distributionManagement>
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
       <url>https://maven.pkg.github.com/hansenberlin/altenheim-calendar</url>
     </repository>
   </distributionManagement>
-  </build>
 </project>
