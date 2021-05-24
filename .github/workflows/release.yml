@@ -14,6 +14,6 @@ jobs:
         with:
           java-version: '16'
       - name: Deploy
-        run: mvn -B -Pgithub deploy
+        run: mvn -B -P github deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
