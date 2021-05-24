@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-java@v2
         with:
           java-version: '16'
-      - name: Publish package
-        run: mvn -B -e -X clean deploy -DskipTests
+      - name: Deploy
+        run: mvn -B -Pgithub deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
