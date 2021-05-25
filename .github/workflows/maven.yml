@@ -21,11 +21,14 @@ jobs:
         distribution: 'adopt'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Run tests with Maven
-      run: mvn -B test --file pom.xml
+      
+    test:
+      needs: build
+      - name: Run tests with Maven
+        run: mvn -B test --file pom.xml
       
   publish-snapshot:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -33,7 +36,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 16
-      - name: Publish SNAPSHOT version to GitHub Packages (we can skip tests since we only deploy if the build workflow succeeded)
+      - name: Publish snapshot
         run: mvn -B --no-transfer-progress deploy -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
