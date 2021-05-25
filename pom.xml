@@ -9,7 +9,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <name>altenheimcalendar</name>
-  <url>http://www.t.com</url>
+  <url></url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
