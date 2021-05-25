@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>altenheim.calendar</groupId>
-  <artifactId>altenheimcalendar</artifactId>
+  <artifactId>altenheim-kalender</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>altenheimcalendar</name>
+  <name>altenheim-kalender</name>
   <url>http://www.t.com</url>
 
   <properties>
@@ -106,7 +106,7 @@
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/hansenberlin/altenheim-calendar</url>
+      <url>https://maven.pkg.github.com/hansenberlin/altenheim-kalender</url>
     </repository>
   </distributionManagement>
 </project>
