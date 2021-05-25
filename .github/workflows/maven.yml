@@ -25,7 +25,7 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Run tests with Maven
       run: mvn -B test --file pom.xml
-    - name: Decploy
-      run: mvn -B deploy --file pom.xml 
+    - name: Deploy
+      run: mvn -B --no-transfer-progress deploy
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
