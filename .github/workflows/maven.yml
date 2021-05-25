@@ -11,9 +11,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 16
@@ -25,7 +23,17 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Run tests with Maven
       run: mvn -B test --file pom.xml
-    - name: Deploy
-      run: mvn -B --no-transfer-progress deploy
-      env:
+      
+  publish-snapshot:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up settings.xml for GitHub Packages
+        uses: actions/setup-java@v1
+        with:
+          java-version: 16
+      - name: Publish SNAPSHOT version to GitHub Packages (we can skip tests since we only deploy if the build workflow succeeded)
+        run: mvn -B --no-transfer-progress deploy -DskipTests --projects cxf-spring-boot-starter
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
