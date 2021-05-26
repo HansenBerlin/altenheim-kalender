@@ -8,7 +8,5 @@ public class Main
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException 
     {
         StartJFX.main(args);   
-        // test 
-
     }
 }
