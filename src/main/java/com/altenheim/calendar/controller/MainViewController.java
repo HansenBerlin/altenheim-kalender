@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import com.altenheim.calendar.interfaces.*;
 import com.altenheim.calendar.models.*;
 import com.altenheim.calendar.views.MainCalendarView;
@@ -17,7 +16,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-
 
 public class MainViewController implements Initializable 
 {
@@ -45,17 +43,18 @@ public class MainViewController implements Initializable
 
     @FXML
     private Text textOpeningHoursStartLocation, textOpeningHoursDestination, textDurationToDestination, textAvailableDates;
+    
 
-    @FXML
-    private void initialize()
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) 
     {
         googleApis = new GoogleAPIController();
         mailController = new MailCreationController();
         entryFactory = new AppointmentEntryFactory();
         dummys = entryFactory.getDummyEntries();
         savedEntries = new CalendarEntriesModel(entryFactory);
-        suggestion = new AppointmentSuggestionController(savedEntries, entryFactory); 
-    }  
+        suggestion = new AppointmentSuggestionController(savedEntries, entryFactory);         
+    }    
     
     @FXML
     private void buttonClicked(ActionEvent event) throws IOException, URISyntaxException, InterruptedException 
@@ -106,21 +105,17 @@ public class MainViewController implements Initializable
         int tolerance = Integer.parseInt(textFieldTolerance.getText());
         int count = Integer.parseInt(textFieldAvailableDatesCount.getText());
         int duration = Integer.parseInt(textDurationToDestination.getText());
-        suggestions = suggestion.getAvailableAppointments(fromDay, interval, tolerance, count, 60, duration, 8, 20);
-        //suggestions = suggestion.getAvailableAppointments(10, 10, 4, 50, 60, 30, 8, 18);
+        //suggestions = suggestion.getAvailableAppointments(fromDay, interval, tolerance, count, 60, duration, 8, 20);
+        suggestions = suggestion.getAvailableAppointments(10, 10, 4, 50, 60, 30, 8, 18);
 
     }
 
     private void openCalendar()
     {
+        //
+        suggestions = suggestion.getAvailableAppointments(10, 10, 4, 50, 60, 30, 8, 18);
+        //
         var calendar = new MainCalendarView();
         calendar.startCalendar(suggestions, dummys);
     }
-
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO Auto-generated method stub
-        
-    }
-
 }
