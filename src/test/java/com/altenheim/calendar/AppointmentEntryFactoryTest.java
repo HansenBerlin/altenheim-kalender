@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Calendar;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import com.altenheim.calendar.controller.AppointmentEntryFactory;
 
 public class AppointmentEntryFactoryTest 
@@ -33,13 +32,7 @@ public class AppointmentEntryFactoryTest
         }
         Assertions.assertFalse(isNull);    
     }
-
-    @Test
-    void testFail()
-    {
-        Assertions.assertTrue(true);
-    }
-
+    
     @Test
     void createDefinedEntry_standardDates_accordingDatesInDateObjects() 
     {
