@@ -19,7 +19,7 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
         calendars.add(calendar);
     }
 
-    public List<Entry<String>> getSpecificDay(LocalDate startDate, LocalDate endDate)
+    public List<Entry<String>> getSpecificRange(LocalDate startDate, LocalDate endDate)
     {
         var calendar = calendars.get(0);
         var result = calendar.findEntries(startDate, endDate, ZoneId.systemDefault());

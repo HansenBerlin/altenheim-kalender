@@ -9,5 +9,5 @@ public interface ICalendarEntriesModel
 {
     public Calendar getSpecificCalendarByIndex(int index);
     public void addCalendar(Calendar calendar);
-    public List<Entry<String>> getSpecificDay(LocalDate startDate, LocalDate endDate);    
+    public List<Entry<String>> getSpecificRange(LocalDate startDate, LocalDate endDate);    
 }
