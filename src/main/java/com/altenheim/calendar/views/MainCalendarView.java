@@ -2,58 +2,28 @@ package com.altenheim.calendar.views;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.model.CalendarSource;
-import com.calendarfx.model.Entry;
 import com.calendarfx.view.CalendarView;
-import com.altenheim.calendar.interfaces.ICalendarEntryModel;
-import com.altenheim.calendar.models.CalendarEntryModel;
+
 
 public class MainCalendarView 
 {
-    public void startCalendar(List<CalendarEntryModel> suggestions, ICalendarEntryModel[] dummys)
+    public void startCalendar(Calendar dummyEntries)
     {
         var stage = new Stage();
-        var calendarView = new CalendarView();
-        var dummyEntries = new Calendar("Dummys");
-        var smartAppointments = new Calendar("Smart Appointments");      
+        var calendarView = new CalendarView();        
 
-        for (ICalendarEntryModel entry : dummys) 
-        {
-            var newEntry = new Entry<>();
-            newEntry.changeStartDate(entry.getStartDate().toZonedDateTime().toLocalDate());
-            newEntry.changeEndDate(entry.getEndDate().toZonedDateTime().toLocalDate());
-            newEntry.changeStartTime(entry.getStartDate().toZonedDateTime().toLocalTime());
-            newEntry.changeStartTime(entry.getEndDate().toZonedDateTime().toLocalTime());
-            newEntry.setTitle(entry.getAppointmentEntryName());
-            dummyEntries.addEntry(newEntry);            
-        }
-
-        for (CalendarEntryModel entry : suggestions) 
-        {            
-            var newEntry = new Entry<>();
-            newEntry.changeStartDate(entry.getStartDate().toZonedDateTime().toLocalDate());
-            newEntry.changeEndDate(entry.getEndDate().toZonedDateTime().toLocalDate());
-            newEntry.changeStartTime(entry.getStartDate().toZonedDateTime().toLocalTime());
-            newEntry.changeStartTime(entry.getEndDate().toZonedDateTime().toLocalTime());
-            smartAppointments.addEntry(newEntry);            
-        }
-       
-
-        dummyEntries.setStyle(Style.STYLE1);
-        smartAppointments.setStyle(Style.STYLE2);
-        
+        dummyEntries.setStyle(Style.STYLE1);        
 
         var myCalendarSource = new CalendarSource("Meine Kalender");
-        myCalendarSource.getCalendars().addAll(dummyEntries, smartAppointments);
+        myCalendarSource.getCalendars().addAll(dummyEntries);
 
         calendarView.getCalendarSources().addAll(myCalendarSource);
-
         calendarView.setRequestedTime(LocalTime.now());
 
         var updateTimeThread = new Thread("Calendar: Update Time Thread") 

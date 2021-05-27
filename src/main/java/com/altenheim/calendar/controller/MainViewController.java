@@ -3,12 +3,14 @@ package com.altenheim.calendar.controller;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import com.altenheim.calendar.interfaces.*;
 import com.altenheim.calendar.models.*;
 import com.altenheim.calendar.views.MainCalendarView;
+import com.calendarfx.model.Calendar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,16 +20,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-
 public class MainViewController implements Initializable 
 {
     private IAppointmentEntryFactory entryFactory;
-    private ICalendarEntriesModel savedEntries;
+    private ICalendarEntriesModel allCalendars;
     private IAppointmentSuggestionController suggestion;
     private IMailCreationController mailController;
     private IGoogleAPIController googleApis;
-    private List<CalendarEntryModel> suggestions;
-    private ICalendarEntryModel[] dummys;
 
     @FXML
     private DatePicker datePickerStartDate;
@@ -45,17 +44,19 @@ public class MainViewController implements Initializable
 
     @FXML
     private Text textOpeningHoursStartLocation, textOpeningHoursDestination, textDurationToDestination, textAvailableDates;
+    
 
-    @FXML
-    private void initialize()
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) 
     {
         googleApis = new GoogleAPIController();
         mailController = new MailCreationController();
+        allCalendars = new CalendarEntriesModel();
         entryFactory = new AppointmentEntryFactory();
-        dummys = entryFactory.getDummyEntries();
-        savedEntries = new CalendarEntriesModel(entryFactory);
-        suggestion = new AppointmentSuggestionController(savedEntries, entryFactory); 
-    }  
+        
+        allCalendars.addCalendar(entryFactory.createEntrys("Test Kalender 1"));      
+        suggestion = new AppointmentSuggestionController(allCalendars);         
+    }    
     
     @FXML
     private void buttonClicked(ActionEvent event) throws IOException, URISyntaxException, InterruptedException 
@@ -101,26 +102,23 @@ public class MainViewController implements Initializable
 
     private void checkAvaliableDates()
     {
-        int fromDay = Integer.parseInt(textFieldSearchFromDay.getText());
-        int interval = Integer.parseInt(textFieldInterval.getText());
-        int tolerance = Integer.parseInt(textFieldTolerance.getText());
-        int count = Integer.parseInt(textFieldAvailableDatesCount.getText());
-        int duration = Integer.parseInt(textDurationToDestination.getText());
-        suggestions = suggestion.getAvailableAppointments(fromDay, interval, tolerance, count, 60, duration, 8, 20);
+        //int fromDay = Integer.parseInt(textFieldSearchFromDay.getText());
+        //int interval = Integer.parseInt(textFieldInterval.getText());
+        //int tolerance = Integer.parseInt(textFieldTolerance.getText());
+        //int count = Integer.parseInt(textFieldAvailableDatesCount.getText());
+        //int duration = Integer.parseInt(textDurationToDestination.getText());
+        //suggestions = suggestion.getAvailableAppointments(fromDay, interval, tolerance, count, 60, duration, 8, 20);
         //suggestions = suggestion.getAvailableAppointments(10, 10, 4, 50, 60, 30, 8, 18);
+
+        var startDate = LocalDate.of(2021, 1, 1);
+        var endDate = LocalDate.of(2021, 2, 1);        
+        var testGetDates = allCalendars.getSpecificRange(startDate, endDate);
 
     }
 
     private void openCalendar()
     {
         var calendar = new MainCalendarView();
-        calendar.startCalendar(suggestions, dummys);
+        calendar.startCalendar(allCalendars.getSpecificCalendarByIndex(0));
     }
-
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO Auto-generated method stub
-        
-    }
-
 }
