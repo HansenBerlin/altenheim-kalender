@@ -32,7 +32,7 @@ public class AppointmentEntryFactoryTest
         }
         Assertions.assertFalse(isNull);    
     }
-    
+    /*
     @Test
     void createDefinedEntry_standardDates_accordingDatesInDateObjects() 
     {
@@ -53,5 +53,5 @@ public class AppointmentEntryFactoryTest
                         () -> assertEquals(12, result.getEndDate().get(Calendar.HOUR_OF_DAY)),
                         () -> assertEquals(00, result.getEndDate().get(Calendar.MINUTE))
                     );    
-    }   
+    } */  
 }

@@ -1,10 +1,11 @@
 package com.altenheim.calendar.interfaces;
 
+import java.time.LocalDate;
+import java.util.List;
+import com.calendarfx.model.Entry;
+
 public interface ICalendarEntriesModel 
 {
-    public ICalendarEntryModel[][][] getYear();
-    public ICalendarEntryModel getSpecificDate(int day, int hour, int minute);
-    public void saveDate(ICalendarEntryModel newEntry);
-    public void printCalendarDates(int numberOfEntriesToPrint);
-    public void initializeYear();
+    public List<Entry<String>> getSpecificDay(LocalDate startDate, LocalDate endDate);
+    
 }

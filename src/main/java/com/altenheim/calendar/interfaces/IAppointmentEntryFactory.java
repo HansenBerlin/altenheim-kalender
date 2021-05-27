@@ -1,11 +1,9 @@
 package com.altenheim.calendar.interfaces;
 
+import java.util.List;
+
 public interface IAppointmentEntryFactory 
 {
-    public ICalendarEntryModel[] getDummyEntries();
-    public ICalendarEntryModel[][][] createRandomDatesForOneYear();
-    public ICalendarEntryModel[] createEntrys();
-    public ICalendarEntryModel createDefinedEntry(int[] startDate, int[] endDate, 
-        int[] startTime, int[] endTime, String entryName, int travelTime);
-
+    public List<ICalendarEntryModel> getDummyEntries();
+    public List<ICalendarEntryModel> createEntrys();
 }
