@@ -1,9 +1,9 @@
-package com.altenheim.calendar;
+package com.altenheim.kalender;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import com.altenheim.calendar.controller.MainViewController;
+import com.altenheim.kalender.controller.MainViewController;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

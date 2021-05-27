@@ -1,9 +1,10 @@
-package com.altenheim.calendar.controller;
+package com.altenheim.kalender.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.altenheim.calendar.interfaces.*;
-import com.altenheim.calendar.models.CalendarEntryModel;
+
+import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.models.CalendarEntryModel;
 import com.calendarfx.model.Entry;
 
 public class AppointmentSuggestionController implements IAppointmentSuggestionController {

@@ -1,4 +1,4 @@
-package com.altenheim.calendar.models;
+package com.altenheim.kalender.models;
 
 public class MailTemplateModel 
 {

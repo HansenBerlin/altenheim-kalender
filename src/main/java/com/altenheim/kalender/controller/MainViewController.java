@@ -1,4 +1,4 @@
-package com.altenheim.calendar.controller;
+package com.altenheim.kalender.controller;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -7,9 +7,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.ResourceBundle;
-import com.altenheim.calendar.interfaces.*;
-import com.altenheim.calendar.models.*;
-import com.altenheim.calendar.views.MainCalendarView;
+
+import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.models.*;
+import com.altenheim.kalender.views.MainCalendarView;
 import com.calendarfx.model.Calendar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

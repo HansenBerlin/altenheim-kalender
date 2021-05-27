@@ -1,10 +1,12 @@
-package com.altenheim.calendar;
+package com.altenheim.kalender;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Calendar;
+
+import com.altenheim.kalender.controller.AppointmentEntryFactory;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import com.altenheim.calendar.controller.AppointmentEntryFactory;
 
 public class AppointmentSuggestionControllerTest 
 {
