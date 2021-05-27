@@ -112,7 +112,7 @@ public class MainViewController implements Initializable
 
         var startDate = LocalDate.of(2021, 1, 1);
         var endDate = LocalDate.of(2021, 2, 1);        
-        var testGetDates = allCalendars.getSpecificDay(startDate, endDate);
+        var testGetDates = allCalendars.getSpecificRange(startDate, endDate);
 
     }
 
