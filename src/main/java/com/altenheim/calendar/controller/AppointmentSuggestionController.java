@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.calendar.interfaces.*;
 import com.altenheim.calendar.models.CalendarEntryModel;
-import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
 
 public class AppointmentSuggestionController implements IAppointmentSuggestionController {
 	
@@ -14,7 +14,7 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 		this.administrateEntries = administrateEntries;
 	}	
 
-	public List<Calendar> getAvailableAppointments(int firstDate, int interval, int spread, int maxOffers,
+	public List<Entry<String>> getAvailableAppointments(int firstDate, int interval, int spread, int maxOffers,
 			int appointmentDuration, int travelTime, int institutionOpen, int institutionClose) {
 		List<CalendarEntryModel> possibleCalendarEntrys = new ArrayList<CalendarEntryModel>();
 		var planetAppointmentDay = firstDate + interval;
