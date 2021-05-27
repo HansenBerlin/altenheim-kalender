@@ -67,9 +67,7 @@
           <artifactId>maven-assembly-plugin</artifactId>
           <configuration>
             <archive>
-              <manifest>
-                <addClasspath>true</addClasspath>
-                <classpathPrefix>target/</classpathPrefix>
+              <manifest>                
                 <mainClass>com.altenheim.kalender.Main</mainClass>
               </manifest>
             </archive>
