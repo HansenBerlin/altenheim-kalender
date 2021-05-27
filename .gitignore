@@ -1,5 +1,7 @@
 /target/
-
+.classpath
+.factorypath
+.project    
 *.class
 *.log
 *.jar
