@@ -1,4 +1,4 @@
-name: "Code Vulnerability Check"
+name: "CVS"
 
 on:
   push:
