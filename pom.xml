@@ -7,7 +7,7 @@
   <groupId>com.altenheim</groupId>
   <artifactId>altenheim-kalender</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.1-SNAPSHOT</version>
+  <version>0.1.2-SNAPSHOT</version>
   <name>altenheim-kalender</name>
   <url></url>
 
@@ -59,7 +59,7 @@
           <artifactId>javafx-maven-plugin</artifactId>
           <version>0.0.4</version>
           <configuration>
-            <mainClass>${Main}</mainClass>
+            <mainClass>com.altenheim.kalender.Main</mainClass>
         </configuration>
         </plugin>
         <plugin>
@@ -68,6 +68,8 @@
           <configuration>
             <archive>
               <manifest>
+                <addClasspath>true</addClasspath>
+                <classpathPrefix>target/</classpathPrefix>
                 <mainClass>com.altenheim.kalender.Main</mainClass>
               </manifest>
             </archive>
@@ -100,20 +102,7 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>          
-        </plugin>        
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.0.2</version>
-          <configuration>
-            <archive>
-              <manifest>
-                <addClasspath>true</addClasspath>
-                <classpathPrefix>target/</classpathPrefix>
-                <mainClass>com.altenheim.kalender.Main</mainClass>
-              </manifest>
-            </archive>
-          </configuration>
-        </plugin>
+        </plugin>           
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
           <version>2.5.2</version>
