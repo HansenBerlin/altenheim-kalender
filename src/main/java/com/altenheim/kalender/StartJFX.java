@@ -2,14 +2,13 @@ package com.altenheim.kalender;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-
-import com.altenheim.kalender.controller.MainViewController;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import com.altenheim.kalender.controller.MainViewController;
 
 public class StartJFX extends Application
 {    
@@ -21,8 +20,7 @@ public class StartJFX extends Application
         loader.setController(controller);
         Parent root = loader.load();
 
-        //Parent root = FXMLLoader.load(getClass().getResource("prototypeUI.fxml"));
-        primaryStage.setScene(new Scene(root));    
+        primaryStage.setScene(new Scene(root));            
         primaryStage.setTitle("Kalender Prototype"); 
         primaryStage.show();         
     }
