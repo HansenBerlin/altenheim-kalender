@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import com.altenheim.kalender.controller.MainViewController;
 
@@ -14,13 +15,15 @@ public class StartJFX extends Application
     @Override
     public void start(Stage primaryStage) throws Exception 
     {      
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("\\prototypeUI.fxml"));
-        var controller = new MainViewController();
-        loader.setController(controller);
-        Parent root = loader.load();
+        //FXMLLoader loader = new FXMLLoader(getClass().getResource("\\prototypeUI.fxml"));
+        //var controller = new MainViewController();
+        //loader.setController(controller);
+        //Parent root = loader.load();
 
-        //Parent root = FXMLLoader.load(getClass().getResource("prototypeUI.fxml"));
-        primaryStage.setScene(new Scene(root));    
+        StackPane root = new StackPane();
+        var scene = new Scene(root);
+        //primaryStage.setScene(new Scene(root));   
+        primaryStage.setScene(scene); 
         primaryStage.setTitle("Kalender Prototype"); 
         primaryStage.show();         
     }
