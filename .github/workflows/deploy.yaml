@@ -29,6 +29,6 @@ jobs:
         with:
           java-version: 16
       - name: Publish snapshot
-        run: mvn -B --no-transfer-progress deploy-file -DskipTests
+        run: mvn -B --no-transfer-progress deploy -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
