@@ -2,9 +2,9 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ master ]
+    branches: [ issue-107-fix-build-path-error-in-compiled-jar-file ]
   pull_request:
-    branches: [ master ]
+    branches: [ issue-107-fix-build-path-error-in-compiled-jar-file ]
 
 jobs:
   build:
@@ -17,9 +17,8 @@ jobs:
         java-version: '16'
         distribution: 'adopt'
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
-    - name: Run tests with Maven
-      run: mvn -B test --file pom.xml
+      #run: mvn -B package --file pom.xml
+      run: mvn clean install assembly:single --file pom.xml
   
   publish-snapshot:
     needs: build
