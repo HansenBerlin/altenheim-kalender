@@ -2,9 +2,9 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ master ]
+    branches: [ issue-107-fix-build-path-error-in-compiled-jar-file ]
   pull_request:
-    branches: [ master ]
+    branches: [ issue-107-fix-build-path-error-in-compiled-jar-file ]
 
 jobs:
   build:
