@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 import com.altenheim.calendar.interfaces.*;
 import com.altenheim.calendar.models.*;
 import com.altenheim.calendar.views.MainCalendarView;
+import com.calendarfx.model.Calendar;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,7 +27,7 @@ public class MainViewController implements Initializable
     private IMailCreationController mailController;
     private IGoogleAPIController googleApis;
     private List<CalendarEntryModel> suggestions;
-    private List<ICalendarEntryModel> dummyEntries;
+    private Calendar dummyEntries;
 
     @FXML
     private DatePicker datePickerStartDate;
@@ -51,10 +53,12 @@ public class MainViewController implements Initializable
         googleApis = new GoogleAPIController();
         mailController = new MailCreationController();
         allCalendars = new CalendarEntriesModel();
-        entryFactory = new AppointmentEntryFactory(allCalendars);
-        dummyEntries = entryFactory.getSavedEntries();
-        allCalendars.
-        suggestion = new AppointmentSuggestionController(savedEntries, entryFactory);         
+        entryFactory = new AppointmentEntryFactory();
+
+        entryFactory.createEntrys("Test Kalender 1");
+        dummyEntries = entryFactory.getSavedEntries();  
+        allCalendars.addCalendar(dummyEntries);      
+        suggestion = new AppointmentSuggestionController(allCalendars);         
     }    
     
     @FXML
@@ -117,6 +121,6 @@ public class MainViewController implements Initializable
         suggestions = suggestion.getAvailableAppointments(10, 10, 4, 50, 60, 30, 8, 18);
         //
         var calendar = new MainCalendarView();
-        calendar.startCalendar(suggestions, dummys);
+        calendar.startCalendar(dummyEntries);
     }
 }

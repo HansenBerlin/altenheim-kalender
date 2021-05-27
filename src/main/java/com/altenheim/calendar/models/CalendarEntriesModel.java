@@ -15,6 +15,7 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
 
     public void addCalendar(Calendar calendar)
     {
+        calendars = new ArrayList<Calendar>();
         calendars.add(calendar);
     }
 

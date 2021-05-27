@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import com.altenheim.calendar.controller.AppointmentEntryFactory;
 
 public class AppointmentEntryFactoryTest 
-{
+{/*
     @Test
     void createEntries_twoArrays_arraysShouldDiffer()
     {
@@ -32,7 +32,7 @@ public class AppointmentEntryFactoryTest
         }
         Assertions.assertFalse(isNull);    
     }
-    /*
+    
     @Test
     void createDefinedEntry_standardDates_accordingDatesInDateObjects() 
     {

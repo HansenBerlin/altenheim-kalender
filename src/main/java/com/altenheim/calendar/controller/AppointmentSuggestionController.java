@@ -1,23 +1,26 @@
 package com.altenheim.calendar.controller;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import com.altenheim.calendar.interfaces.*;
 import com.altenheim.calendar.models.CalendarEntryModel;
 
-
 public class AppointmentSuggestionController implements IAppointmentSuggestionController {
-	private ICalendarEntriesModel allEntries;
-	private IAppointmentEntryFactory administrateEntries;
 	
-	public AppointmentSuggestionController(ICalendarEntriesModel allEntries,
-			IAppointmentEntryFactory administrateEntries) {
-		this.allEntries = allEntries;
+	private ICalendarEntriesModel administrateEntries;
+	
+	public AppointmentSuggestionController(ICalendarEntriesModel administrateEntries) {
 		this.administrateEntries = administrateEntries;
-
 	}
+
+	@Override
+	public List<CalendarEntryModel> getAvailableAppointments(int firstDate, int interval, int spread, int maxOffers,
+			int appointmentDuration, int travelTime, int institutionOpen, int institutionClose) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}
+	/*
 
 	public List<CalendarEntryModel> getAvailableAppointments(int firstDate, int interval, int spread, int maxOffers,
 			int appointmentDuration, int travelTime, int institutionOpen, int institutionClose) {
@@ -126,3 +129,5 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 
 	}
 }
+
+*/
