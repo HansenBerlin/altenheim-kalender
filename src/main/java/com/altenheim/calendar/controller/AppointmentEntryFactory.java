@@ -16,21 +16,8 @@ import com.altenheim.calendar.models.CalendarEntryModel;
 
 public class AppointmentEntryFactory implements IAppointmentEntryFactory
 {    
-    private Calendar randomCalendar;
     
-    public AppointmentEntryFactory()
-    {
-    }
-
-    public Calendar getSavedEntries()
-    {
-        if (randomCalendar != null)
-            return randomCalendar;
-        else
-            return new Calendar();
-    }    
-    
-    public void createEntrys(String calendarName) 
+    public Calendar createEntrys(String calendarName) 
     {
         var calendar = new Calendar(calendarName);
         int dayOfMonth;
@@ -56,7 +43,7 @@ public class AppointmentEntryFactory implements IAppointmentEntryFactory
                 calendar.addEntries(entry);                 
             }            
         }
-        randomCalendar = calendar;
+        return calendar;
     }
 
     private int rG(int startInclusive, int endInclusive)

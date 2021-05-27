@@ -4,6 +4,5 @@ import com.calendarfx.model.Calendar;
 
 public interface IAppointmentEntryFactory 
 {
-    public Calendar getSavedEntries();
-    public void createEntrys(String calendarName);
+    public Calendar createEntrys(String calendarName);
 }

@@ -26,8 +26,6 @@ public class MainViewController implements Initializable
     private IAppointmentSuggestionController suggestion;
     private IMailCreationController mailController;
     private IGoogleAPIController googleApis;
-    private List<CalendarEntryModel> suggestions;
-    private Calendar dummyEntries;
 
     @FXML
     private DatePicker datePickerStartDate;
@@ -54,10 +52,8 @@ public class MainViewController implements Initializable
         mailController = new MailCreationController();
         allCalendars = new CalendarEntriesModel();
         entryFactory = new AppointmentEntryFactory();
-
-        entryFactory.createEntrys("Test Kalender 1");
-        dummyEntries = entryFactory.getSavedEntries();  
-        allCalendars.addCalendar(dummyEntries);      
+        
+        allCalendars.addCalendar(entryFactory.createEntrys("Test Kalender 1"));      
         suggestion = new AppointmentSuggestionController(allCalendars);         
     }    
     
@@ -117,10 +113,7 @@ public class MainViewController implements Initializable
 
     private void openCalendar()
     {
-        //
-        suggestions = suggestion.getAvailableAppointments(10, 10, 4, 50, 60, 30, 8, 18);
-        //
         var calendar = new MainCalendarView();
-        calendar.startCalendar(dummyEntries);
+        calendar.startCalendar(allCalendars.getSpecificCalendarByIndex(0));
     }
 }

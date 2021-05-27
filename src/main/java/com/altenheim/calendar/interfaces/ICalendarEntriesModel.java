@@ -7,6 +7,7 @@ import com.calendarfx.model.Entry;
 
 public interface ICalendarEntriesModel 
 {
+    public Calendar getSpecificCalendarByIndex(int index);
     public void addCalendar(Calendar calendar);
     public List<Entry<String>> getSpecificDay(LocalDate startDate, LocalDate endDate);    
 }
