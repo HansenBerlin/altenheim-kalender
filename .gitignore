@@ -1,6 +1,4 @@
 /target/
-/README.md
-/.github/
 
 *.class
 *.log
