@@ -20,12 +20,12 @@ import javafx.scene.text.Text;
 public class MainViewController implements Initializable 
 {
     private IAppointmentEntryFactory entryFactory;
-    private ICalendarEntriesModel savedEntries;
+    private ICalendarEntriesModel allCalendars;
     private IAppointmentSuggestionController suggestion;
     private IMailCreationController mailController;
     private IGoogleAPIController googleApis;
     private List<CalendarEntryModel> suggestions;
-    private ICalendarEntryModel[] dummys;
+    private List<ICalendarEntryModel> dummyEntries;
 
     @FXML
     private DatePicker datePickerStartDate;
@@ -51,8 +51,9 @@ public class MainViewController implements Initializable
         googleApis = new GoogleAPIController();
         mailController = new MailCreationController();
         entryFactory = new AppointmentEntryFactory();
-        dummys = entryFactory.getDummyEntries();
-        savedEntries = new CalendarEntriesModel(entryFactory);
+        dummyEntries = entryFactory.getDummyEntries();
+        allCalendars = new CalendarEntriesModel();
+        allCalendars.
         suggestion = new AppointmentSuggestionController(savedEntries, entryFactory);         
     }    
     

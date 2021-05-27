@@ -21,29 +21,7 @@ public class MainCalendarView
         var stage = new Stage();
         var calendarView = new CalendarView();
         var dummyEntries = new Calendar("Dummys");
-        var smartAppointments = new Calendar("Smart Appointments");      
-
-        for (ICalendarEntryModel entry : dummys) 
-        {
-            var newEntry = new Entry<>();
-            newEntry.changeStartDate(entry.getStartDate().toZonedDateTime().toLocalDate());
-            newEntry.changeEndDate(entry.getEndDate().toZonedDateTime().toLocalDate());
-            newEntry.changeStartTime(entry.getStartDate().toZonedDateTime().toLocalTime());
-            newEntry.changeStartTime(entry.getEndDate().toZonedDateTime().toLocalTime());
-            newEntry.setTitle(entry.getAppointmentEntryName());
-            dummyEntries.addEntry(newEntry);            
-        }
-
-        for (CalendarEntryModel entry : suggestions) 
-        {            
-            var newEntry = new Entry<>();
-            newEntry.changeStartDate(entry.getStartDate().toZonedDateTime().toLocalDate());
-            newEntry.changeEndDate(entry.getEndDate().toZonedDateTime().toLocalDate());
-            newEntry.changeStartTime(entry.getStartDate().toZonedDateTime().toLocalTime());
-            newEntry.changeStartTime(entry.getEndDate().toZonedDateTime().toLocalTime());
-            smartAppointments.addEntry(newEntry);            
-        }
-       
+        var smartAppointments = new Calendar("Smart Appointments"); 
 
         dummyEntries.setStyle(Style.STYLE1);
         smartAppointments.setStyle(Style.STYLE2);
