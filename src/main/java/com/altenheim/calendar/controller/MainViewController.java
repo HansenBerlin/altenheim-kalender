@@ -3,13 +3,14 @@ package com.altenheim.calendar.controller;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.ResourceBundle;
 import com.altenheim.calendar.interfaces.*;
 import com.altenheim.calendar.models.*;
 import com.altenheim.calendar.views.MainCalendarView;
 import com.calendarfx.model.Calendar;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -101,13 +102,17 @@ public class MainViewController implements Initializable
 
     private void checkAvaliableDates()
     {
-        int fromDay = Integer.parseInt(textFieldSearchFromDay.getText());
-        int interval = Integer.parseInt(textFieldInterval.getText());
-        int tolerance = Integer.parseInt(textFieldTolerance.getText());
-        int count = Integer.parseInt(textFieldAvailableDatesCount.getText());
-        int duration = Integer.parseInt(textDurationToDestination.getText());
+        //int fromDay = Integer.parseInt(textFieldSearchFromDay.getText());
+        //int interval = Integer.parseInt(textFieldInterval.getText());
+        //int tolerance = Integer.parseInt(textFieldTolerance.getText());
+        //int count = Integer.parseInt(textFieldAvailableDatesCount.getText());
+        //int duration = Integer.parseInt(textDurationToDestination.getText());
         //suggestions = suggestion.getAvailableAppointments(fromDay, interval, tolerance, count, 60, duration, 8, 20);
-        suggestions = suggestion.getAvailableAppointments(10, 10, 4, 50, 60, 30, 8, 18);
+        //suggestions = suggestion.getAvailableAppointments(10, 10, 4, 50, 60, 30, 8, 18);
+
+        var startDate = LocalDate.of(2021, 1, 1);
+        var endDate = LocalDate.of(2021, 2, 1);        
+        var testGetDates = allCalendars.getSpecificDay(startDate, endDate);
 
     }
 
