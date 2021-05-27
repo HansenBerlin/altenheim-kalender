@@ -1,10 +1,10 @@
-package com.altenheim.calendar.controller;
+package com.altenheim.kalender.controller;
 
 import java.awt.*;
 import java.net.*;
 
-import com.altenheim.calendar.interfaces.IMailCreationController;
-import com.altenheim.calendar.models.MailTemplateModel;
+import com.altenheim.kalender.interfaces.IMailCreationController;
+import com.altenheim.kalender.models.MailTemplateModel;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

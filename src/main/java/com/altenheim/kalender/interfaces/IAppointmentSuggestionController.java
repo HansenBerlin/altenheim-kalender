@@ -1,4 +1,4 @@
-package com.altenheim.calendar.interfaces;
+package com.altenheim.kalender.interfaces;
 
 import java.util.List;
 import com.calendarfx.model.Entry;

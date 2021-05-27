@@ -1,4 +1,4 @@
-package com.altenheim.calendar.controller;
+package com.altenheim.kalender.controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -6,12 +6,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
+import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.interfaces.ICalendarEntryModel;
+import com.altenheim.kalender.models.CalendarEntryModel;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
-import com.altenheim.calendar.interfaces.IAppointmentEntryFactory;
-import com.altenheim.calendar.interfaces.ICalendarEntriesModel;
-import com.altenheim.calendar.interfaces.ICalendarEntryModel;
-import com.altenheim.calendar.models.CalendarEntryModel;
 
 
 public class AppointmentEntryFactory implements IAppointmentEntryFactory

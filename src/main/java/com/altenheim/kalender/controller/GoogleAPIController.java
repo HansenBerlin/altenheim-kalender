@@ -1,4 +1,4 @@
-package com.altenheim.calendar.controller;
+package com.altenheim.kalender.controller;
 
 import java.io.IOException;
 import java.net.URI;
@@ -6,7 +6,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
-import com.altenheim.calendar.interfaces.IGoogleAPIController;
+
+import com.altenheim.kalender.interfaces.IGoogleAPIController;
 
 import org.json.*;
 

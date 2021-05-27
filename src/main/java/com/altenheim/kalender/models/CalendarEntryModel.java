@@ -1,8 +1,9 @@
-package com.altenheim.calendar.models;
+package com.altenheim.kalender.models;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import com.altenheim.calendar.interfaces.ICalendarEntryModel;
+
+import com.altenheim.kalender.interfaces.ICalendarEntryModel;
 import com.calendarfx.model.Entry;
 
 public class CalendarEntryModel extends Entry<Entry<?>> implements ICalendarEntryModel

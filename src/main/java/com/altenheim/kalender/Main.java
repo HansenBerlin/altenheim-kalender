@@ -1,4 +1,4 @@
-package com.altenheim.calendar;
+package com.altenheim.kalender;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

@@ -1,4 +1,4 @@
-package com.altenheim.calendar.views;
+package com.altenheim.kalender.views;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
