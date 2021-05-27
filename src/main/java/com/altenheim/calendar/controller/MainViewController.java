@@ -50,9 +50,9 @@ public class MainViewController implements Initializable
     {
         googleApis = new GoogleAPIController();
         mailController = new MailCreationController();
-        entryFactory = new AppointmentEntryFactory();
-        dummyEntries = entryFactory.getDummyEntries();
         allCalendars = new CalendarEntriesModel();
+        entryFactory = new AppointmentEntryFactory(allCalendars);
+        dummyEntries = entryFactory.getSavedEntries();
         allCalendars.
         suggestion = new AppointmentSuggestionController(savedEntries, entryFactory);         
     }    

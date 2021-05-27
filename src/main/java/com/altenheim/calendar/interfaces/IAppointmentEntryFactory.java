@@ -1,9 +1,9 @@
 package com.altenheim.calendar.interfaces;
 
-import java.util.List;
+import com.calendarfx.model.Calendar;
 
 public interface IAppointmentEntryFactory 
 {
-    public List<ICalendarEntryModel> getDummyEntries();
-    public List<ICalendarEntryModel> createEntrys();
+    public Calendar getSavedEntries();
+    public void createEntrys(String calendarName);
 }
