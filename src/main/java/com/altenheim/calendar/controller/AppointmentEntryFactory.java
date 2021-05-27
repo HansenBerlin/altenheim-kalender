@@ -1,112 +1,53 @@
 package com.altenheim.calendar.controller;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
 import com.altenheim.calendar.interfaces.IAppointmentEntryFactory;
+import com.altenheim.calendar.interfaces.ICalendarEntriesModel;
 import com.altenheim.calendar.interfaces.ICalendarEntryModel;
 import com.altenheim.calendar.models.CalendarEntryModel;
 
+
 public class AppointmentEntryFactory implements IAppointmentEntryFactory
 {    
-    private final ICalendarEntryModel[] dummyEntries;
     
-    public AppointmentEntryFactory()
+    public Calendar createEntrys(String calendarName) 
     {
-        this.dummyEntries = createEntrys();
-    }
-
-    public ICalendarEntryModel[] getDummyEntries()
-    {
-        return dummyEntries;
-    }
-
-
-    public ICalendarEntryModel[][][] createRandomDatesForOneYear() 
-    {
-        var year = new ICalendarEntryModel[365][24][60];
-
-        var createdEntries = dummyEntries;
-        for (var entry : createdEntries) 
+        var calendar = new Calendar(calendarName);
+        int dayOfMonth;
+        for (int i = 1; i <= 12; i++) 
         {
-            int startHours = entry.getStartDate().get(Calendar.HOUR_OF_DAY);
-            int endHours = entry.getEndDate().get(Calendar.HOUR_OF_DAY);
-            int startMinutes = entry.getStartDate().get(Calendar.MINUTE);
-            int endMinutes = entry.getEndDate().get(Calendar.MINUTE);
-            int day = entry.getEndDate().get(Calendar.DAY_OF_YEAR);
+            if (Arrays.asList(new int[]{1, 3, 5, 7, 8, 10, 12}).contains(i))
+                dayOfMonth = 31;
+            else if (Arrays.asList(new int[]{4, 6, 9, 11}).contains(i))
+                dayOfMonth = 30;
+            else
+                dayOfMonth = 28;
 
-            for (int hour = 0; hour < 24; hour++) 
-            {
-                if (startHours == endHours)
-                {
-                    for (int minute = startMinutes; minute < endMinutes; minute++)
-                    {
-                        year[day-1][hour][minute] = entry;
-                    }
-                    break;
-                }                    
-
-                else if (hour == startHours)                
-                    for (int minute = startMinutes; minute < 60; minute++)
-                    {
-                        year[day-1][hour][minute] = entry;
-                    }                                         
-
-                else if (hour == endHours)                
-                    for (int minute = 0; minute < endMinutes; minute++)    
-                    {
-                        year[day-1][hour][minute] = entry; 
-                    }                                        
-                  
-                else if (hour > startHours && hour < endHours)                
-                    for (int minute = 0; minute < 60; minute++)    
-                    {
-                        year[day-1][hour][minute] = entry;
-                    }                
+            for (int j = 1; j <= dayOfMonth; j += rG(1,4)) 
+            {                
+                var startAndEndDate = LocalDate.of(2021, i, j);
+                var startTime = LocalTime.of(rG(1,18), rG(1,59));
+                var endTime = LocalTime.of(rG(19,23), rG(1,59));
+                var entry = new Entry<String>("Test" + rG(1, 100000));
+                entry.changeStartDate(startAndEndDate);
+                entry.changeEndDate(startAndEndDate);
+                entry.changeStartTime(startTime);
+                entry.changeEndTime(endTime);
+                calendar.addEntries(entry);                 
             }            
         }
-        return year;
+        return calendar;
     }
-    
-    
-    public CalendarEntryModel[] createEntrys() 
-    {
-        int position = 0;
-        var allEntrys = new CalendarEntryModel[120];
-        for (int i = 0; i < 12; i++) 
-        {
-            for (int j = 1; j <= 28; j+=rG(1,4)) 
-            {
-                if (position >= 120)
-                    return allEntrys;
-                var startDate = new GregorianCalendar(rG(2021,2021), rG(i,i), rG(j,j), rG(1,18), rG(0,59));
-                var endDate = new GregorianCalendar(rG(2021,2021), rG(i,i), rG(j,j), rG(19,23), rG(0,59));               
-                allEntrys[position] = new CalendarEntryModel(startDate, endDate, "Test" + rG(1, 100000));     
-                position++;   
-            }            
-        }
-        return allEntrys;
-    }
-
-
-    public ICalendarEntryModel createDefinedEntry(int[] startDate, int[] endDate, int[] startTime, 
-        int[] endTime, String entryName, int travelTime) 
-    {
-        if (startDate.length != 3 || endDate.length != 3 || startTime.length != 2 || endTime.length != 2)
-            return null;
-        var startAppointment = new GregorianCalendar(startDate[0], startDate[1]-1, startDate[2], startTime[0], startTime[1]);
-        var endAppointment = new GregorianCalendar(endDate[0], endDate[1]-1, endDate[2], endTime[0], endTime[1]);
-       
-        ICalendarEntryModel newEntry = new CalendarEntryModel(travelTime);
-        newEntry.resetDates(startAppointment, endAppointment);
-        newEntry.resetAppointmentEntryName(entryName);
-        return newEntry;
-    }
-
 
     private int rG(int startInclusive, int endInclusive)
     {
         return ThreadLocalRandom.current().nextInt(startInclusive, endInclusive + 1);
-    }
-    
+    }    
 }
