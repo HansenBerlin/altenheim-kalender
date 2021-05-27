@@ -15,15 +15,12 @@ public class StartJFX extends Application
     @Override
     public void start(Stage primaryStage) throws Exception 
     {      
-        //FXMLLoader loader = new FXMLLoader(getClass().getResource("\\prototypeUI.fxml"));
-        //var controller = new MainViewController();
-        //loader.setController(controller);
-        //Parent root = loader.load();
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("prototypeUI.fxml"));
+        var controller = new MainViewController();
+        loader.setController(controller);
+        Parent root = loader.load();
 
-        StackPane root = new StackPane();
-        var scene = new Scene(root);
-        //primaryStage.setScene(new Scene(root));   
-        primaryStage.setScene(scene); 
+        primaryStage.setScene(new Scene(root));            
         primaryStage.setTitle("Kalender Prototype"); 
         primaryStage.show();         
     }
