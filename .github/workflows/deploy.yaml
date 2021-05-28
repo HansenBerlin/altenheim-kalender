@@ -1,9 +1,7 @@
-name: Build and Deploy
+name: Build, Test, Deploy
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
+   pull_request:
     branches: [ master ]
 
 jobs:
@@ -16,8 +14,10 @@ jobs:
       with:
         java-version: '16'
         distribution: 'adopt'
-    - name: Build with Maven
+    - name: Build
       run: mvn -B package --file pom.xml
+    - name: Run Tests
+      run: mvn -B test --file pom.xml
   
   publish-snapshot:
     needs: build
@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 16
-      - name: Publish snapshot
+      - name: Deploy
         run: mvn -B --no-transfer-progress deploy -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
