@@ -5,4 +5,4 @@
 ![GitHub issues](https://img.shields.io/github/issues/hansenberlin/altenheim-kalender) ![GitHub closed issues](https://img.shields.io/github/issues-closed/hansenberlin/altenheim-kalender) 
 
 
-[Wiki](https://github.com/HansenBerlin/altenheim-kalender/wiki)
+## [Wiki](https://github.com/HansenBerlin/altenheim-kalender/wiki)
