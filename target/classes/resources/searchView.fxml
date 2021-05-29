@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="530.0" prefWidth="800.0">
+         <children>
+            <MFXTableView prefHeight="400.0" prefWidth="600.0">
+               <VBox.margin>
+                  <Insets left="100.0" top="100.0" />
+               </VBox.margin>
+            </MFXTableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
