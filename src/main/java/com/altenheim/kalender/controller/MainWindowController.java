@@ -4,14 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.value.ChangeListener;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
+import javafx.scene.control.Accordion;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +22,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MainWindowController 
@@ -31,10 +31,11 @@ public class MainWindowController
     private Background secondaryColor;
     private Background transparent;
     private UpdateViewController viewUpdate;
+    private SearchViewController searchViewController;
+    private PlannerViewController plannerViewController;
     private Stage stage;
-
-    // Werden später noch gebraucht um das initiale Setup zu vereinfachen
-    private List<Pane> allButtonBackgroundPanes;
+    private String[] buttonCaptions = {"Planner", "Smart Search", "Settings", "Contacts", "Stats", "SMART PLANNER"};
+    
     private List<MFXButton> allButtons;   
     
     public MainWindowController(Stage stage)
@@ -47,20 +48,23 @@ public class MainWindowController
         menuBtnPaneContacts, menuBtnPaneStats;
 
     @FXML
-    private MFXButton menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnStats;    
+    private MFXButton btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnStats;    
 
     @FXML
-    private ImageView imgLogo, imgIconPlannerButton, imgIconSearchButton, imgIconSettingsButton, imgIconContactsButton, 
-        imgIconStatsButton, imgIconAddAppointment, imgIconUser, imgIconLanguage;
+    private ImageView imgIconPlannerButton, imgIconSearchButton, imgIconSettingsButton, imgIconContactsButton, 
+        imgIconStatsButton, imgIconAddAppointment, imgIconUser, imgIconLanguage;    
+
+    @FXML
+    private GridPane rootContainer, childContainerView;
 
     @FXML
     private AnchorPane anchorPaneMainView;
 
     @FXML
-    private GridPane rootContainer;
+    private ColumnConstraints columnLeftMenu;
 
     @FXML
-    private ColumnConstraints columnLeftMenu;
+    private Text txtVersion, txtBreadcrumb;    
 
     @FXML
     void changeScene(MouseEvent event) throws IOException 
@@ -74,9 +78,13 @@ public class MainWindowController
     {
         setColors();
         setButtonStates();
+        allButtons = new ArrayList<MFXButton>();
+        createButtonList();
         setImages();
-        viewUpdate = new UpdateViewController();  
-        bindWindowSize();             
+        searchViewController = new SearchViewController(stage);     
+        plannerViewController = new PlannerViewController(stage);     
+        viewUpdate = new UpdateViewController(searchViewController, plannerViewController);  
+        bindWindowSize();   
     }
 
     private void setColors()
@@ -96,7 +104,6 @@ public class MainWindowController
 
     private void setImages() throws FileNotFoundException
     {
-        imgLogo.setImage(new Image(new FileInputStream(new File("src/main/java/resources/logo-mock.png"))));
         imgIconPlannerButton.setImage(new Image(new FileInputStream(new File("src/main/java/resources/calendar.png"))));
         imgIconSearchButton.setImage(new Image(new FileInputStream(new File("src/main/java/resources/calendar.png"))));
         imgIconContactsButton.setImage(new Image(new FileInputStream(new File("src/main/java/resources/calendar.png"))));
@@ -119,8 +126,9 @@ public class MainWindowController
             menuBtnPanePlanner.setBackground(primaryColor);
             menuBtnPlanner.setBackground(secondaryColor);
             viewUpdate.setFilename("plannerView.fxml");
+            childContainerView = viewUpdate.getNode();
             anchorPaneMainView.getChildren().clear();        
-            anchorPaneMainView.getChildren().add((viewUpdate.call()));
+            anchorPaneMainView.getChildren().add((viewUpdate.update("planner")));
 
         }        
         else if (button.equals(menuBtnSearch))
@@ -128,17 +136,30 @@ public class MainWindowController
             menuBtnPaneSmartSearch.setBackground(primaryColor);
             menuBtnSearch.setBackground(secondaryColor);
             viewUpdate.setFilename("searchView.fxml");
+            childContainerView = viewUpdate.getNode();
             anchorPaneMainView.getChildren().clear();        
-            anchorPaneMainView.getChildren().add((viewUpdate.call()));
+            anchorPaneMainView.getChildren().add((viewUpdate.update("search")));
         }
-    }   
+    } 
+    
+    private void createButtonList()
+    {
+        allButtons.add(menuBtnPlanner);
+        allButtons.add(menuBtnSearch);
+        allButtons.add(menuBtnSettings);
+        allButtons.add(menuBtnContacts);
+        allButtons.add(menuBtnStats);
+        allButtons.add(btnLogo);
+    }
     
     private void bindWindowSize()
     {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
-        changeMenuAppearance();
-        //System.out.println("Height: " + stage.getHeight() + " Width: " + stage.getWidth());
-
+        {
+            changeMenuAppearance();
+            searchViewController.changeContentPosition();
+            plannerViewController.changeContentPosition();
+        };
         stage.widthProperty().addListener(stageSizeListener);
         stage.heightProperty().addListener(stageSizeListener);
     }
@@ -147,14 +168,29 @@ public class MainWindowController
     {
         int menuWidth;
         if (stage.getWidth() < 1000)
-            menuWidth = 70;
+        {
+            menuWidth = 70;   
+            for (int i = 0; i < allButtons.size(); i++) 
+            {
+                allButtons.get(i).setText("");              
+            }       
+            btnLogo.setText("SP");  
+            txtVersion.setText("v. 0.1.2");
+        }
         else
+        {
             menuWidth = 240;
+            for (int i = 0; i < allButtons.size(); i++)   
+            {
+                allButtons.get(i).setText(buttonCaptions[i]);                
+            }    
+            txtVersion.setText("Version 0.1.2; HWR Gruppe C"); 
+        }      
 
         columnLeftMenu.setMinWidth(menuWidth);
         columnLeftMenu.setPrefWidth(menuWidth);
         columnLeftMenu.setMaxWidth(menuWidth);
-
-
     }
+
+    
 }

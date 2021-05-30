@@ -16,7 +16,7 @@
 
 <GridPane fx:id="rootContainer" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
-      <ColumnConstraints fx:id="columnLeftMenu" hgrow="SOMETIMES" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" />
+      <ColumnConstraints fx:id="columnLeftMenu" halignment="LEFT" hgrow="ALWAYS" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1430.0" minWidth="10.0" prefWidth="1338.0" />
    </columnConstraints>
    <rowConstraints>
@@ -24,13 +24,10 @@
       <RowConstraints maxHeight="990.0" minHeight="10.0" prefHeight="930.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <MFXButton buttonType="RAISED" cache="true" cacheHint="SPEED" ellipsisString="" prefHeight="100.0" prefWidth="240.0" style="-fx-background-color: #3fb4c6; -fx-border-radius: 0;" text=" " textFill="WHITE">
+      <MFXButton fx:id="btnLogo" buttonType="RAISED" cache="true" cacheHint="SPEED" ellipsisString="" prefHeight="100.0" prefWidth="240.0" style="-fx-background-color: #3fb4c6; -fx-border-radius: 0;" text="SMART PLANNER" textFill="WHITE">
          <font>
-            <Font name="Consolas" size="12.0" />
+            <Font name="DejaVu Sans ExtraLight" size="19.0" />
          </font>
-         <graphic>
-            <ImageView fx:id="imgLogo" cache="true" cacheHint="SPEED" fitHeight="60.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
-         </graphic>
       </MFXButton>
       <GridPane style="-fx-background-color: #45c8dc;" GridPane.columnIndex="1">
         <columnConstraints>
@@ -76,7 +73,7 @@
             </HBox>
          </children>
       </GridPane>
-      <VBox alignment="TOP_CENTER" cache="true" cacheHint="SPEED" prefHeight="1000.0" style="-fx-background-color: #262a33;" GridPane.rowIndex="1">
+      <VBox cache="true" cacheHint="SPEED" prefHeight="1000.0" style="-fx-background-color: #262a33;" GridPane.rowIndex="1">
          <children>
             <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
                <children>
@@ -89,7 +86,7 @@
                         <ImageView fx:id="imgIconPlannerButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                      <padding>
-                        <Insets left="41.0" />
+                        <Insets left="20.0" />
                      </padding>
                   </MFXButton>
                </children>
@@ -108,7 +105,7 @@
                         <Insets />
                      </HBox.margin>
                      <padding>
-                        <Insets left="42.0" />
+                        <Insets left="20.0" />
                      </padding>
                   </MFXButton>
                </children>
@@ -120,12 +117,12 @@
                      <font>
                         <Font name="DejaVu Sans ExtraLight" size="14.0" />
                      </font>
-                     <padding>
-                        <Insets left="41.0" />
-                     </padding>
                      <graphic>
                         <ImageView fx:id="imgIconSettingsButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
                   </MFXButton>
                </children>
             </HBox>
@@ -136,12 +133,12 @@
                      <font>
                         <Font name="DejaVu Sans ExtraLight" size="14.0" />
                      </font>
-                     <padding>
-                        <Insets left="41.0" />
-                     </padding>
                      <graphic>
                         <ImageView fx:id="imgIconContactsButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
                   </MFXButton>
                </children>
             </HBox>
@@ -152,21 +149,21 @@
                      <font>
                         <Font name="DejaVu Sans ExtraLight" size="14.0" />
                      </font>
-                     <padding>
-                        <Insets left="41.0" />
-                     </padding>
                      <graphic>
                         <ImageView fx:id="imgIconStatsButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
                   </MFXButton>
                </children>
             </HBox>
-            <Text cache="true" cacheHint="SPEED" fill="#dadada" strokeType="OUTSIDE" strokeWidth="0.0" text="v. 0.1.1 HWR WI Gr. C">
+            <Text fx:id="txtVersion" cache="true" cacheHint="SPEED" fill="#dadada" strokeType="OUTSIDE" strokeWidth="0.0" text="v. 0.1.1 HWR WI Gr. C">
                <font>
                   <Font name="Consolas" size="8.0" />
                </font>
                <VBox.margin>
-                  <Insets right="53.0" top="27.0" />
+                  <Insets left="25.0" top="27.0" />
                </VBox.margin>
             </Text>
          </children>
