@@ -21,7 +21,7 @@ public class StartJFX extends Application
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("prototypeUI.fxml"));
         FXMLLoader loader = new FXMLLoader();
         FileInputStream fileInputStream = new FileInputStream(new File("src/main/java/resources/pocLoadSceneInScene.fxml"));        
-        loader.setController(new MainWindowController());
+        loader.setController(new MainWindowController(primaryStage));
         Parent root = loader.load(fileInputStream);     
 
         primaryStage.setScene(new Scene(root));            

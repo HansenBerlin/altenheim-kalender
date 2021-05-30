@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import io.github.palexdev.materialfx.controls.MFXProgressSpinner?>
 <?import io.github.palexdev.materialfx.skins.MFXDatePickerContent?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane cache="true" cacheHint="SPEED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox prefHeight="530.0" prefWidth="800.0">
+      <HBox cache="true" cacheHint="SPEED" prefHeight="530.0" prefWidth="800.0">
          <children>
-            <MFXDatePickerContent>
+            <MFXDatePickerContent cache="true" cacheHint="SPEED">
                <HBox.margin>
                   <Insets left="50.0" top="50.0" />
                </HBox.margin>
             </MFXDatePickerContent>
-            <MFXProgressSpinner prefHeight="530.0" prefWidth="86.0">
-               <HBox.margin>
-                  <Insets left="100.0" />
-               </HBox.margin>
-            </MFXProgressSpinner>
          </children>
       </HBox>
    </children>

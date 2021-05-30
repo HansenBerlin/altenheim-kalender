@@ -4,169 +4,173 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+
+<GridPane fx:id="rootContainer" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints fx:id="columnLeftMenu" hgrow="SOMETIMES" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1430.0" minWidth="10.0" prefWidth="1338.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="100.0" minHeight="70.0" prefHeight="100.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="990.0" minHeight="10.0" prefHeight="930.0" vgrow="SOMETIMES" />
+   </rowConstraints>
    <children>
-      <HBox prefHeight="600.0" prefWidth="1000.0">
+      <MFXButton buttonType="RAISED" cache="true" cacheHint="SPEED" ellipsisString="" prefHeight="100.0" prefWidth="240.0" style="-fx-background-color: #3fb4c6; -fx-border-radius: 0;" text=" " textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="12.0" />
+         </font>
+         <graphic>
+            <ImageView fx:id="imgLogo" cache="true" cacheHint="SPEED" fitHeight="60.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
+         </graphic>
+      </MFXButton>
+      <GridPane style="-fx-background-color: #45c8dc;" GridPane.columnIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <AnchorPane prefHeight="600.0" prefWidth="200.0">
+            <Text fx:id="txtBreadcrumb" cache="true" cacheHint="SPEED" fill="#2c2c2c" strokeType="OUTSIDE" strokeWidth="0.0" text="&gt; Smart Appointment Search">
+               <font>
+                  <Font name="DejaVu Sans ExtraLight" size="14.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </Text>
+            <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #262a33;">
-                     <children>
-                        <MFXButton buttonType="RAISED" ellipsisString="" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: #3fb4c6; -fx-border-radius: 0;" text=" " textFill="WHITE">
-                           <font>
-                              <Font name="Consolas" size="12.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fx:id="imgLogo" fitHeight="60.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
-                           </graphic>
-                        </MFXButton>
-                        <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="200.0">
-                           <children>
-                              <Pane fx:id="menuBtnPanePlanner" prefWidth="3.0" />
-                              <MFXButton fx:id="menuBtnPlanner" alignment="BASELINE_LEFT" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="197.0" text="Planner" textFill="#e0e0e0">
-                                 <font>
-                                    <Font name="DejaVu Sans ExtraLight" size="14.0" />
-                                 </font>
-                                 <graphic>
-                                    <ImageView fx:id="imgIconPlannerButton" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                                 </graphic>
-                                 <padding>
-                                    <Insets left="41.0" />
-                                 </padding>
-                              </MFXButton>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="200.0">
-                           <children>
-                              <Pane fx:id="menuBtnPaneSmartSearch" prefWidth="3.0" />
-                              <MFXButton fx:id="menuBtnSearch" alignment="BASELINE_LEFT" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="197.0" text="Smart Search" textFill="#e0e0e0">
-                                 <font>
-                                    <Font name="DejaVu Sans ExtraLight" size="14.0" />
-                                 </font>
-                                 <graphic>
-                                    <ImageView fx:id="imgIconSearchButton" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                                 </graphic>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets left="42.0" />
-                                 </padding>
-                              </MFXButton>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="200.0">
-                           <children>
-                              <Pane fx:id="menuBtnPaneSettings" prefWidth="3.0" style="-fx-background-color: transparent;" />
-                              <MFXButton fx:id="menuBtnSettings" alignment="BASELINE_LEFT" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="197.0" style="-fx-background-color: transparent;" text="Settings" textFill="#e0e0e0">
-                                 <font>
-                                    <Font name="DejaVu Sans ExtraLight" size="14.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="41.0" />
-                                 </padding>
-                                 <graphic>
-                                    <ImageView fx:id="imgIconSettingsButton" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                                 </graphic>
-                              </MFXButton>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="200.0">
-                           <children>
-                              <Pane fx:id="menuBtnPaneContacts" prefWidth="3.0" style="-fx-background-color: transparent;" />
-                              <MFXButton fx:id="menuBtnContacts" alignment="BASELINE_LEFT" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="197.0" style="-fx-background-color: transparent;" text="Contacts" textFill="#e0e0e0">
-                                 <font>
-                                    <Font name="DejaVu Sans ExtraLight" size="14.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="41.0" />
-                                 </padding>
-                                 <graphic>
-                                    <ImageView fx:id="imgIconContactsButton" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                                 </graphic>
-                              </MFXButton>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="200.0">
-                           <children>
-                              <Pane fx:id="menuBtnPaneStats" prefWidth="3.0" style="-fx-background-color: transparent;" />
-                              <MFXButton fx:id="menuBtnStats" alignment="BASELINE_LEFT" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="197.0" style="-fx-background-color: transparent;" text="Stats" textFill="#e0e0e0">
-                                 <font>
-                                    <Font name="DejaVu Sans ExtraLight" size="14.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="41.0" />
-                                 </padding>
-                                 <graphic>
-                                    <ImageView fx:id="imgIconStatsButton" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                                 </graphic>
-                              </MFXButton>
-                           </children>
-                        </HBox>
-                        <Text fill="#dadada" strokeType="OUTSIDE" strokeWidth="0.0" text="v. 0.1.1 HWR WI Gr. C">
-                           <font>
-                              <Font name="Consolas" size="8.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets right="70.0" top="150.0" />
-                           </VBox.margin>
-                        </Text>
-                     </children>
-                  </VBox>
+                  <MFXButton alignment="CENTER_RIGHT" cache="true" cacheHint="SPEED" prefHeight="36.0" prefWidth="36.0" style="-fx-background-color: transparent;" text=" " HBox.hgrow="ALWAYS">
+                     <graphic>
+                        <ImageView fx:id="imgIconAddAppointment" cache="true" cacheHint="SPEED" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                     <HBox.margin>
+                        <Insets left="40.0" />
+                     </HBox.margin>
+                  </MFXButton>
+                  <MFXButton alignment="CENTER_RIGHT" cache="true" cacheHint="SPEED" prefHeight="36.0" prefWidth="36.0" style="-fx-background-color: transparent;" text=" ">
+                     <graphic>
+                        <ImageView fx:id="imgIconLanguage" cache="true" cacheHint="SPEED" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                  </MFXButton>
+                  <MFXButton alignment="CENTER_RIGHT" cache="true" cacheHint="SPEED" prefHeight="36.0" prefWidth="36.0" style="-fx-background-color: transparent;" text=" ">
+                     <graphic>
+                        <ImageView fx:id="imgIconUser" cache="true" cacheHint="SPEED" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                  </MFXButton>
                </children>
-            </AnchorPane>
-            <AnchorPane prefHeight="600.0" prefWidth="800.0">
-               <children>
-                  <VBox prefHeight="600.0" prefWidth="800.0">
-                     <children>
-                        <Pane prefHeight="70.0" prefWidth="800.0" style="-fx-background-color: #45c8dc;">
-                           <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="800.0">
-                                 <children>
-                                    <Text fill="#2c2c2c" strokeType="OUTSIDE" strokeWidth="0.0" text="&gt; Smart Appointment Search">
-                                       <font>
-                                          <Font name="DejaVu Sans ExtraLight" size="18.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="20.0" />
-                                       </HBox.margin>
-                                    </Text>
-                                    <MFXButton prefHeight="36.0" prefWidth="36.0" style="-fx-background-color: transparent;" text=" ">
-                                       <graphic>
-                                          <ImageView fx:id="imgIconAddAppointment" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
-                                       </graphic>
-                                       <HBox.margin>
-                                          <Insets left="170.0" />
-                                       </HBox.margin>
-                                    </MFXButton>
-                                    <MFXButton prefHeight="36.0" prefWidth="36.0" style="-fx-background-color: transparent;" text=" ">
-                                       <graphic>
-                                          <ImageView fx:id="imgIconLanguage" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
-                                       </graphic>
-                                       <HBox.margin>
-                                          <Insets left="154.0" />
-                                       </HBox.margin>
-                                    </MFXButton>
-                                    <MFXButton prefHeight="36.0" prefWidth="36.0" style="-fx-background-color: transparent;" text=" ">
-                                       <graphic>
-                                          <ImageView fx:id="imgIconUser" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
-                                       </graphic>
-                                    </MFXButton>
-                                 </children>
-                              </HBox>
-                           </children></Pane>
-                        <AnchorPane fx:id="anchorPaneMainView" prefHeight="530.0" prefWidth="800.0" />
-                     </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </HBox>
          </children>
-      </HBox>
+      </GridPane>
+      <VBox alignment="TOP_CENTER" cache="true" cacheHint="SPEED" prefHeight="1000.0" style="-fx-background-color: #262a33;" GridPane.rowIndex="1">
+         <children>
+            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
+               <children>
+                  <Pane fx:id="menuBtnPanePlanner" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
+                  <MFXButton fx:id="menuBtnPlanner" alignment="BASELINE_LEFT" cache="true" cacheHint="SPEED" minWidth="68.0" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" text="Planner" textFill="#e0e0e0">
+                     <font>
+                        <Font name="DejaVu Sans ExtraLight" size="14.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fx:id="imgIconPlannerButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                     <padding>
+                        <Insets left="41.0" />
+                     </padding>
+                  </MFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
+               <children>
+                  <Pane fx:id="menuBtnPaneSmartSearch" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
+                  <MFXButton fx:id="menuBtnSearch" alignment="BASELINE_LEFT" cache="true" cacheHint="SPEED" minWidth="68.0" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" text="Smart Search" textFill="#e0e0e0">
+                     <font>
+                        <Font name="DejaVu Sans ExtraLight" size="14.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fx:id="imgIconSearchButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets left="42.0" />
+                     </padding>
+                  </MFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
+               <children>
+                  <Pane fx:id="menuBtnPaneSettings" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="3.0" style="-fx-background-color: transparent;" />
+                  <MFXButton fx:id="menuBtnSettings" alignment="BASELINE_LEFT" cache="true" cacheHint="SPEED" minWidth="68.0" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-background-color: transparent;" text="Settings" textFill="#e0e0e0">
+                     <font>
+                        <Font name="DejaVu Sans ExtraLight" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets left="41.0" />
+                     </padding>
+                     <graphic>
+                        <ImageView fx:id="imgIconSettingsButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                  </MFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
+               <children>
+                  <Pane fx:id="menuBtnPaneContacts" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" style="-fx-background-color: transparent;" />
+                  <MFXButton fx:id="menuBtnContacts" alignment="BASELINE_LEFT" cache="true" cacheHint="SPEED" minWidth="68.0" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-background-color: transparent;" text="Contacts" textFill="#e0e0e0">
+                     <font>
+                        <Font name="DejaVu Sans ExtraLight" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets left="41.0" />
+                     </padding>
+                     <graphic>
+                        <ImageView fx:id="imgIconContactsButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                  </MFXButton>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
+               <children>
+                  <Pane fx:id="menuBtnPaneStats" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" style="-fx-background-color: transparent;" />
+                  <MFXButton fx:id="menuBtnStats" alignment="BASELINE_LEFT" cache="true" cacheHint="SPEED" minWidth="68.0" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-background-color: transparent;" text="Stats" textFill="#e0e0e0">
+                     <font>
+                        <Font name="DejaVu Sans ExtraLight" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets left="41.0" />
+                     </padding>
+                     <graphic>
+                        <ImageView fx:id="imgIconStatsButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                  </MFXButton>
+               </children>
+            </HBox>
+            <Text cache="true" cacheHint="SPEED" fill="#dadada" strokeType="OUTSIDE" strokeWidth="0.0" text="v. 0.1.1 HWR WI Gr. C">
+               <font>
+                  <Font name="Consolas" size="8.0" />
+               </font>
+               <VBox.margin>
+                  <Insets right="53.0" top="27.0" />
+               </VBox.margin>
+            </Text>
+         </children>
+      </VBox>
+      <AnchorPane fx:id="anchorPaneMainView" cache="true" cacheHint="SPEED" nodeOrientation="LEFT_TO_RIGHT" prefHeight="1000.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
    </children>
-</AnchorPane>
+</GridPane>

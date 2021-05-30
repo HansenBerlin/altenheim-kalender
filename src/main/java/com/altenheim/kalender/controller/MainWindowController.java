@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import javafx.beans.value.ChangeListener;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -16,19 +18,29 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class MainWindowController 
 {
     private Background primaryColor;
     private Background secondaryColor;
     private Background transparent;
+    private UpdateViewController viewUpdate;
+    private Stage stage;
 
     // Werden später noch gebraucht um das initiale Setup zu vereinfachen
     private List<Pane> allButtonBackgroundPanes;
-    private List<MFXButton> allButtons;
+    private List<MFXButton> allButtons;   
+    
+    public MainWindowController(Stage stage)
+    {
+        this.stage = stage;
+    }
 
     @FXML
     private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, 
@@ -45,6 +57,12 @@ public class MainWindowController
     private AnchorPane anchorPaneMainView;
 
     @FXML
+    private GridPane rootContainer;
+
+    @FXML
+    private ColumnConstraints columnLeftMenu;
+
+    @FXML
     void changeScene(MouseEvent event) throws IOException 
     {
         var button = (MFXButton)event.getSource();
@@ -52,11 +70,13 @@ public class MainWindowController
     }    
 
     @FXML 
-    public void initialize() throws FileNotFoundException 
+    public void initialize() throws IOException 
     {
         setColors();
         setButtonStates();
-        setImages();                
+        setImages();
+        viewUpdate = new UpdateViewController();  
+        bindWindowSize();             
     }
 
     private void setColors()
@@ -98,23 +118,43 @@ public class MainWindowController
         {
             menuBtnPanePlanner.setBackground(primaryColor);
             menuBtnPlanner.setBackground(secondaryColor);
-            loadNewNodeFromXML("plannerView.fxml");
+            viewUpdate.setFilename("plannerView.fxml");
+            anchorPaneMainView.getChildren().clear();        
+            anchorPaneMainView.getChildren().add((viewUpdate.call()));
 
         }        
         else if (button.equals(menuBtnSearch))
         {
             menuBtnPaneSmartSearch.setBackground(primaryColor);
             menuBtnSearch.setBackground(secondaryColor);
-            loadNewNodeFromXML("searchView.fxml");
+            viewUpdate.setFilename("searchView.fxml");
+            anchorPaneMainView.getChildren().clear();        
+            anchorPaneMainView.getChildren().add((viewUpdate.call()));
         }
+    }   
+    
+    private void bindWindowSize()
+    {
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
+        changeMenuAppearance();
+        //System.out.println("Height: " + stage.getHeight() + " Width: " + stage.getWidth());
+
+        stage.widthProperty().addListener(stageSizeListener);
+        stage.heightProperty().addListener(stageSizeListener);
     }
 
-    private void loadNewNodeFromXML(String fileName) throws IOException
+    private void changeMenuAppearance()
     {
-        anchorPaneMainView.getChildren().clear();        
-        FXMLLoader loader = new FXMLLoader();
-        FileInputStream fileInputStream = new FileInputStream(new File("src/main/java/resources/" + fileName)); 
-        var root = loader.load(fileInputStream);
-        anchorPaneMainView.getChildren().add((Node)root);
-    }    
+        int menuWidth;
+        if (stage.getWidth() < 1000)
+            menuWidth = 70;
+        else
+            menuWidth = 240;
+
+        columnLeftMenu.setMinWidth(menuWidth);
+        columnLeftMenu.setPrefWidth(menuWidth);
+        columnLeftMenu.setMaxWidth(menuWidth);
+
+
+    }
 }
