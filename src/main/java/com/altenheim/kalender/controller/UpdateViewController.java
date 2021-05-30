@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.controller;
+package com.altenheim.kalender.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
