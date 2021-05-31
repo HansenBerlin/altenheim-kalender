@@ -52,7 +52,7 @@ public class MainWindowController
 
     @FXML
     private ImageView imgIconPlannerButton, imgIconSearchButton, imgIconSettingsButton, imgIconContactsButton, 
-        imgIconStatsButton, imgIconAddAppointment, imgIconUser, imgIconLanguage;    
+        imgIconStatsButton, imgIconAddAppointment, imgIconUser, imgIconLanguage, imgIconDarkMode;    
 
     @FXML
     private GridPane rootContainer, childViewPlanner, childViewSearch;
@@ -117,12 +117,13 @@ public class MainWindowController
     private void setImages() throws FileNotFoundException
     {
         imgIconPlannerButton.setImage(new Image(new FileInputStream(new File("src/main/java/resources/calendar.png"))));
-        imgIconSearchButton.setImage(new Image(new FileInputStream(new File("src/main/java/resources/calendar.png"))));
+        imgIconSearchButton.setImage(new Image(new FileInputStream(new File("src/main/java/resources/loupe.png"))));
         imgIconContactsButton.setImage(new Image(new FileInputStream(new File("src/main/java/resources/calendar.png"))));
         imgIconSettingsButton.setImage(new Image(new FileInputStream(new File("src/main/java/resources/calendar.png"))));
         imgIconStatsButton.setImage(new Image(new FileInputStream(new File("src/main/java/resources/calendar.png"))));
         imgIconAddAppointment.setImage(new Image(new FileInputStream(new File("src/main/java/resources/plus.png"))));
         imgIconLanguage.setImage(new Image(new FileInputStream(new File("src/main/java/resources/language.png"))));
+        imgIconDarkMode.setImage(new Image(new FileInputStream(new File("src/main/java/resources/darkMode.png"))));
         imgIconUser.setImage(new Image(new FileInputStream(new File("src/main/java/resources/user.png"))));
     }
 
@@ -141,8 +142,7 @@ public class MainWindowController
             childViewSearch.setVisible(false);
             childViewPlanner.setDisable(false);
             childViewPlanner.setVisible(true);
-            
-
+            txtBreadcrumb.setText("> Terminübersicht");  
         }        
         else if (button.equals(menuBtnSearch))
         {
@@ -152,7 +152,8 @@ public class MainWindowController
             childViewSearch.setVisible(true);
             childViewPlanner.setDisable(true);
             childViewPlanner.setVisible(false);
-            
+            txtBreadcrumb.setText("> Smarte Terminsuche");  
+
         }
     } 
     
