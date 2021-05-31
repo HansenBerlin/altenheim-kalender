@@ -9,38 +9,38 @@ import javafx.scene.layout.GridPane;
 
 public class UpdateViewController
 {   
-    private String fileName;
-    private GridPane node;
+    private GridPane planner;
+    private GridPane search;
     private SearchViewController searchViewController;
     private PlannerViewController plannerViewController;
 
-    public UpdateViewController(SearchViewController searchViewController, PlannerViewController plannerViewController)
+    public UpdateViewController(SearchViewController searchViewController, PlannerViewController plannerViewController, GridPane planner, GridPane search)
     {
-        node = new GridPane();
         this.searchViewController = searchViewController;
         this.plannerViewController = plannerViewController;
+        this.planner = planner;
+        this.search = search;
+    }    
 
-    }
-
-    public void setFilename(String fileName)
+    public GridPane getSearchView()
     {
-        this.fileName = fileName;        
+        return search;
     }
 
-    public GridPane getNode()
+    public GridPane getPlannerView()
     {
-        return node;
+        return planner;
     }
 
-    protected GridPane update(String controller) throws IOException 
+    public void setupNodes() throws IOException 
     {
         var loader = new FXMLLoader();
-        var fileInputStream = new FileInputStream(new File("src/main/java/resources/" + fileName)); 
-        if (controller.equals("planner"))   
-            loader.setController(plannerViewController); 
-        else if (controller.equals("search"))   
-            loader.setController(searchViewController); 
-        node = loader.load(fileInputStream);
-        return node;
+        var fileInputStream = new FileInputStream(new File("src/main/java/resources/plannerView.fxml")); 
+        loader.setController(plannerViewController); 
+        planner = loader.load(fileInputStream);
+        var fileInputStream2 = new FileInputStream(new File("src/main/java/resources/searchView.fxml")); 
+        var loader2 = new FXMLLoader();
+        loader2.setController(searchViewController); 
+        search = loader2.load(fileInputStream2);
     }
 }

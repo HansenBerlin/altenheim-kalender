@@ -55,7 +55,7 @@ public class MainWindowController
         imgIconStatsButton, imgIconAddAppointment, imgIconUser, imgIconLanguage;    
 
     @FXML
-    private GridPane rootContainer, childContainerView;
+    private GridPane rootContainer, childViewPlanner, childViewSearch;
 
     @FXML
     private AnchorPane anchorPaneMainView;
@@ -83,8 +83,20 @@ public class MainWindowController
         setImages();
         searchViewController = new SearchViewController(stage);     
         plannerViewController = new PlannerViewController(stage);     
-        viewUpdate = new UpdateViewController(searchViewController, plannerViewController);  
+        viewUpdate = new UpdateViewController(searchViewController, plannerViewController, childViewPlanner, childViewSearch); 
+        initializeChildNodes(); 
         bindWindowSize();   
+    }
+
+    private void initializeChildNodes() throws IOException
+    {
+        viewUpdate.setupNodes();   
+        childViewPlanner = viewUpdate.getPlannerView();
+        childViewSearch = viewUpdate.getSearchView();    
+        anchorPaneMainView.getChildren().addAll(childViewPlanner, childViewSearch);
+        childViewSearch.setDisable(true);
+        childViewSearch.setVisible(false);
+
     }
 
     private void setColors()
@@ -125,20 +137,22 @@ public class MainWindowController
         {
             menuBtnPanePlanner.setBackground(primaryColor);
             menuBtnPlanner.setBackground(secondaryColor);
-            viewUpdate.setFilename("plannerView.fxml");
-            childContainerView = viewUpdate.getNode();
-            anchorPaneMainView.getChildren().clear();        
-            anchorPaneMainView.getChildren().add((viewUpdate.update("planner")));
+            childViewSearch.setDisable(true);
+            childViewSearch.setVisible(false);
+            childViewPlanner.setDisable(false);
+            childViewPlanner.setVisible(true);
+            
 
         }        
         else if (button.equals(menuBtnSearch))
         {
             menuBtnPaneSmartSearch.setBackground(primaryColor);
             menuBtnSearch.setBackground(secondaryColor);
-            viewUpdate.setFilename("searchView.fxml");
-            childContainerView = viewUpdate.getNode();
-            anchorPaneMainView.getChildren().clear();        
-            anchorPaneMainView.getChildren().add((viewUpdate.update("search")));
+            childViewSearch.setDisable(false);
+            childViewSearch.setVisible(true);
+            childViewPlanner.setDisable(true);
+            childViewPlanner.setVisible(false);
+            
         }
     } 
     
