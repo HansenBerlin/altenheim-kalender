@@ -55,7 +55,7 @@
                         <Insets left="40.0" />
                      </HBox.margin>
                   </MFXButton>
-                  <MFXButton alignment="CENTER_RIGHT" cache="true" cacheHint="SPEED" prefHeight="36.0" prefWidth="36.0" style="-fx-background-color: transparent;" text=" ">
+                  <MFXButton alignment="CENTER_RIGHT" cache="true" cacheHint="SPEED" onAction="#switchLightAndDarkMode" prefHeight="36.0" prefWidth="36.0" style="-fx-background-color: transparent;" text=" ">
                      <graphic>
                         <ImageView fx:id="imgIconDarkMode" cache="true" cacheHint="SPEED" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>

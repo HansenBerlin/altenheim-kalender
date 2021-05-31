@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.value.ChangeListener;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Accordion;
@@ -35,6 +36,7 @@ public class MainWindowController
     private PlannerViewController plannerViewController;
     private Stage stage;
     private String[] buttonCaptions = {"Planner", "Smart Search", "Settings", "Contacts", "Stats", "SMART PLANNER"};
+    private boolean darkModeActive = false;
     
     private List<MFXButton> allButtons;   
     
@@ -71,7 +73,26 @@ public class MainWindowController
     {
         var button = (MFXButton)event.getSource();
         setPaneColor(button);
-    }    
+    }  
+    
+    @FXML
+    void switchLightAndDarkMode(ActionEvent event) throws FileNotFoundException 
+    {
+        if (darkModeActive)
+        {
+            childViewPlanner.setBackground(new Background(new BackgroundFill(Color.web("transparent"), CornerRadii.EMPTY, Insets.EMPTY)));
+            childViewSearch.setBackground(new Background(new BackgroundFill(Color.web("transparent"), CornerRadii.EMPTY, Insets.EMPTY)));
+            imgIconDarkMode.setImage(new Image(new FileInputStream(new File("src/main/java/resources/darkMode.png"))));   
+            darkModeActive = false;          
+        }
+        else
+        {
+            childViewPlanner.setBackground(new Background(new BackgroundFill(Color.web("#1d2027"), CornerRadii.EMPTY, Insets.EMPTY)));
+            childViewSearch.setBackground(new Background(new BackgroundFill(Color.web("#1d2027"), CornerRadii.EMPTY, Insets.EMPTY)));
+            imgIconDarkMode.setImage(new Image(new FileInputStream(new File("src/main/java/resources/lightMode.png")))); 
+            darkModeActive = true;          
+        }
+    }
 
     @FXML 
     public void initialize() throws IOException 
