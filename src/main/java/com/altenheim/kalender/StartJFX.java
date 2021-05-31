@@ -1,24 +1,28 @@
 package com.altenheim.kalender;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import com.altenheim.kalender.controller.MainViewController;
+import com.altenheim.kalender.controller.MainWindowController;
 
 public class StartJFX extends Application
 {    
     @Override
     public void start(Stage primaryStage) throws Exception 
     {      
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("prototypeUI.fxml"));
-        var controller = new MainViewController();
-        loader.setController(controller);
-        Parent root = loader.load();
+        //kann sein, dass im Build durch den default Zugriff auf ressources durch Maven die
+        // untere Vorgehensweise Fehler schmeißt, also mal noch drinlassen bitte
+        //FXMLLoader loader = new FXMLLoader(getClass().getResource("prototypeUI.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        FileInputStream fileInputStream = new FileInputStream(new File("src/main/java/resources/pocLoadSceneInScene.fxml"));        
+        loader.setController(new MainWindowController(primaryStage));
+        Parent root = loader.load(fileInputStream);     
 
         primaryStage.setScene(new Scene(root));            
         primaryStage.setTitle("Kalender Prototype"); 
