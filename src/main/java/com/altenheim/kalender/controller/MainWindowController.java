@@ -110,9 +110,10 @@ public class MainWindowController
         createButtonList();
         setImages();
         searchViewController = new SearchViewController(stage);     
-        plannerViewController = new PlannerViewController(stage);     
+        plannerViewController = new PlannerViewController(stage); 
         viewUpdate = new UpdateViewController(searchViewController, plannerViewController, childViewPlanner, childViewSearch); 
         initializeChildNodes(); 
+        plannerViewController.addCustomCalendarView();    
         bindWindowSize();   
     }
 
