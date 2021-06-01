@@ -11,7 +11,7 @@ public class SearchViewController
     private GridPane childContainerView;
 
     @FXML
-    private Accordion accordeonSettings;
+    private Accordion accordeonSettings;    
 
     private Stage stage;
 

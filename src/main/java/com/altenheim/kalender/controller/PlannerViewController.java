@@ -1,5 +1,8 @@
 package com.altenheim.kalender.controller;
 
+import com.altenheim.kalender.views.CalendarViewOverride;
+import com.calendarfx.view.CalendarView;
+
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -12,11 +15,16 @@ public class PlannerViewController
     @FXML
     private GridPane gridRightColumn;
 
+    @FXML
+    private CalendarView calendarViewTotal;
+
     private Stage stage;
 
     public PlannerViewController(Stage stage)
     {
         this.stage = stage;
+        calendarViewTotal = new CalendarViewOverride();
+
     }
     
     public void changeContentPosition()

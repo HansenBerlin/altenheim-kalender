@@ -6,6 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.altenheim.kalender.views.CalendarViewOverride;
+import com.altenheim.kalender.views.MainCalendarView;
+import com.calendarfx.view.CalendarView;
+
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -67,6 +72,8 @@ public class MainWindowController
 
     @FXML
     private Text txtVersion, txtBreadcrumb;    
+
+    
 
     @FXML
     void changeScene(MouseEvent event) throws IOException 
@@ -156,14 +163,15 @@ public class MainWindowController
         menuBtnSearch.setBackground(transparent);
 
         if (button.equals(menuBtnPlanner))    
-        {
+        {     
             menuBtnPanePlanner.setBackground(primaryColor);
             menuBtnPlanner.setBackground(secondaryColor);
             childViewSearch.setDisable(true);
             childViewSearch.setVisible(false);
             childViewPlanner.setDisable(false);
             childViewPlanner.setVisible(true);
-            txtBreadcrumb.setText("> Terminübersicht");  
+            txtBreadcrumb.setText("> Terminübersicht"); 
+            
         }        
         else if (button.equals(menuBtnSearch))
         {
