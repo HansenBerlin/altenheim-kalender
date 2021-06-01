@@ -121,7 +121,7 @@
 
 .day-page > .container > .content > .left-side > .header {
     -fx-background-color: rgb(31, 31, 31);
-    -fx-background-radius: 6px;
+    -fx-background-radius: 0px;
     -fx-padding: 0 1em 0 1em;
 }
 
@@ -640,7 +640,7 @@
 .time-scale > .date-label {
     -fx-font-size: 0.8em;
     -fx-background-color: gray;
-    -fx-background-radius: 2px;
+    -fx-background-radius: 0px;
     -fx-padding: 2px 4px;
     -fx-text-fill: white;
 }
@@ -890,14 +890,14 @@
 
 .default-style-visibility-checkbox > .box {
     -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
-    -fx-background-radius: 3.0, 2.0, 1.0;
+    -fx-background-radius: 0.0, 0.0, 0.0;
     -fx-padding: 0.166667em 0.166667em 0.25em 0.25em; /* 2 2 3 3 */
 }
 
 .default-style-visibility-checkbox:focused > .box {
     -fx-background-color: -fx-focus-color, -fx-inner-border, -fx-body-color, -fx-faint-focus-color, -fx-body-color;
     -fx-background-insets: -0.2, 1.0, 2.0, -1.4, 2.6;
-    -fx-background-radius: 3.0, 2.0, 1.0, 4.0, 1.0;
+    -fx-background-radius: 0.0, 0.0, 0.0, 0.0, 0.0;
 }
 
 .default-style-entry-popover-title {
@@ -1512,9 +1512,9 @@
 .recurrence-popup {
     -fx-padding: 1.0em;
     -fx-background-color: rgba(255.0, 255.0, 255.0, 0.95);
-    -fx-background-radius: 4.0px;
+    -fx-background-radius: 0.0px;
     -fx-effect: dropshadow(gaussian, rgba(0.0, 0.0, 0.0, 0.2), 10.0, 0.5, 2.0, 2.0);
-    -fx-border-radius: 4.0px;
+    -fx-border-radius: 0.0px;
     -fx-border-color: linear-gradient(to bottom, rgba(0.0, 0.0, 0.0, 0.3), rgba(0.0, 0.0, 0.0, 0.7));
     -fx-border-width: 0.5;
 }
@@ -1640,7 +1640,7 @@
 
 .month-sheet-view > .container > .badge-date-cell > .badge-label {
     -fx-pref-width: 2em;
-    -fx-background-radius: 2;
+    -fx-background-radius: 0;
     -fx-font-size: 0.8em;
     -fx-font-weight: bold;
     -fx-text-alignment: right;
@@ -1872,19 +1872,19 @@
 }
 
 .button-bar > .container > .button.left-pill {
-    -fx-background-radius: 3 0 0 3;
+    -fx-background-radius: 0 0 0 0;
 }
 
 .button-bar > .container > .button.left-pill:focused {
-    -fx-background-radius: 3 0 0 3;
+    -fx-background-radius: 0 0 0 0;
 }
 
 .button-bar > .container > .button.right-pill {
-    -fx-background-radius: 0 3 3 0;
+    -fx-background-radius: 0 0 0 0;
 }
 
 .button-bar > .container > .button.right-pill:focused {
-    -fx-background-radius: 0 3 3 0;
+    -fx-background-radius: 0 0 0 0;
     -fx-background-insets: -2 -2 -2 0, 0, 1 1 1 0, 2 2 2 1;
 }
 
