@@ -14,9 +14,9 @@ public class PlannerViewController
 
     @FXML
     private GridPane gridRightColumn;
-
     @FXML
-    private CalendarView calendarViewTotal;
+
+    private CalendarViewOverride calendarViewTotal;
 
     private Stage stage;
 
@@ -40,6 +40,11 @@ public class PlannerViewController
         {
             childContainerView.add(gridRightColumn, 1, 0);
         }
+    }
+
+    public void addCustomCalendarView()
+    {
+        childContainerView.add(calendarViewTotal, 0, 0, 1, 2);
     }
 }
 

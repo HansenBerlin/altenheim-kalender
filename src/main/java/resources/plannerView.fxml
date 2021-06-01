@@ -2,7 +2,6 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
-<?import io.github.palexdev.materialfx.skins.MFXDatePickerContent?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -19,11 +18,6 @@
       <RowConstraints minHeight="200.0" prefHeight="400.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <MFXDatePickerContent alignment="CENTER" cache="true" cacheHint="SPEED" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <GridPane.margin>
-            <Insets top="20.0" />
-         </GridPane.margin>
-      </MFXDatePickerContent>
       <GridPane fx:id="gridRightColumn" maxWidth="300.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="100.0" />

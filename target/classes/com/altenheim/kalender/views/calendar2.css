@@ -39,7 +39,7 @@
 }
 
 #search-field {
-    -fx-background-radius: 100.0px;
+    -fx-background-radius: 0.0px;
     -fx-pref-width: 200.0px;
 }
 
@@ -120,7 +120,7 @@
  */
 
 .day-page > .container > .content > .left-side > .header {
-    -fx-background-color: gray;
+    -fx-background-color: rgb(31, 31, 31);
     -fx-background-radius: 6px;
     -fx-padding: 0 1em 0 1em;
 }
@@ -128,7 +128,7 @@
 .day-page > .container > .content > .left-side > .header > .today-label {
     -fx-font-family: Arial;
     -fx-font-size: 12.0em;
-    -fx-text-fill: white;
+    -fx-text-fill: rgb(56, 56, 56);
 }
 
 .day-page > .container > .content > .left-side > .agenda-view {
