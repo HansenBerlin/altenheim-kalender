@@ -1,7 +1,5 @@
 package com.altenheim.kalender.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,11 +8,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -28,7 +22,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro.JMetro;
-import jfxtras.styles.jmetro.JMetroStyleClass;
 import jfxtras.styles.jmetro.MDL2IconFont;
 import jfxtras.styles.jmetro.Style;
 
@@ -59,10 +52,7 @@ public class MainWindowController
     private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnStats, menuBtnMail;  
     
     @FXML
-    private Button btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser;   
-
-    @FXML
-    private ImageView imgIconAddAppointment, imgIconUser, imgIconLanguage, imgIconDarkMode;    
+    private Button btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser;       
 
     @FXML
     private GridPane rootContainer, childViewPlanner, childViewSearch;
@@ -113,7 +103,6 @@ public class MainWindowController
             childViewPlanner.setBackground(transparent);
             childViewSearch.setBackground(transparent);
             anchorPaneMainView.setBackground(transparent);
-            imgIconDarkMode.setImage(new Image(new FileInputStream(new File("src/main/java/resources/darkMode.png")))); 
             darkModeActive = false;          
         }
         else
@@ -123,7 +112,6 @@ public class MainWindowController
             childViewPlanner.setBackground(dark);
             childViewSearch.setBackground(dark);
             anchorPaneMainView.setBackground(dark);
-            imgIconDarkMode.setImage(new Image(new FileInputStream(new File("src/main/java/resources/lightMode.png"))));   
             darkModeActive = true;          
         }
     }    

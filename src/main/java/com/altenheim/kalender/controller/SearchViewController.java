@@ -5,13 +5,9 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Slider;
-
 import java.io.IOException;
-
 import com.calendarfx.view.TimeField;
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import io.github.palexdev.materialfx.controls.MFXDatePicker;
+
 
 public class SearchViewController 
 {
@@ -20,18 +16,9 @@ public class SearchViewController
 
     @FXML
     private Slider sliderAppointmentDuration;
-
+   
     @FXML
-    private MFXDatePicker datePickerStart, datePickerEnd;   
-
-    @FXML
-    private MFXCheckbox cbMonday, cbTuesday, cbWednesday, cbThursday, cbFriday, cbSaturday, cbSunday;
-
-    @FXML
-    private TimeField timeStarttimeEnd;    
-
-    @FXML
-    private MFXButton btnBack, btnConfirm;    
+    private TimeField timeStarttimeEnd;     
 
     private Stage stage;
 

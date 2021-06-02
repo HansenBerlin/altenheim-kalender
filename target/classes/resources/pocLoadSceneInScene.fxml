@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -47,26 +46,10 @@
             </Text>
             <HBox alignment="CENTER_RIGHT" spacing="15.0" GridPane.columnIndex="1">
                <children>
-                  <Button fx:id="btnAddAppointment" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;">
-                     <graphic>
-                        <ImageView fx:id="imgIconAddAppointment" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                     </graphic>
-                  </Button>
-                  <Button fx:id="btnSwitchModes" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#switchLightAndDarkMode" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;">
-                     <graphic>
-                        <ImageView fx:id="imgIconDarkMode" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                     </graphic>
-                  </Button>
-                  <Button fx:id="btnSwitchLanguage" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;">
-                     <graphic>
-                        <ImageView fx:id="imgIconLanguage" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                     </graphic>
-                  </Button>
-                  <Button fx:id="btnUser" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;">
-                     <graphic>
-                        <ImageView fx:id="imgIconUser" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                     </graphic>
-                  </Button>
+                  <Button fx:id="btnAddAppointment" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
+                  <Button fx:id="btnSwitchModes" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#switchLightAndDarkMode" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
+                  <Button fx:id="btnSwitchLanguage" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
+                  <Button fx:id="btnUser" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
                </children>
                <GridPane.margin>
                   <Insets right="20.0" />

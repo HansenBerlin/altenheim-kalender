@@ -43,27 +43,17 @@
       <groupId>com.calendarfx</groupId>
       <artifactId>view</artifactId>
       <version>11.10.1</version>
-    </dependency>
-    <dependency>
-      <groupId>io.github.palexdev</groupId>
-      <artifactId>materialfx</artifactId>
-      <version>11.10.1</version>
-    </dependency>
+    </dependency>   
     <dependency>
       <groupId>org.jfxtras</groupId>
       <artifactId>jmetro</artifactId>
       <version>11.6.15</version>
     </dependency>
     <dependency>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-base</artifactId>
-    <version>17-ea+11</version>
-</dependency>
-
-
-
-
-
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-base</artifactId>
+      <version>17-ea+11</version>
+    </dependency>
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
