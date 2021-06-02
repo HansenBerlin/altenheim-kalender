@@ -119,7 +119,7 @@ public class MainViewController implements Initializable
 
     private void openCalendar()
     {
-        var calendar = new MainCalendarView();
-        calendar.startCalendar(allCalendars.getSpecificCalendarByIndex(0));
+        //var calendar = new MainCalendarView();
+        //calendar.startCalendar(allCalendars.getSpecificCalendarByIndex(0));
     }
 }
