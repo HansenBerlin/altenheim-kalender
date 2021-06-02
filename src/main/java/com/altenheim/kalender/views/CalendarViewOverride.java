@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.views;
+package com.altenheim.kalender.views;
 
 import com.calendarfx.view.CalendarView;
 
