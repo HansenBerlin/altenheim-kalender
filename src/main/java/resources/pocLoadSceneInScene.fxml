@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane fx:id="rootContainer" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="rootContainer" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints fx:id="columnLeftMenu" halignment="LEFT" hgrow="ALWAYS" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1430.0" minWidth="10.0" prefWidth="1338.0" />
@@ -23,13 +23,10 @@
       <RowConstraints maxHeight="990.0" minHeight="10.0" prefHeight="930.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Button fx:id="btnLogo" alignment="BASELINE_LEFT" minWidth="70.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="100.0" prefWidth="240.0" text="SMART PLANNER">
+      <Button fx:id="btnLogo" alignment="CENTER" contentDisplay="CENTER" minWidth="70.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="100.0" prefWidth="240.0" style="-fx-font-size: 20;" text="SMART PLANNER" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font size="18.0" />
          </font>
-         <padding>
-            <Insets left="48.0" />
-         </padding>
       </Button>
       <GridPane style="-fx-background-color: #45c8dc;" GridPane.columnIndex="1">
         <columnConstraints>
@@ -42,7 +39,7 @@
          <children>
             <Text fx:id="txtBreadcrumb" cache="true" cacheHint="SPEED" fill="#2c2c2c" strokeType="OUTSIDE" strokeWidth="0.0" text="&gt; Terminübersicht">
                <font>
-                  <Font name="DejaVu Sans Bold" size="14.0" />
+                  <Font size="14.0" />
                </font>
                <GridPane.margin>
                   <Insets left="20.0" />
@@ -50,22 +47,22 @@
             </Text>
             <HBox alignment="CENTER_RIGHT" spacing="15.0" GridPane.columnIndex="1">
                <children>
-                  <Button maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: trasnsparent;">
+                  <Button fx:id="btnAddAppointment" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;">
                      <graphic>
                         <ImageView fx:id="imgIconAddAppointment" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                   </Button>
-                  <Button maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#switchLightAndDarkMode" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: trasnsparent;">
+                  <Button fx:id="btnSwitchModes" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#switchLightAndDarkMode" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;">
                      <graphic>
                         <ImageView fx:id="imgIconDarkMode" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                   </Button>
-                  <Button maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: trasnsparent;">
+                  <Button fx:id="btnSwitchLanguage" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;">
                      <graphic>
                         <ImageView fx:id="imgIconLanguage" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                   </Button>
-                  <Button maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: trasnsparent;">
+                  <Button fx:id="btnUser" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;">
                      <graphic>
                         <ImageView fx:id="imgIconUser" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
@@ -77,53 +74,25 @@
             </HBox>
          </children>
       </GridPane>
-      <VBox cache="true" cacheHint="SPEED" prefHeight="1000.0" style="-fx-background-color: #262a33;" GridPane.rowIndex="1">
+      <VBox fx:id="vboxLeftPane" cache="true" cacheHint="SPEED" prefHeight="1000.0" GridPane.rowIndex="1">
          <children>
             <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
                <children>
                   <Pane fx:id="menuBtnPanePlanner" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
-                  <Button fx:id="menuBtnPlanner" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" text="Planner">
-                     <graphic>
-                        <ImageView fx:id="imgIconPlannerButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                     </graphic>
+                  <Button fx:id="menuBtnPlanner" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Planner">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                      <padding>
                         <Insets left="20.0" />
                      </padding>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
                   </Button>
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
                <children>
                   <Pane fx:id="menuBtnPaneSmartSearch" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
-                  <Button fx:id="menuBtnSearch" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" text="Smart Search">
-                     <graphic>
-                        <ImageView fx:id="imgIconSearchButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                     </graphic>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
-               <children>
-                  <Pane fx:id="menuBtnPaneContacts" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
-                  <Button fx:id="menuBtnSettings" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" text="Kontakte">
-                     <graphic>
-                        <ImageView fx:id="imgIconContactsButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                     </graphic>
+                  <Button fx:id="menuBtnSearch" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Smart Search">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -139,10 +108,39 @@
             <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
                <children>
                   <Pane fx:id="menuBtnPaneStats" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
-                  <Button fx:id="menuBtnContacts" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" text="Stats">
-                     <graphic>
-                        <ImageView fx:id="imgIconStatsButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                     </graphic>
+                  <Button fx:id="menuBtnStats" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Stats">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
+               <children>
+                  <Pane fx:id="menuBtnPaneContacts" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
+                  <Button fx:id="menuBtnContacts" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Addressbuch">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
+               <children>
+                  <Pane fx:id="menuBtnPaneSettings1" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
+                  <Button fx:id="menuBtnMail" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Mailtemplates">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -158,10 +156,7 @@
             <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
                <children>
                   <Pane fx:id="menuBtnPaneSettings" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
-                  <Button fx:id="menuBtnStats" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" text="Settings">
-                     <graphic>
-                        <ImageView fx:id="imgIconSettingsButton" cache="true" cacheHint="SPEED" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                     </graphic>
+                  <Button fx:id="menuBtnSettings" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Settings">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -184,6 +179,6 @@
             </Text>
          </children>
       </VBox>
-      <AnchorPane fx:id="anchorPaneMainView" cache="true" cacheHint="SPEED" nodeOrientation="LEFT_TO_RIGHT" prefHeight="1000.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <AnchorPane fx:id="anchorPaneMainView" cache="true" cacheHint="SPEED" nodeOrientation="LEFT_TO_RIGHT" prefHeight="1000.0" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
    </children>
 </GridPane>

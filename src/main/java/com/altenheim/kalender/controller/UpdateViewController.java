@@ -3,7 +3,6 @@ package com.altenheim.kalender.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 
