@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.calendarfx.view.TimeField?>
-<?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXCheckbox?>
-<?import io.github.palexdev.materialfx.controls.MFXDatePicker?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -16,227 +17,213 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane fx:id="childContainerView" alignment="CENTER" prefHeight="930.0" prefWidth="1338.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="childContainerView" alignment="CENTER" prefHeight="930.0" prefWidth="1338.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="200.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="140.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="150.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="100.0" vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
    </rowConstraints>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
-      <Circle fill="#6d25bf" radius="50.0" stroke="#262a33" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Circle fill="#6d25bf" radius="40.0" stroke="#262a33" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
-            <Insets right="375.0" />
+            <Insets right="300.0" />
          </GridPane.margin>
       </Circle>
-      <Circle fill="#f3f3f3" radius="50.0" stroke="#6d25bf" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Circle fill="#f3f3f3" radius="40.0" stroke="#6d25bf" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
-            <Insets right="125.0" />
+            <Insets right="100.0" />
          </GridPane.margin>
       </Circle>
-      <Circle fill="#f2f2f2" radius="50.0" stroke="#6d25bf" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Circle fill="#f2f2f2" radius="40.0" stroke="#6d25bf" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
-            <Insets left="125.0" />
+            <Insets left="100.0" />
          </GridPane.margin>
       </Circle>
-      <Circle fill="#f2f2f2" radius="50.0" stroke="#6d25bf" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Circle fill="#f2f2f2" radius="40.0" stroke="#6d25bf" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
-            <Insets left="375.0" />
+            <Insets left="300.0" />
          </GridPane.margin>
       </Circle>
-      <Text fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Eingabe deiner Wunschdaten" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Text fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Eingabe deiner Wunschdaten" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <font>
-            <Font name="DejaVu Sans" size="30.0" />
+            <Font size="24.0" />
          </font>
       </Text>
-      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Daten" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Daten" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <font>
             <Font name="DejaVu Sans ExtraLight" size="12.0" />
          </font>
          <GridPane.margin>
-            <Insets right="375.0" />
+            <Insets right="300.0" />
          </GridPane.margin>
       </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Optionen" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Optionen" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <font>
             <Font name="DejaVu Sans ExtraLight" size="12.0" />
          </font>
          <GridPane.margin>
-            <Insets right="125.0" />
+            <Insets right="100.0" />
          </GridPane.margin>
       </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Intervall" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Intervall" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <font>
             <Font name="DejaVu Sans ExtraLight" size="12.0" />
          </font>
          <GridPane.margin>
-            <Insets left="125.0" />
+            <Insets left="100.0" />
          </GridPane.margin>
       </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Auswahl" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Auswahl" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <font>
             <Font name="DejaVu Sans ExtraLight" size="12.0" />
          </font>
          <GridPane.margin>
-            <Insets left="375.0" />
+            <Insets left="300.0" />
          </GridPane.margin>
       </Text>
-      <VBox alignment="TOP_CENTER" spacing="25.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+      <VBox alignment="TOP_CENTER" maxWidth="700.0" minWidth="400.0" prefWidth="700.0" spacing="20.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="80.0" stroke="#6d25bf" strokeType="INSIDE" width="700.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="80.0" stroke="#6d25bf" strokeType="INSIDE" width="700.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="80.0" stroke="#6d25bf" strokeType="INSIDE" width="700.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="80.0" stroke="#6d25bf" strokeType="INSIDE" width="700.0" />
-            <HBox alignment="CENTER" spacing="72.0">
+            <AnchorPane maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0" style="-fx-border-color: #6d25bf; -fx-border-width: 1;">
                <children>
-                  <MFXButton minHeight="80.0" minWidth="200.0" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #f3f3f3;" text="ZURÜCK">
-                     <font>
-                        <Font name="DejaVu Sans" size="20.0" />
-                     </font>
-                  </MFXButton>
-                  <MFXButton minHeight="80.0" minWidth="200.0" prefHeight="80.0" prefWidth="200.0" rippleColor="#6d25bf" style="-fx-background-color: #6d25bf;" text="WEITER" textFill="WHITE">
-                     <font>
-                        <Font name="DejaVu Sans Bold" size="20.0" />
-                     </font>
-                  </MFXButton>
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Termindauer: ">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Slider fx:id="sliderAppointmentDuration" blockIncrement="15.0" majorTickUnit="30.0" max="480.0" minorTickCount="15" prefWidth="235.0" snapToTicks="true" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
                </children>
-               <padding>
-                  <Insets top="20.0" />
-               </padding>
-            </HBox>
-         </children>
-      </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="77.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
-         <children>
-            <HBox alignment="CENTER">
+            </AnchorPane>
+            <AnchorPane maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0" style="-fx-border-color: #6d25bf; -fx-border-width: 1;">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Termindauer: ">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Text>
-                  <Slider blockIncrement="15.0" majorTickUnit="30.0" max="480.0" minorTickCount="15" prefHeight="24.0" prefWidth="235.0" showTickLabels="true" snapToTicks="true" />
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Terminsuche zwischen">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <DatePicker />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="und">
+                           <font>
+                              <Font name="DejaVu Sans ExtraLight" size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <DatePicker />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0" style="-fx-border-color: #6d25bf; -fx-border-width: 1;">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bevorzugte Wochentage">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <CheckBox mnemonicParsing="false" text="Mo" />
+                        <CheckBox mnemonicParsing="false" text="Mo" />
+                        <CheckBox mnemonicParsing="false" text="Mo" />
+                        <CheckBox mnemonicParsing="false" text="Mo" />
+                        <CheckBox mnemonicParsing="false" text="Mo" />
+                        <CheckBox mnemonicParsing="false" text="Mo" />
+                        <CheckBox mnemonicParsing="false" text="Mo" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0" style="-fx-border-color: #6d25bf; -fx-border-width: 1;">
+               <children>
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bevorzugte Terminzeit zwischen">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <TimeField fx:id="timeStart" maxHeight="20.0" nodeOrientation="LEFT_TO_RIGHT" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="und">
+                           <font>
+                              <Font name="DejaVu Sans ExtraLight" size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <TimeField fx:id="timeEnd" maxHeight="20.0" nodeOrientation="LEFT_TO_RIGHT" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+               <children>
+                  <HBox alignment="CENTER" spacing="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="159.0" text="ZURÜCK" />
+                        <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="159.0" text="WEITER" />
+                     </children>
+                  </HBox>
                </children>
                <VBox.margin>
-                  <Insets top="10.0" />
+                  <Insets top="50.0" />
                </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Terminsuche zwischen">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Text>
-                  <MFXDatePicker />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="und">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="20.0" right="20.0" />
-                     </HBox.margin>
-                  </Text>
-                  <MFXDatePicker />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bevorzugte Wochentage">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Text>
-                  <MFXCheckbox checkedColor="#6d25bf" graphicTextGap="1.0" markSize="10.0" text="Mo">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="10.0" />
-                     </font>
-                  </MFXCheckbox>
-                  <MFXCheckbox checkedColor="#6d25bf" markSize="10.0" text="Di">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="10.0" />
-                     </font>
-                  </MFXCheckbox>
-                  <MFXCheckbox checkedColor="#6d25bf" markSize="10.0" text="Mi">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="10.0" />
-                     </font>
-                  </MFXCheckbox>
-                  <MFXCheckbox checkedColor="#6d25bf" markSize="10.0" text="Do">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="10.0" />
-                     </font>
-                  </MFXCheckbox>
-                  <MFXCheckbox checkedColor="#6d25bf" markSize="10.0" text="Fr">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="10.0" />
-                     </font>
-                  </MFXCheckbox>
-                  <MFXCheckbox checkedColor="#6d25bf" markSize="10.0" text="Sa">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="10.0" />
-                     </font>
-                  </MFXCheckbox>
-                  <MFXCheckbox checkedColor="#6d25bf" markSize="10.0" text="So">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="10.0" />
-                     </font>
-                  </MFXCheckbox>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bevorzugte Terminzeit zwischen">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Text>
-                  <TimeField maxHeight="20.0" nodeOrientation="LEFT_TO_RIGHT" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="und">
-                     <font>
-                        <Font name="DejaVu Sans ExtraLight" size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="20.0" right="20.0" />
-                     </HBox.margin>
-                  </Text>
-                  <TimeField maxHeight="20.0" nodeOrientation="LEFT_TO_RIGHT" />
-               </children>
-            </HBox>
+            </AnchorPane>
          </children>
          <GridPane.margin>
-            <Insets top="7.0" />
+            <Insets />
          </GridPane.margin>
       </VBox>
-      <Text fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Übersicht" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Text fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Übersicht" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <font>
-            <Font name="DejaVu Sans" size="30.0" />
+            <Font name="DejaVu Sans ExtraLight" size="24.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="400.0" stroke="#f2f2f2" strokeType="INSIDE" strokeWidth="3.0" width="310.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="347.0" stroke="#f2f2f2" strokeType="INSIDE" strokeWidth="3.0" width="310.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
       </Rectangle>
-      <VBox spacing="2.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+      <VBox maxWidth="200.0" prefHeight="250.0" spacing="2.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Suche einen Termin mit einer Dauer">
                <font>

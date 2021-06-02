@@ -6,17 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.altenheim.kalender.views.CalendarViewOverride;
-import com.altenheim.kalender.views.MainCalendarView;
-import com.calendarfx.view.CalendarView;
-
-import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -43,7 +37,7 @@ public class MainWindowController
     private String[] buttonCaptions = {"Planner", "Smart Search", "Settings", "Contacts", "Stats", "SMART PLANNER"};
     private boolean darkModeActive = false;
     
-    private List<MFXButton> allButtons;   
+    private List<Button> allButtons;   
     
     public MainWindowController(Stage stage)
     {
@@ -55,7 +49,7 @@ public class MainWindowController
         menuBtnPaneContacts, menuBtnPaneStats;
 
     @FXML
-    private MFXButton btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnStats;    
+    private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnStats;    
 
     @FXML
     private ImageView imgIconPlannerButton, imgIconSearchButton, imgIconSettingsButton, imgIconContactsButton, 
@@ -78,7 +72,7 @@ public class MainWindowController
     @FXML
     void changeScene(MouseEvent event) throws IOException 
     {
-        var button = (MFXButton)event.getSource();
+        var button = (Button)event.getSource();
         setPaneColor(button);
     }  
     
@@ -105,8 +99,8 @@ public class MainWindowController
     public void initialize() throws IOException 
     {
         setColors();
-        setButtonStates();
-        allButtons = new ArrayList<MFXButton>();
+        //setButtonStates();
+        allButtons = new ArrayList<Button>();
         createButtonList();
         setImages();
         searchViewController = new SearchViewController(stage);     
@@ -156,17 +150,17 @@ public class MainWindowController
         imgIconUser.setImage(new Image(new FileInputStream(new File("src/main/java/resources/user.png"))));
     }
 
-    private void setPaneColor(MFXButton button) throws IOException
+    private void setPaneColor(Button button) throws IOException
     {
-        menuBtnPanePlanner.setBackground(transparent);
-        menuBtnPlanner.setBackground(transparent);
-        menuBtnPaneSmartSearch.setBackground(transparent);
-        menuBtnSearch.setBackground(transparent);
+        //menuBtnPanePlanner.setBackground(transparent);
+        //menuBtnPlanner.setBackground(transparent);
+        //menuBtnPaneSmartSearch.setBackground(transparent);
+        //menuBtnSearch.setBackground(transparent);
 
         if (button.equals(menuBtnPlanner))    
         {     
-            menuBtnPanePlanner.setBackground(primaryColor);
-            menuBtnPlanner.setBackground(secondaryColor);
+            //menuBtnPanePlanner.setBackground(primaryColor);
+            //menuBtnPlanner.setBackground(secondaryColor);
             childViewSearch.setDisable(true);
             childViewSearch.setVisible(false);
             childViewPlanner.setDisable(false);
@@ -176,8 +170,8 @@ public class MainWindowController
         }        
         else if (button.equals(menuBtnSearch))
         {
-            menuBtnPaneSmartSearch.setBackground(primaryColor);
-            menuBtnSearch.setBackground(secondaryColor);
+            //menuBtnPaneSmartSearch.setBackground(primaryColor);
+            //menuBtnSearch.setBackground(secondaryColor);
             childViewSearch.setDisable(false);
             childViewSearch.setVisible(true);
             childViewPlanner.setDisable(true);
@@ -202,7 +196,7 @@ public class MainWindowController
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
         {
             changeMenuAppearance();
-            searchViewController.changeContentPosition();
+            //searchViewController.changeContentPosition();
             plannerViewController.changeContentPosition();
         };
         stage.widthProperty().addListener(stageSizeListener);

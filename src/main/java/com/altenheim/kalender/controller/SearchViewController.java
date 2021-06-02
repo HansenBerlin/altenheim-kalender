@@ -1,9 +1,17 @@
 package com.altenheim.kalender.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Accordion;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.scene.layout.GridPane;
+import javafx.scene.control.Slider;
+
+import java.io.IOException;
+
+import com.calendarfx.view.TimeField;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import io.github.palexdev.materialfx.controls.MFXDatePicker;
 
 public class SearchViewController 
 {
@@ -11,7 +19,19 @@ public class SearchViewController
     private GridPane childContainerView;
 
     @FXML
-    private Accordion accordeonSettings;    
+    private Slider sliderAppointmentDuration;
+
+    @FXML
+    private MFXDatePicker datePickerStart, datePickerEnd;   
+
+    @FXML
+    private MFXCheckbox cbMonday, cbTuesday, cbWednesday, cbThursday, cbFriday, cbSaturday, cbSunday;
+
+    @FXML
+    private TimeField timeStarttimeEnd;    
+
+    @FXML
+    private MFXButton btnBack, btnConfirm;    
 
     private Stage stage;
 
@@ -19,8 +39,26 @@ public class SearchViewController
     {
         this.stage = stage;
     }
+
+    @FXML
+    void btnListener(ActionEvent event) 
+    {
+
+    }
+
+    @FXML 
+    private void initialize() throws IOException 
+    {
+        
+    }
+
+    private void initializeTickBoxes()
+    {
+        //cbMonday.set
+
+    }
     
-    public void changeContentPosition()
+   /* public void changeContentPosition()
     {
         if (childContainerView == null)
             return;
@@ -33,7 +71,7 @@ public class SearchViewController
         {
             childContainerView.add(accordeonSettings, 1, 1);
         }
-    }
+     }*/
 }
 
 
