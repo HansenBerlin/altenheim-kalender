@@ -1,8 +1,15 @@
 package com.altenheim.kalender.views;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import com.calendarfx.model.Calendar;
@@ -11,19 +18,28 @@ import com.calendarfx.model.CalendarSource;
 import com.calendarfx.view.CalendarView;
 
 
-public class MainCalendarView 
+public class MainCalendarView extends Application
 {
-    public void startCalendar(Calendar dummyEntries)
+
+    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException
     {
-        var stage = new Stage();
-        var calendarView = new CalendarView();        
+        launch(args);    
+    }
+    
+    public void start(Stage stage) throws FileNotFoundException
+    {
+        var calendarView = new CalendarViewOverride();      
+        Calendar birthdays = new Calendar("Birthdays");
+        Calendar holidays = new Calendar("Holidays");
+        birthdays.setStyle(Style.STYLE1);
+        holidays.setStyle(Style.STYLE2);
 
-        dummyEntries.setStyle(Style.STYLE1);        
 
-        var myCalendarSource = new CalendarSource("Meine Kalender");
-        myCalendarSource.getCalendars().addAll(dummyEntries);
 
+        CalendarSource myCalendarSource = new CalendarSource("My Calendars");
+        myCalendarSource.getCalendars().addAll(birthdays, holidays);
         calendarView.getCalendarSources().addAll(myCalendarSource);
+        
         calendarView.setRequestedTime(LocalTime.now());
 
         var updateTimeThread = new Thread("Calendar: Update Time Thread") 
@@ -54,7 +70,12 @@ public class MainCalendarView
         updateTimeThread.setPriority(Thread.MIN_PRIORITY);
         updateTimeThread.setDaemon(true);
         updateTimeThread.start();
+
         var scene = new Scene(calendarView);
+
+
+        
+
         stage.setTitle("Calendar");
         stage.setScene(scene);
         stage.setWidth(1300);
