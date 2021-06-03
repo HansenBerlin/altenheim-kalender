@@ -18,17 +18,16 @@ public class StartJFX extends Application
 {    
     @Override
     public void start(Stage primaryStage) throws Exception 
-    {      
-        
-        var loader = new FXMLLoader();
-        var fileInputStream = new FileInputStream(new File("src/main/java/resources/pocLoadSceneInScene.fxml"));        
+    {        
         var jMetro = new JMetro(Style.LIGHT);
-        loader.setController(new MainWindowController(primaryStage, jMetro));
-        Parent root = loader.load(fileInputStream);  
-        var scene = new Scene(root);
+        var loader = new FXMLLoader();
 
-        //scene.getStylesheets().add(StartJFX.class.getResource("testDarkTheme.css").toExternalForm());
-        //scene.getStylesheets().add(StartJFX.class.getResource("bootstrap3.css").toExternalForm());
+        loader.setLocation(getClass().getResource("/pocLoadSceneInScene.fxml"));     
+        loader.setController(new MainWindowController(primaryStage, jMetro));
+
+        Parent root = loader.load();  
+        var scene = new Scene(root);
+        
         jMetro.setScene(scene);
         primaryStage.setScene(scene);            
         primaryStage.setTitle("Smart Planner HWR"); 

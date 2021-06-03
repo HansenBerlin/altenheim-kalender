@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Skin;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitMenuButton;
@@ -49,7 +50,7 @@ public class SearchViewController
         this.parent = parent;
     }
 
-
+   
     @FXML
     private void updateUserStepView(ActionEvent event) 
     {        
@@ -90,7 +91,7 @@ public class SearchViewController
     private void changeStepsButtonState(Circle currentC, Circle nextC, Text currentT, Text nextT)
     {
         currentC.setFill(Color.web("transparent"));
-        nextC.setFill(Color.web("#6d25bf"));
+        nextC.setFill(Color.web("#9630da"));
         currentT.setFill(nextT.getFill());
         nextT.setFill(Color.WHITE);
     }  
