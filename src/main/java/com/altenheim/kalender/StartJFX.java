@@ -19,23 +19,20 @@ public class StartJFX extends Application
     @Override
     public void start(Stage primaryStage) throws Exception 
     {      
-        //kann sein, dass im Build durch den default Zugriff auf ressources durch Maven die
-        // untere Vorgehensweise Fehler schmeißt, also mal noch drinlassen bitte
-        //FXMLLoader loader = new FXMLLoader(getClass().getResource("prototypeUI.fxml"));
+        
         var loader = new FXMLLoader();
         var fileInputStream = new FileInputStream(new File("src/main/java/resources/pocLoadSceneInScene.fxml"));        
         var jMetro = new JMetro(Style.LIGHT);
         loader.setController(new MainWindowController(primaryStage, jMetro));
-        Parent root = loader.load(fileInputStream);          
+        Parent root = loader.load(fileInputStream);  
         var scene = new Scene(root);
 
         //scene.getStylesheets().add(StartJFX.class.getResource("testDarkTheme.css").toExternalForm());
         //scene.getStylesheets().add(StartJFX.class.getResource("bootstrap3.css").toExternalForm());
         jMetro.setScene(scene);
-        
-
         primaryStage.setScene(scene);            
-        primaryStage.setTitle("Kalender Prototype"); 
+        primaryStage.setTitle("Smart Planner HWR"); 
+        primaryStage.setMaximized(true);
         primaryStage.show();         
     }
     

@@ -3,11 +3,11 @@ package com.altenheim.kalender.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Slider;
 import java.io.IOException;
 import com.calendarfx.view.TimeField;
-
 
 public class SearchViewController 
 {
@@ -21,10 +21,12 @@ public class SearchViewController
     private TimeField timeStarttimeEnd;     
 
     private Stage stage;
+    private AnchorPane parent;
 
-    public SearchViewController(Stage stage)
+    public SearchViewController(Stage stage, AnchorPane parent)
     {
         this.stage = stage;
+        this.parent = parent;
     }
 
     @FXML
@@ -43,6 +45,13 @@ public class SearchViewController
     {
         //cbMonday.set
 
+    }
+
+    public void changeSize()
+    {
+        if (childContainerView == null)
+            return;
+        childContainerView.setPrefSize(parent.getWidth(), parent.getHeight());
     }
     
    /* public void changeContentPosition()
