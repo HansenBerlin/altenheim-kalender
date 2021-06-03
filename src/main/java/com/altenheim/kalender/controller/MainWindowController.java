@@ -16,6 +16,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -55,7 +56,7 @@ public class MainWindowController
     private Button btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser;       
 
     @FXML
-    private GridPane rootContainer, childViewPlanner, childViewSearch;
+    private GridPane rootContainer, childViewPlanner, childViewSearch, topMenu;
 
     @FXML
     private AnchorPane anchorPaneMainView;
@@ -67,7 +68,10 @@ public class MainWindowController
     private Text txtVersion, txtBreadcrumb;    
 
     @FXML
-    private VBox vboxLeftPane;    
+    private VBox vboxLeftPane;
+    
+    @FXML
+    private HBox topButtonRow;
 
     @FXML 
     public void initialize() throws IOException 
@@ -77,11 +81,11 @@ public class MainWindowController
         allMenuButtons = new ArrayList<Button>();
         createButtonList();
         setImages();
-        searchViewController = new SearchViewController(stage);     
-        plannerViewController = new PlannerViewController(stage); 
+        searchViewController = new SearchViewController(stage, anchorPaneMainView);     
+        plannerViewController = new PlannerViewController(stage, anchorPaneMainView); 
         viewUpdate = new UpdateViewController(searchViewController, plannerViewController, childViewPlanner, childViewSearch); 
         initializeChildNodes(); 
-        plannerViewController.addCustomCalendarView();    
+        //plannerViewController.addCustomCalendarView();    
         initBackgrounds();
         bindWindowSize();   
     }
@@ -227,10 +231,24 @@ public class MainWindowController
         {
             changeMenuAppearance();
             //searchViewController.changeContentPosition();
-            plannerViewController.changeContentPosition();
+            //plannerViewController.changeContentPosition();
+            anchorPaneMainView.setMinSize(stage.getWidth()-240, stage.getHeight());
+            topButtonRow.setMinWidth(stage.getWidth()-240);
+
         };
         stage.widthProperty().addListener(stageSizeListener);
         stage.heightProperty().addListener(stageSizeListener);
+
+        ChangeListener<Number> innerSizeListener = (observable, oldValue, newValue) ->
+        {
+            plannerViewController.changeSize();  
+            searchViewController.changeSize();  
+            
+        };
+        anchorPaneMainView.widthProperty().addListener(innerSizeListener);
+        anchorPaneMainView.heightProperty().addListener(innerSizeListener);    
+        
+        
     }
 
     private void changeMenuAppearance()
@@ -253,6 +271,7 @@ public class MainWindowController
             {
                 allMenuButtons.get(i).setText(buttonCaptions[i]);                
             }    
+            btnLogo.setText("SMARTPLANNER");  
             txtVersion.setText("Version 0.1.2; HWR Gruppe C"); 
         }      
 
