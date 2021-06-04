@@ -27,7 +27,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <HBox fx:id="topButtonRow" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #45c8dc;" GridPane.columnIndex="1">
+      <HBox fx:id="topButtonRow" prefHeight="100.0" GridPane.columnIndex="1">
          <children>
             <Text fx:id="txtBreadcrumb" cache="true" cacheHint="SPEED" fill="#2c2c2c" strokeType="OUTSIDE" strokeWidth="0.0" text="&gt; Terminübersicht">
                <font>

@@ -28,7 +28,7 @@ import jfxtras.styles.jmetro.Style;
 
 public class MainWindowController 
 {
-    private Background primaryColor, secondaryColor, transparent, dark, brown, grey;    
+    private Background primaryColorLight, secondaryColor, transparent, dark, brown, grey, menuBackgroundColor, primaryColorDark, currentPrimaryColor;    
     private UpdateViewController viewUpdate;
     private SearchViewController searchViewController;
     private PlannerViewController plannerViewController;
@@ -45,33 +45,17 @@ public class MainWindowController
         this.jMetro = jMetro;
     }
 
-    @FXML
-    private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, 
+    @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, 
         menuBtnPaneContacts, menuBtnPaneStats;
-
-    @FXML
-    private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnStats, menuBtnMail;  
-    
-    @FXML
-    private Button btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser;       
-
-    @FXML
-    private GridPane rootContainer, childViewPlanner, childViewSearch, topMenu;
-
-    @FXML
-    private AnchorPane anchorPaneMainView;
-
-    @FXML
-    private ColumnConstraints columnLeftMenu;
-
-    @FXML
-    private Text txtVersion, txtBreadcrumb;    
-
-    @FXML
-    private VBox vboxLeftPane;
-    
-    @FXML
-    private HBox topButtonRow;
+    @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, 
+        menuBtnContacts, menuBtnStats, menuBtnMail;     
+    @FXML private Button btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser;
+    @FXML private GridPane rootContainer, childViewPlanner, childViewSearch, topMenu;
+    @FXML private AnchorPane anchorPaneMainView;
+    @FXML private ColumnConstraints columnLeftMenu;
+    @FXML private Text txtVersion, txtBreadcrumb;
+    @FXML private VBox vboxLeftPane;   
+    @FXML private HBox topButtonRow;
 
     @FXML 
     public void initialize() throws IOException 
@@ -81,11 +65,11 @@ public class MainWindowController
         allMenuButtons = new ArrayList<Button>();
         createButtonList();
         setImages();
-        searchViewController = new SearchViewController(stage, anchorPaneMainView);     
         plannerViewController = new PlannerViewController(stage, anchorPaneMainView); 
+        searchViewController = new SearchViewController(stage, anchorPaneMainView);     
         viewUpdate = new UpdateViewController(searchViewController, plannerViewController, childViewPlanner, childViewSearch); 
         initializeChildNodes(); 
-        //plannerViewController.addCustomCalendarView();    
+        plannerViewController.addCustomCalendarView();    
         initBackgrounds();
         bindWindowSize();   
     }
@@ -102,20 +86,26 @@ public class MainWindowController
     {
         if (darkModeActive)
         {
+            currentPrimaryColor = primaryColorLight;
             jMetro.setStyle(Style.LIGHT);
             vboxLeftPane.setBackground(grey);
             childViewPlanner.setBackground(transparent);
             childViewSearch.setBackground(transparent);
             anchorPaneMainView.setBackground(transparent);
-            darkModeActive = false;          
+            topButtonRow.setBackground(currentPrimaryColor);
+            btnLogo.setStyle("-fx-background-color:#4fba74");
+            darkModeActive = false;    
         }
         else
         {
+            currentPrimaryColor = primaryColorDark;
             jMetro.setStyle(Style.DARK);        
             vboxLeftPane.setBackground(brown);
             childViewPlanner.setBackground(dark);
             childViewSearch.setBackground(dark);
             anchorPaneMainView.setBackground(dark);
+            topButtonRow.setBackground(currentPrimaryColor);
+            btnLogo.setStyle("-fx-background-color:#281b42");
             darkModeActive = true;          
         }
     }    
@@ -132,21 +122,22 @@ public class MainWindowController
 
     private void setColors()
     {
-        primaryColor = new Background(new BackgroundFill(Color.web("#3fb4c6"), CornerRadii.EMPTY, Insets.EMPTY));
-        secondaryColor = new Background(new BackgroundFill(Color.web("#1d2027"), CornerRadii.EMPTY, Insets.EMPTY));
+        primaryColorLight = new Background(new BackgroundFill(Color.web("#5ddd8a"), CornerRadii.EMPTY, Insets.EMPTY));
+        primaryColorDark = new Background(new BackgroundFill(Color.web("#322253"), CornerRadii.EMPTY, Insets.EMPTY));
+        secondaryColor = new Background(new BackgroundFill(Color.web("#4fba74"), CornerRadii.EMPTY, Insets.EMPTY));
         transparent = new Background(new BackgroundFill(Color.web("transparent"), CornerRadii.EMPTY, Insets.EMPTY)); 
         dark = new Background(new BackgroundFill(Color.web("#181818"), CornerRadii.EMPTY, Insets.EMPTY));   
         brown = new Background(new BackgroundFill(Color.web("#333333"), CornerRadii.EMPTY, Insets.EMPTY));    
         grey = new Background(new BackgroundFill(Color.web("#cdcdcd"), CornerRadii.EMPTY, Insets.EMPTY));  
+        primaryColorDark = new Background(new BackgroundFill(Color.web("#4b337d"), CornerRadii.EMPTY, Insets.EMPTY)); 
     }
 
     private void setButtonStates()
     {
-        menuBtnPanePlanner.setBackground(primaryColor);
-        menuBtnPaneSmartSearch.setBackground(transparent);
-        btnLogo.setBackground(primaryColor);
-        btnLogo.setStyle("-fx-background-color:#3fb4c6");   
-
+        menuBtnPanePlanner.setBackground(primaryColorLight);
+        menuBtnPaneSmartSearch.setBackground(transparent); 
+        topButtonRow.setBackground(primaryColorLight);
+        btnLogo.setStyle("-fx-background-color:#4fba74");
     }
 
     private void setImages() throws FileNotFoundException
@@ -176,7 +167,7 @@ public class MainWindowController
 
         for (int i = 0; i < iconListTopButtons.length; i++) 
         {
-            iconListTopButtons[i].setStyle("-fx-font-size:16");   
+            iconListTopButtons[i].setStyle("-fx-font-size:18");   
             topButtons[i].setGraphic(iconListTopButtons[i]);         
         }
     }
@@ -196,7 +187,7 @@ public class MainWindowController
 
         if (button.equals(menuBtnPlanner))    
         {     
-            menuBtnPanePlanner.setBackground(primaryColor);
+            menuBtnPanePlanner.setBackground(currentPrimaryColor);
             childViewSearch.setDisable(true);
             childViewSearch.setVisible(false);
             childViewPlanner.setDisable(false);
@@ -206,7 +197,7 @@ public class MainWindowController
         }        
         else if (button.equals(menuBtnSearch))
         {
-            menuBtnPaneSmartSearch.setBackground(primaryColor);
+            menuBtnPaneSmartSearch.setBackground(currentPrimaryColor);
             childViewSearch.setDisable(false);
             childViewSearch.setVisible(true);
             childViewPlanner.setDisable(true);

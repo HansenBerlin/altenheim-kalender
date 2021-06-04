@@ -26,7 +26,7 @@ public class PlannerViewController
     {
         this.stage = stage;
         this.parent = parent;
-        //calendarViewTotal = new CalendarViewOverride();
+        calendarViewTotal = new CalendarViewOverride();
 
     }
     
