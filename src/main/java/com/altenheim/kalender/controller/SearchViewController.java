@@ -4,14 +4,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Skin;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitMenuButton;
@@ -21,9 +19,8 @@ import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
 
 
-public class SearchViewController 
+public class SearchViewController extends ParentViewController
 {
-    @FXML private GridPane childContainerView;
     @FXML private Text txtHeaderStep, txtFirstStep, txtSecondStep, txtThirdStep;
     @FXML private Button btnBack, btnConfirm;    
     @FXML private VBox stepOneUserInput, stepTwoUserInput, stepThreeUserInput;
@@ -40,16 +37,12 @@ public class SearchViewController
     @FXML private Spinner<Integer> sliderSuggestionCount;  
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
 
-    private Stage stage;
-    private AnchorPane parent;
     private int userStep = 1;
 
-    public SearchViewController(Stage stage, AnchorPane parent)
+    public SearchViewController(Stage stage, AnchorPane parent) 
     {
-        this.stage = stage;
-        this.parent = parent;
+        super(stage, parent);
     }
-
    
     @FXML
     private void updateUserStepView(ActionEvent event) 
@@ -94,31 +87,7 @@ public class SearchViewController
         nextC.setFill(Color.web("#5ddd8a"));
         currentT.setFill(nextT.getFill());
         nextT.setFill(Color.WHITE);
-    }  
-
-
-    public void changeSize()
-    {
-        if (childContainerView == null)
-            return;
-        childContainerView.setPrefSize(parent.getWidth(), parent.getHeight());
-    }
-
-    
-   /* public void changeContentPosition()
-    {
-        if (childContainerView == null)
-            return;
-        childContainerView.getChildren().remove(accordeonSettings);
-        if (stage.getWidth() < 1200)
-        {
-            childContainerView.add(accordeonSettings, 0, 2);
-        }
-        else
-        {
-            childContainerView.add(accordeonSettings, 1, 1);
-        }
-     }*/
+    }      
 }
 
 
