@@ -35,17 +35,17 @@
       <RowConstraints maxHeight="100.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Circle fx:id="imgFirstStep" fill="#6d25bf" radius="40.0" stroke="#6d25bf" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Circle fx:id="imgFirstStep" fill="#60db8b" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets right="200.0" />
          </GridPane.margin>
       </Circle>
-      <Circle fx:id="imgSecondStep" fill="#f2f2f200" radius="40.0" stroke="#6d25bf" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Circle fx:id="imgSecondStep" fill="#f2f2f200" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
       </Circle>
-      <Circle fx:id="imgThirdStep" fill="#f0f0f000" radius="40.0" stroke="#6d25bf" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Circle fx:id="imgThirdStep" fill="#f0f0f000" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets left="200.0" />
          </GridPane.margin>

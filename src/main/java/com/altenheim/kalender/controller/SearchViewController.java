@@ -91,7 +91,7 @@ public class SearchViewController
     private void changeStepsButtonState(Circle currentC, Circle nextC, Text currentT, Text nextT)
     {
         currentC.setFill(Color.web("transparent"));
-        nextC.setFill(Color.web("#9630da"));
+        nextC.setFill(Color.web("#5ddd8a"));
         currentT.setFill(nextT.getFill());
         nextT.setFill(Color.WHITE);
     }  
