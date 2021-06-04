@@ -39,9 +39,9 @@ public class SearchViewController extends ParentViewController
 
     private int userStep = 1;
 
-    public SearchViewController(Stage stage, AnchorPane parent) 
+    public SearchViewController(AnchorPane parent) 
     {
-        super(stage, parent);
+        super(parent);
     }
    
     @FXML

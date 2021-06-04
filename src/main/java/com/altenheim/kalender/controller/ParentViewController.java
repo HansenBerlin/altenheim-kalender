@@ -7,15 +7,12 @@ import javafx.stage.Stage;
 public class ParentViewController 
 {
     @FXML
-    protected GridPane childContainerView;
-    protected Stage stage;
-    protected AnchorPane parent;
+    protected GridPane childContainer;
+    protected AnchorPane parentContainer;
 
-    public ParentViewController(Stage stage, AnchorPane parent)
+    public ParentViewController(AnchorPane parentContainer)
     {
-        this.stage = stage;
-        this.parent = parent;
-
+        this.parentContainer = parentContainer;
     }
     
     public void changeContentPosition()
@@ -35,9 +32,9 @@ public class ParentViewController
 
     public void changeSize()
     {
-        if (childContainerView == null)
+        if (childContainer == null)
             return;
-        childContainerView.setPrefSize(parent.getWidth(), parent.getHeight());
+        childContainer.setPrefSize(parentContainer.getWidth(), parentContainer.getHeight());
     }
     
 }

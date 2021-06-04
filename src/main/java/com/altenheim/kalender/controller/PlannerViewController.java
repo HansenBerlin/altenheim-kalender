@@ -8,15 +8,15 @@ public class PlannerViewController extends ParentViewController
 {    
     private CalendarViewOverride calendarViewTotal;
 
-    public PlannerViewController(Stage stage, AnchorPane parent)
+    public PlannerViewController(AnchorPane parent)
     {        
-        super(stage, parent);
+        super(parent);
         calendarViewTotal = new CalendarViewOverride();
     }   
 
     public void addCustomCalendarView()
     {
-        childContainerView.add(calendarViewTotal, 0, 0, 1, 1);
+        childContainer.add(calendarViewTotal, 0, 0, 1, 1);
     }
 }
 

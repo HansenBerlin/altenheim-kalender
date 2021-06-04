@@ -1,15 +1,17 @@
 package com.altenheim.kalender;
 
+import com.altenheim.kalender.controller.*;
+import com.altenheim.kalender.resourceClasses.FxmlFiles;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro.JMetro;
-import jfxtras.styles.jmetro.Style;
-import com.altenheim.kalender.controller.MainWindowController;
 
 public class StartJFX extends Application
 {    
@@ -17,16 +19,21 @@ public class StartJFX extends Application
     public void start(Stage primaryStage) throws Exception 
     {      
         var loader = new FXMLLoader();
-        var jMetro = new JMetro(Style.LIGHT);
+        var jMetroStyle = new JMetro();        
+        var childRoot = new AnchorPane();
+        var currentView = new GridPane();
+        var allControllers = new ParentViewController[5];
         
-        loader.setLocation(getClass().getResource("/pocLoadSceneInScene.fxml"));     
-        loader.setController(new MainWindowController(primaryStage, jMetro));
         
+        var guiSetup = new GuiSetupController(jMetroStyle, childRoot, currentView, allControllers);        
+        guiSetup.init();        
+        var mainController = new MainWindowController(primaryStage, jMetroStyle, allControllers, currentView);
+
+        loader.setLocation(getClass().getResource(FxmlFiles.MAIN_VIEW));     
+        loader.setController(mainController);        
         Parent root = loader.load();  
         var scene = new Scene(root);
-
-        jMetro.setScene(scene);
-        //jMetro.getOverridingStylesheets().getClass().getResource("/rootcolors.css").toExternalForm();
+        jMetroStyle.setScene(scene);
         
         primaryStage.setScene(scene);            
         primaryStage.setTitle("Smart Planner HWR"); 

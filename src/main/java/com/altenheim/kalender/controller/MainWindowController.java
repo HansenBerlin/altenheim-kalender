@@ -1,6 +1,6 @@
 package com.altenheim.kalender.controller;
 
-import com.altenheim.kalender.models.StylePresets;
+import com.altenheim.kalender.resourceClasses.StylePresets;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,24 +23,26 @@ import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.MDL2IconFont;
 import jfxtras.styles.jmetro.Style;
 
-public class MainWindowController 
+public class MainWindowController
 {
     private Background currentButtonHighlightColor;
     private Pane activeButtonBackground;
-    private UpdateViewController viewUpdate;
-    private SearchViewController searchViewController;
-    private PlannerViewController plannerViewController;
     private Stage stage;
     private JMetro jMetro;
     private final String[] buttonCaptions = {"Planner", "Smart Search", "Stats", "Contacts", "Mailtemplates", "Settings"};
     private boolean darkModeActive = false;
+
+    ParentViewController[] allControllers;
+    GridPane currentView;
     
     private List<Button> allMenuButtons;   
     
-    public MainWindowController(Stage stage, JMetro jMetro)
+    public MainWindowController(Stage stage, JMetro jMetro, ParentViewController[] allControllers, GridPane currentView)
     {
         this.stage = stage;
         this.jMetro = jMetro;
+        this.allControllers = allControllers;
+        this.currentView = currentView;
     }
 
     @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, 
@@ -48,7 +50,7 @@ public class MainWindowController
     @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, 
         menuBtnContacts, menuBtnStats, menuBtnMail;     
     @FXML private Button btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser;
-    @FXML private GridPane rootContainer, childViewPlanner, childViewSearch, topMenu;
+    @FXML private GridPane rootContainer, childContainer, topMenu;
     @FXML private AnchorPane anchorPaneMainView;
     @FXML private ColumnConstraints columnLeftMenu;
     @FXML private Text txtVersion, txtBreadcrumb;
@@ -61,13 +63,10 @@ public class MainWindowController
         allMenuButtons = new ArrayList<Button>();
         createButtonList();
         setImages();
-        plannerViewController = new PlannerViewController(stage, anchorPaneMainView); 
-        searchViewController = new SearchViewController(stage, anchorPaneMainView);     
-        viewUpdate = new UpdateViewController(searchViewController, plannerViewController, childViewPlanner, childViewSearch); 
-        initializeChildNodes(); 
-        plannerViewController.addCustomCalendarView();    
+        ((PlannerViewController)allControllers[0]).addCustomCalendarView();
         initColorStates();        
-        bindWindowSize();   
+        bindWindowSize();  
+        anchorPaneMainView.getChildren().add(currentView); 
     }
 
     @FXML
@@ -85,8 +84,7 @@ public class MainWindowController
             jMetro.setStyle(Style.LIGHT);
             currentButtonHighlightColor = StylePresets.LIGHT_SECONDARY;
             vboxLeftPane.setBackground(StylePresets.LIGHT_MENU_BACKGROUND);
-            childViewPlanner.setBackground(StylePresets.TRANSPARENT);
-            childViewSearch.setBackground(StylePresets.TRANSPARENT);
+            currentView.setBackground(StylePresets.TRANSPARENT);
             anchorPaneMainView.setBackground(StylePresets.TRANSPARENT);
             topButtonRow.setBackground(StylePresets.LIGHT_PRIMARY);
             btnLogo.setStyle("-fx-background-color:#4fba74");
@@ -98,8 +96,7 @@ public class MainWindowController
             jMetro.setStyle(Style.DARK);        
             currentButtonHighlightColor = StylePresets.DARK_SECONDARY;
             vboxLeftPane.setBackground(StylePresets.DARK_MENU_BACKGROUND);
-            childViewPlanner.setBackground(StylePresets.DARK_MAIN_BACKGROUND);
-            childViewSearch.setBackground(StylePresets.DARK_MAIN_BACKGROUND);
+            currentView.setBackground(StylePresets.DARK_MAIN_BACKGROUND);
             anchorPaneMainView.setBackground(StylePresets.DARK_MAIN_BACKGROUND);
             topButtonRow.setBackground(StylePresets.DARK_PRIMARY);
             btnLogo.setStyle("-fx-background-color:#281b42");
@@ -108,15 +105,7 @@ public class MainWindowController
         }
     }    
 
-    private void initializeChildNodes() throws IOException
-    {
-        viewUpdate.setupNodes();   
-        childViewPlanner = viewUpdate.getPlannerView();
-        childViewSearch = viewUpdate.getSearchView();    
-        anchorPaneMainView.getChildren().addAll(childViewPlanner, childViewSearch);
-        childViewSearch.setDisable(true);
-        childViewSearch.setVisible(false);
-    }    
+    
 
     private void initColorStates()
     {
@@ -125,8 +114,7 @@ public class MainWindowController
         topButtonRow.setBackground(StylePresets.LIGHT_PRIMARY);
         btnLogo.setStyle("-fx-background-color:#4fba74");
         vboxLeftPane.setBackground(StylePresets.LIGHT_MENU_BACKGROUND);
-        childViewPlanner.setBackground(StylePresets.TRANSPARENT);
-        childViewSearch.setBackground(StylePresets.TRANSPARENT);
+        currentView.setBackground(StylePresets.TRANSPARENT);
         anchorPaneMainView.setBackground(StylePresets.TRANSPARENT);
         activeButtonBackground = menuBtnPanePlanner;
     }
@@ -171,10 +159,10 @@ public class MainWindowController
         if (button.equals(menuBtnPlanner))    
         {     
             menuBtnPanePlanner.setBackground(currentButtonHighlightColor);
-            childViewSearch.setDisable(true);
+            /*childViewSearch.setDisable(true);
             childViewSearch.setVisible(false);
             childViewPlanner.setDisable(false);
-            childViewPlanner.setVisible(true);
+            childViewPlanner.setVisible(true);*/
             txtBreadcrumb.setText("> Terminübersicht"); 
             activeButtonBackground = menuBtnPanePlanner;
             
@@ -182,10 +170,10 @@ public class MainWindowController
         else if (button.equals(menuBtnSearch))
         {
             menuBtnPaneSmartSearch.setBackground(currentButtonHighlightColor);
-            childViewSearch.setDisable(false);
+            /*childViewSearch.setDisable(false);
             childViewSearch.setVisible(true);
             childViewPlanner.setDisable(true);
-            childViewPlanner.setVisible(false);
+            childViewPlanner.setVisible(false);*/
             txtBreadcrumb.setText("> Smarte Terminsuche");  
             activeButtonBackground = menuBtnPaneSmartSearch;
         }
@@ -217,8 +205,8 @@ public class MainWindowController
 
         ChangeListener<Number> innerSizeListener = (observable, oldValue, newValue) ->
         {
-            plannerViewController.changeSize();  
-            searchViewController.changeSize();  
+            //plannerViewController.changeSize();  
+            //searchViewController.changeSize();  
             
         };
         anchorPaneMainView.widthProperty().addListener(innerSizeListener);
