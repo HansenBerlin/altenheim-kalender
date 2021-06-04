@@ -3,7 +3,6 @@ package com.altenheim.kalender.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 
@@ -35,12 +34,13 @@ public class UpdateViewController
     public void setupNodes() throws IOException 
     {
         var loader = new FXMLLoader();
-        var fileInputStream = new FileInputStream(new File("src/main/java/resources/plannerView.fxml")); 
+        loader.setLocation(getClass().getResource("/plannerView.fxml"));
         loader.setController(plannerViewController); 
-        planner = loader.load(fileInputStream);
-        var fileInputStream2 = new FileInputStream(new File("src/main/java/resources/searchView.fxml")); 
+        planner = loader.load();
+
         var loader2 = new FXMLLoader();
+        loader2.setLocation(getClass().getResource("/searchView.fxml"));
         loader2.setController(searchViewController); 
-        search = loader2.load(fileInputStream2);
+        search = loader2.load();
     }
 }
