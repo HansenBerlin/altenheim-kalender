@@ -2,7 +2,6 @@ package com.altenheim.kalender.controller;
 
 import com.altenheim.kalender.views.CalendarViewOverride;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 public class PlannerViewController extends ParentViewController
 {    

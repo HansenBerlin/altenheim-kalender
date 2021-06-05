@@ -2,7 +2,6 @@
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 public class ParentViewController 
 {
@@ -36,5 +35,7 @@ public class ParentViewController
             return;
         childContainer.setPrefSize(parentContainer.getWidth(), parentContainer.getHeight());
     }
+
+    
     
 }

@@ -14,7 +14,6 @@ public class GuiSetupController
 {
     private JMetro jMetroStyle;
     private AnchorPane root;
-    private GridPane currentView;
     private PlannerViewController plannerViewController;
     private SearchViewController searchViewController;
     private ParentViewController[] allControllers;
@@ -22,15 +21,13 @@ public class GuiSetupController
     //private final String[] buttonCaptions = {"Planner", "Smart Search", "Stats", "Contacts", "Mailtemplates", "Settings"};
     //private List<Button> allMenuButtons;   
 
-    public GuiSetupController(JMetro jMetroStyle, AnchorPane root, 
-        GridPane currentView, ParentViewController[] allControllers) 
+    public GuiSetupController(JMetro jMetroStyle, AnchorPane root, ParentViewController[] allControllers, List<GridPane> allViews) 
     {
         this.jMetroStyle = jMetroStyle;
         this.root = root;
-        this.currentView = currentView; 
         this.allControllers = allControllers;
-        allViews = new ArrayList<GridPane>();        
-    }
+        this.allViews = allViews;       
+    }  
 
     public void init() throws IOException
     {
@@ -64,7 +61,6 @@ public class GuiSetupController
         }
         allViews.get(0).setVisible(true);
         allViews.get(0).setDisable(false);
-        currentView = allViews.get(0);
     }    
 
     private void setupColorPreferences()

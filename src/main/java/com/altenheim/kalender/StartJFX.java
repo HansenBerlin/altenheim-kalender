@@ -4,6 +4,9 @@ import com.altenheim.kalender.controller.*;
 import com.altenheim.kalender.resourceClasses.FxmlFiles;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,13 +24,13 @@ public class StartJFX extends Application
         var loader = new FXMLLoader();
         var jMetroStyle = new JMetro();        
         var childRoot = new AnchorPane();
-        var currentView = new GridPane();
         var allControllers = new ParentViewController[5];
+        var allViews = new ArrayList<GridPane>();
         
         
-        var guiSetup = new GuiSetupController(jMetroStyle, childRoot, currentView, allControllers);        
-        guiSetup.init();        
-        var mainController = new MainWindowController(primaryStage, jMetroStyle, allControllers, currentView);
+        var guiSetup = new GuiSetupController(jMetroStyle, childRoot, allControllers, allViews);        
+        guiSetup.init();            
+        var mainController = new MainWindowController(primaryStage, jMetroStyle, allControllers, allViews);
 
         loader.setLocation(getClass().getResource(FxmlFiles.MAIN_VIEW));     
         loader.setController(mainController);        

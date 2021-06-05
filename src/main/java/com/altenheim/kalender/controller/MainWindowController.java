@@ -32,18 +32,10 @@ public class MainWindowController
     private final String[] buttonCaptions = {"Planner", "Smart Search", "Stats", "Contacts", "Mailtemplates", "Settings"};
     private boolean darkModeActive = false;
 
-    ParentViewController[] allControllers;
-    GridPane currentView;
-    
+    private ParentViewController[] allControllers;
+    private List<GridPane> allViews;
     private List<Button> allMenuButtons;   
-    
-    public MainWindowController(Stage stage, JMetro jMetro, ParentViewController[] allControllers, GridPane currentView)
-    {
-        this.stage = stage;
-        this.jMetro = jMetro;
-        this.allControllers = allControllers;
-        this.currentView = currentView;
-    }
+    private int currentView = 0;    
 
     @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, 
         menuBtnPaneContacts, menuBtnPaneStats;
@@ -51,22 +43,29 @@ public class MainWindowController
         menuBtnContacts, menuBtnStats, menuBtnMail;     
     @FXML private Button btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser;
     @FXML private GridPane rootContainer, childContainer, topMenu;
-    @FXML private AnchorPane anchorPaneMainView;
+    @FXML private AnchorPane root;
     @FXML private ColumnConstraints columnLeftMenu;
     @FXML private Text txtVersion, txtBreadcrumb;
     @FXML private VBox vboxLeftPane;   
     @FXML private HBox topButtonRow;
 
+    public MainWindowController(Stage stage, JMetro jMetro, ParentViewController[] allControllers, List<GridPane> allViews)
+    {
+        this.stage = stage;
+        this.jMetro = jMetro;
+        this.allControllers = allControllers;
+        this.allViews = allViews;
+    }
+
     @FXML 
     public void initialize() throws IOException 
     {
+        ((PlannerViewController)allControllers[0]).addCustomCalendarView();
         allMenuButtons = new ArrayList<Button>();
         createButtonList();
         setImages();
-        ((PlannerViewController)allControllers[0]).addCustomCalendarView();
         initColorStates();        
         bindWindowSize();  
-        anchorPaneMainView.getChildren().add(currentView); 
     }
 
     @FXML
@@ -84,8 +83,8 @@ public class MainWindowController
             jMetro.setStyle(Style.LIGHT);
             currentButtonHighlightColor = StylePresets.LIGHT_SECONDARY;
             vboxLeftPane.setBackground(StylePresets.LIGHT_MENU_BACKGROUND);
-            currentView.setBackground(StylePresets.TRANSPARENT);
-            anchorPaneMainView.setBackground(StylePresets.TRANSPARENT);
+            //currentView.setBackground(StylePresets.TRANSPARENT);
+            root.setBackground(StylePresets.TRANSPARENT);
             topButtonRow.setBackground(StylePresets.LIGHT_PRIMARY);
             btnLogo.setStyle("-fx-background-color:#4fba74");
             activeButtonBackground.setBackground(StylePresets.LIGHT_SECONDARY);
@@ -96,16 +95,14 @@ public class MainWindowController
             jMetro.setStyle(Style.DARK);        
             currentButtonHighlightColor = StylePresets.DARK_SECONDARY;
             vboxLeftPane.setBackground(StylePresets.DARK_MENU_BACKGROUND);
-            currentView.setBackground(StylePresets.DARK_MAIN_BACKGROUND);
-            anchorPaneMainView.setBackground(StylePresets.DARK_MAIN_BACKGROUND);
+            //currentView.setBackground(StylePresets.DARK_MAIN_BACKGROUND);
+            root.setBackground(StylePresets.DARK_MAIN_BACKGROUND);
             topButtonRow.setBackground(StylePresets.DARK_PRIMARY);
             btnLogo.setStyle("-fx-background-color:#281b42");
             activeButtonBackground.setBackground(StylePresets.DARK_SECONDARY);
             darkModeActive = true;          
         }
-    }    
-
-    
+    }       
 
     private void initColorStates()
     {
@@ -114,8 +111,8 @@ public class MainWindowController
         topButtonRow.setBackground(StylePresets.LIGHT_PRIMARY);
         btnLogo.setStyle("-fx-background-color:#4fba74");
         vboxLeftPane.setBackground(StylePresets.LIGHT_MENU_BACKGROUND);
-        currentView.setBackground(StylePresets.TRANSPARENT);
-        anchorPaneMainView.setBackground(StylePresets.TRANSPARENT);
+        //currentView.setBackground(StylePresets.TRANSPARENT);
+        root.setBackground(StylePresets.TRANSPARENT);
         activeButtonBackground = menuBtnPanePlanner;
     }
 
@@ -159,23 +156,25 @@ public class MainWindowController
         if (button.equals(menuBtnPlanner))    
         {     
             menuBtnPanePlanner.setBackground(currentButtonHighlightColor);
-            /*childViewSearch.setDisable(true);
-            childViewSearch.setVisible(false);
-            childViewPlanner.setDisable(false);
-            childViewPlanner.setVisible(true);*/
+            allViews.get(0).setDisable(false);
+            allViews.get(0).setVisible(true);  
+            allViews.get(currentView).setDisable(true);
+            allViews.get(currentView).setVisible(false);           
             txtBreadcrumb.setText("> Terminübersicht"); 
             activeButtonBackground = menuBtnPanePlanner;
+            currentView = 0;
             
         }        
         else if (button.equals(menuBtnSearch))
         {
             menuBtnPaneSmartSearch.setBackground(currentButtonHighlightColor);
-            /*childViewSearch.setDisable(false);
-            childViewSearch.setVisible(true);
-            childViewPlanner.setDisable(true);
-            childViewPlanner.setVisible(false);*/
+            allViews.get(1).setDisable(false);
+            allViews.get(1).setVisible(true);  
+            allViews.get(currentView).setDisable(true);
+            allViews.get(currentView).setVisible(false); 
             txtBreadcrumb.setText("> Smarte Terminsuche");  
             activeButtonBackground = menuBtnPaneSmartSearch;
+            currentView = 1;
         }
     } 
     
@@ -196,7 +195,7 @@ public class MainWindowController
             changeMenuAppearance();
             //searchViewController.changeContentPosition();
             //plannerViewController.changeContentPosition();
-            anchorPaneMainView.setMinSize(stage.getWidth() - 240, stage.getHeight());
+            root.setMinSize(stage.getWidth() - 240, stage.getHeight());
             topButtonRow.setMinWidth(stage.getWidth() - 240);
 
         };
@@ -205,12 +204,10 @@ public class MainWindowController
 
         ChangeListener<Number> innerSizeListener = (observable, oldValue, newValue) ->
         {
-            //plannerViewController.changeSize();  
-            //searchViewController.changeSize();  
-            
+            allControllers[currentView].changeSize();            
         };
-        anchorPaneMainView.widthProperty().addListener(innerSizeListener);
-        anchorPaneMainView.heightProperty().addListener(innerSizeListener);       
+        root.widthProperty().addListener(innerSizeListener);
+        root.heightProperty().addListener(innerSizeListener);       
     }
 
     private void changeMenuAppearance()
