@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.resourceClasses;
+package com.altenheim.kalender.resourceClasses;
 
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;

@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.models;
+package com.altenheim.kalender.models;
 
 import com.altenheim.kalender.controller.*;
 import com.altenheim.kalender.interfaces.ViewRootsInterface;

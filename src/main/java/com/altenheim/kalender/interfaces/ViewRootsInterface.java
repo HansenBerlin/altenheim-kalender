@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.interfaces;
+package com.altenheim.kalender.interfaces;
 
 import com.altenheim.kalender.controller.*;
 import javafx.scene.layout.GridPane;
