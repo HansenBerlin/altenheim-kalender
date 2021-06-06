@@ -1,6 +1,6 @@
 package com.altenheim.kalender;
 
-import com.altenheim.kalender.controller.*;
+import com.altenheim.kalender.controller.viewController.*;
 import com.altenheim.kalender.interfaces.ViewRootsInterface;
 import com.altenheim.kalender.models.ViewRootsModel;
 import com.altenheim.kalender.resourceClasses.FxmlFiles;
@@ -20,9 +20,15 @@ public class StartJFX extends Application
     {      
         var loader = new FXMLLoader();
         var jMetroStyle = new JMetro(); 
-        var plannerViewController = new PlannerViewController();
-        var searchViewController = new SearchViewController();             
-        ViewRootsInterface allViews = new ViewRootsModel(plannerViewController, searchViewController);        
+
+        var plannerCt = new PlannerViewController();
+        var searchCt = new SearchViewController();
+        var statsCt = new StatsViewController();
+        var contactsCt = new ContactsViewController();
+        var mailCt = new MailTemplateViewController();
+        var settingsCt = new SettingsViewController();
+
+        ViewRootsInterface allViews = new ViewRootsModel(plannerCt, searchCt, statsCt, contactsCt, mailCt, settingsCt);        
         var guiSetup = new GuiSetupController(jMetroStyle, allViews);        
         guiSetup.init();            
         var mainController = new MainWindowController(primaryStage, jMetroStyle, allViews, guiSetup);

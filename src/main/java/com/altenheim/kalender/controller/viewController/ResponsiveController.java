@@ -1,4 +1,4 @@
-package com.altenheim.kalender.controller;
+package com.altenheim.kalender.controller.viewController;
 
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;

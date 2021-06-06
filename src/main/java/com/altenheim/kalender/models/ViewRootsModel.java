@@ -1,6 +1,6 @@
 package com.altenheim.kalender.models;
 
-import com.altenheim.kalender.controller.*;
+import com.altenheim.kalender.controller.viewController.*;
 import com.altenheim.kalender.interfaces.ViewRootsInterface;
 import javafx.scene.layout.GridPane;
 
@@ -9,12 +9,12 @@ public class ViewRootsModel implements ViewRootsInterface
     private GridPane[] allViews;
     private ResponsiveController[] allControllers;   
 
-    public ViewRootsModel(PlannerViewController plannerViewController, SearchViewController searchViewController)
+    public ViewRootsModel(PlannerViewController plannerCt, SearchViewController searchViewCt, StatsViewController statsCt,
+        ContactsViewController contactsCt, MailTemplateViewController mailCt, SettingsViewController settingsCt)
     {
-        allViews = new GridPane[2];
-        allControllers = new ResponsiveController[2];        
-        allControllers[0] = plannerViewController;
-        allControllers[1] = searchViewController;
+        ResponsiveController[] allCt = { plannerCt, searchViewCt, statsCt, contactsCt, mailCt, settingsCt };
+        allViews = new GridPane[allCt.length];
+        allControllers = allCt;
     }
 
     public GridPane[] getAllViews() { return allViews; }
