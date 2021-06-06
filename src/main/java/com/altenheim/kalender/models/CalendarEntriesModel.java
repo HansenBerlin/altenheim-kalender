@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;

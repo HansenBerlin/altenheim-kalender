@@ -2,14 +2,10 @@ package com.altenheim.kalender.controller;
 
 import com.altenheim.kalender.interfaces.ViewRootsInterface;
 import com.altenheim.kalender.resourceClasses.FxmlFiles;
-import com.calendarfx.model.Entry;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
@@ -72,7 +68,7 @@ public class GuiSetupController
 
     private void setupColorPreferences()
     {
-        boolean isDarkmodeActive = false; //TODO: später aus gespeicherten settings abrufen
+        boolean isDarkmodeActive = false;
         if (isDarkmodeActive)
             jMetroStyle.setStyle(Style.DARK);
         else    
@@ -83,7 +79,7 @@ public class GuiSetupController
     {
         setImages(buttons);
 
-        String[] buttonCaptions = {"Planer", "Smart Search", "Statistiken", "Kontakte", "Mailtemplates", "Einstellungen", "", "", "", ""}; // TODO: später aus locales ersetzen
+        String[] buttonCaptions = {"Planer", "Smart Search", "Statistiken", "Kontakte", "Mailtemplates", "Einstellungen", "", "", "", ""};
         var buttonsMap = new Hashtable<String, Pair<Button, Pane>>();
 
         for (int i = 0; i < buttons.length; i++) 
@@ -109,8 +105,8 @@ public class GuiSetupController
         var iconMode = new MDL2IconFont("\uE793");
         var iconLanguage = new MDL2IconFont("\uE774");
         var iconUser = new MDL2IconFont("\uE748");
-        var iconClosePane = new MDL2IconFont("\uE8A0");
-        var iconOpenPane= new MDL2IconFont("\uE89F");
+        //var iconClosePane = new MDL2IconFont("\uE8A0");
+        //var iconOpenPane= new MDL2IconFont("\uE89F");
 
         MDL2IconFont[] iconListMenuButtons = {iconCal, iconSearch, iconStats, iconContacts, 
             iconMail, iconSettings, iconPlus, iconMode, iconLanguage, iconUser };

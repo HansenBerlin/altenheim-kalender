@@ -1,17 +1,12 @@
 package com.altenheim.kalender.controller;
 
+import com.altenheim.kalender.models.*;
+import com.altenheim.kalender.interfaces.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
 import java.util.ResourceBundle;
-
-import com.altenheim.kalender.interfaces.*;
-import com.altenheim.kalender.models.*;
-import com.altenheim.kalender.views.MainCalendarView;
-import com.calendarfx.model.Calendar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
