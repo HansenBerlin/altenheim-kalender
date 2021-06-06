@@ -1,0 +1,95 @@
+﻿.slider {
+    track_hover_color: #666666;
+    thumb_hover_color: #171717;
+    thumb_pressed_color: #cccccc;
+}
+
+.slider .thumb {
+    -fx-background-color: #5ddd8a;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0.5em;
+    -fx-padding: 1em 0.333333em 1em 0.333333em;
+    -fx-effect: null;
+}
+
+.slider .fill {
+    -fx-background-color: #5ddd8a;
+    -fx-padding: 0.083333em;
+}
+
+.date-picker > .arrow-button:hover > .arrow {
+    -fx-background-color: #5ddd8a;
+}
+
+.date-picker > .arrow-button:pressed {
+    -fx-background-color: #5ddd8a;
+}
+
+.date-picker.combo-box-base:focused, .date-picker.combo-box-base:focused:hover {
+    -fx-background-color: #5ddd8a, background_hover_color;
+    -fx-background-insets: 0, 2;
+}
+
+.check-box:selected > .box{
+    -fx-background-color: #5ddd8a;
+    -fx-border-color: #5ddd8a
+}
+
+
+.toggle-switch {
+    text_color: #111;
+
+    /* Unselected */
+    unselected_color: white;
+    unselected_border_color: #111;
+    thumb_unselected_color: #111;
+    /* --    hover */
+    unselected_hover_color: unselected_color;
+    unselected_border_hover_color: #111;
+    thumb_unselected_hover_color: thumb_unselected_color;
+
+    /* Selected */
+    selected_color: #5ddd8a;
+    selected_border_color: #5ddd8a;
+    thumb_selected_color: white;
+    /* --    hover */
+    selected_hover_color: derive(#5ddd8a, 40%);
+
+    /* Pressed */
+    pressed_color: #666666;
+    pressed_border_color: pressed_color;
+    thumb_pressed_color: white;
+}
+
+
+.button, .toggle-button {
+    button_background_color: #cccccc;
+    background_pressed_color: #999999;
+    border_hover_color: transparent;
+    text_color: #111;
+    default_button_text_color: white;
+    focus_ring_border_color:transparent;
+}
+
+.button {
+    border_hover_default_color: derive(#5ddd8a, -40%);
+}
+
+.toggle-button {
+    border_hover_selected_color: derive(#5ddd8a, -40%);
+}
+
+#customCircleInactive{
+    -fx-fill: transparent;
+}
+
+#customCircleActive{
+    -fx-fill: #5ddd8a;
+}
+
+#customBox{
+    -fx-effect: dropshadow(one-pass-box, #f4f4f4, 10, 0.7, 3, 3);
+    -fx-background-color:  #fcfcfc;
+    -fx-border-width: 1;
+    -fx-border-color:  #f3f3f3;
+}
