@@ -20,7 +20,8 @@ public class StylePresets
     public static final Background TRANSPARENT = getPreset(9);
     public static final String DARK_SECONDARY_CSS = "-fx-background-color:#281b42";
     public static final String LIGHT_SECONDARY_CSS = "-fx-background-color:#4fba74";
-
+    public static final String DARK_CSS_FILE = getCssFile(true);
+    public static final String LIGHT_CSS_FILE = getCssFile(false);
 
     private static Background getPreset(int presetNumber) 
     {
@@ -58,5 +59,19 @@ public class StylePresets
                 break;
         }
         return new Background(new BackgroundFill(Color.web(stylesheet), CornerRadii.EMPTY, Insets.EMPTY));
-    }    
+    }   
+    
+    private static String getCssFile(boolean isDark)
+    {
+        var thisClass = new StylePresets();
+        return thisClass.getTemplate(isDark);            
+    }
+
+    private String getTemplate(boolean isDark)
+    {
+        if (isDark)
+            return getClass().getResource("/darkMode.css").toExternalForm();
+        else
+            return getClass().getResource("/lightMode.css").toExternalForm();
+    }
 }

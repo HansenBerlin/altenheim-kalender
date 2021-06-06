@@ -2,6 +2,7 @@ package com.altenheim.kalender.controller;
 
 import com.altenheim.kalender.interfaces.ViewRootsInterface;
 import com.altenheim.kalender.resourceClasses.FxmlFiles;
+import com.altenheim.kalender.resourceClasses.StylePresets;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -18,10 +19,7 @@ public class GuiSetupController
 {
     private JMetro jMetroStyle;    
     private ViewRootsInterface viewsInformation;
-    
-
-    //private final String[] buttonCaptions = {"Planner", "Smart Search", "Stats", "Contacts", "Mailtemplates", "Settings"};
-    //private List<Button> allMenuButtons;   
+    public boolean isDarkmodeActive = false;
 
     public GuiSetupController(JMetro jMetroStyle, ViewRootsInterface viewsInformation) 
     {
@@ -34,10 +32,25 @@ public class GuiSetupController
         setupViews();
         initializeViews();
         updateChildContainers();
-        setupColorPreferences();
     }
 
-    public void setupViews() throws IOException 
+
+    public void setupColorMode()
+    {
+        if (isDarkmodeActive)
+        {
+            jMetroStyle.setStyle(Style.DARK);        
+            jMetroStyle.getOverridingStylesheets().add(StylePresets.DARK_CSS_FILE);            
+        }     
+        else
+        {
+            jMetroStyle.setStyle(Style.LIGHT);        
+            jMetroStyle.getOverridingStylesheets().add(StylePresets.LIGHT_CSS_FILE);
+        }         
+    }
+
+
+    private void setupViews() throws IOException 
     {
         for (int i = 0; i < FxmlFiles.ALL_FILES.length; i++) 
         {       
@@ -46,7 +59,8 @@ public class GuiSetupController
             loader.setController(viewsInformation.getAllViewControllers()[i]); 
             viewsInformation.addViewRootToList(i, loader.load());
         }        
-    }  
+    }
+
     
     private void initializeViews()
     {
@@ -59,21 +73,13 @@ public class GuiSetupController
         viewsInformation.getAllViews()[0].setDisable(false);
     }
 
+
     private void updateChildContainers()
     {
         for (int i = 0; i < FxmlFiles.ALL_FILES.length; i++)         
-            viewsInformation.getAllViewControllers()[i].setChildContainer(viewsInformation.getAllViews()[i]);           
-        
+            viewsInformation.getAllViewControllers()[i].setChildContainer(viewsInformation.getAllViews()[i]);       
     }
 
-    private void setupColorPreferences()
-    {
-        boolean isDarkmodeActive = false;
-        if (isDarkmodeActive)
-            jMetroStyle.setStyle(Style.DARK);
-        else    
-            jMetroStyle.setStyle(Style.LIGHT);
-    }
 
     public Map<String, Pair<Button, Pane>> createMainMenuButtons(Button[] buttons, Pane[] buttonBackgrounds) throws FileNotFoundException
     {

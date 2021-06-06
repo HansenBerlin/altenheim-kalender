@@ -21,8 +21,7 @@ public class StartJFX extends Application
         var loader = new FXMLLoader();
         var jMetroStyle = new JMetro(); 
         var plannerViewController = new PlannerViewController();
-        var searchViewController = new SearchViewController();       
-               
+        var searchViewController = new SearchViewController();             
         ViewRootsInterface allViews = new ViewRootsModel(plannerViewController, searchViewController);        
         var guiSetup = new GuiSetupController(jMetroStyle, allViews);        
         guiSetup.init();            
@@ -30,17 +29,11 @@ public class StartJFX extends Application
 
         loader.setLocation(getClass().getResource(FxmlFiles.MAIN_VIEW));     
         loader.setController(mainController);        
-        Parent root = loader.load();  
         
+        Parent root = loader.load();        
         var scene = new Scene(root);
         jMetroStyle.setScene(scene);
-
-        var testfile = getClass().getResource("/darkMode.css").toExternalForm();
-        jMetroStyle.getOverridingStylesheets().add(testfile);
-        var test = jMetroStyle.getOverridingStylesheets();
-        for (String string : test) {
-            System.out.println(string);
-        }
+        guiSetup.setupColorMode();   
         
         primaryStage.setScene(scene);            
         primaryStage.setTitle("Smart Planner HWR"); 

@@ -31,11 +31,13 @@ public class MainWindowController extends ResponsiveController
     private GuiSetupController guiSetup;
     private Map<String, Pair<Button, Pane>> allButtonsWithBackgrounds;
 
+    private boolean initilizationDone;
     private int currentView = 0;
     private int currentMenuWidth = 240;
     private Button currentlyActive;
     private boolean darkModeActive = false;
     private Background currentSecondaryColor;
+
 
     @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, menuBtnPaneMail, menuBtnPaneContacts, menuBtnPaneStats;
     @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnStats, menuBtnMail;     
@@ -64,7 +66,8 @@ public class MainWindowController extends ResponsiveController
         viewsRoot.getChildren().addAll(allViewsInformation.getAllViews());
         switchMode(null);
         setupMenuButtons();
-        bindWindowSize();  
+        bindWindowSize();
+        initilizationDone = true;
     }
 
 
@@ -89,23 +92,24 @@ public class MainWindowController extends ResponsiveController
         if (darkModeActive)
         {
             setColorsForDarkAndLightMode(Style.DARK, StylePresets.DARK_MENU_BACKGROUND, StylePresets.DARK_MAIN_BACKGROUND, 
-            StylePresets.DARK_PRIMARY, StylePresets.DARK_SECONDARY, StylePresets.DARK_SECONDARY_CSS);
+            StylePresets.DARK_PRIMARY, StylePresets.DARK_SECONDARY, StylePresets.DARK_SECONDARY_CSS, StylePresets.DARK_CSS_FILE);
             currentSecondaryColor = StylePresets.DARK_SECONDARY;
         }
         else
         {
             setColorsForDarkAndLightMode(Style.LIGHT, StylePresets.LIGHT_MENU_BACKGROUND, StylePresets.LIGHT_MAIN_BACKGROUND, 
-            StylePresets.LIGHT_PRIMARY, StylePresets.LIGHT_SECONDARY, StylePresets.LIGHT_SECONDARY_CSS);
-            currentSecondaryColor = StylePresets.LIGHT_SECONDARY;   
+            StylePresets.LIGHT_PRIMARY, StylePresets.LIGHT_SECONDARY, StylePresets.LIGHT_SECONDARY_CSS, StylePresets.LIGHT_CSS_FILE);
+            currentSecondaryColor = StylePresets.LIGHT_SECONDARY;  
         }
         if (event != null)
-            updateViewOnButtonClicked(currentlyActive);     
+            updateViewOnButtonClicked(currentlyActive);
+
         darkModeActive ^= true;
     } 
 
 
     private void setColorsForDarkAndLightMode(Style style, Background menu, Background background, 
-        Background primary, Background secondary, String secondaryCSS)
+        Background primary, Background secondary, String secondaryCSS, String cssFile)
     {
         jMetro.setStyle(style);
         vboxLeftPane.setBackground(menu);
@@ -113,7 +117,12 @@ public class MainWindowController extends ResponsiveController
         topButtonRow.setBackground(primary);
         btnLogo.setStyle(secondaryCSS);
         for (var view : allViewsInformation.getAllViews()) 
-            view.setBackground(background);
+        view.setBackground(background);
+        if (initilizationDone)
+        {
+            jMetro.getOverridingStylesheets().clear();
+            jMetro.getOverridingStylesheets().add(0, cssFile);
+        }               
     } 
 
 
