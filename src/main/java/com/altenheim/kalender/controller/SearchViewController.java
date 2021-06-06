@@ -2,6 +2,7 @@ package com.altenheim.kalender.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -42,7 +43,6 @@ public class SearchViewController extends ResponsiveController
     {        
         String[] headings = {"Basisinformationen" , "Optionale Informationen", "Vorschlagsauswahl" };
         Circle[] images = { imgFirstStep, imgSecondStep, imgThirdStep };
-        Text[] stepsText = { txtFirstStep, txtSecondStep, txtThirdStep };
         VBox[] allSteps = { stepOneUserInput, stepTwoUserInput, stepThreeUserInput }; 
         int incrementor = -1;
         var button = (Button)event.getSource();
@@ -59,7 +59,7 @@ public class SearchViewController extends ResponsiveController
         int currentIndex = userStep - 1;
         int requestedIndex = userStep - 1 + incrementor;
         changeViewState(allSteps[currentIndex], allSteps[requestedIndex]); 
-        changeStepsButtonState(images[currentIndex], images[requestedIndex], stepsText[currentIndex], stepsText[requestedIndex]);        
+        changeStepsButtonState(images[currentIndex], images[requestedIndex]);        
         userStep += incrementor; 
         txtHeaderStep.setText(headings[currentIndex]);
     }
@@ -72,12 +72,10 @@ public class SearchViewController extends ResponsiveController
         activate.setVisible(true);
     }
 
-    private void changeStepsButtonState(Circle currentC, Circle nextC, Text currentT, Text nextT)
+    private void changeStepsButtonState(Circle currentC, Circle nextC)
     {
-        currentC.setFill(Color.web("transparent"));
-        nextC.setFill(Color.web("#5ddd8a"));
-        currentT.setFill(nextT.getFill());
-        nextT.setFill(Color.WHITE);
+        currentC.setId("customCircleInactive");;
+        nextC.setId("customCircleActive");        
     }
 
     public void changeContentPosition() 

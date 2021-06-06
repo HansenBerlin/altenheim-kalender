@@ -4,16 +4,12 @@ import com.altenheim.kalender.views.CalendarViewOverride;
 
 public class PlannerViewController extends ResponsiveController
 {    
-    private CalendarViewOverride calendarViewTotal;
-
-    public PlannerViewController()
-    {        
-        calendarViewTotal = new CalendarViewOverride();
-    }   
+    private CalendarViewOverride customCalendar;     
 
     public void addCustomCalendarView()
     {
-        childContainer.add(calendarViewTotal, 0, 0, 1, 1);
+        customCalendar = new CalendarViewOverride();
+        childContainer.add(customCalendar, 0, 0, 1, 1);
     }
 
     public void changeContentPosition() 

@@ -38,7 +38,6 @@ public class MainWindowController extends ResponsiveController
     private boolean darkModeActive = false;
     private Background currentSecondaryColor;
 
-
     @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, menuBtnPaneMail, menuBtnPaneContacts, menuBtnPaneStats;
     @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnStats, menuBtnMail;     
     @FXML private Button btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser;
@@ -55,7 +54,7 @@ public class MainWindowController extends ResponsiveController
         this.stage = stage;
         this.jMetro = jMetro;
         this.allViewsInformation = allViewsInformation;
-        this.guiSetup = guiSetup;        
+        this.guiSetup = guiSetup;  
     }
 
 
@@ -83,6 +82,7 @@ public class MainWindowController extends ResponsiveController
         allViewsInformation.getAllViews()[currentView].setVisible(false);
         currentView = userChoice;
         currentlyActive = button;
+        updateWindowSize();
     }    
    
     
@@ -117,7 +117,7 @@ public class MainWindowController extends ResponsiveController
         topButtonRow.setBackground(primary);
         btnLogo.setStyle(secondaryCSS);
         for (var view : allViewsInformation.getAllViews()) 
-        view.setBackground(background);
+            view.setBackground(background);
         if (initilizationDone)
         {
             jMetro.getOverridingStylesheets().clear();
@@ -127,7 +127,7 @@ public class MainWindowController extends ResponsiveController
 
 
     private void updateViewOnButtonClicked(Button pressed)
-    {        
+    {   
         for (String buttonName : allButtonsWithBackgrounds.keySet())
         {
             var buttonPair = allButtonsWithBackgrounds.get(buttonName);
@@ -158,15 +158,22 @@ public class MainWindowController extends ResponsiveController
     {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
         {
-            changeContentPosition();            
-            viewsRoot.setMinSize(stage.getWidth() - currentMenuWidth, stage.getHeight());
-            topButtonRow.setMinWidth(stage.getWidth() - currentMenuWidth);
-            allViewsInformation.getAllViews()[currentView].setMinSize(stage.getWidth() - currentMenuWidth, stage.getHeight());
-            allViewsInformation.getAllViewControllers()[currentView].changeContentPosition();
+            changeContentPosition();  
+            updateWindowSize();            
         };
         stage.widthProperty().addListener(stageSizeListener);
         stage.heightProperty().addListener(stageSizeListener);         
     }    
+
+    private void updateWindowSize()
+    {
+        double setWidth = stage.getWidth() - currentMenuWidth;
+        double setHeight = stage.getHeight();          
+        viewsRoot.setMinSize(setWidth, setHeight);
+        topButtonRow.setMinWidth(setWidth);
+        allViewsInformation.getAllViews()[currentView].setMinSize(setWidth, setHeight);
+        allViewsInformation.getAllViewControllers()[currentView].changeContentPosition();
+    }
 
 
     final void changeContentPosition() 

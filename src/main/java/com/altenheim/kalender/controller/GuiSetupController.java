@@ -9,6 +9,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 import jfxtras.styles.jmetro.JMetro;
@@ -24,7 +25,7 @@ public class GuiSetupController
     public GuiSetupController(JMetro jMetroStyle, ViewRootsInterface viewsInformation) 
     {
         this.jMetroStyle = jMetroStyle;
-        this.viewsInformation = viewsInformation;           
+        this.viewsInformation = viewsInformation;  
     }  
 
     public void init() throws IOException
@@ -40,7 +41,7 @@ public class GuiSetupController
         if (isDarkmodeActive)
         {
             jMetroStyle.setStyle(Style.DARK);        
-            jMetroStyle.getOverridingStylesheets().add(StylePresets.DARK_CSS_FILE);            
+            jMetroStyle.getOverridingStylesheets().add(StylePresets.DARK_CSS_FILE);
         }     
         else
         {
