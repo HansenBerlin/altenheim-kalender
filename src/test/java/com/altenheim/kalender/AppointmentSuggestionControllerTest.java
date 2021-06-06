@@ -2,7 +2,9 @@ package com.altenheim.kalender;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Calendar;
-import com.altenheim.kalender.controller.AppointmentEntryFactory;
+
+import com.altenheim.kalender.controller.logicController.AppointmentEntryFactory;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

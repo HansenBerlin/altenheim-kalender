@@ -1,4 +1,4 @@
-package com.altenheim.kalender.controller;
+package com.altenheim.kalender.controller.viewController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +14,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.paint.Color;
+
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
 

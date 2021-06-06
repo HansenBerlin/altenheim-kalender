@@ -1,4 +1,4 @@
-package com.altenheim.kalender.controller;
+package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.ViewRootsInterface;
 import com.altenheim.kalender.resourceClasses.FxmlFiles;
@@ -9,7 +9,6 @@ import java.util.Hashtable;
 import java.util.Map;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 import jfxtras.styles.jmetro.JMetro;

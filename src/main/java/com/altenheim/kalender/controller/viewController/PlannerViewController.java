@@ -1,6 +1,4 @@
-package com.altenheim.kalender.controller;
-
-import com.altenheim.kalender.views.CalendarViewOverride;
+package com.altenheim.kalender.controller.viewController;
 
 public class PlannerViewController extends ResponsiveController
 {    
