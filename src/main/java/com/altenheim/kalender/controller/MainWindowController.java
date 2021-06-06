@@ -1,275 +1,186 @@
 package com.altenheim.kalender.controller;
 
+import com.altenheim.kalender.interfaces.ViewRootsInterface;
+import com.altenheim.kalender.resourceClasses.StylePresets;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import jfxtras.styles.jmetro.JMetro;
-import jfxtras.styles.jmetro.MDL2IconFont;
 import jfxtras.styles.jmetro.Style;
 
-public class MainWindowController 
+public class MainWindowController extends ResponsiveController
 {
-    private Background primaryColorLight, secondaryColor, transparent, dark, brown, grey, menuBackgroundColor, primaryColorDark, currentPrimaryColor;    
-    private UpdateViewController viewUpdate;
-    private SearchViewController searchViewController;
-    private PlannerViewController plannerViewController;
     private Stage stage;
-    private JMetro jMetro;
-    private final String[] buttonCaptions = {"Planner", "Smart Search", "Stats", "Contacts", "Mailtemplates", "Settings"};
-    private boolean darkModeActive = false;
-    
-    private List<Button> allMenuButtons;   
-    
-    public MainWindowController(Stage stage, JMetro jMetro)
-    {
-        this.stage = stage;
-        this.jMetro = jMetro;
-    }
+    private JMetro jMetro;    
+    private ViewRootsInterface allViewsInformation;
+    private GuiSetupController guiSetup;
+    private Map<String, Pair<Button, Pane>> allButtonsWithBackgrounds;
 
-    @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, 
-        menuBtnPaneContacts, menuBtnPaneStats;
-    @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, 
-        menuBtnContacts, menuBtnStats, menuBtnMail;     
+    private int currentView = 0;
+    private int currentMenuWidth = 240;
+    private Button currentlyActive;
+    private boolean darkModeActive = false;
+    private Background currentSecondaryColor;
+
+    @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, menuBtnPaneMail, menuBtnPaneContacts, menuBtnPaneStats;
+    @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnStats, menuBtnMail;     
     @FXML private Button btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser;
-    @FXML private GridPane rootContainer, childViewPlanner, childViewSearch, topMenu;
-    @FXML private AnchorPane anchorPaneMainView;
+    @FXML private GridPane rootContainer, childContainer, topMenu;
+    @FXML private AnchorPane viewsRoot;
     @FXML private ColumnConstraints columnLeftMenu;
     @FXML private Text txtVersion, txtBreadcrumb;
     @FXML private VBox vboxLeftPane;   
     @FXML private HBox topButtonRow;
 
-    @FXML 
-    public void initialize() throws IOException 
+
+    public MainWindowController(Stage stage, JMetro jMetro, ViewRootsInterface allViewsInformation, GuiSetupController guiSetup)
     {
-        setColors();
-        setButtonStates();
-        allMenuButtons = new ArrayList<Button>();
-        createButtonList();
-        setImages();
-        plannerViewController = new PlannerViewController(stage, anchorPaneMainView); 
-        searchViewController = new SearchViewController(stage, anchorPaneMainView);     
-        viewUpdate = new UpdateViewController(searchViewController, plannerViewController, childViewPlanner, childViewSearch); 
-        initializeChildNodes(); 
-        plannerViewController.addCustomCalendarView();    
-        initBackgrounds();
-        bindWindowSize();   
+        this.stage = stage;
+        this.jMetro = jMetro;
+        this.allViewsInformation = allViewsInformation;
+        this.guiSetup = guiSetup;
     }
 
+
+    @FXML 
+    private void initialize() throws IOException 
+    {
+        ((PlannerViewController)allViewsInformation.getAllViewControllers()[0]).addCustomCalendarView();
+        viewsRoot.getChildren().addAll(allViewsInformation.getAllViews());
+        switchMode(null);
+        setupMenuButtons();
+        bindWindowSize();  
+    }
+
+
     @FXML
-    void changeScene(MouseEvent event) throws IOException 
+    private void changeScene(MouseEvent event) throws IOException 
     {
         var button = (Button)event.getSource();
-        setView(button);
-    }  
+        int userChoice = Integer.parseInt(button.getAccessibleText()); 
+        updateViewOnButtonClicked(button);        
+        allViewsInformation.getAllViews()[userChoice].setDisable(false);
+        allViewsInformation.getAllViews()[userChoice].setVisible(true);  
+        allViewsInformation.getAllViews()[currentView].setDisable(true);
+        allViewsInformation.getAllViews()[currentView].setVisible(false);
+        currentView = userChoice;
+        currentlyActive = button;
+    }    
+   
     
     @FXML
-    void switchLightAndDarkMode(ActionEvent event) throws FileNotFoundException 
+    private void switchMode(ActionEvent event) 
     {
         if (darkModeActive)
         {
-            currentPrimaryColor = primaryColorLight;
-            jMetro.setStyle(Style.LIGHT);
-            vboxLeftPane.setBackground(grey);
-            childViewPlanner.setBackground(transparent);
-            childViewSearch.setBackground(transparent);
-            anchorPaneMainView.setBackground(transparent);
-            topButtonRow.setBackground(currentPrimaryColor);
-            btnLogo.setStyle("-fx-background-color:#4fba74");
-            darkModeActive = false;    
+            setColorsForDarkAndLightMode(Style.DARK, StylePresets.DARK_MENU_BACKGROUND, StylePresets.DARK_MAIN_BACKGROUND, 
+            StylePresets.DARK_PRIMARY, StylePresets.DARK_SECONDARY, StylePresets.DARK_SECONDARY_CSS);
+            currentSecondaryColor = StylePresets.DARK_SECONDARY;
         }
         else
         {
-            currentPrimaryColor = primaryColorDark;
-            jMetro.setStyle(Style.DARK);        
-            vboxLeftPane.setBackground(brown);
-            childViewPlanner.setBackground(dark);
-            childViewSearch.setBackground(dark);
-            anchorPaneMainView.setBackground(dark);
-            topButtonRow.setBackground(currentPrimaryColor);
-            btnLogo.setStyle("-fx-background-color:#281b42");
-            darkModeActive = true;          
+            setColorsForDarkAndLightMode(Style.LIGHT, StylePresets.LIGHT_MENU_BACKGROUND, StylePresets.LIGHT_MAIN_BACKGROUND, 
+            StylePresets.LIGHT_PRIMARY, StylePresets.LIGHT_SECONDARY, StylePresets.LIGHT_SECONDARY_CSS);
+            currentSecondaryColor = StylePresets.LIGHT_SECONDARY;   
         }
-    }    
-
-    private void initializeChildNodes() throws IOException
-    {
-        viewUpdate.setupNodes();   
-        childViewPlanner = viewUpdate.getPlannerView();
-        childViewSearch = viewUpdate.getSearchView();    
-        anchorPaneMainView.getChildren().addAll(childViewPlanner, childViewSearch);
-        childViewSearch.setDisable(true);
-        childViewSearch.setVisible(false);
-    }
-
-    private void setColors()
-    {
-        primaryColorLight = new Background(new BackgroundFill(Color.web("#5ddd8a"), CornerRadii.EMPTY, Insets.EMPTY));
-        primaryColorDark = new Background(new BackgroundFill(Color.web("#322253"), CornerRadii.EMPTY, Insets.EMPTY));
-        secondaryColor = new Background(new BackgroundFill(Color.web("#4fba74"), CornerRadii.EMPTY, Insets.EMPTY));
-        transparent = new Background(new BackgroundFill(Color.web("transparent"), CornerRadii.EMPTY, Insets.EMPTY)); 
-        dark = new Background(new BackgroundFill(Color.web("#181818"), CornerRadii.EMPTY, Insets.EMPTY));   
-        brown = new Background(new BackgroundFill(Color.web("#333333"), CornerRadii.EMPTY, Insets.EMPTY));    
-        grey = new Background(new BackgroundFill(Color.web("#cdcdcd"), CornerRadii.EMPTY, Insets.EMPTY));  
-        primaryColorDark = new Background(new BackgroundFill(Color.web("#4b337d"), CornerRadii.EMPTY, Insets.EMPTY)); 
-    }
-
-    private void setButtonStates()
-    {
-        menuBtnPanePlanner.setBackground(primaryColorLight);
-        menuBtnPaneSmartSearch.setBackground(transparent); 
-        topButtonRow.setBackground(primaryColorLight);
-        btnLogo.setStyle("-fx-background-color:#4fba74");
-    }
-
-    private void setImages() throws FileNotFoundException
-    {
-        var iconCal = new MDL2IconFont("\uE787");
-        var iconSearch = new MDL2IconFont("\uE99A");
-        var iconContacts = new MDL2IconFont("\uE779");
-        var iconStats = new MDL2IconFont("\uE776");
-        var iconMail = new MDL2IconFont("\uE715");
-        var iconSettings = new MDL2IconFont("\uE713");
-        var iconPlus = new MDL2IconFont("\uE710");
-        var iconMode = new MDL2IconFont("\uE793");
-        var iconLanguage = new MDL2IconFont("\uE774");
-        var iconUser = new MDL2IconFont("\uE748");
-        var iconClosePane = new MDL2IconFont("\uE8A0");
-        var iconOpenPane= new MDL2IconFont("\uE89F");
-
-        MDL2IconFont[] iconListMenuButtons = {iconCal, iconSearch, iconStats, iconContacts, iconMail, iconSettings };
-        MDL2IconFont[] iconListTopButtons = {iconPlus, iconMode, iconLanguage, iconUser };
-        Button[] topButtons = { btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser };   
-
-        for (int i = 0; i < iconListMenuButtons.length; i++) 
-        {
-            iconListMenuButtons[i].setStyle("-fx-font-size:22");   
-            allMenuButtons.get(i).setGraphic(iconListMenuButtons[i]);         
-        }
-
-        for (int i = 0; i < iconListTopButtons.length; i++) 
-        {
-            iconListTopButtons[i].setStyle("-fx-font-size:18");   
-            topButtons[i].setGraphic(iconListTopButtons[i]);         
-        }
-    }
-
-    private void initBackgrounds()
-    {
-        vboxLeftPane.setBackground(grey);
-        childViewPlanner.setBackground(transparent);
-        childViewSearch.setBackground(transparent);
-        anchorPaneMainView.setBackground(transparent);
-    }
-
-    private void setView(Button button) throws IOException
-    {
-        menuBtnPanePlanner.setBackground(transparent);
-        menuBtnPaneSmartSearch.setBackground(transparent);
-
-        if (button.equals(menuBtnPlanner))    
-        {     
-            menuBtnPanePlanner.setBackground(currentPrimaryColor);
-            childViewSearch.setDisable(true);
-            childViewSearch.setVisible(false);
-            childViewPlanner.setDisable(false);
-            childViewPlanner.setVisible(true);
-            txtBreadcrumb.setText("> Terminübersicht"); 
-            
-        }        
-        else if (button.equals(menuBtnSearch))
-        {
-            menuBtnPaneSmartSearch.setBackground(currentPrimaryColor);
-            childViewSearch.setDisable(false);
-            childViewSearch.setVisible(true);
-            childViewPlanner.setDisable(true);
-            childViewPlanner.setVisible(false);
-            txtBreadcrumb.setText("> Smarte Terminsuche");  
-        }
+        if (event != null)
+            updateViewOnButtonClicked(currentlyActive);     
+        darkModeActive ^= true;
     } 
-    
-    private void createButtonList()
+
+
+    private void setColorsForDarkAndLightMode(Style style, Background menu, Background background, 
+        Background primary, Background secondary, String secondaryCSS)
     {
-        allMenuButtons.add(menuBtnPlanner);
-        allMenuButtons.add(menuBtnSearch);
-        allMenuButtons.add(menuBtnStats);
-        allMenuButtons.add(menuBtnContacts);
-        allMenuButtons.add(menuBtnMail);
-        allMenuButtons.add(menuBtnSettings);
+        jMetro.setStyle(style);
+        vboxLeftPane.setBackground(menu);
+        viewsRoot.setBackground(background);
+        topButtonRow.setBackground(primary);
+        btnLogo.setStyle(secondaryCSS);
+        for (var view : allViewsInformation.getAllViews()) 
+            view.setBackground(background);
+    } 
+
+
+    private void updateViewOnButtonClicked(Button pressed)
+    {        
+        for (String buttonName : allButtonsWithBackgrounds.keySet())
+        {
+            var buttonPair = allButtonsWithBackgrounds.get(buttonName);
+            if (buttonPair.getKey().equals(currentlyActive) && !currentlyActive.equals(pressed))
+                buttonPair.getValue().setBackground(StylePresets.TRANSPARENT);
+            else if (buttonPair.getKey().equals(pressed))
+            {
+                buttonPair.getValue().setBackground(currentSecondaryColor);
+                txtBreadcrumb.setText(buttonName);
+            }
+        }
     }
+
+
+    private void setupMenuButtons() throws FileNotFoundException
+    {
+        Button[] buttonsList = { menuBtnPlanner, menuBtnSearch, menuBtnStats, menuBtnContacts, menuBtnMail,
+            menuBtnSettings, btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser };
+        Pane[] buttonBackgrounds = { menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneStats,
+            menuBtnPaneContacts, menuBtnPaneMail, menuBtnPaneSettings, null, null, null, null };
+        allButtonsWithBackgrounds = guiSetup.createMainMenuButtons(buttonsList, buttonBackgrounds);
+        currentlyActive = menuBtnPlanner;
+        menuBtnPanePlanner.setBackground(currentSecondaryColor);
+    }
+    
     
     private void bindWindowSize()
     {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
         {
-            changeMenuAppearance();
-            //searchViewController.changeContentPosition();
-            //plannerViewController.changeContentPosition();
-            anchorPaneMainView.setMinSize(stage.getWidth()-240, stage.getHeight());
-            topButtonRow.setMinWidth(stage.getWidth()-240);
-
+            changeContentPosition();            
+            viewsRoot.setMinSize(stage.getWidth() - currentMenuWidth, stage.getHeight());
+            topButtonRow.setMinWidth(stage.getWidth() - currentMenuWidth);
+            allViewsInformation.getAllViews()[currentView].setMinSize(stage.getWidth() - currentMenuWidth, stage.getHeight());
+            allViewsInformation.getAllViewControllers()[currentView].changeContentPosition();
         };
         stage.widthProperty().addListener(stageSizeListener);
-        stage.heightProperty().addListener(stageSizeListener);
+        stage.heightProperty().addListener(stageSizeListener);         
+    }    
 
-        ChangeListener<Number> innerSizeListener = (observable, oldValue, newValue) ->
-        {
-            plannerViewController.changeSize();  
-            searchViewController.changeSize();  
-            
-        };
-        anchorPaneMainView.widthProperty().addListener(innerSizeListener);
-        anchorPaneMainView.heightProperty().addListener(innerSizeListener);    
-        
-        
-    }
 
-    private void changeMenuAppearance()
+    final void changeContentPosition() 
     {
-        int menuWidth;
         if (stage.getWidth() < 1000)
         {
-            menuWidth = 70;   
-            for (int i = 0; i < allMenuButtons.size(); i++) 
-            {
-                allMenuButtons.get(i).setText("");              
-            }       
+            currentMenuWidth = 70;
+            for (String buttonName : allButtonsWithBackgrounds.keySet())             
+                allButtonsWithBackgrounds.get(buttonName).getKey().setText(""); 
             btnLogo.setText("SP");  
             txtVersion.setText("v. 0.1.2");
         }
         else
         {
-            menuWidth = 240;
-            for (int i = 0; i < allMenuButtons.size(); i++)   
-            {
-                allMenuButtons.get(i).setText(buttonCaptions[i]);                
-            }    
+            currentMenuWidth = 240;
+            for (String buttonName : allButtonsWithBackgrounds.keySet()) 
+                allButtonsWithBackgrounds.get(buttonName).getKey().setText(buttonName);             
             btnLogo.setText("SMARTPLANNER");  
             txtVersion.setText("Version 0.1.2; HWR Gruppe C"); 
         }      
 
-        columnLeftMenu.setMinWidth(menuWidth);
-        columnLeftMenu.setPrefWidth(menuWidth);
-        columnLeftMenu.setMaxWidth(menuWidth);
-    }
-
-    
+        columnLeftMenu.setMinWidth(currentMenuWidth);
+        columnLeftMenu.setPrefWidth(currentMenuWidth);
+        columnLeftMenu.setMaxWidth(currentMenuWidth);        
+    }   
 }

@@ -1,15 +1,20 @@
 package com.altenheim.kalender;
 
+import com.altenheim.kalender.controller.*;
+import com.altenheim.kalender.interfaces.ViewRootsInterface;
+import com.altenheim.kalender.models.ViewRootsModel;
+import com.altenheim.kalender.resourceClasses.FxmlFiles;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro.JMetro;
-import jfxtras.styles.jmetro.Style;
-import com.altenheim.kalender.controller.MainWindowController;
 
 public class StartJFX extends Application
 {    
@@ -17,16 +22,21 @@ public class StartJFX extends Application
     public void start(Stage primaryStage) throws Exception 
     {      
         var loader = new FXMLLoader();
-        var jMetro = new JMetro(Style.LIGHT);
-        
-        loader.setLocation(getClass().getResource("/pocLoadSceneInScene.fxml"));     
-        loader.setController(new MainWindowController(primaryStage, jMetro));
-        
-        Parent root = loader.load();  
-        var scene = new Scene(root);
+        var jMetroStyle = new JMetro(); 
+        var plannerViewController = new PlannerViewController();
+        var searchViewController = new SearchViewController();       
+               
+        ViewRootsInterface allViews = new ViewRootsModel(plannerViewController, searchViewController);        
+        var guiSetup = new GuiSetupController(jMetroStyle, allViews);        
+        guiSetup.init();            
+        var mainController = new MainWindowController(primaryStage, jMetroStyle, allViews, guiSetup);
 
-        jMetro.setScene(scene);
-        //jMetro.getOverridingStylesheets().getClass().getResource("/rootcolors.css").toExternalForm();
+        loader.setLocation(getClass().getResource(FxmlFiles.MAIN_VIEW));     
+        loader.setController(mainController);        
+        Parent root = loader.load();  
+        
+        var scene = new Scene(root);
+        jMetroStyle.setScene(scene);
         
         primaryStage.setScene(scene);            
         primaryStage.setTitle("Smart Planner HWR"); 
@@ -37,5 +47,5 @@ public class StartJFX extends Application
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException
     {
         launch(args);    
-    }
+    }   
 }
