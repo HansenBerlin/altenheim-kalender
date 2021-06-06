@@ -40,7 +40,7 @@
             <HBox alignment="CENTER_RIGHT" spacing="15.0" HBox.hgrow="ALWAYS">
                <children>
                   <Button fx:id="btnAddAppointment" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
-                  <Button fx:id="btnSwitchModes" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#switchLightAndDarkMode" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
+                  <Button fx:id="btnSwitchModes" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#switchMode" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
                   <Button fx:id="btnSwitchLanguage" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
                   <Button fx:id="btnUser" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
                </children>
@@ -115,7 +115,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
                <children>
-                  <Pane fx:id="menuBtnPaneSettings1" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
+                  <Pane fx:id="menuBtnPaneMail" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
                   <Button fx:id="menuBtnMail" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Mailtemplates">
                      <HBox.margin>
                         <Insets />
@@ -155,6 +155,6 @@
             </Text>
          </children>
       </VBox>
-      <AnchorPane fx:id="root" cache="true" cacheHint="SPEED" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <AnchorPane fx:id="viewsRoot" cache="true" cacheHint="SPEED" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
    </children>
 </GridPane>

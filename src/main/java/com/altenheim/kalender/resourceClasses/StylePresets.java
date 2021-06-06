@@ -18,6 +18,9 @@ public class StylePresets
     public static final Background LIGHT_MAIN_BACKGROUND = getPreset(7);
     public static final Background LIGHT_MENU_BACKGROUND = getPreset(8);
     public static final Background TRANSPARENT = getPreset(9);
+    public static final String DARK_SECONDARY_CSS = "-fx-background-color:#281b42";
+    public static final String LIGHT_SECONDARY_CSS = "-fx-background-color:#4fba74";
+
 
     private static Background getPreset(int presetNumber) 
     {

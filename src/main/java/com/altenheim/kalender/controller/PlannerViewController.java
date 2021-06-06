@@ -1,15 +1,13 @@
 package com.altenheim.kalender.controller;
 
 import com.altenheim.kalender.views.CalendarViewOverride;
-import javafx.scene.layout.AnchorPane;
 
-public class PlannerViewController extends ParentViewController
+public class PlannerViewController extends ResponsiveController
 {    
     private CalendarViewOverride calendarViewTotal;
 
-    public PlannerViewController(AnchorPane parent)
+    public PlannerViewController()
     {        
-        super(parent);
         calendarViewTotal = new CalendarViewOverride();
     }   
 
@@ -17,6 +15,11 @@ public class PlannerViewController extends ParentViewController
     {
         childContainer.add(calendarViewTotal, 0, 0, 1, 1);
     }
+
+    public void changeContentPosition() 
+    {
+        
+    }    
 }
 
 

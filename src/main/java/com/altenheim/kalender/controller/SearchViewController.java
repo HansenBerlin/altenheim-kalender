@@ -2,8 +2,6 @@ package com.altenheim.kalender.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.stage.Stage;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -19,7 +17,7 @@ import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
 
 
-public class SearchViewController extends ParentViewController
+public class SearchViewController extends ResponsiveController
 {
     @FXML private Text txtHeaderStep, txtFirstStep, txtSecondStep, txtThirdStep;
     @FXML private Button btnBack, btnConfirm;    
@@ -39,11 +37,6 @@ public class SearchViewController extends ParentViewController
 
     private int userStep = 1;
 
-    public SearchViewController(AnchorPane parent) 
-    {
-        super(parent);
-    }
-   
     @FXML
     private void updateUserStepView(ActionEvent event) 
     {        
@@ -71,7 +64,6 @@ public class SearchViewController extends ParentViewController
         txtHeaderStep.setText(headings[currentIndex]);
     }
 
-
     private void changeViewState(VBox deactivate, VBox activate)
     {
         deactivate.setDisable(true);
@@ -80,13 +72,17 @@ public class SearchViewController extends ParentViewController
         activate.setVisible(true);
     }
 
-
     private void changeStepsButtonState(Circle currentC, Circle nextC, Text currentT, Text nextT)
     {
         currentC.setFill(Color.web("transparent"));
         nextC.setFill(Color.web("#5ddd8a"));
         currentT.setFill(nextT.getFill());
         nextT.setFill(Color.WHITE);
+    }
+
+    public void changeContentPosition() 
+    {
+        
     }      
 }
 
