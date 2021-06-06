@@ -6,13 +6,10 @@ import com.altenheim.kalender.models.ViewRootsModel;
 import com.altenheim.kalender.resourceClasses.FxmlFiles;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro.JMetro;
 
