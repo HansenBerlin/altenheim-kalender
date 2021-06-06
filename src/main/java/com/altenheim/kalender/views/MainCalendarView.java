@@ -1,7 +1,4 @@
 package com.altenheim.kalender.views;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -9,14 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.model.CalendarSource;
-import com.calendarfx.view.CalendarView;
-
 
 public class MainCalendarView extends Application
 {
