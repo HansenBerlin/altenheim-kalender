@@ -53,7 +53,7 @@ public class MainWindowController extends ResponsiveController
         this.stage = stage;
         this.jMetro = jMetro;
         this.allViewsInformation = allViewsInformation;
-        this.guiSetup = guiSetup;
+        this.guiSetup = guiSetup;        
     }
 
 

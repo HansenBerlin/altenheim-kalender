@@ -34,6 +34,13 @@ public class StartJFX extends Application
         
         var scene = new Scene(root);
         jMetroStyle.setScene(scene);
+
+        var testfile = getClass().getResource("/darkMode.css").toExternalForm();
+        jMetroStyle.getOverridingStylesheets().add(testfile);
+        var test = jMetroStyle.getOverridingStylesheets();
+        for (String string : test) {
+            System.out.println(string);
+        }
         
         primaryStage.setScene(scene);            
         primaryStage.setTitle("Smart Planner HWR"); 

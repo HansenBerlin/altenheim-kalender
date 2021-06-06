@@ -1,0 +1,84 @@
+﻿.slider {
+    track_hover_color: #999999;
+    thumb_hover_color: #f2f2f2;
+
+    thumb_pressed_color: #767676;
+}
+
+.slider .thumb {
+    -fx-background-color: #4b337d;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0.5em;
+    -fx-padding: 1em 0.333333em 1em 0.333333em;
+    -fx-effect: null;
+}
+
+.slider .fill {
+    -fx-background-color: #4b337d;
+    -fx-padding: 0.083333em; /* 1 */
+}
+
+.date-picker > .arrow-button:hover > .arrow {
+    -fx-background-color: #4b337d;
+}
+
+.date-picker > .arrow-button:pressed {
+    -fx-background-color: #4b337d;
+}
+
+.date-picker.combo-box-base:focused, .date-picker.combo-box-base:focused:hover {
+    -fx-background-color: #4b337d, background_hover_color;
+    -fx-background-insets: 0, 2;
+}
+
+.check-box:selected > .box{
+    -fx-background-color: #4b337d;
+    -fx-border-color: #4b337d
+}
+
+
+.toggle-switch {
+    text_color: white;
+
+    /* Unselected */
+    unselected_color: #111;
+    unselected_border_color: #cccccc;
+    thumb_unselected_color: #cccccc;
+    /* --    hover */
+    unselected_hover_color: #111;
+    unselected_border_hover_color: white;
+    thumb_unselected_hover_color: white;
+
+    /* Selected */
+    selected_color: #4b337d;
+    selected_border_color: #4b337d;
+    thumb_selected_color: white;
+    /* --    hover */
+    selected_hover_color: derive(#4b337d, -20%);
+
+    /* Pressed */
+    pressed_color: #999999;
+    pressed_border_color: pressed_color;
+    thumb_pressed_color: white;
+}
+
+
+.button, .toggle-button {
+    button_background_color: #333333;
+    background_pressed_color: #666666;
+
+    border_hover_color: transparent;
+
+    text_color: white;
+    default_button_text_color: white;
+
+    focus_ring_border_color:transparent;
+}
+
+.button {
+    border_hover_default_color: derive(#4b337d, 70%);
+}
+
+.toggle-button {
+    border_hover_selected_color: derive(#4b337d, 70%);
+}
