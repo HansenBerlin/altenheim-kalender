@@ -74,7 +74,7 @@ public class SearchViewController extends ResponsiveController
 
     private void changeStepsButtonState(Circle currentC, Circle nextC)
     {
-        currentC.setId("customCircleInactive");;
+        currentC.setId("customCircleInactive");
         nextC.setId("customCircleActive");        
     }
 
