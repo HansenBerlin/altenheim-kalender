@@ -1,4 +1,4 @@
-package com.altenheim.kalender.controller;
+package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.ViewRootsInterface;
 import com.altenheim.kalender.resourceClasses.StylePresets;

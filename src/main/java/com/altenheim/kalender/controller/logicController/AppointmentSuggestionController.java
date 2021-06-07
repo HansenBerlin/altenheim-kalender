@@ -1,4 +1,4 @@
-package com.altenheim.kalender.controller;
+package com.altenheim.kalender.controller.logicController;
 
 import java.util.ArrayList;
 import java.util.List;

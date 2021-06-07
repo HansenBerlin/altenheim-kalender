@@ -1,4 +1,4 @@
-package com.altenheim.kalender.controller;
+package com.altenheim.kalender.controller.logicController;
 
 import java.awt.*;
 import java.net.*;

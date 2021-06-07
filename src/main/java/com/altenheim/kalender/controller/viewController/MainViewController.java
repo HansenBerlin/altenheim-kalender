@@ -1,6 +1,10 @@
-package com.altenheim.kalender.controller;
+package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.models.*;
+import com.altenheim.kalender.controller.logicController.AppointmentEntryFactory;
+import com.altenheim.kalender.controller.logicController.AppointmentSuggestionController;
+import com.altenheim.kalender.controller.logicController.GoogleAPIController;
+import com.altenheim.kalender.controller.logicController.MailCreationController;
 import com.altenheim.kalender.interfaces.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
