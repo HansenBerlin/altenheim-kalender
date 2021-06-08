@@ -38,19 +38,13 @@ public class SmartSearchController implements ISmartSearchController
 			{		
 				if (i == 0)
 					end = entries.get(i).getStartMillis();
-				if (i < entries.size()-1)
-				{
-					start = entries.get(i).getEndMillis();
-					end = entries.get(i+1).getStartMillis();
-				}
-				else
-				{
-					start = entries.get(i).getEndMillis();
-					end = userEnd;
-				}
+				if (i < entries.size()-1)				
+					end = entries.get(i+1).getStartMillis();				
+				else				
+					end = userEnd;				
+				start = entries.get(i).getEndMillis();
 				if (end-userStart <= duration*60000 || userEnd-start <= duration*60000)
-					continue;
-				
+					continue;				
 				if (end - start >= duration*60000)				
 					output.add(createEntryFromMillis(start, end));				
 			}		
