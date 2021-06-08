@@ -1,17 +1,16 @@
-package com.altenheim.kalender.controller;
+package com.altenheim.kalender.controller.viewController;
 
+import com.altenheim.kalender.models.*;
+import com.altenheim.kalender.controller.logicController.AppointmentEntryFactory;
+import com.altenheim.kalender.controller.logicController.SmartSearchController;
+import com.altenheim.kalender.controller.logicController.GoogleAPIController;
+import com.altenheim.kalender.controller.logicController.MailCreationController;
+import com.altenheim.kalender.interfaces.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
 import java.util.ResourceBundle;
-
-import com.altenheim.kalender.interfaces.*;
-import com.altenheim.kalender.models.*;
-import com.altenheim.kalender.views.MainCalendarView;
-import com.calendarfx.model.Calendar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,7 +24,7 @@ public class MainViewController implements Initializable
 {
     private IAppointmentEntryFactory entryFactory;
     private ICalendarEntriesModel allCalendars;
-    private IAppointmentSuggestionController suggestion;
+    private ISmartSearchController suggestion;
     private IMailCreationController mailController;
     private IGoogleAPIController googleApis;
 
@@ -53,10 +52,10 @@ public class MainViewController implements Initializable
         googleApis = new GoogleAPIController();
         mailController = new MailCreationController();
         allCalendars = new CalendarEntriesModel();
-        entryFactory = new AppointmentEntryFactory();
+        //entryFactory = new AppointmentEntryFactory();
         
-        allCalendars.addCalendar(entryFactory.createEntrys("Test Kalender 1"));      
-        suggestion = new AppointmentSuggestionController(allCalendars);         
+        //allCalendars.addCalendar(entryFactory.createEntrys("Test Kalender 1"));      
+        suggestion = new SmartSearchController(allCalendars);         
     }    
     
     @FXML
