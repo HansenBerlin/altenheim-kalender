@@ -1,7 +1,15 @@
 package com.altenheim.kalender;
 
-import java.io.File;
-import java.io.FileInputStream;
+import com.altenheim.kalender.controller.logicController.AppointmentEntryFactory;
+import com.altenheim.kalender.controller.logicController.SmartSearchController;
+import com.altenheim.kalender.controller.viewController.*;
+import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
+import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.interfaces.ISmartSearchController;
+import com.altenheim.kalender.interfaces.ViewRootsInterface;
+import com.altenheim.kalender.models.CalendarEntriesModel;
+import com.altenheim.kalender.models.ViewRootsModel;
+import com.altenheim.kalender.resourceClasses.FxmlFiles;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import javafx.application.Application;
@@ -10,26 +18,40 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro.JMetro;
-import jfxtras.styles.jmetro.Style;
-
-import com.altenheim.kalender.controller.MainWindowController;
 
 public class StartJFX extends Application
 {    
     @Override
     public void start(Stage primaryStage) throws Exception 
     {      
-        
         var loader = new FXMLLoader();
-        var fileInputStream = new FileInputStream(new File("src/main/java/resources/pocLoadSceneInScene.fxml"));        
-        var jMetro = new JMetro(Style.LIGHT);
-        loader.setController(new MainWindowController(primaryStage, jMetro));
-        Parent root = loader.load(fileInputStream);  
-        var scene = new Scene(root);
+        var jMetroStyle = new JMetro(); 
 
-        //scene.getStylesheets().add(StartJFX.class.getResource("testDarkTheme.css").toExternalForm());
-        //scene.getStylesheets().add(StartJFX.class.getResource("bootstrap3.css").toExternalForm());
-        jMetro.setScene(scene);
+        ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
+        IAppointmentEntryFactory factory = new AppointmentEntryFactory(calendarEntriesModel);
+        factory.createTestCalendar();
+        ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
+
+        var plannerCt = new PlannerViewController();
+        var searchCt = new SearchViewController(smartSearch, factory);
+        var statsCt = new StatsViewController();
+        var contactsCt = new ContactsViewController();
+        var mailCt = new MailTemplateViewController();
+        var settingsCt = new SettingsViewController();
+
+        ViewRootsInterface allViews = new ViewRootsModel(plannerCt, searchCt, statsCt, contactsCt, mailCt, settingsCt);        
+        var guiSetup = new GuiSetupController(jMetroStyle, allViews);        
+        guiSetup.init();            
+        var mainController = new MainWindowController(primaryStage, jMetroStyle, allViews, guiSetup);
+
+        loader.setLocation(getClass().getResource(FxmlFiles.MAIN_VIEW));     
+        loader.setController(mainController);        
+        
+        Parent root = loader.load();        
+        var scene = new Scene(root);
+        jMetroStyle.setScene(scene);
+        guiSetup.setupColorMode();   
+        
         primaryStage.setScene(scene);            
         primaryStage.setTitle("Smart Planner HWR"); 
         primaryStage.setMaximized(true);
@@ -39,5 +61,5 @@ public class StartJFX extends Application
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException
     {
         launch(args);    
-    }
+    }   
 }
