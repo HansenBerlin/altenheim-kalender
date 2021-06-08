@@ -6,12 +6,10 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import com.altenheim.kalender.controller.logicController.AppointmentEntryFactory;
 import com.altenheim.kalender.controller.logicController.SmartSearchController;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class SmartSearchControllerTest 
@@ -57,7 +55,6 @@ public class SmartSearchControllerTest
         var entryOneCalendar = createEntryDummy(10, 11, 1, 1);
         var entryTwoCalendar = createEntryDummy(13, 15, 1, 1);
         var entryThreeCalendar = createEntryDummy(16, 17, 1, 1);
-
         var allEntriesMock = mock(ICalendarEntriesModel.class);
         var calendarMockEntries = new Calendar();
 
@@ -76,7 +73,6 @@ public class SmartSearchControllerTest
         var entryOneCalendar = createEntryDummy(10, 11, 1, 1);
         var entryTwoCalendar = createEntryDummy(13, 15, 1, 1);
         var entryThreeCalendar = createEntryDummy(16, 17, 1, 1);
-
         var allEntriesMock = mock(ICalendarEntriesModel.class);
         var calendarMockEntries = new Calendar();
 
@@ -95,8 +91,7 @@ public class SmartSearchControllerTest
     void findAvailableTimeSlot_oneSuggestionWithOverlappingEntryOnStartOnSameDay_shouldReturnOneEntry()
     {
         var entryUser = createEntryDummy(8, 18, 1, 1);
-        var entryOneCalendar = createEntryDummy(7, 11, 1, 1);        
-
+        var entryOneCalendar = createEntryDummy(7, 11, 1, 1);  
         var allEntriesMock = mock(ICalendarEntriesModel.class);
         var calendarMockEntries = new Calendar();
 
@@ -113,9 +108,7 @@ public class SmartSearchControllerTest
     {
         var entryUser = createEntryDummy(8, 18, 1, 1);
         var entryOneCalendar = createEntryDummy(7, 11, 1, 1);  
-        var entryTwoCalendar = createEntryDummy(17, 19, 1, 1);        
-      
-
+        var entryTwoCalendar = createEntryDummy(17, 19, 1, 1); 
         var allEntriesMock = mock(ICalendarEntriesModel.class);
         var calendarMockEntries = new Calendar();
 
@@ -133,8 +126,7 @@ public class SmartSearchControllerTest
         var entryUser = createEntryDummy(8, 18, 1, 1);
         var entryOneCalendar = createEntryDummy(7, 11, 1, 1);
         var entryTwoCalendar = createEntryDummy(13, 15, 1, 1);
-        var entryThreeCalendar = createEntryDummy(16, 19, 1, 1);       
-
+        var entryThreeCalendar = createEntryDummy(16, 19, 1, 1);
         var allEntriesMock = mock(ICalendarEntriesModel.class);
         var calendarMockEntries = new Calendar();
 
@@ -144,6 +136,43 @@ public class SmartSearchControllerTest
         var result = controller.findAvailableTimeSlot(entryUser, 60);
         
         assertEquals(2, result.size());
+    }
+
+    @Test
+    void findAvailableTimeSlot_multipleSuggestionsMultipleDays_shouldReturnThreeEntrys()
+    {
+        //Terminsuche zwischen 10 und 11 Uhr zwischen dem 10.1. und 13.1.
+        var entryUser = createEntryDummy(10, 11, 10, 13); 
+        var entryOneCalendar = createEntryDummy(10, 11, 9, 9);
+        var entryTwoCalendar = createEntryDummy(10, 11, 10, 10);
+        var entryThreeCalendar = createEntryDummy(13, 17, 11, 11);
+        var entryFourCalendar = createEntryDummy(10, 11, 15, 15);
+        // --> freie Termine am 11., 12., und 13.
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var calendarMockEntries = new Calendar();
+
+        calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar, entryFourCalendar);
+        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.findAvailableTimeSlot(entryUser, 60);
+        
+        assertEquals(3, result.size());
+    }
+
+    @Test
+    void findAvailableTimeSlot_multipleSuggestionsMultipleDaysWithSpanOverTwoDays_shouldReturnTwoEntrys()
+    {
+        var entryUser = createEntryDummy(1, 23, 10, 13); 
+        var entryOneCalendar = createEntryDummy(2, 3, 10, 12);        
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var calendarMockEntries = new Calendar();
+
+        calendarMockEntries.addEntries(entryOneCalendar);
+        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.findAvailableTimeSlot(entryUser, 600);
+        
+        assertEquals(1, result.size());
     }
 
     private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)

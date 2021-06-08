@@ -32,22 +32,17 @@ public class SmartSearchController implements ISmartSearchController
 		{		
 			for (int i = 0; i <= entries.size(); i++) 
 			{		
-				if (i == 0)
+				if (i >= 0 && i < entries.size())
 					end = entries.get(i).getStartMillis();
-				if (i == entries.size())
-				{
-					start = entries.get(i-1).getEndMillis();
-					end = userEnd;
-				}			
-				else if (i > 0)
-				{
-					start = entries.get(i-1).getEndMillis();
-					end = entries.get(i).getStartMillis();
-				}								
-				if (end-userStart <= duration*59000 || userEnd-start <= duration*59000)
-					continue;				
-				if (end - start >= duration*59000)				
-					output.add(createEntryFromMillis(start, end));				
+				if (i > 0)				
+					start = entries.get(i-1).getEndMillis();				
+				if (i == entries.size())				
+					end = userEnd;								
+				if (end - start >= duration*59000 && !(end-userStart <= duration*59000 
+					|| userEnd-start <= duration*59000))
+					output.add(createEntryFromMillis(start, end));
+				if (checkForDuplicates(output))
+					output.remove(output.size()-1);							
 			}		
 		}			
 		return output;
@@ -56,12 +51,23 @@ public class SmartSearchController implements ISmartSearchController
 	private Entry<String> createEntryFromMillis(long start, long end)
 	{
 		var entry = new Entry<String>();
-		LocalDateTime dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
-		LocalDateTime dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());		
+		var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
+		var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());		
 		entry.changeStartTime(dateStart.toLocalTime());
 		entry.changeStartDate(dateStart.toLocalDate());
 		entry.changeEndTime(dateEnd.toLocalTime());
 		entry.changeEndDate(dateEnd.toLocalDate());
 		return entry;
+	}
+
+	public boolean checkForDuplicates(ArrayList<Entry<String>> currentEntries)
+	{
+		if (currentEntries.size() < 2)
+			return false;
+		if (currentEntries.get(currentEntries.size()-2).getStartMillis() 
+			== currentEntries.get(currentEntries.size()-1).getStartMillis())
+			return true;
+		else
+			return false;
 	}
 }
