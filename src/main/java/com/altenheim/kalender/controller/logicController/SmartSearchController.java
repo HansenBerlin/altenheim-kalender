@@ -64,10 +64,7 @@ public class SmartSearchController implements ISmartSearchController
 	{
 		if (currentEntries.size() < 2)
 			return false;
-		if (currentEntries.get(currentEntries.size()-2).getStartMillis() 
-			== currentEntries.get(currentEntries.size()-1).getStartMillis())
-			return true;
-		else
-			return false;
+		return (currentEntries.get(currentEntries.size()-2).getStartMillis() 
+			== currentEntries.get(currentEntries.size()-1).getStartMillis());
 	}
 }
