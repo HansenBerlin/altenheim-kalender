@@ -24,84 +24,22 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 
 	public List<Entry<String>> getAvailableAppointments(Calendar calendar, ArrayList<LocalTime>[] openingHours,
 			LocalDate firstDate, long interval, int spread, int maxOffers, int appointmentDuration, int travelTime) {
-
-		switch (LocalDate.now().getDayOfWeek().toString()) {
-		case "MONDAY":
-			System.out.println("MONDAY");
-			if (openingHours[0] != null && !openingHours[0].isEmpty()) {
-				
-				var list = Logik(calendar, openingHours[0], appointmentDuration);
+			
+		var list = Logik(calendar, openingHours[0], appointmentDuration, null, null);
 				for (Entry<?> listEntry : list) {
 					System.out.println(listEntry.toString());
 				}
-			}
-
-			break;
-		case "TUESDAY":
-			System.out.println("TUESDAY");
-			if (openingHours[1] != null && !openingHours[1].isEmpty()) {
-				Logik(calendar, openingHours[1], appointmentDuration);
-
-			}
-
-			break;
-		case "WEDNESDAY":
-			System.out.println("WEDNESDAY");
-			if (openingHours[2] != null && !openingHours[2].isEmpty()) {
-				Logik(calendar, openingHours[2], appointmentDuration);
-
-			}
-
-			break;
-		case "THURSDAY":
-			System.out.println("THURSDAY");
-			if (openingHours[3] != null && !openingHours[3].isEmpty()) {
-				Logik(calendar, openingHours[3], appointmentDuration);
-
-			}
-
-			break;
-		case "FRIDAY":
-			System.out.println("FRIDAY");
-			if (openingHours[4] != null && !openingHours[4].isEmpty()) {
-				Logik(calendar, openingHours[4], appointmentDuration);
-
-			}
-
-			break;
-		case "SATURDAY":
-			System.out.println("SATURDAY");
-			if (openingHours[5] != null && !openingHours[5].isEmpty()) {
-				Logik(calendar, openingHours[5], appointmentDuration);
-
-			}
-
-			break;
-		case "SUNDAY":
-			System.out.println("SUNDAY");
-			if (openingHours[6] != null && !openingHours[6].isEmpty()) {
-
-				Logik(calendar, openingHours[6], appointmentDuration);
-
-			}
-
-			break;
-
-		default:
-			break;
-		}
+		
 
 		return null;
 	}
 
-	private ArrayList<Entry<?>> Logik(Calendar calendar, ArrayList<LocalTime> open, int appointmentDuration) {
+	private ArrayList<Entry<?>> Logik(Calendar calendar, ArrayList<LocalTime> open, int appointmentDuration, Entry<?> times, Entry<?> days ) {
 
-//		var open = openingHours[3];
-//		var dayEntries = new ArrayList<LocalTime>();
-		var result = calendar.findEntries(LocalDate.now(), LocalDate.now(), ZoneId.systemDefault());
+		var result = calendar.findEntries(days.getStartDate(), days.getEndDate(), ZoneId.systemDefault());
 		var allEntries = result.values();
-		LocalTime startTime = open.get(0);
-		LocalTime endTime = open.get(1);
+		
+		LocalTime startTime = times.getStartTime();
 		var output = new ArrayList<Entry<?>>();
 
 		if (allEntries.size() > 0) {
@@ -110,7 +48,7 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 				for (var entry : entries) {
 
 //					System.out.println(entry.toString());
-					if (startTime.isAfter(endTime)) {
+					if (startTime.isAfter(times.getEndTime())) {
 						return output;
 					}
 					if (entry.isFullDay()) {
@@ -123,7 +61,7 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 							continue;
 						} else if (startTime.plusMinutes(appointmentDuration).isBefore(entry.getStartTime())) {
 
-							if (startTime.plusMinutes(appointmentDuration).isBefore(endTime)) {
+							if (startTime.plusMinutes(appointmentDuration).isBefore(times.getEndTime())) {
 								var mma = new Entry<String>();
 								mma.changeStartTime(startTime);
 								mma.changeEndTime(entry.getStartTime());						
@@ -138,11 +76,8 @@ public class AppointmentSuggestionController implements IAppointmentSuggestionCo
 					}
 				}
 			}
-
 		}
-
-
-		return output;
+return output;
 	}// ende
 
 	@SuppressWarnings("unchecked")
