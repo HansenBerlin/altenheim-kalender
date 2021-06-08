@@ -135,6 +135,7 @@
             <Button fx:id="btnBack" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="ZURÜCK" />
             <Button fx:id="btnConfirm" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="WEITER" />
             <Button minHeight="40.0" mnemonicParsing="false" onAction="#testUpdate" prefHeight="40.0" prefWidth="170.0" text="TEST" />
+            <Button minHeight="40.0" mnemonicParsing="false" onAction="#resetTest" prefHeight="40.0" prefWidth="170.0" text="RESET" />
          </children>
          <GridPane.margin>
             <Insets top="30.0" />

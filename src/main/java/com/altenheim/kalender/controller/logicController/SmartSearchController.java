@@ -35,8 +35,11 @@ public class SmartSearchController implements ISmartSearchController
 		for (var entries : result) 		
 		{		
 			for (int i = 0; i < entries.size(); i++) 
-			{				
-				end = entries.get(i).getStartMillis();							
+			{		
+				if (i == 0)
+					end = entries.get(i).getStartMillis();
+				else
+				 	end = userEnd;							
 				if (end-userStart <= duration*60000 || userEnd-start <= duration*60000)
 					continue;
 				else if (i < entries.size()-1)
