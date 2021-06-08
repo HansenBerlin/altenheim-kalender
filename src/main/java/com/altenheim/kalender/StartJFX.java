@@ -1,7 +1,13 @@
 package com.altenheim.kalender;
 
+import com.altenheim.kalender.controller.logicController.AppointmentEntryFactory;
+import com.altenheim.kalender.controller.logicController.SmartSearchController;
 import com.altenheim.kalender.controller.viewController.*;
+import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
+import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.interfaces.ISmartSearchController;
 import com.altenheim.kalender.interfaces.ViewRootsInterface;
+import com.altenheim.kalender.models.CalendarEntriesModel;
 import com.altenheim.kalender.models.ViewRootsModel;
 import com.altenheim.kalender.resourceClasses.FxmlFiles;
 import java.io.IOException;
@@ -21,8 +27,13 @@ public class StartJFX extends Application
         var loader = new FXMLLoader();
         var jMetroStyle = new JMetro(); 
 
+        ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
+        IAppointmentEntryFactory factory = new AppointmentEntryFactory(calendarEntriesModel);
+        factory.createTestCalendar();
+        ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
+
         var plannerCt = new PlannerViewController();
-        var searchCt = new SearchViewController();
+        var searchCt = new SearchViewController(smartSearch, factory);
         var statsCt = new StatsViewController();
         var contactsCt = new ContactsViewController();
         var mailCt = new MailTemplateViewController();

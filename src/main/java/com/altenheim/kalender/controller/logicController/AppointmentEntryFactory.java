@@ -1,6 +1,7 @@
 package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
+import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -11,8 +12,14 @@ import com.calendarfx.model.Entry;
 
 public class AppointmentEntryFactory implements IAppointmentEntryFactory
 {    
+    private ICalendarEntriesModel allCalendars;
+
+    public AppointmentEntryFactory(ICalendarEntriesModel allCalendars)
+    {
+        this.allCalendars = allCalendars;
+    }
     
-    public Calendar createEntrys(String calendarName) 
+    public void createRandomEntrys(String calendarName) 
     {
         var calendar = new Calendar(calendarName);
         int dayOfMonth;
@@ -38,8 +45,40 @@ public class AppointmentEntryFactory implements IAppointmentEntryFactory
                 calendar.addEntries(entry);                 
             }            
         }
-        return calendar;
+        allCalendars.addCalendar(calendar);
     }
+
+    public void createTestCalendar()
+	{
+		var calendar = new Calendar();
+
+		for (int i = 0; i < 18; i+=3) 
+		{
+			var startAndEndDate = LocalDate.of(2021, 1, 1);
+        	var startTime = LocalTime.of(1 + i, i);
+        	var endTime = LocalTime.of(2 + i, i*2);
+        	var entry = new Entry<String>("Test");
+        	entry.changeStartDate(startAndEndDate);
+        	entry.changeEndDate(startAndEndDate);
+        	entry.changeStartTime(startTime);
+        	entry.changeEndTime(endTime);
+			calendar.addEntry(entry);
+			System.out.printf("Neuer Eintrag von %s bis %s\n", entry.getStartTime(), entry.getEndTime());
+		}
+        allCalendars.addCalendar(calendar);
+	}	
+
+	public Entry<String> createUserSettingsEntry(LocalTime startSearchTime, LocalTime endSearchTime)
+	{
+		var startAndEndDate = LocalDate.of(2021, 1, 1);        
+        var entry = new Entry<String>("Test");
+        entry.changeStartDate(startAndEndDate);
+        entry.changeEndDate(startAndEndDate);
+        entry.changeStartTime(startSearchTime);
+        entry.changeEndTime(endSearchTime);
+
+		return entry;
+	}
 
     private int rG(int startInclusive, int endInclusive)
     {
