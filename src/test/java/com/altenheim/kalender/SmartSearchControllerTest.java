@@ -14,7 +14,7 @@ public class SmartSearchControllerTest
     @Test
     void findAvailableTimeSlot_noPossibleSolution_shouldReturnEmptyList()
     {
-        var mockCalenderModels = new ICalendarEntriesModel();
+        //var mockCalenderModels = new ICalendarEntriesModel();
         
         var controller = new SmartSearchControllerTest();
     }
