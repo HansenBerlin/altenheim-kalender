@@ -17,11 +17,7 @@ public class SmartSearchController implements ISmartSearchController
 	{
 		this.administrateEntries = administrateEntries;
 	}
-
-	public SmartSearchController() 
-	{
-	}	
-
+	
 	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration) 
 	{			
 		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
