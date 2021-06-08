@@ -2,7 +2,7 @@ package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.controller.logicController.AppointmentEntryFactory;
-import com.altenheim.kalender.controller.logicController.AppointmentSuggestionController;
+import com.altenheim.kalender.controller.logicController.SmartSearchController;
 import com.altenheim.kalender.controller.logicController.GoogleAPIController;
 import com.altenheim.kalender.controller.logicController.MailCreationController;
 import com.altenheim.kalender.interfaces.*;
@@ -24,7 +24,7 @@ public class MainViewController implements Initializable
 {
     private IAppointmentEntryFactory entryFactory;
     private ICalendarEntriesModel allCalendars;
-    private IAppointmentSuggestionController suggestion;
+    private ISmartSearchController suggestion;
     private IMailCreationController mailController;
     private IGoogleAPIController googleApis;
 
@@ -52,10 +52,10 @@ public class MainViewController implements Initializable
         googleApis = new GoogleAPIController();
         mailController = new MailCreationController();
         allCalendars = new CalendarEntriesModel();
-        entryFactory = new AppointmentEntryFactory();
+        //entryFactory = new AppointmentEntryFactory();
         
-        allCalendars.addCalendar(entryFactory.createEntrys("Test Kalender 1"));      
-        suggestion = new AppointmentSuggestionController(allCalendars);         
+        //allCalendars.addCalendar(entryFactory.createEntrys("Test Kalender 1"));      
+        suggestion = new SmartSearchController(allCalendars);         
     }    
     
     @FXML
