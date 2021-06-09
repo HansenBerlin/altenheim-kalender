@@ -9,20 +9,24 @@
   <version>0.1.4-SNAPSHOT</version>
   <name>altenheim-kalender</name>
   <url></url>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>16</maven.compiler.source>
     <maven.compiler.target>16</maven.compiler.target>
   </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.8.0-M1</version>
       <scope>test</scope>
-    </dependency>     
+    </dependency>  
+    <dependency> 
+      <groupId>org.mockito</groupId> 
+      <artifactId>mockito-core</artifactId> 
+      <version>3.11.0</version> 
+      <scope>test</scope> 
+    </dependency>   
     <dependency>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-controls</artifactId>
@@ -53,10 +57,7 @@
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20210307</version>
-    </dependency>   
-
-
-
+    </dependency>
   </dependencies>
   <build>
       <plugins>   

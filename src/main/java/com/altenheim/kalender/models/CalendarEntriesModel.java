@@ -44,9 +44,5 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
     {
         return calendars.get(index);
     }
-
-    public void saveDate(ICalendarEntryModel newEntry)
-    {
-       // nach Schema der Logik in der Factory implementieren  
-    }
+    
 }

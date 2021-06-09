@@ -8,9 +8,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
+import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
-import com.altenheim.kalender.models.SuggestionsModel;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -28,22 +29,28 @@ public class SearchViewController extends ResponsiveController
         toggleAutoSuggest, toogleUseNextAppointment;  
     @FXML private Slider sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment, sliderAppointmentDuration;
     @FXML private SplitMenuButton dropdownToDestinationOpeningOptions, dropdownInterval,dropdownStartAt, 
-        dropdownToDestinationTravelTimeOption, dropdownVehicle;
-    private TableView<SuggestionsModel> tableSuggestions;
-    //private TableColumn<String, String> columnStartDate;
-    //private TableColumn<String, String> columnEndDate;
-    //@FXML private TableColumn<Button, String> columnTick;
+        dropdownToDestinationTravelTimeOption, dropdownVehicle;        
     @FXML private Spinner<Integer> sliderSuggestionCount;  
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
-
+        
+    private TableView<SuggestionsModel> tableSuggestions;
     private int userStep = 1;    
     private ISmartSearchController smartSearch;
-    private IAppointmentEntryFactory factory;
+    private IAppointmentEntryFactory entryFactory;
+    private ContactsModel contacts;
+    private MailTemplateModel mailTemplates;
+    private SettingsModel settings;
+    private IGoogleAPIController api;
 
-    public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory factory)
+    public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory entryFactory,
+        ContactsModel contacts, MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api)
     {
         this.smartSearch = smartSearch;
-        this.factory = factory;
+        this.entryFactory = entryFactory;
+        this.contacts = contacts;
+        this.mailTemplates = mailTemplates;
+        this.settings = settings;
+        this.api = api;
     }
 
     @FXML
@@ -92,7 +99,7 @@ public class SearchViewController extends ResponsiveController
     @FXML
     private void testUpdate(ActionEvent event)
     {      
-        var testEntry = factory.createUserSettingsEntry(timeStart.getValue(), timeEnd.getValue());
+        var testEntry = entryFactory.createUserSettingsEntry(timeStart.getValue(), timeEnd.getValue());
         var result = smartSearch.findAvailableTimeSlot(testEntry, (int)sliderAppointmentDuration.getValue());
         for (var entry : result) 
         {
@@ -104,7 +111,8 @@ public class SearchViewController extends ResponsiveController
     @FXML
     private void resetTest(ActionEvent event)
     {
-        SuggestionsModel.data.clear();
+        //SuggestionsModel.data.clear();
+        settings.setScrapingInterval(settings.getScrapingInterval()+1000);
     }
 
 
