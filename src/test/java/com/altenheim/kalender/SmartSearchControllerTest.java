@@ -175,6 +175,118 @@ public class SmartSearchControllerTest
         assertEquals(1, result.size());
     }
 
+
+//Nico Tests
+//Start findSelectedWeekdays
+    @Test
+    void findSelectedWeekdays_oneDaySelectedInOneWeek_shouldReturnOneEntry(){
+        var entryUser = new Entry<String>("User Preference");
+        entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
+        entryUser.changeEndDate(LocalDate.of(2021, 6, 13));
+        boolean[] weekdays = {true, false, false, false, false,     false, false};
+
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        
+        
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.findSelectedWeekdays(entryUser, weekdays);
+        
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void findSelectedWeekdays_nullDaysSelectedInOneWeek_shouldReturnNullEntry(){
+        var entryUser = new Entry<String>("User Preference");
+        entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
+        entryUser.changeEndDate(LocalDate.of(2021, 6, 13));
+        boolean[] weekdays = {false, false, false, false, false,     false, false};
+
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        
+        
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.findSelectedWeekdays(entryUser, weekdays);
+        
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void findSelectedWeekdays_threeDaysSelectedInOneWeek_shouldReturnThreeEntry(){
+        var entryUser = new Entry<String>("User Preference");
+        entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
+        entryUser.changeEndDate(LocalDate.of(2021, 6, 13));
+        boolean[] weekdays = {true, false, true, false, true,     false, false};
+
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        
+        
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.findSelectedWeekdays(entryUser, weekdays);
+        
+        assertEquals(3, result.size());
+    }
+
+    @Test
+    void findSelectedWeekdays_threeDaysOneDoubleSelectedInOneWeek_shouldReturnTwoEntry(){
+        var entryUser = new Entry<String>("User Preference");
+        entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
+        entryUser.changeEndDate(LocalDate.of(2021, 6, 13));
+        boolean[] weekdays = {true, true, false, true, false,     false, false};
+
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        
+        
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.findSelectedWeekdays(entryUser, weekdays);
+        
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void findSelectedWeekdays_sevenDaysOneSevenDaysLongSelectedInOneWeek_shouldReturnOneEntry(){
+        var entryUser = new Entry<String>("User Preference");
+        entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
+        entryUser.changeEndDate(LocalDate.of(2021, 6, 13));
+        boolean[] weekdays = {true, true, true, true, true,     true, true};
+
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        
+        
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.findSelectedWeekdays(entryUser, weekdays);
+        
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void findSelectedWeekdays_threeDaysOneDoubleSelectedTwoWeek_shouldReturnFourEntry(){
+        var entryUser = new Entry<String>("User Preference");
+        entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
+        entryUser.changeEndDate(LocalDate.of(2021, 6, 20));
+        boolean[] weekdays = {true, true, false, true, false,     false, false};
+
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        
+        
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.findSelectedWeekdays(entryUser, weekdays);
+        
+        assertEquals(4, result.size());
+    }
+
+//End findSelectedWeekdays
+
+
+
+
+
+
+
+
+
+
+
+
     private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
     {
         var entryUser = new Entry<String>("User Preference");
