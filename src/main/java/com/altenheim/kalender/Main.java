@@ -13,7 +13,9 @@ public class Main
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException, ParseException, ParserException 
     {
         //StartJFX.main(args);
-        var testimpoerexport = new ImportExportTest();
-        testimpoerexport.testExport();
+        var testImportExport = new ImportExportTest();
+        testImportExport.importFile();
+        testImportExport.exportFile();
+
     }
 }
