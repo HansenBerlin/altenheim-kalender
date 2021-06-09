@@ -10,7 +10,7 @@ import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 
 
-public class AppointmentEntryFactory implements IAppointmentEntryFactory
+public class AppointmentEntryFactory extends IOController implements IAppointmentEntryFactory
 {    
     private ICalendarEntriesModel allCalendars;
 

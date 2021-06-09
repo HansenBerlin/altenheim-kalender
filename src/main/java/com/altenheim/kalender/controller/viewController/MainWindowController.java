@@ -20,17 +20,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.Style;
 
 public class MainWindowController extends ResponsiveController
 {
     private Stage stage;
-    private JMetro jMetro;    
     private ViewRootsInterface allViewsInformation;
     private GuiSetupController guiSetup;
     private Map<String, Pair<Button, Pane>> allButtonsWithBackgrounds;
-
     private boolean initilizationDone;
     private int currentView = 0;
     private int currentMenuWidth = 240;
@@ -49,10 +46,9 @@ public class MainWindowController extends ResponsiveController
     @FXML private HBox topButtonRow;
 
 
-    public MainWindowController(Stage stage, JMetro jMetro, ViewRootsInterface allViewsInformation, GuiSetupController guiSetup)
+    public MainWindowController(Stage stage, ViewRootsInterface allViewsInformation, GuiSetupController guiSetup)
     {
         this.stage = stage;
-        this.jMetro = jMetro;
         this.allViewsInformation = allViewsInformation;
         this.guiSetup = guiSetup;  
     }
@@ -111,7 +107,7 @@ public class MainWindowController extends ResponsiveController
     private void setColorsForDarkAndLightMode(Style style, Background menu, Background background, 
         Background primary, Background secondary, String secondaryCSS, String cssFile)
     {
-        jMetro.setStyle(style);
+        guiSetup.getJMetroStyle().setStyle(style);
         vboxLeftPane.setBackground(menu);
         viewsRoot.setBackground(background);
         topButtonRow.setBackground(primary);
@@ -120,8 +116,8 @@ public class MainWindowController extends ResponsiveController
             view.setBackground(background);
         if (initilizationDone)
         {
-            jMetro.getOverridingStylesheets().clear();
-            jMetro.getOverridingStylesheets().add(0, cssFile);
+            guiSetup.getJMetroStyle().getOverridingStylesheets().clear();
+            guiSetup.getJMetroStyle().getOverridingStylesheets().add(0, cssFile);
         }               
     } 
 

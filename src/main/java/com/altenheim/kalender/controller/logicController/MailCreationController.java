@@ -2,10 +2,8 @@ package com.altenheim.kalender.controller.logicController;
 
 import java.awt.*;
 import java.net.*;
-
 import com.altenheim.kalender.interfaces.IMailCreationController;
 import com.altenheim.kalender.models.MailTemplateModel;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
