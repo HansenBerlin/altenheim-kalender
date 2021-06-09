@@ -11,10 +11,13 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.GregorianCalendar;
 import com.calendarfx.model.Entry;
+import com.calendarfx.model.Interval;
+
 import net.fortuna.ical4j.data.*;
 import net.fortuna.ical4j.model.property.*;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.DateTime;
+import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.util.RandomUidGenerator;
 import net.fortuna.ical4j.validate.ValidationException;
@@ -22,21 +25,30 @@ import net.fortuna.ical4j.validate.ValidationException;
 
 public class ImportExportTest 
 {
-    public void importFile() throws ParseException, IOException, ParserException
+    public com.calendarfx.model.Calendar importFile(String path) throws ParseException, IOException, ParserException
     {
-        var stream = new FileInputStream("C://Users//Hannes//Documents//test.ics");
+        var stream = new FileInputStream(path);
         var builder = new CalendarBuilder();
         var calendar = builder.build(stream);
         var components = calendar.getComponents();
+        var calName = ((Property) calendar.getProperties().getProperty("X-WR-CALNAME")).getValue();
+        com.calendarfx.model.Calendar cal = new com.calendarfx.model.Calendar(calName);
+        System.out.println(cal.getName());
+
         for (int i = 1; i < components.size(); i++)         
         {
-            var start = (DtStart)components.get(i).getProperties().get(7);
-            var end = (DtEnd)components.get(i).getProperties().get(8);
+            var start = (DtStart)((Property) components.get(i).getProperties().getProperty("DTSTART"));
+            var end = (DtEnd)((Property) components.get(i).getProperties().getProperty("DTEND"));
             var startMilli = start.getDate().toInstant().toEpochMilli();
             var endMilli = end.getDate().toInstant().toEpochMilli();            
             var entry = createCalendarFXEntryFromMillis(startMilli, endMilli);
-            System.out.println(entry.getStartTime() + " " + entry.getEndTime());
-        }        
+            var summary = ((Property) components.get(i).getProperties().getProperty("SUMMARY")).getValue();
+            entry.setTitle(summary);
+            cal.addEntry(entry);
+            System.out.println(entry.getTitle() + " " + entry.getStartTime() + " " + entry.getEndTime() + " " + entry.getStartDate() + " " + entry.getEndDate());
+        }
+        
+        return cal;
     } 
 
     public void exportFile() throws ValidationException, IOException
