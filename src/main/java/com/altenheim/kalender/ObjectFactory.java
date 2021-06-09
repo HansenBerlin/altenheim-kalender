@@ -23,18 +23,18 @@ public class ObjectFactory
         appointmentEntryCreator.createTestCalendar();
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
 
-        var importCt = new ImportController(calendarEntriesModel);
         var exportCt = new ExportController();
         var ioCt = new IOController();
-        var settingsCt = new SettingsController(ioCt, exportCt);
         var apiCt = new GoogleAPIController();
         var mailCreationCt = new MailCreationController();
         var websiteCt = new WebsiteScraperController();
+        var settingsCt = new SettingsController(ioCt, exportCt);
+        var importCt = new ImportController(calendarEntriesModel, websiteCt);
 
         var contacts = new ContactsModel();
         var mailTemplates = new MailTemplateModel();
         
-        var plannerVCt = new PlannerViewController(calendarEntriesModel, appointmentEntryCreator, null, null);
+        var plannerVCt = new PlannerViewController(calendarEntriesModel, appointmentEntryCreator, importCt, exportCt);
         var searchVCt = new SearchViewController(smartSearch, appointmentEntryCreator, contacts, mailTemplates, settingsCt, apiCt);
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(contacts, apiCt, ioCt);

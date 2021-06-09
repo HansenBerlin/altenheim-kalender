@@ -20,7 +20,7 @@ public class JavaFXLauncher extends Application
         var mainController = new MainWindowController(primaryStage, objectFactory.getAllViews(), guiSetup);
 
         var loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(FxmlFiles.MAIN_VIEW));     
+        loader.setLocation(getClass().getResource("/mainView.fxml"));     
         loader.setController(mainController);        
         
         Parent root = loader.load();        
