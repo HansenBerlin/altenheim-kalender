@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.models;
+package com.altenheim.kalender.models;
 
 public class ContactsModel 
 {

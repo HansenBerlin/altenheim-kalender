@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender;
+package com.altenheim.kalender;
 
 import com.altenheim.kalender.controller.viewController.MainWindowController;
 import com.altenheim.kalender.resourceClasses.FxmlFiles;

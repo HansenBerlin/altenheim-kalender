@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.controller.logicController;
+package com.altenheim.kalender.controller.logicController;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

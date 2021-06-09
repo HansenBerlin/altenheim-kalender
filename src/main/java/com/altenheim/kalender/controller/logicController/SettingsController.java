@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.controller.logicController;
+package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.interfaces.IExportController;
 import com.altenheim.kalender.interfaces.IIOController;

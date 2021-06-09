@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.interfaces;
+package com.altenheim.kalender.interfaces;
 
 import java.io.File;
 import com.altenheim.kalender.models.MailTemplateModel;
