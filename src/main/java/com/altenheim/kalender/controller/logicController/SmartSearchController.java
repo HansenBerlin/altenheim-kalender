@@ -10,7 +10,6 @@ import com.altenheim.kalender.interfaces.ISmartSearchController;
 
 public class SmartSearchController implements ISmartSearchController 
 {
-
 	private ICalendarEntriesModel administrateEntries;
 
 	public SmartSearchController(ICalendarEntriesModel administrateEntries) 

@@ -15,6 +15,7 @@ import com.altenheim.kalender.interfaces.ISettingsController;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
 import com.altenheim.kalender.models.ContactsModel;
 import com.altenheim.kalender.models.MailTemplateModel;
+import com.altenheim.kalender.models.SettingsModel;
 import com.altenheim.kalender.models.SuggestionsModel;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
@@ -43,11 +44,11 @@ public class SearchViewController extends ResponsiveController
     private IAppointmentEntryFactory entryFactory;
     private ContactsModel contacts;
     private MailTemplateModel mailTemplates;
-    private ISettingsController settings;
+    private SettingsModel settings;
     private GoogleAPIController api;
 
     public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory entryFactory,
-        ContactsModel contacts, MailTemplateModel mailTemplates, ISettingsController settings, GoogleAPIController api)
+        ContactsModel contacts, MailTemplateModel mailTemplates, SettingsModel settings, GoogleAPIController api)
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
