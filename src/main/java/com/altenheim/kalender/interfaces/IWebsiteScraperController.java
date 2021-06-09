@@ -2,5 +2,5 @@
 
 public interface IWebsiteScraperController 
 {
-    
+    public void startScraperTask();    
 }

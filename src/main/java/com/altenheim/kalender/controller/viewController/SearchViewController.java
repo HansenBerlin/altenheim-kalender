@@ -8,15 +8,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import com.altenheim.kalender.controller.logicController.GoogleAPIController;
+import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
-import com.altenheim.kalender.interfaces.ISettingsController;
+import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
-import com.altenheim.kalender.models.ContactsModel;
-import com.altenheim.kalender.models.MailTemplateModel;
-import com.altenheim.kalender.models.SettingsModel;
-import com.altenheim.kalender.models.SuggestionsModel;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -45,10 +40,10 @@ public class SearchViewController extends ResponsiveController
     private ContactsModel contacts;
     private MailTemplateModel mailTemplates;
     private SettingsModel settings;
-    private GoogleAPIController api;
+    private IGoogleAPIController api;
 
     public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory entryFactory,
-        ContactsModel contacts, MailTemplateModel mailTemplates, SettingsModel settings, GoogleAPIController api)
+        ContactsModel contacts, MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api)
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
@@ -116,7 +111,8 @@ public class SearchViewController extends ResponsiveController
     @FXML
     private void resetTest(ActionEvent event)
     {
-        SuggestionsModel.data.clear();
+        //SuggestionsModel.data.clear();
+        settings.setScrapingInterval(settings.getScrapingInterval()+1000);
     }
 
 

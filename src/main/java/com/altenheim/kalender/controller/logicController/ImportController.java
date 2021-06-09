@@ -2,13 +2,14 @@
 
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.IImportController;
+import com.altenheim.kalender.interfaces.IWebsiteScraperController;
 
 public class ImportController extends IOController implements IImportController
 {
     private ICalendarEntriesModel allEntries;
-    private WebsiteScraperController scraper;
+    private IWebsiteScraperController scraper;
 
-    public ImportController(ICalendarEntriesModel allEntries, WebsiteScraperController scraper)
+    public ImportController(ICalendarEntriesModel allEntries, IWebsiteScraperController scraper)
     {
         this.allEntries = allEntries;
         this.scraper = scraper;

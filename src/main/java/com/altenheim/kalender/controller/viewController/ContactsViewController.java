@@ -1,16 +1,16 @@
 package com.altenheim.kalender.controller.viewController;
 
-import com.altenheim.kalender.controller.logicController.GoogleAPIController;
+import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.models.ContactsModel;
 
 public class ContactsViewController extends ResponsiveController
 { 
     private ContactsModel contacts;
-    private GoogleAPIController api;
+    private IGoogleAPIController api;
     private IIOController ioController;
 
-    public ContactsViewController(ContactsModel contacts, GoogleAPIController api, IIOController ioController)
+    public ContactsViewController(ContactsModel contacts, IGoogleAPIController api, IIOController ioController)
     {
         this.ioController = ioController;;
         this.contacts = contacts;
