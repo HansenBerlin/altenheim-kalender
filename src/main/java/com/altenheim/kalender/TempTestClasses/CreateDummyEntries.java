@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.altenheim.kalender.controller.logicController.AppointmentEntryFactory;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
-import com.altenheim.kalender.models.CalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.EntrySer;
 
@@ -45,9 +43,9 @@ public class CreateDummyEntries
         return calCreator.getEntriesModel();
     }
     
-    public Map<DayOfWeek, List<EntrySer<String>>> createOpeningHours()
+    public Map<DayOfWeek, List<EntrySer>> createOpeningHours()
     {
-        var openingHours = new HashMap<DayOfWeek, List<EntrySer<String>>>();
+        var openingHours = new HashMap<DayOfWeek, List<EntrySer>>();
         var startTime = LocalTime.of(8, 0);
         var endTimeAlt = LocalTime.of(12, 0);
         var startTimeAlt = LocalTime.of(14, 0);
@@ -55,11 +53,11 @@ public class CreateDummyEntries
 
         for (var day : DayOfWeek.values()) 
         {
-            var entrys = new ArrayList<EntrySer<String>>();
+            var entrys = new ArrayList<EntrySer>();
             if (day.getValue() %2 == 0)
             {
-                var entryOne = new EntrySer<String>();
-                var entryTwo = new EntrySer<String>();
+                var entryOne = new EntrySer();
+                var entryTwo = new EntrySer();
                 entryOne.changeStartTime(startTime);
                 entryOne.changeEndTime(endTimeAlt);
                 entryTwo.changeStartTime(startTimeAlt);
@@ -69,7 +67,7 @@ public class CreateDummyEntries
             }
             else
             {
-                var entryOne = new EntrySer<String>();
+                var entryOne = new EntrySer();
                 entryOne.changeStartTime(startTime);
                 entryOne.changeEndTime(endTime);               
                 entrys.add(entryOne);

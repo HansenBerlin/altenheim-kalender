@@ -1,5 +1,8 @@
 ﻿package com.altenheim.kalender.TempTestClasses;
 
+import com.altenheim.kalender.controller.logicController.AppointmentEntryFactory;
+import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.models.ContactModel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,10 +13,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
-import com.altenheim.kalender.controller.logicController.AppointmentEntryFactory;
-import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
-import com.altenheim.kalender.models.CalendarEntriesModel;
-import com.altenheim.kalender.models.ContactModel;
 
 public class TestSerializationPerformance implements Serializable
 {
@@ -21,7 +20,8 @@ public class TestSerializationPerformance implements Serializable
     public void createAndSaveContactsToFile(int amountContacts) throws IOException
     {           
         var dummys = new CreateDummyEntries();
-        var list = dummys.createContactsList(amountContacts); 
+        var list = dummys.createContactsList(amountContacts);
+        checkContactEntries(list);
         var start = System.currentTimeMillis();
         var writeToFile = new FileOutputStream("contacts.txt");
         var output = new ObjectOutputStream(writeToFile);
@@ -40,6 +40,7 @@ public class TestSerializationPerformance implements Serializable
         var readObjects = (List<ContactModel>)inputStream.readObject();
         inputStream.close();
         System.out.println("Loading contacts time passed: " + (System.currentTimeMillis() - start));
+        checkContactEntries(readObjects);
         var file = new File("contacts.txt");
         file.delete();
     }  
@@ -87,22 +88,14 @@ public class TestSerializationPerformance implements Serializable
                 entriesCount++;		
 			}		
 		}		
-        System.out.println("Checked loaded calendar entries: " + entriesCount);
+        System.out.println("Checked calendar entries: " + entriesCount);
     }
 
-    /*private void checkContactEntries(List<ContactModel> allEntries)
+    private void checkContactEntries(List<ContactModel> allEntries)
     {
         long entriesCount = 0;
-        var result = allEntries.getSpecificCalendarByIndex(0).findEntries(LocalDate.of(2021, 1, 1), 
-            LocalDate.of(2021, 12, 31), ZoneId.systemDefault()).values();
-
-        for (var entry : allEntries) 		
-		{		
-			for (int i = 0; i <= entries.size(); i++) 
-			{		
-                entriesCount++;		
-			}		
-		}		
-        System.out.println("Checked loaded calendar entries: " + entriesCount);
-    }*/
+        for (var entry : allEntries) 			
+            entriesCount++;			
+        System.out.println("Checked contact entries: " + entriesCount);
+    }
 }

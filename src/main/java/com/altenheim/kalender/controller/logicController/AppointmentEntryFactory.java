@@ -3,20 +3,18 @@ package com.altenheim.kalender.controller.logicController;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.models.CalendarEntriesModel;
-
+import com.altenheim.kalender.models.EntrySer;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
-import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 
 
 public class AppointmentEntryFactory extends IOController implements IAppointmentEntryFactory, Serializable
 {    
     private ICalendarEntriesModel allCalendars;
-    private ICalendarEntriesModel allCalendars2;
 
     public static int entries;
 
@@ -32,7 +30,7 @@ public class AppointmentEntryFactory extends IOController implements IAppointmen
 
     public ICalendarEntriesModel getEntriesModel()
     {
-        return allCalendars2;
+        return allCalendars;
     }
     
     public void createRandomEntrys(String calendarName) 
@@ -58,15 +56,15 @@ public class AppointmentEntryFactory extends IOController implements IAppointmen
                 }
             }            
         }
-        allCalendars2.addCalendar(calendar);
+        allCalendars.addCalendar(calendar);
     }
 
-    private Entry<String> createRandomEntries(int day, int month, int startT, int endT)
+    private EntrySer createRandomEntries(int day, int month, int startT, int endT)
     {
         var startAndEndDate = LocalDate.of(2021, month, day);
         var startTime = LocalTime.of(startT, 0);
         var endTime = LocalTime.of(endT, 0);
-        var entry = new Entry<String>();
+        var entry = new EntrySer();
         entry.changeStartDate(startAndEndDate);
         entry.changeEndDate(startAndEndDate);
         entry.changeStartTime(startTime);
@@ -76,7 +74,7 @@ public class AppointmentEntryFactory extends IOController implements IAppointmen
 
     public void createTestCalendar()
 	{
-		var calendar = new Calendar();
+		var calendar = new CalendarSer();
 
 		for (int i = 0; i < 18; i+=3) 
 		{
@@ -94,10 +92,10 @@ public class AppointmentEntryFactory extends IOController implements IAppointmen
         allCalendars.addCalendar(calendar);
 	}	
 
-	public Entry<String> createUserSettingsEntry(LocalTime startSearchTime, LocalTime endSearchTime)
+	public EntrySer createUserSettingsEntry(LocalTime startSearchTime, LocalTime endSearchTime)
 	{
 		var startAndEndDate = LocalDate.of(2021, 1, 1);        
-        var entry = new Entry<String>("Test");
+        var entry = new EntrySer("Test");
         entry.changeStartDate(startAndEndDate);
         entry.changeEndDate(startAndEndDate);
         entry.changeStartTime(startSearchTime);

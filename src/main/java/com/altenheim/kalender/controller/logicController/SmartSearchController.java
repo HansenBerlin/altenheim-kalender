@@ -4,9 +4,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import com.calendarfx.model.Entry;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
+import com.altenheim.kalender.models.EntrySer;
 
 public class SmartSearchController implements ISmartSearchController 
 {
@@ -17,7 +17,7 @@ public class SmartSearchController implements ISmartSearchController
 		this.administrateEntries = administrateEntries;
 	}
 	
-	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration) 
+	public ArrayList<EntrySer> findAvailableTimeSlot(EntrySer input, int duration) 
 	{			
 		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
 			input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values();
@@ -25,7 +25,7 @@ public class SmartSearchController implements ISmartSearchController
 		long end = input.getEndMillis();
 		long userStart = start;
 		long userEnd = end;
-		var output = new ArrayList<Entry<String>>();
+		var output = new ArrayList<EntrySer>();
 
 		for (var entries : result) 		
 		{		
@@ -47,9 +47,9 @@ public class SmartSearchController implements ISmartSearchController
 		return output;
 	}
 
-	private Entry<String> createEntryFromMillis(long start, long end)
+	private EntrySer createEntryFromMillis(long start, long end)
 	{
-		var entry = new Entry<String>();
+		var entry = new EntrySer();
 		var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
 		var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());		
 		entry.changeStartTime(dateStart.toLocalTime());
@@ -59,7 +59,7 @@ public class SmartSearchController implements ISmartSearchController
 		return entry;
 	}
 
-	public boolean checkForDuplicates(ArrayList<Entry<String>> currentEntries)
+	public boolean checkForDuplicates(ArrayList<EntrySer> currentEntries)
 	{
 		if (currentEntries.size() < 2)
 			return false;

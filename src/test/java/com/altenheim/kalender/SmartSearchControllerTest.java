@@ -6,8 +6,11 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+
+import com.altenheim.kalender.controller.logicController.CalendarSer;
 import com.altenheim.kalender.controller.logicController.SmartSearchController;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.models.EntrySer;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import org.junit.jupiter.api.Test;
@@ -21,7 +24,7 @@ public class SmartSearchControllerTest
         var entryOneCalendar = createEntryDummy(10, 14, 1, 1);
         var entryTwoCalendar = createEntryDummy(16, 18, 1, 1);
         var allEntriesMock = mock(ICalendarEntriesModel.class);
-        var calendarMockEntries = new Calendar();
+        var calendarMockEntries = new CalendarSer();
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar);
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
 
@@ -38,7 +41,7 @@ public class SmartSearchControllerTest
         var entryOneCalendar = createEntryDummy(10, 14, 1, 1);
         var entryTwoCalendar = createEntryDummy(16, 18, 1, 1);
         var allEntriesMock = mock(ICalendarEntriesModel.class);
-        var calendarMockEntries = new Calendar();
+        var calendarMockEntries = new CalendarSer();
 
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar);
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
@@ -56,7 +59,7 @@ public class SmartSearchControllerTest
         var entryTwoCalendar = createEntryDummy(13, 15, 1, 1);
         var entryThreeCalendar = createEntryDummy(16, 17, 1, 1);
         var allEntriesMock = mock(ICalendarEntriesModel.class);
-        var calendarMockEntries = new Calendar();
+        var calendarMockEntries = new CalendarSer();
 
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar);
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
@@ -74,7 +77,7 @@ public class SmartSearchControllerTest
         var entryTwoCalendar = createEntryDummy(13, 15, 1, 1);
         var entryThreeCalendar = createEntryDummy(16, 17, 1, 1);
         var allEntriesMock = mock(ICalendarEntriesModel.class);
-        var calendarMockEntries = new Calendar();
+        var calendarMockEntries = new CalendarSer();
 
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar);
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
@@ -93,7 +96,7 @@ public class SmartSearchControllerTest
         var entryUser = createEntryDummy(8, 18, 1, 1);
         var entryOneCalendar = createEntryDummy(7, 11, 1, 1);  
         var allEntriesMock = mock(ICalendarEntriesModel.class);
-        var calendarMockEntries = new Calendar();
+        var calendarMockEntries = new CalendarSer();
 
         calendarMockEntries.addEntries(entryOneCalendar);
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
@@ -110,7 +113,7 @@ public class SmartSearchControllerTest
         var entryOneCalendar = createEntryDummy(7, 11, 1, 1);  
         var entryTwoCalendar = createEntryDummy(17, 19, 1, 1); 
         var allEntriesMock = mock(ICalendarEntriesModel.class);
-        var calendarMockEntries = new Calendar();
+        var calendarMockEntries = new CalendarSer();
 
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar);
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
@@ -128,7 +131,7 @@ public class SmartSearchControllerTest
         var entryTwoCalendar = createEntryDummy(13, 15, 1, 1);
         var entryThreeCalendar = createEntryDummy(16, 19, 1, 1);
         var allEntriesMock = mock(ICalendarEntriesModel.class);
-        var calendarMockEntries = new Calendar();
+        var calendarMockEntries = new CalendarSer();
 
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar);
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
@@ -149,7 +152,7 @@ public class SmartSearchControllerTest
         var entryFourCalendar = createEntryDummy(10, 11, 15, 15);
         // --> freie Termine am 11., 12., und 13.
         var allEntriesMock = mock(ICalendarEntriesModel.class);
-        var calendarMockEntries = new Calendar();
+        var calendarMockEntries = new CalendarSer();
 
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar, entryFourCalendar);
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
@@ -165,7 +168,7 @@ public class SmartSearchControllerTest
         var entryUser = createEntryDummy(1, 23, 10, 13); 
         var entryOneCalendar = createEntryDummy(2, 3, 10, 12);        
         var allEntriesMock = mock(ICalendarEntriesModel.class);
-        var calendarMockEntries = new Calendar();
+        var calendarMockEntries = new CalendarSer();
 
         calendarMockEntries.addEntries(entryOneCalendar);
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
@@ -175,9 +178,9 @@ public class SmartSearchControllerTest
         assertEquals(1, result.size());
     }
 
-    private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
+    private EntrySer createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
     {
-        var entryUser = new Entry<String>("User Preference");
+        var entryUser = new EntrySer("User Preference");
         var startDate = LocalDate.of(2021, 1, startDay);  
         var endDate = LocalDate.of(2021, 1, endDay);  
         entryUser.changeStartDate(startDate);

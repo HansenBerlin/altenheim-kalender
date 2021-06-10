@@ -9,9 +9,7 @@ import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.altenheim.kalender.models.*;
-
 import java.io.IOException;
-
 import com.altenheim.kalender.TempTestClasses.TestSerializationPerformance;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;

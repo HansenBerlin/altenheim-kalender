@@ -4,56 +4,52 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.spi.CalendarDataProvider;
-
-import com.altenheim.kalender.interfaces.*;
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.Entry;
+import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.controller.logicController.CalendarSer;
 
 
 public class CalendarEntriesModel implements ICalendarEntriesModel
 {    
-    private List<Calendar> calendars;   
+    private List<CalendarSer> calendars;   
     
     public CalendarEntriesModel()
     {
-        calendars = new ArrayList<Calendar>();
+        calendars = new ArrayList<CalendarSer>();
     }
 
-    public void addCalendar(Calendar calendar)
+    public void addCalendar(CalendarSer calendar)
     {
         calendars.add(calendar);
     }
 
-    public List<Calendar> getAllCalendars()
+    public List<CalendarSer> getAllCalendars()
     {
         return calendars;
     }
 
-    public List<Entry<String>> getSpecificRange(LocalDate startDate, LocalDate endDate)
+    public List<EntrySer> getSpecificRange(LocalDate startDate, LocalDate endDate)
     {
         var calendar = calendars.get(0);
         var result = calendar.findEntries(startDate, endDate, ZoneId.systemDefault());
         var allEntries = result.values();
-        var returnValue = new ArrayList<Entry<String>>();
+        var returnValue = new ArrayList<EntrySer>();
         for (var entries : allEntries) 
         {
             for (var entry : entries) 
             {
-                returnValue.add((Entry<String>)entry);
+                returnValue.add((EntrySer)entry);
             }            
         }
         return returnValue;        
     }
 
-    public Calendar getSpecificCalendarByName(String calendarName)
+    public CalendarSer getSpecificCalendarByName(String calendarName)
     {
-        return new Calendar();
+        return new CalendarSer();
     }
 
-    public Calendar getSpecificCalendarByIndex(int index)
+    public CalendarSer getSpecificCalendarByIndex(int index)
     {
         return calendars.get(index);
     }
-    
 }
