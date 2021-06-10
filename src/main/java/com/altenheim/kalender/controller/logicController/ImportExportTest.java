@@ -31,8 +31,10 @@ public class ImportExportTest
         var builder = new CalendarBuilder();
         var calendar = builder.build(stream);
         var components = calendar.getComponents();
-        var calName = ((Property) calendar.getProperties().getProperty("X-WR-CALNAME")).getValue();
-        com.calendarfx.model.Calendar cal = new com.calendarfx.model.Calendar(calName);
+        var calNameProp = (Property) calendar.getProperties().getProperty("X-WR-CALNAME");
+        com.calendarfx.model.Calendar cal = new com.calendarfx.model.Calendar();
+        if(calNameProp != null)
+            cal.setName(calNameProp.getValue());
         System.out.println(cal.getName());
 
         for (int i = 1; i < components.size(); i++)         
@@ -44,10 +46,12 @@ public class ImportExportTest
             var entry = createCalendarFXEntryFromMillis(startMilli, endMilli);
             var summary = ((Property) components.get(i).getProperties().getProperty("SUMMARY")).getValue();
             entry.setTitle(summary);
+            var locationProp = (Property) components.get(i).getProperties().getProperty("LOCATION");
+            if(locationProp != null)
+                entry.setLocation(locationProp.getValue());
             cal.addEntry(entry);
-            //System.out.println(entry.getTitle() + " " + entry.getStartTime() + " " + entry.getEndTime() + " " + entry.getStartDate() + " " + entry.getEndDate());
         }
-        
+        System.out.println(cal.findEntries("").get(0).getInterval().toString());
         return cal;
     } 
 
