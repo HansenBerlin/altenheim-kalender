@@ -9,10 +9,10 @@ import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.altenheim.kalender.models.*;
-import com.altenheim.kalender.resourceClasses.TestPerformance;
 
 import java.io.IOException;
 
+import com.altenheim.kalender.TempTestClasses.TestPerformance;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
@@ -120,10 +120,10 @@ public class SearchViewController extends ResponsiveController
         var test = new TestPerformance();
         //test.saveContactsToFile();
         //test.loadContactsTFromFile();
+        test.saveContactsToFile();
         test.saveCalendarsToFile();
-        var start = System.currentTimeMillis();
-        test.loadCalendarsFromFile();
-        System.out.println(System.currentTimeMillis() - start);
+        test.loadContactsTFromFile();
+        test.loadCalendarsFromFile();        
     }
 
 

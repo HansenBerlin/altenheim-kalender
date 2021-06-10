@@ -8,9 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.calendarfx.model.Entry;
-
-
 public class ContactModel implements Serializable
 {
     private static int iDcount = 111111;
