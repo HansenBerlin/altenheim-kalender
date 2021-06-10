@@ -1,6 +1,7 @@
 package com.altenheim.kalender.interfaces;
 
 import java.io.File;
+import com.altenheim.kalender.controller.viewController.CalendarViewOverride;
 import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.models.SettingsModel;
 
@@ -13,5 +14,7 @@ public interface IIOController
     public ICalendarEntriesModel restoreCalendars();
     public SettingsModel restoreSettings();
     public MailTemplateModel restoreTemplates();
-    public File readImportedCalendar();    
+    public File readImportedCalendar();
+    public void init(CalendarViewOverride calendarView);
+    public void loadCalendarsFromFile();     
 }

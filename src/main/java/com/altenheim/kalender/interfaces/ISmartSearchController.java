@@ -1,9 +1,10 @@
 package com.altenheim.kalender.interfaces;
 
 import java.util.ArrayList;
-import com.altenheim.kalender.models.EntrySer;
+
+import com.calendarfx.model.Entry;
 public interface ISmartSearchController 
 {
-	public ArrayList<EntrySer> findAvailableTimeSlot(EntrySer input, int duration);
+	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration);
   
 }

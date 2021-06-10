@@ -5,50 +5,51 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
-import com.altenheim.kalender.controller.logicController.CalendarSer;
+import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
 
 
 public class CalendarEntriesModel implements ICalendarEntriesModel
 {    
-    private List<CalendarSer> calendars;   
+    private List<Calendar> calendars;   
     
     public CalendarEntriesModel()
     {
-        calendars = new ArrayList<CalendarSer>();
+        calendars = new ArrayList<Calendar>();
     }
 
-    public void addCalendar(CalendarSer calendar)
+    public void addCalendar(Calendar calendar)
     {
         calendars.add(calendar);
     }
 
-    public List<CalendarSer> getAllCalendars()
+    public List<Calendar> getAllCalendars()
     {
         return calendars;
     }
 
-    public List<EntrySer> getSpecificRange(LocalDate startDate, LocalDate endDate)
+    public List<Entry<String>> getSpecificRange(LocalDate startDate, LocalDate endDate)
     {
         var calendar = calendars.get(0);
         var result = calendar.findEntries(startDate, endDate, ZoneId.systemDefault());
         var allEntries = result.values();
-        var returnValue = new ArrayList<EntrySer>();
+        var returnValue = new ArrayList<Entry<String>>();
         for (var entries : allEntries) 
         {
             for (var entry : entries) 
             {
-                returnValue.add((EntrySer)entry);
+                returnValue.add((Entry<String>)entry);
             }            
         }
         return returnValue;        
     }
 
-    public CalendarSer getSpecificCalendarByName(String calendarName)
+    public Calendar getSpecificCalendarByName(String calendarName)
     {
-        return new CalendarSer();
+        return new Calendar();
     }
 
-    public CalendarSer getSpecificCalendarByIndex(int index)
+    public Calendar getSpecificCalendarByIndex(int index)
     {
         return calendars.get(index);
     }

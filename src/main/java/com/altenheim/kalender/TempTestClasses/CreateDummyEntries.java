@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.altenheim.kalender.controller.logicController.AppointmentEntryFactory;
-import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
-import com.altenheim.kalender.models.EntrySer;
+import com.calendarfx.model.Entry;
 
 
 public class CreateDummyEntries 
@@ -33,19 +31,10 @@ public class CreateDummyEntries
         return contacts;
     }
 
-
-    public ICalendarEntriesModel createCalendarList(int amount)
-    {
-        var calCreator = new AppointmentEntryFactory();
-        for (int i = 0; i < amount; i++)        
-            calCreator.createRandomEntrys("Test " + i);
-        
-        return calCreator.getEntriesModel();
-    }
     
-    public Map<DayOfWeek, List<EntrySer>> createOpeningHours()
+    public Map<DayOfWeek, List<Entry<String>>> createOpeningHours()
     {
-        var openingHours = new HashMap<DayOfWeek, List<EntrySer>>();
+        var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
         var startTime = LocalTime.of(8, 0);
         var endTimeAlt = LocalTime.of(12, 0);
         var startTimeAlt = LocalTime.of(14, 0);
@@ -53,11 +42,11 @@ public class CreateDummyEntries
 
         for (var day : DayOfWeek.values()) 
         {
-            var entrys = new ArrayList<EntrySer>();
+            var entrys = new ArrayList<Entry<String>>();
             if (day.getValue() %2 == 0)
             {
-                var entryOne = new EntrySer();
-                var entryTwo = new EntrySer();
+                var entryOne = new Entry<String>();
+                var entryTwo = new Entry<String>();
                 entryOne.changeStartTime(startTime);
                 entryOne.changeEndTime(endTimeAlt);
                 entryTwo.changeStartTime(startTimeAlt);
@@ -67,7 +56,7 @@ public class CreateDummyEntries
             }
             else
             {
-                var entryOne = new EntrySer();
+                var entryOne = new Entry<String>();
                 entryOne.changeStartTime(startTime);
                 entryOne.changeEndTime(endTime);               
                 entrys.add(entryOne);

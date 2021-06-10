@@ -10,9 +10,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.altenheim.kalender.models.*;
 import java.io.IOException;
-import com.altenheim.kalender.TempTestClasses.TestSerializationPerformance;
+
+import com.altenheim.kalender.TempTestClasses.ReadWriteICal;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
+import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
+import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
@@ -43,9 +46,11 @@ public class SearchViewController extends ResponsiveController
     private MailTemplateModel mailTemplates;
     private SettingsModel settings;
     private IGoogleAPIController api;
+    private IIOController iOController;
+    private ReadWriteICal testIO;
 
-    public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory entryFactory,
-        ContactModel contacts, MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api)
+    public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory entryFactory, ContactModel contacts, 
+        MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api, IIOController iOController, ReadWriteICal testIO)
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
@@ -53,6 +58,8 @@ public class SearchViewController extends ResponsiveController
         this.mailTemplates = mailTemplates;
         this.settings = settings;
         this.api = api;
+        this.iOController = iOController;
+        this.testIO = testIO;
     }
 
     @FXML
@@ -99,15 +106,21 @@ public class SearchViewController extends ResponsiveController
     }
 
     @FXML
-    private void testUpdate(ActionEvent event)
-    {      
+    private void testUpdate(ActionEvent event) throws IOException, ClassNotFoundException
+    {      /*
         var testEntry = entryFactory.createUserSettingsEntry(timeStart.getValue(), timeEnd.getValue());
         var result = smartSearch.findAvailableTimeSlot(testEntry, (int)sliderAppointmentDuration.getValue());
         for (var entry : result) 
         {
             SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime());
             System.out.println(entry.getStartTime() + " " + entry.getEndTime());
-        }
+        }*/
+        //iOController.writeCalendarFiles(null);
+
+        for (int i = 0; i < 5; i++)        
+            entryFactory.createRandomEntrys("Test " + i);
+        testIO.saveCalendars();
+        
     }
 
     @FXML
@@ -115,13 +128,9 @@ public class SearchViewController extends ResponsiveController
     {
         //SuggestionsModel.data.clear();
         //settings.setScrapingInterval(settings.getScrapingInterval()+1000);
-        var test = new TestSerializationPerformance();
         //test.saveContactsToFile();
-        //test.loadContactsTFromFile();
-        test.createAndSaveContactsToFile(1000);
-        test.createAndSaveCalendarsToFile(1000);
-        test.loadContactsTFromFile();
-        test.loadCalendarsFromFile();
+        //test.loadContactsTFromFile();        
+        //iOController.loadCalendarsFromFile();
     }
 
 

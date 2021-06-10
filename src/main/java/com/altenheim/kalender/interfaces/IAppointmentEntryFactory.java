@@ -1,11 +1,12 @@
 package com.altenheim.kalender.interfaces;
 
 import java.time.LocalTime;
-import com.altenheim.kalender.models.EntrySer;
+
+import com.calendarfx.model.Entry;
 
 public interface IAppointmentEntryFactory 
 {
     public void createRandomEntrys(String calendarName);
     public void createTestCalendar();
-    public EntrySer createUserSettingsEntry(LocalTime startSearchTime, LocalTime endSearchTime);
+    public Entry<String> createUserSettingsEntry(LocalTime startSearchTime, LocalTime endSearchTime);
 }

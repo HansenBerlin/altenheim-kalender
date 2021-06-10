@@ -1,5 +1,6 @@
 package com.altenheim.kalender;
 
+import com.altenheim.kalender.TempTestClasses.ReadWriteICal;
 import com.altenheim.kalender.controller.logicController.*;
 import com.altenheim.kalender.controller.viewController.*;
 import com.altenheim.kalender.interfaces.*;
@@ -23,19 +24,23 @@ public class ObjectFactory
         IAppointmentEntryFactory appointmentEntryCreator = new AppointmentEntryFactory(calendarEntriesModel);
         appointmentEntryCreator.createTestCalendar();
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
-
+        
+               
+        var mailTemplates = new MailTemplateModel();
+        var contacts = new ContactModel();
+        var settings = new SettingsModel();
+        var customCalendarView = new CalendarViewOverride();
         IExportController exportCt = new ExportController();
         IIOController ioCt = new IOController();
         ISettingsController settingsCt = new SettingsController(ioCt, exportCt);
         IGoogleAPIController apiCt = new GoogleAPIController();
-        IMailCreationController mailCreationCt = new MailCreationController();        
-        var mailTemplates = new MailTemplateModel();
-        var contacts = new ContactModel();
-        var settings = new SettingsModel();
+        IMailCreationController mailCreationCt = new MailCreationController(); 
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings);
         IImportController importCt = new ImportController(calendarEntriesModel, websiteCt);        
-        var searchVCt = new SearchViewController(smartSearch, appointmentEntryCreator, contacts, mailTemplates, settings, apiCt);
-        var plannerVCt = new PlannerViewController(calendarEntriesModel, appointmentEntryCreator, importCt, exportCt);
+        // TODO refactor und Implementierung Tests in richtige Konstruktoren
+        var iowriteTest = new ReadWriteICal(calendarEntriesModel, customCalendarView);
+        var searchVCt = new SearchViewController(smartSearch, appointmentEntryCreator, contacts, mailTemplates, settings, apiCt, ioCt, iowriteTest);
+        var plannerVCt = new PlannerViewController(calendarEntriesModel, appointmentEntryCreator, importCt, exportCt, customCalendarView);
         var mailVCt = new MailTemplateViewController(ioCt, settingsCt, mailCreationCt);
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(contacts, apiCt, ioCt);
@@ -45,6 +50,8 @@ public class ObjectFactory
         guiSetup = new GuiSetupController(jMetroStyle, allViews);
 
         guiSetup.init();
+        ioCt.init(customCalendarView);
+        iowriteTest.loadCalendars();
         settings.addPropertyChangeListener(new ChangeListener());
         //websiteCt.startScraperTask();
     }      
