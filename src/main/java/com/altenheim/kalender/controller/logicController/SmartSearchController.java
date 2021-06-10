@@ -1,14 +1,14 @@
 package com.altenheim.kalender.controller.logicController;
 
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-
-import javax.swing.text.html.HTMLDocument.BlockElement;
-
 import com.calendarfx.model.Entry;
+import org.threeten.extra.Days;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
 
@@ -63,6 +63,47 @@ public class SmartSearchController implements ISmartSearchController
 		}
 		return output;
 	}
+	//vielleicht unnötig
+	public ArrayList<Entry<String>> encloseEntryDayTimes(ArrayList<Entry<String>> input, Entry<String>	selectedHours) {
+		var output = new ArrayList<Entry<String>>();
+		for (Entry<String> entry : input) {
+			output.addAll(encloseEntryDayTimes(entry, selectedHours));
+		}
+		return output;
+	}
+
+	public ArrayList<Entry<String>> encloseEntryDayTimes(Entry<String> input, Entry<String>	selectedHours) {
+		var output = new ArrayList<Entry<String>>();
+		int periode = Days.between(input.getStartDate(), input.getEndDate()).getAmount();
+		LocalDate day;
+		for (int i = 0; i <= periode; i++) {
+			day = input.getStartDate().plusDays(i);
+			output.add(createEntryFormStartAndEndDateAndTime(day, day, selectedHours.getStartTime(), selectedHours.getEndTime()));
+		}
+		return output;
+	}	
+	//ungetestet
+	public ArrayList<Entry<String>> encloseEntryDayTimes(Entry<String> input, ArrayList<Entry<String>>[] selectedHours) {
+		var output = new ArrayList<Entry<String>>();
+		int periode = Days.between(input.getStartDate(), input.getEndDate()).getAmount();
+		LocalDate day;
+
+		for (int i = 0; i <= periode; i++) {
+			day = input.getStartDate().plusDays(i);
+			var daynumber = day.getDayOfWeek().getValue()-1; //Weekdays don´t start bye 0
+
+			for (ArrayList<Entry<String> selectedHoursDay : selectedHours) {
+				if (selectedHoursDay.isEmpty()) {
+					continue;
+				} else {
+					for (Entry<String> entry : selectedHoursDay) {
+						output.add(createEntryFormStartAndEndDateAndTime(day, day, entry.getStartTime(), entry.getEndTime()));
+					}
+				}
+			}
+		}
+		return output;
+	}
 
 
 
@@ -102,6 +143,15 @@ public class SmartSearchController implements ISmartSearchController
 		var entry = new Entry<String>();
 		entry.changeStartDate(start);
 		entry.changeEndDate(end);
+		return entry;
+	}
+
+	private Entry<String> createEntryFormStartAndEndDateAndTime(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+		var entry = new Entry<String>();
+		entry.changeStartDate(startDate);
+		entry.changeEndDate(endDate);
+		entry.changeStartTime(startTime);
+		entry.changeEndTime(endTime);
 		return entry;
 	}
 
