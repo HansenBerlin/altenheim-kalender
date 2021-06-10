@@ -30,7 +30,7 @@ public class ObjectFactory
         IGoogleAPIController apiCt = new GoogleAPIController();
         IMailCreationController mailCreationCt = new MailCreationController();        
         var mailTemplates = new MailTemplateModel();
-        var contacts = new ContactsModel();
+        var contacts = new ContactModel();
         var settings = new SettingsModel();
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings);
         IImportController importCt = new ImportController(calendarEntriesModel, websiteCt);        

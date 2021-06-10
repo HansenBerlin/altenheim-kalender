@@ -9,6 +9,10 @@ import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.altenheim.kalender.models.*;
+import com.altenheim.kalender.resourceClasses.TestPerformance;
+
+import java.io.IOException;
+
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
@@ -37,13 +41,13 @@ public class SearchViewController extends ResponsiveController
     private int userStep = 1;    
     private ISmartSearchController smartSearch;
     private IAppointmentEntryFactory entryFactory;
-    private ContactsModel contacts;
+    private ContactModel contacts;
     private MailTemplateModel mailTemplates;
     private SettingsModel settings;
     private IGoogleAPIController api;
 
     public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory entryFactory,
-        ContactsModel contacts, MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api)
+        ContactModel contacts, MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api)
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
@@ -109,10 +113,17 @@ public class SearchViewController extends ResponsiveController
     }
 
     @FXML
-    private void resetTest(ActionEvent event)
+    private void resetTest(ActionEvent event) throws IOException, ClassNotFoundException
     {
         //SuggestionsModel.data.clear();
-        settings.setScrapingInterval(settings.getScrapingInterval()+1000);
+        //settings.setScrapingInterval(settings.getScrapingInterval()+1000);
+        var test = new TestPerformance();
+        //test.saveContactsToFile();
+        //test.loadContactsTFromFile();
+        test.saveCalendarsToFile();
+        var start = System.currentTimeMillis();
+        test.loadCalendarsFromFile();
+        System.out.println(System.currentTimeMillis() - start);
     }
 
 

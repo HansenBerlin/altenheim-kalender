@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.spi.CalendarDataProvider;
+
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
@@ -11,12 +13,21 @@ import com.calendarfx.model.Entry;
 
 public class CalendarEntriesModel implements ICalendarEntriesModel
 {    
-    private List<Calendar> calendars;    
+    private List<Calendar> calendars;   
+    
+    public CalendarEntriesModel()
+    {
+        calendars = new ArrayList<Calendar>();
+    }
 
     public void addCalendar(Calendar calendar)
     {
-        calendars = new ArrayList<Calendar>();
         calendars.add(calendar);
+    }
+
+    public List<Calendar> getAllCalendars()
+    {
+        return calendars;
     }
 
     public List<Entry<String>> getSpecificRange(LocalDate startDate, LocalDate endDate)

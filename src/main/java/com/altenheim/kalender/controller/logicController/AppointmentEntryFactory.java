@@ -2,6 +2,9 @@ package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.models.CalendarEntriesModel;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -10,21 +13,34 @@ import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 
 
-public class AppointmentEntryFactory extends IOController implements IAppointmentEntryFactory
+public class AppointmentEntryFactory extends IOController implements IAppointmentEntryFactory, Serializable
 {    
     private ICalendarEntriesModel allCalendars;
+    public static int entries;
 
     public AppointmentEntryFactory(ICalendarEntriesModel allCalendars)
     {
         this.allCalendars = allCalendars;
     }
+
+    public AppointmentEntryFactory()
+    {
+        allCalendars = new CalendarEntriesModel();
+
+    }
+
+    public ICalendarEntriesModel getEntriesModel()
+    {
+        return allCalendars;
+    }
     
     public void createRandomEntrys(String calendarName) 
     {
-        var calendar = new Calendar(calendarName);
+        var calendar = new CalendarSer();
         int dayOfMonth;
         for (int i = 1; i <= 12; i++) 
         {
+            entries++;
             if (Arrays.asList(new int[]{1, 3, 5, 7, 8, 10, 12}).contains(i))
                 dayOfMonth = 31;
             else if (Arrays.asList(new int[]{4, 6, 9, 11}).contains(i))
