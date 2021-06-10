@@ -16,6 +16,8 @@ import com.calendarfx.model.Entry;
 public class AppointmentEntryFactory extends IOController implements IAppointmentEntryFactory, Serializable
 {    
     private ICalendarEntriesModel allCalendars;
+    private ICalendarEntriesModel allCalendars2;
+
     public static int entries;
 
     public AppointmentEntryFactory(ICalendarEntriesModel allCalendars)
@@ -26,12 +28,11 @@ public class AppointmentEntryFactory extends IOController implements IAppointmen
     public AppointmentEntryFactory()
     {
         allCalendars = new CalendarEntriesModel();
-
     }
 
     public ICalendarEntriesModel getEntriesModel()
     {
-        return allCalendars;
+        return allCalendars2;
     }
     
     public void createRandomEntrys(String calendarName) 
@@ -40,28 +41,37 @@ public class AppointmentEntryFactory extends IOController implements IAppointmen
         int dayOfMonth;
         for (int i = 1; i <= 12; i++) 
         {
-            entries++;
             if (Arrays.asList(new int[]{1, 3, 5, 7, 8, 10, 12}).contains(i))
                 dayOfMonth = 31;
             else if (Arrays.asList(new int[]{4, 6, 9, 11}).contains(i))
                 dayOfMonth = 30;
             else
                 dayOfMonth = 28;
-
+            
             for (int j = 1; j <= dayOfMonth; j += rG(1,4)) 
-            {                
-                var startAndEndDate = LocalDate.of(2021, i, j);
-                var startTime = LocalTime.of(rG(1,18), rG(1,59));
-                var endTime = LocalTime.of(rG(19,23), rG(1,59));
-                var entry = new Entry<String>("Test" + rG(1, 100000));
-                entry.changeStartDate(startAndEndDate);
-                entry.changeEndDate(startAndEndDate);
-                entry.changeStartTime(startTime);
-                entry.changeEndTime(endTime);
-                calendar.addEntries(entry);                 
+            {   
+                for (int k = 8; k < 20 ; k+=2) 
+                {
+                    var entry = createRandomEntries(j, i, k, k+rG(1, 3));
+                    calendar.addEntries(entry);                   
+                    entries++;
+                }
             }            
         }
-        allCalendars.addCalendar(calendar);
+        allCalendars2.addCalendar(calendar);
+    }
+
+    private Entry<String> createRandomEntries(int day, int month, int startT, int endT)
+    {
+        var startAndEndDate = LocalDate.of(2021, month, day);
+        var startTime = LocalTime.of(startT, 0);
+        var endTime = LocalTime.of(endT, 0);
+        var entry = new Entry<String>();
+        entry.changeStartDate(startAndEndDate);
+        entry.changeEndDate(startAndEndDate);
+        entry.changeStartTime(startTime);
+        entry.changeEndTime(endTime);
+        return entry;
     }
 
     public void createTestCalendar()
@@ -79,7 +89,7 @@ public class AppointmentEntryFactory extends IOController implements IAppointmen
         	entry.changeStartTime(startTime);
         	entry.changeEndTime(endTime);
 			calendar.addEntry(entry);
-			System.out.printf("Neuer Eintrag von %s bis %s\n", entry.getStartTime(), entry.getEndTime());
+			//System.out.printf("Neuer Eintrag von %s bis %s\n", entry.getStartTime(), entry.getEndTime());
 		}
         allCalendars.addCalendar(calendar);
 	}	

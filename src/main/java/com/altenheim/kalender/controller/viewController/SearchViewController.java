@@ -12,7 +12,7 @@ import com.altenheim.kalender.models.*;
 
 import java.io.IOException;
 
-import com.altenheim.kalender.TempTestClasses.TestPerformance;
+import com.altenheim.kalender.TempTestClasses.TestSerializationPerformance;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
@@ -117,13 +117,13 @@ public class SearchViewController extends ResponsiveController
     {
         //SuggestionsModel.data.clear();
         //settings.setScrapingInterval(settings.getScrapingInterval()+1000);
-        var test = new TestPerformance();
+        var test = new TestSerializationPerformance();
         //test.saveContactsToFile();
         //test.loadContactsTFromFile();
-        test.saveContactsToFile();
-        test.saveCalendarsToFile();
+        test.createAndSaveContactsToFile(1000);
+        test.createAndSaveCalendarsToFile(1000);
         test.loadContactsTFromFile();
-        test.loadCalendarsFromFile();        
+        test.loadCalendarsFromFile();
     }
 
 

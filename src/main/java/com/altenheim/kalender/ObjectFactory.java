@@ -46,6 +46,6 @@ public class ObjectFactory
 
         guiSetup.init();
         settings.addPropertyChangeListener(new ChangeListener());
-        websiteCt.startScraperTask();
+        //websiteCt.startScraperTask();
     }      
 }

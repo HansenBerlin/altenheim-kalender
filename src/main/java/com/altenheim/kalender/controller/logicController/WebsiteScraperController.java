@@ -22,6 +22,6 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
 
     public void run() 
     {
-        System.out.println("Scraping...");        
+        System.out.println("Scraping...");      
     }
 }    
