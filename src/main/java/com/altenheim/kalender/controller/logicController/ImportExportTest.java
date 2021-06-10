@@ -45,21 +45,26 @@ public class ImportExportTest
             var summary = ((Property) components.get(i).getProperties().getProperty("SUMMARY")).getValue();
             entry.setTitle(summary);
             cal.addEntry(entry);
-            System.out.println(entry.getTitle() + " " + entry.getStartTime() + " " + entry.getEndTime() + " " + entry.getStartDate() + " " + entry.getEndDate());
+            //System.out.println(entry.getTitle() + " " + entry.getStartTime() + " " + entry.getEndTime() + " " + entry.getStartDate() + " " + entry.getEndDate());
         }
         
         return cal;
     } 
 
-    public void exportFile() throws ValidationException, IOException
+    public void exportFile(com.calendarfx.model.Calendar cal) throws ValidationException, IOException
     {
-        var testEntry = createCalFXEntryDummy(10, 12, 2, 2);
-        var meeting = createIcalEntryFromCalFXEntry(testEntry);
+        var entries = cal.findEntries("");
+        var calName = cal.getName();
         var icsCalendar = new Calendar();
+        //icsCalendar.getProperties().getProperty("X-WR-CALNAME")
         icsCalendar.getProperties().add(new ProdId("-//Smart Planner//iCal4j 1.0//DE"));
         icsCalendar.getProperties().add(Version.VERSION_2_0);
         icsCalendar.getProperties().add(CalScale.GREGORIAN);
-        icsCalendar.getComponents().add(meeting);
+        for(int i = 0; i < entries.size(); i++)
+        {
+            var entry = entries.get(i);
+            icsCalendar.getComponents().add(createIcalEntryFromCalFXEntry(entry));
+        }
         var fout = new FileOutputStream("testExport.ics");
         var outputter = new CalendarOutputter();
         outputter.output(icsCalendar, fout);
@@ -78,13 +83,14 @@ public class ImportExportTest
 		return entry;
 	} 
     
-    private VEvent createIcalEntryFromCalFXEntry(Entry<String> calFXEvent)
+    private VEvent createIcalEntryFromCalFXEntry(Entry<?> entry)
     {
-        var startTime = GregorianCalendar.from(calFXEvent.getStartAsZonedDateTime()).getTime();
-        var endTime = GregorianCalendar.from(calFXEvent.getEndAsZonedDateTime()).getTime();
+        var startTime = GregorianCalendar.from(entry.getStartAsZonedDateTime()).getTime();
+        var endTime = GregorianCalendar.from(entry.getEndAsZonedDateTime()).getTime();
         var start = new DateTime(startTime);
         var end = new DateTime(endTime);
-        var event = new VEvent(start, end, "test");
+        var title = entry.getTitle();
+        var event = new VEvent(start, end, title);
         var iD = new RandomUidGenerator();
         var uid = iD.generateUid();
         event.getProperties().add(uid); 
