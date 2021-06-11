@@ -21,11 +21,14 @@ public class GuiSetupController
     private ViewRootsInterface viewsInformation;
     public boolean isDarkmodeActive = false;
 
+    public JMetro getJMetroStyle() { return jMetroStyle; }
+
     public GuiSetupController(JMetro jMetroStyle, ViewRootsInterface viewsInformation) 
     {
         this.jMetroStyle = jMetroStyle;
         this.viewsInformation = viewsInformation;  
-    }  
+    } 
+    
 
     public void init() throws IOException
     {       

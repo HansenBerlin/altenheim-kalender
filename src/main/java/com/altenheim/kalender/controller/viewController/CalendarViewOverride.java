@@ -8,6 +8,5 @@ public class CalendarViewOverride extends CalendarView
     {
         //getStylesheets().add(getClass().getResource("/calendarDark.css").toExternalForm());
         getStylesheets().add(getClass().getResource("/calendarLight.css").toExternalForm());
-
     }
 }
