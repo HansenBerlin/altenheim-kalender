@@ -13,7 +13,7 @@ public class ContactsViewController extends ResponsiveController
 
     public ContactsViewController(List<ContactModel> contacts, IGoogleAPIController api, IIOController ioController)
     {
-        this.ioController = ioController;;
+        this.ioController = ioController;
         this.contacts = contacts;
         this.api = api;
     }
