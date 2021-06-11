@@ -21,9 +21,57 @@ public class SmartSearchController implements ISmartSearchController
 	{
 		this.administrateEntries = administrateEntries;
 	}
+//Start main functions
+	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, int maxNumberOfReturnEntrys){
+		var workingEntrys = findSelectedWeekdays(input, weekdays);
+		workingEntrys = encloseEntryDayTimes(workingEntrys, selectedHours);
+		var output = new ArrayList<Entry<String>>();
+		for (Entry<String> entry : workingEntrys) {
+			output.addAll(findAvailableTimeSlot(entry, duration));
+			if (output.size()>= maxNumberOfReturnEntrys ) {
+				output = reduceListLength(output, maxNumberOfReturnEntrys);
+			}
+		}
+		return output;
+	}
 
 
-	public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input, int length) {
+
+	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration) 
+	{			
+		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
+			input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values();
+		long start = input.getStartMillis();
+		long end = input.getEndMillis();
+		long userStart = start;
+		long userEnd = end;
+		var output = new ArrayList<Entry<String>>();
+
+		for (var entries : result) 		
+		{		
+			for (int i = 0; i <= entries.size(); i++) 
+			{		
+				if (i >= 0 && i < entries.size())
+					end = entries.get(i).getStartMillis();
+				if (i > 0)				
+					start = entries.get(i-1).getEndMillis();				
+				if (i == entries.size())				
+					end = userEnd;								
+				if (end - start >= duration*59000 && !(end-userStart <= duration*59000
+					|| userEnd-start <= duration*59000))
+					output.add(createEntryFromMillis(start, end));
+				if (checkForDuplicates(output))
+					output.remove(output.size()-1);							
+			}		
+		}			
+		return output;
+	}
+
+//End main functions
+
+//compare Opening Hours with selected Hours
+
+public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input, int length) {
 		while (input.size()>length) {
 			input.remove(input.size()-1);
 		}
@@ -132,38 +180,6 @@ public class SmartSearchController implements ISmartSearchController
 		selectedHours.changeStartTime(selectedHours.getStartTime().minusMinutes(timeBefore));
 		selectedHours.changeEndTime(selectedHours.getEndTime().plusMinutes(timeAfter));
 		return selectedHours;
-	}
-
-
-
-	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration) 
-	{			
-		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
-			input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values();
-		long start = input.getStartMillis();
-		long end = input.getEndMillis();
-		long userStart = start;
-		long userEnd = end;
-		var output = new ArrayList<Entry<String>>();
-
-		for (var entries : result) 		
-		{		
-			for (int i = 0; i <= entries.size(); i++) 
-			{		
-				if (i >= 0 && i < entries.size())
-					end = entries.get(i).getStartMillis();
-				if (i > 0)				
-					start = entries.get(i-1).getEndMillis();				
-				if (i == entries.size())				
-					end = userEnd;								
-				if (end - start >= duration*59000 && !(end-userStart <= duration*59000
-					|| userEnd-start <= duration*59000))
-					output.add(createEntryFromMillis(start, end));
-				if (checkForDuplicates(output))
-					output.remove(output.size()-1);							
-			}		
-		}			
-		return output;
 	}
 
 	private Entry<String> createEntryFormStartAndEndDate(LocalDate start, LocalDate end) {
