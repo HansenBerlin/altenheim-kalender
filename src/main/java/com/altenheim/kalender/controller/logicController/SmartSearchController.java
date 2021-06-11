@@ -1,14 +1,23 @@
 package com.altenheim.kalender.controller.logicController;
 
 
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import org.threeten.extra.Days;
+
+import impl.org.controlsfx.collections.MappingChange.Map;
+import net.fortuna.ical4j.model.WeekDay.Day;
+
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
 
@@ -201,4 +210,87 @@ public class SmartSearchController implements ISmartSearchController
 		return (currentEntries.get(currentEntries.size()-2).getStartMillis() 
 			== currentEntries.get(currentEntries.size()-1).getStartMillis());
 	}
+
+	// Anfahrt, Abfahrt, Margin pre, Margin post, Wochentage, 
+	// Start Ende Zeit, Start Ende Datum, Anzahl, Öffnungszeiten
+	
+	// Übergabe Dauer und Anfang und Ende
+	// Dauer erhöhen um Anfahrt vorne und evtl hinten, selbes mit Margin
+	// Liste aufbauen mit Öffnungszeiten berücksichtigt
+	// Liste aufbauen mit Wochentagen berücksichtigt
+	// Traveltime erst hinterher checken
+	// Abfangen Traveltime ist zu lang für start und endtime?
+	// int interval, int recurrences in dritter methde erst
+
+	private boolean[] weekdays = { true, true, true, true, true, true, true };
+
+	public Calendar createCalendarFromUserInput(Entry<String> userPrefs, int duration, 
+		int marginPre, int marginPost, boolean[] weekdays)
+	{
+		int startSeconds = userPrefs.getStartTime().toSecondOfDay();
+		int endSeconds =  userPrefs.getEndTime().toSecondOfDay();
+		int durationInSecsWithMargins = (duration + marginPre + marginPost) * 60;
+		
+		if (startSeconds < marginPre || endSeconds > 86400 - marginPost ||
+			endSeconds - startSeconds < durationInSecsWithMargins)
+			return null;
+
+		var calendar = new Calendar();		
+		var entry = setRFC2445RecurrenceRule(weekdays, userPrefs);
+		calendar.addEntries(entry);
+
+		return calendar;
+	}	
+
+	public Entry<String> setRFC2445RecurrenceRule(boolean[] weekdays, Entry<String> userPrefs)
+	{
+		String[] weekdaysRule = { "MO,", "TU,", "WE,", "TH,", "FR,", "SA,", "SU," };
+		String reccurenceDays = "";
+
+		for (int i = 0; i < weekdays.length; i++) 		
+			if (weekdays[i])
+				reccurenceDays = reccurenceDays + weekdaysRule[i];	
+				
+		if (!reccurenceDays.isBlank())
+			reccurenceDays = reccurenceDays.substring(0, reccurenceDays.length() - 1);
+
+		userPrefs.setRecurrenceRule("FREQ=WEEKLY;BYDAY=" + reccurenceDays + ";INTERVAL=1");
+		return userPrefs;
+	}	
+
+
+	// ist nur zum Testen hier um Öffnungszeiten zu generieren
+	private Map<DayOfWeek, List<Entry<String>>> createOpeningHours()
+    {
+        var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
+        var startTime = LocalTime.of(8, 0);
+        var endTimeAlt = LocalTime.of(12, 0);
+        var startTimeAlt = LocalTime.of(14, 0);
+        var endTime = LocalTime.of(20, 0);
+
+        for (var day : DayOfWeek.values()) 
+        {
+            var entrys = new ArrayList<Entry<String>>();
+            if (day.getValue() %2 == 0)
+            {
+                var entryOne = new Entry<String>();
+                var entryTwo = new Entry<String>();
+                entryOne.changeStartTime(startTime);
+                entryOne.changeEndTime(endTimeAlt);
+                entryTwo.changeStartTime(startTimeAlt);
+                entryTwo.changeEndTime(endTime);
+                entrys.add(entryOne);
+                entrys.add(entryTwo);
+            }
+            else
+            {
+                var entryOne = new Entry<String>();
+                entryOne.changeStartTime(startTime);
+                entryOne.changeEndTime(endTime);               
+                entrys.add(entryOne);
+            }
+            openingHours.put(day, entrys);            
+        }
+        return openingHours;        
+    }    
 }
