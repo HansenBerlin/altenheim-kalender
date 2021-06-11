@@ -1,20 +1,22 @@
 package com.altenheim.kalender.interfaces;
 
 import java.io.File;
-import com.altenheim.kalender.controller.viewController.CalendarViewOverride;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.models.SettingsModel;
+import net.fortuna.ical4j.data.ParserException;
+import net.fortuna.ical4j.validate.ValidationException;
 
 public interface IIOController 
 {
-    public void writeCalendarFiles(ICalendarEntriesModel allCalendars);
+    public void writeCalendarFiles() throws FileNotFoundException, ValidationException, IOException;
     public void writeSettings(SettingsModel settings);
     public void writeMailTeamplates(MailTemplateModel templates);
     public void saveExportedCalendar(File file);    
-    public ICalendarEntriesModel restoreCalendars();
+    public boolean restoreCalendars();
     public SettingsModel restoreSettings();
     public MailTemplateModel restoreTemplates();
     public File readImportedCalendar();
-    public void init(CalendarViewOverride calendarView);
-    public void loadCalendarsFromFile();     
+    public void loadCalendarsFromFile() throws FileNotFoundException, IOException, ParserException;     
 }

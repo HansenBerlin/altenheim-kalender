@@ -1,38 +1,67 @@
 package com.altenheim.kalender.controller.logicController;
 
+import com.altenheim.kalender.controller.viewController.CalendarViewOverride;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
-import com.altenheim.kalender.models.CalendarEntriesModel;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
 import com.calendarfx.model.Calendar;
+import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 
 
-public class AppointmentEntryFactory extends IOController implements IAppointmentEntryFactory
+public class AppointmentEntryFactory implements IAppointmentEntryFactory
 {    
     private ICalendarEntriesModel allCalendars;
+    private CalendarViewOverride calendarView;
 
-    public static int entries;
 
-    public AppointmentEntryFactory(ICalendarEntriesModel allCalendars)
+    public AppointmentEntryFactory(ICalendarEntriesModel allCalendars, CalendarViewOverride calendarView)
     {
         this.allCalendars = allCalendars;
+        this.calendarView = calendarView;
     }    
 
     public ICalendarEntriesModel getEntriesModel()
     {
         return allCalendars;
     }
+
+    public HashMap<String, List<Entry<?>>> createEntryListForEachCalendar() 
+	{			
+		var result = allCalendars.getAllCalendars();		
+		var output = new HashMap<String, List<Entry<?>>>();
+        var zoneId = ZoneId.systemDefault();
+
+		for (var calendar : result) 		
+		{	
+            var tempList = new ArrayList<Entry<?>>();
+            var firstEntry = LocalDate.ofInstant(calendar.getEarliestTimeUsed(), zoneId);
+            var lastEntry = LocalDate.ofInstant(calendar.getLatestTimeUsed(), zoneId);
+            var entries = calendar.findEntries(firstEntry, lastEntry, zoneId);
+
+			for (var entry : entries.values())
+			{		
+                for (var singleEntry : entry)
+                    tempList.add(singleEntry);					
+			}	
+            output.put(calendar.getName(), tempList);	
+		}			
+		return output;
+	}
     
-    public void createRandomEntrys(String calendarName) 
+    public void createRandomCalendarList(String calendarName) 
     {
-        var calendar = new Calendar();
         int dayOfMonth;
+        var calendar = new Calendar();
+        var calendearSource = new CalendarSource("Saved Calendars");
+        calendar.setName(String.format("%d", calendar.hashCode()));
         for (int i = 1; i <= 12; i++) 
         {
             if (Arrays.asList(new int[]{1, 3, 5, 7, 8, 10, 12}).contains(i))
@@ -46,16 +75,17 @@ public class AppointmentEntryFactory extends IOController implements IAppointmen
             {   
                 for (int k = 8; k < 20 ; k+=2) 
                 {
-                    var entry = createRandomEntries(j, i, k, k+rG(1, 3));
+                    var entry = createRandomEntry(j, i, k, k+rG(1, 3));
                     calendar.addEntries(entry);                   
-                    entries++;
                 }
             }            
         }
         allCalendars.addCalendar(calendar);
+        calendearSource.getCalendars().addAll(allCalendars.getAllCalendars());
+        calendarView.getCalendarSources().addAll(calendearSource);  
     }
 
-    private Entry<String> createRandomEntries(int day, int month, int startT, int endT)
+    private Entry<String> createRandomEntry(int day, int month, int startT, int endT)
     {
         var startAndEndDate = LocalDate.of(2021, month, day);
         var startTime = LocalTime.of(startT, 0);
@@ -66,27 +96,7 @@ public class AppointmentEntryFactory extends IOController implements IAppointmen
         entry.changeStartTime(startTime);
         entry.changeEndTime(endTime);
         return entry;
-    }
-
-    public void createTestCalendar()
-	{
-		var calendar = new Calendar();
-
-		for (int i = 0; i < 18; i+=3) 
-		{
-			var startAndEndDate = LocalDate.of(2021, 1, 1);
-        	var startTime = LocalTime.of(1 + i, i);
-        	var endTime = LocalTime.of(2 + i, i*2);
-        	var entry = new Entry<String>("Test");
-        	entry.changeStartDate(startAndEndDate);
-        	entry.changeEndDate(startAndEndDate);
-        	entry.changeStartTime(startTime);
-        	entry.changeEndTime(endTime);
-			calendar.addEntry(entry);
-			//System.out.printf("Neuer Eintrag von %s bis %s\n", entry.getStartTime(), entry.getEndTime());
-		}
-        allCalendars.addCalendar(calendar);
-	}	
+    }	
 
 	public Entry<String> createUserSettingsEntry(LocalTime startSearchTime, LocalTime endSearchTime)
 	{

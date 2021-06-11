@@ -47,10 +47,9 @@ public class SearchViewController extends ResponsiveController
     private SettingsModel settings;
     private IGoogleAPIController api;
     private IIOController iOController;
-    private ReadWriteICal testIO;
 
     public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory entryFactory, ContactModel contacts, 
-        MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api, IIOController iOController, ReadWriteICal testIO)
+        MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api, IIOController iOController)
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
@@ -59,7 +58,6 @@ public class SearchViewController extends ResponsiveController
         this.settings = settings;
         this.api = api;
         this.iOController = iOController;
-        this.testIO = testIO;
     }
 
     @FXML
@@ -118,8 +116,8 @@ public class SearchViewController extends ResponsiveController
         //iOController.writeCalendarFiles(null);
 
         for (int i = 0; i < 5; i++)        
-            entryFactory.createRandomEntrys("Test " + i);
-        testIO.saveCalendars();
+            entryFactory.createRandomCalendarList("Test " + i);
+        iOController.writeCalendarFiles();
         
     }
 
@@ -128,9 +126,7 @@ public class SearchViewController extends ResponsiveController
     {
         //SuggestionsModel.data.clear();
         //settings.setScrapingInterval(settings.getScrapingInterval()+1000);
-        //test.saveContactsToFile();
-        //test.loadContactsTFromFile();        
-        //iOController.loadCalendarsFromFile();
+        
     }
 
 

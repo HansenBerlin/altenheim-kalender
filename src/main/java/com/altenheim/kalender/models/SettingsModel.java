@@ -2,9 +2,8 @@ package com.altenheim.kalender.models;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import com.altenheim.kalender.controller.logicController.IOController;
 
-public class SettingsModel extends IOController
+public class SettingsModel
 {
     private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
     public Long scrapingIntervalInMinutes = (long) 2000;    

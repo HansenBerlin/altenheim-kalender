@@ -4,7 +4,7 @@ import com.altenheim.kalender.interfaces.IExportController;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.interfaces.ISettingsController;
 
-public class SettingsController extends IOController implements ISettingsController
+public class SettingsController implements ISettingsController
 {
     private IIOController ioController;
     private IExportController export;
