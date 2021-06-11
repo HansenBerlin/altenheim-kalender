@@ -60,10 +60,10 @@ public class ImportExportTest
         var entries = cal.findEntries("");
         var calName = cal.getName();
         var icsCalendar = new Calendar();
-        //icsCalendar.getProperties().getProperty("X-WR-CALNAME")
         icsCalendar.getProperties().add(new ProdId("-//Smart Planner//iCal4j 1.0//DE"));
         icsCalendar.getProperties().add(Version.VERSION_2_0);
         icsCalendar.getProperties().add(CalScale.GREGORIAN);
+        icsCalendar.getProperties().add(new XProperty("X-WR-CALNAME", calName));
         for(int i = 0; i < entries.size(); i++)
         {
             var entry = entries.get(i);
