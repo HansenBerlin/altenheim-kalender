@@ -22,6 +22,14 @@ public class SmartSearchController implements ISmartSearchController
 		this.administrateEntries = administrateEntries;
 	}
 
+
+	public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input, int length) {
+		while (input.size()>length) {
+			input.remove(input.size()-1);
+		}
+		return input;
+	}
+
 	//return a list of search entrys only for the selected WeekDays in the selected time periode
 	public ArrayList<Entry<String>> findSelectedWeekdays(Entry<String> input, boolean[] weekdays) {
 		var output = new ArrayList<Entry<String>>();

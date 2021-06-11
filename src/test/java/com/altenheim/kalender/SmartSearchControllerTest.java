@@ -669,6 +669,22 @@ void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnFourEntryWithCorrectTi
 //End modifySelectedHours
 
 
+@Test
+void reduceListLength_TwoEntry_shouldReturnOneEntry(){
+    
+    var input = new ArrayList<Entry<String>>();
+    for (int i = 0; i < 10; i++) {
+        input.add(null);
+    }
+    var allEntriesMock = mock(ICalendarEntriesModel.class);
+
+    var controller = new SmartSearchController(allEntriesMock);
+    var result = controller.reduceListLength(input, 5);
+    
+    assertEquals(5, result.size());
+    
+}
+
 
 
 
