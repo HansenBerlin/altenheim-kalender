@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.TempTestClasses;
+package com.altenheim.kalender.TempTestClasses;
 
 import java.io.Serializable;
 
