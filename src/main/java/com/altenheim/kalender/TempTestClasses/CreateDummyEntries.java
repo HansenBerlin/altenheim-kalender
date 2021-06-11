@@ -7,34 +7,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.altenheim.kalender.models.ContactModel;
-import com.calendarfx.model.Entry;
+import com.altenheim.kalender.models.SerializableEntry;
 
 
-public class CreateDummyEntries 
+public class CreateDummyEntries implements ICreateDummyEntries
 {
     private int iDCounter;
+    private List<ContactModel> contacts;
 
-    public List<ContactModel> createContactsList(int amount)
+    public CreateDummyEntries(List<ContactModel> contacts)
     {
-        String testFirstName = "ThisIsAName";
-        String surName = "ThisIsASurname";
-        String phoneNumber = "0153-22446688";
-        String mail = "mailadress@testmailadress.com";        
-        var contacts = new ArrayList<ContactModel>();
+        this.contacts = contacts;
+    }
 
+    public void createContactsList(int amount)
+    {
+        var contacts = new ArrayList<ContactModel>();
         for (int i = 0; i < amount; i++)
         {
-            contacts.add(new ContactModel(testFirstName + i, surName + i, mail, iDCounter, phoneNumber + i, createOpeningHours()));       
+            String testFirstName = "ThisIsAName" + i;
+            String surName = "ThisIsASurname" + i;
+            String phoneNumber = "0153-22446688" + i;
+            String mail = "mailadress@testmailadress.com" + i;        
+            contacts.add(new ContactModel(testFirstName, surName, mail, iDCounter, phoneNumber, createOpeningHours()));       
             iDCounter++;
         }      
 
-        return contacts;
+        this.contacts.addAll(contacts);
     }
 
     
-    public Map<DayOfWeek, List<Entry<String>>> createOpeningHours()
+    private Map<DayOfWeek, List<SerializableEntry>> createOpeningHours()
     {
-        var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
+        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
         var startTime = LocalTime.of(8, 0);
         var endTimeAlt = LocalTime.of(12, 0);
         var startTimeAlt = LocalTime.of(14, 0);
@@ -42,11 +47,11 @@ public class CreateDummyEntries
 
         for (var day : DayOfWeek.values()) 
         {
-            var entrys = new ArrayList<Entry<String>>();
+            var entrys = new ArrayList<SerializableEntry>();
             if (day.getValue() %2 == 0)
             {
-                var entryOne = new Entry<String>();
-                var entryTwo = new Entry<String>();
+                var entryOne = new SerializableEntry();
+                var entryTwo = new SerializableEntry();
                 entryOne.changeStartTime(startTime);
                 entryOne.changeEndTime(endTimeAlt);
                 entryTwo.changeStartTime(startTimeAlt);
@@ -56,7 +61,7 @@ public class CreateDummyEntries
             }
             else
             {
-                var entryOne = new Entry<String>();
+                var entryOne = new SerializableEntry();
                 entryOne.changeStartTime(startTime);
                 entryOne.changeEndTime(endTime);               
                 entrys.add(entryOne);

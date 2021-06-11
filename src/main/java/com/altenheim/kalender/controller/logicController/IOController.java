@@ -4,16 +4,20 @@ import java.io.File;
 import com.altenheim.kalender.controller.viewController.CalendarViewOverride;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
 import com.altenheim.kalender.interfaces.IIOController;
+import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.models.SettingsModel;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 import net.fortuna.ical4j.data.*;
@@ -30,11 +34,16 @@ public class IOController implements IIOController
 
     private IAppointmentEntryFactory administrateEntries;
     private CalendarViewOverride calendarView;
+    private List<ContactModel> allContacts;
+    private SettingsModel settings;
 
-    public IOController(IAppointmentEntryFactory administrateEntries, CalendarViewOverride calendarView)
+    public IOController(IAppointmentEntryFactory administrateEntries, CalendarViewOverride calendarView, 
+        List<ContactModel> allContacts, SettingsModel settings)
     {
         this.administrateEntries = administrateEntries;
         this.calendarView = calendarView;
+        this.allContacts = allContacts;
+        this.settings = settings;
     }
     
 
@@ -102,6 +111,53 @@ public class IOController implements IIOController
     }
 
 
+    public void saveContactsToFile() throws IOException
+    {         
+        var path = settings.getCustomPathToSavedFiles();
+        if (path == null)
+            path = "contactFiles/contacts.file";  
+        var writeToFile = new FileOutputStream(path);
+        var convert = new ObjectOutputStream(writeToFile);
+        convert.writeObject(allContacts);
+        convert.close();
+    }
+
+
+    public void loadContactsTFromFile() throws IOException, ClassNotFoundException
+    {
+        var path = settings.getCustomPathToSavedFiles();
+        if (path == null)
+            path = "contactFiles/contacts.file"; 
+        var loadFile = new FileInputStream(path);
+        var inputStream = new ObjectInputStream(loadFile);
+        var loadedContacts = (List<ContactModel>)inputStream.readObject();
+        allContacts.addAll(loadedContacts);
+        inputStream.close();
+    }  
+    
+
+    public void writeSettings(SettingsModel settings)
+    {
+    }
+
+
+    public SettingsModel restoreSettings()
+    {
+        return null;
+    }
+
+
+    public void writeMailTeamplates(MailTemplateModel templates)
+    {
+    }
+
+
+    public MailTemplateModel restoreMailTemplates()
+    {
+        return null;
+    }  
+
+
     private Entry<String> createCalendarFXEntryFromMillis(long start, long end)
 	{
 		var entry = new Entry<String>();
@@ -127,43 +183,5 @@ public class IOController implements IIOController
         var uid = iD.generateUid();
         event.getProperties().add(uid); 
         return event;           
-    }    
-
-
-    public boolean restoreCalendars()
-    {
-        return true;
-    }
-
-    public void writeSettings(SettingsModel settings)
-    {
-
-    }
-
-    public SettingsModel restoreSettings()
-    {
-        return null;
-    }
-
-    public void writeMailTeamplates(MailTemplateModel templates)
-    {
-
-    }
-
-    public MailTemplateModel restoreTemplates()
-    {
-        return null;
-    }
-
-    public void saveExportedCalendar(File file)
-    {
-        
-    }
-
-    public File readImportedCalendar()
-    {
-        return null;
-    }
-
-    
+    } 
 }

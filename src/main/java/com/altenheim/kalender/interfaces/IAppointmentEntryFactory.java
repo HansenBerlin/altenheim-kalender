@@ -4,9 +4,10 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 
+import com.altenheim.kalender.TempTestClasses.ICreateDummyEntries;
 import com.calendarfx.model.Entry;
 
-public interface IAppointmentEntryFactory 
+public interface IAppointmentEntryFactory extends ICreateDummyEntries
 {
     public void createRandomCalendarList(String calendarName);
     public Entry<String> createUserSettingsEntry(LocalTime startSearchTime, LocalTime endSearchTime);

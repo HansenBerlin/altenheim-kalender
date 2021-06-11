@@ -5,8 +5,6 @@ import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Map;
 
-import com.calendarfx.model.Entry;
-
 public class ContactModel implements Serializable
 {
     private String firstName;
@@ -15,10 +13,10 @@ public class ContactModel implements Serializable
     private String phoneNumber;
     private int mailTemplateId;
     private int iD;
-    private Map<DayOfWeek, List<Entry<String>>> openingHours;
+    private Map<DayOfWeek, List<SerializableEntry>> openingHours;
 
     public ContactModel(String firstName, String surName, String mail, int iD, 
-        String phoneNumber, Map<DayOfWeek, List<Entry<String>>> openingHours)
+        String phoneNumber, Map<DayOfWeek, List<SerializableEntry>> openingHours)
     {
         this.firstName = firstName;
         this.surName = surName;
@@ -27,10 +25,4 @@ public class ContactModel implements Serializable
         this.openingHours = openingHours;
         this.iD = iD;
     }
-
-    public ContactModel()
-    {
-    }
-
-    
 }

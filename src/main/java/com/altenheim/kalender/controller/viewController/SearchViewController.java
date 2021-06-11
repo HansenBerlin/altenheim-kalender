@@ -10,10 +10,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.altenheim.kalender.models.*;
 import java.io.IOException;
+import java.util.List;
 
-import com.altenheim.kalender.TempTestClasses.ReadWriteICal;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
-import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
@@ -42,13 +41,13 @@ public class SearchViewController extends ResponsiveController
     private int userStep = 1;    
     private ISmartSearchController smartSearch;
     private IAppointmentEntryFactory entryFactory;
-    private ContactModel contacts;
+    private List<ContactModel> contacts;
     private MailTemplateModel mailTemplates;
     private SettingsModel settings;
     private IGoogleAPIController api;
     private IIOController iOController;
 
-    public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory entryFactory, ContactModel contacts, 
+    public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory entryFactory, List<ContactModel> contacts, 
         MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api, IIOController iOController)
     {
         this.smartSearch = smartSearch;
@@ -105,28 +104,28 @@ public class SearchViewController extends ResponsiveController
 
     @FXML
     private void testUpdate(ActionEvent event) throws IOException, ClassNotFoundException
-    {      /*
+    {   /*
         var testEntry = entryFactory.createUserSettingsEntry(timeStart.getValue(), timeEnd.getValue());
         var result = smartSearch.findAvailableTimeSlot(testEntry, (int)sliderAppointmentDuration.getValue());
         for (var entry : result) 
         {
             SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime());
             System.out.println(entry.getStartTime() + " " + entry.getEndTime());
-        }*/
-        //iOController.writeCalendarFiles(null);
+        }
+        iOController.writeCalendarFiles(null);
 
         for (int i = 0; i < 5; i++)        
             entryFactory.createRandomCalendarList("Test " + i);
-        iOController.writeCalendarFiles();
-        
+        iOController.writeCalendarFiles();*/
+        entryFactory.createContactsList(100);
+        iOController.saveContactsToFile();     
     }
 
     @FXML
     private void resetTest(ActionEvent event) throws IOException, ClassNotFoundException
     {
         //SuggestionsModel.data.clear();
-        //settings.setScrapingInterval(settings.getScrapingInterval()+1000);
-        
+        //settings.setScrapingInterval(settings.getScrapingInterval()+1000);        
     }
 
 
