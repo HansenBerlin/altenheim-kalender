@@ -82,8 +82,8 @@ public class SmartSearchController implements ISmartSearchController
 		}
 		return output;
 	}	
-	//ungetestet
-	public ArrayList<Entry<String>> encloseEntryDayTimes(Entry<String> input, ArrayList<Entry<String>>[] selectedHours) {
+	
+	public ArrayList<Entry<String>> encloseEntryDayTimes(Entry<String> input, ArrayList<ArrayList<Entry<String>>> selectedHours) {
 		var output = new ArrayList<Entry<String>>();
 		int periode = Days.between(input.getStartDate(), input.getEndDate()).getAmount();
 		LocalDate day;
@@ -92,20 +92,39 @@ public class SmartSearchController implements ISmartSearchController
 			day = input.getStartDate().plusDays(i);
 			var daynumber = day.getDayOfWeek().getValue()-1; //Weekdays don´t start bye 0
 
-			for (ArrayList<Entry<String> selectedHoursDay : selectedHours) {
-				if (selectedHoursDay.isEmpty()) {
-					continue;
-				} else {
+			var selectedHoursDay = selectedHours.get(daynumber);
+			if (selectedHoursDay != null) {
+				if (!selectedHoursDay.isEmpty()) {
 					for (Entry<String> entry : selectedHoursDay) {
 						output.add(createEntryFormStartAndEndDateAndTime(day, day, entry.getStartTime(), entry.getEndTime()));
 					}
 				}
 			}
+			
+			
 		}
 		return output;
 	}
 
-
+	public ArrayList<ArrayList<Entry<String>>> modifySelectedHoursList(ArrayList<ArrayList<Entry<String>>> selectedHours, int timeBefore, int timeAfter) {
+		for (ArrayList<Entry<String>> entry : selectedHours) {
+			entry = modifySelectedHours(entry, timeBefore, timeAfter);
+		}
+		return selectedHours;
+	}
+	
+	public ArrayList<Entry<String>> modifySelectedHours(ArrayList<Entry<String>> selectedHours, int timeBefore, int timeAfter) {
+		for (Entry<String> entry : selectedHours) {
+			entry = modifySelectedHours(entry, timeBefore, timeAfter);
+		}
+		return selectedHours;
+	}
+	
+	public Entry<String> modifySelectedHours(Entry<String> selectedHours, int timeBefore, int timeAfter) {
+		selectedHours.changeStartTime(selectedHours.getStartTime().minusMinutes(timeBefore));
+		selectedHours.changeEndTime(selectedHours.getEndTime().plusMinutes(timeAfter));
+		return selectedHours;
+	}
 
 
 
