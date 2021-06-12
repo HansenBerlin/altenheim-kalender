@@ -43,43 +43,24 @@ import java.util.Timer;
 			}
         }
 
-		// #################################### Main - muss letzlich gelöscht werden
-//		public void main(String[] args) throws IOException 
-//		{
-//			System.out.println("start");
-//			HWRCalendarICS();
-//					
-//			System.out.println("finished");
-//		} // ################################## Main Ende
 		
 		public void HWRCalendarICS() throws IOException, ParseException, ParserException {
 			URL url = new URL(urlFinder());
-
 			String line = "";
 			downloadIcs(url, line);
-			
-			// Ausgabe des File-Inhalts
-//			try (BufferedReader br = new BufferedReader(new FileReader("hwrCalendar.ics"))) {
-//				while ((line = br.readLine()) != null) {
-//					System.out.println(line);
-//				}
-//			}
 			
 			//Übergabe String path an Import-Funktion
 			Path ics = Paths.get("hwrCalendar.ics");
 			String pathOfIcs = ics.toAbsolutePath().toString();
-			ImportExportTest x = new ImportExportTest(); //aktivieren
-			x.importFile(pathOfIcs); //aktivieren
-			
-			//Ausgabe Path des Files
-//			System.out.println(pathOfIcs);
-
+			ImportExportTest x = new ImportExportTest();
+			x.importFile(pathOfIcs);
+	
 		}
 
 		public void downloadIcs(URL url, String fileName) throws IOException 
 		{
 			ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-			FileOutputStream fos = new FileOutputStream("information.ics");
+			FileOutputStream fos = new FileOutputStream("hwrCalendar.ics");
 			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 			fos.close(); // optional
         }

@@ -7,7 +7,7 @@ import com.altenheim.kalender.controller.logicController.IOController;
 public class SettingsModel extends IOController
 {
     private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
-    public Long scrapingIntervalInMinutes = (long) 2000;    
+    public Long scrapingIntervalInMinutes = (long) 20000;    
 
     public long getScrapingInterval() { return scrapingIntervalInMinutes; }
     public void setScrapingInterval(long interval)
