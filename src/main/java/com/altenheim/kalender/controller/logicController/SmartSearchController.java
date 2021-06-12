@@ -206,18 +206,17 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 	}
 	
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-
 	
-
+	
+	
 	private boolean checkForDuplicates(ArrayList<Entry<String>> currentEntries)
 	{
 		if (currentEntries.size() < 2)
-			return false;
+		return false;
 		return (currentEntries.get(currentEntries.size()-2).getStartMillis() 
-			== currentEntries.get(currentEntries.size()-1).getStartMillis());
+		== currentEntries.get(currentEntries.size()-1).getStartMillis());
 	}
-
+	
 	private Entry<String> createEntryFromMillis(long start, long end)
 	{
 		var entry = new Entry<String>();
@@ -229,7 +228,7 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		entry.changeEndDate(dateEnd.toLocalDate());
 		return entry;
 	}
-
+	
 	private Entry<String> createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end)
 	{
 		var entry = new Entry<String>();				
@@ -239,7 +238,9 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		entry.changeEndDate(startAndEnd);
 		return entry;
 	}	
-
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	public Calendar createCalendarFromUserInput(Entry<String> userPrefs, int duration, int marginPre, 
 		int marginPost, boolean[] weekdays, HashMap<DayOfWeek, List<Entry<String>>> openingHours)
 	{
@@ -263,23 +264,6 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		}		
 		calendar.addEntries(addRFC2445RecurrenceRule(weekdays, possibleEntries, weeksduration));
 		return calendar;
-	}	
-
-	private ArrayList<Entry<?>> addRFC2445RecurrenceRule(boolean[] weekdays, ArrayList<Entry<?>> adjustedEntries, int weeksCount)
-	{
-		String[] weekdaysRule = { "MO", "TU", "WE", "TH", "FR", "SA", "SU" };		
-
-		for (int i = 0; i < adjustedEntries.size(); i++) 
-		{
-			var checkForWeekday = adjustedEntries.get(i).getStartDate().getDayOfWeek().getValue()-1;
-			if (weekdays[checkForWeekday])
-				adjustedEntries.get(i).setRecurrenceRule("FREQ=WEEKLY;BYDAY=" + weekdaysRule[checkForWeekday] 
-																			  + ";INTERVAL=1;COUNT=" 
-																			  + weeksCount);
-			else
-				adjustedEntries.remove(i--);		
-		}
-		return adjustedEntries;
 	}	
 
 	private ArrayList<Entry<?>> adjustToOpeningHours(int duration, Entry<?> rawData, 
@@ -309,4 +293,21 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		}
 		return adjustedEntrys;
 	} 
+
+	private ArrayList<Entry<?>> addRFC2445RecurrenceRule(boolean[] weekdays, ArrayList<Entry<?>> adjustedEntries, int weeksCount)
+	{
+		String[] weekdaysRule = { "MO", "TU", "WE", "TH", "FR", "SA", "SU" };		
+
+		for (int i = 0; i < adjustedEntries.size(); i++) 
+		{
+			var checkForWeekday = adjustedEntries.get(i).getStartDate().getDayOfWeek().getValue()-1;
+			if (weekdays[checkForWeekday])
+				adjustedEntries.get(i).setRecurrenceRule("FREQ=WEEKLY;BYDAY=" + weekdaysRule[checkForWeekday] 
+																			  + ";INTERVAL=1;COUNT=" 
+																			  + weeksCount);
+			else
+				adjustedEntries.remove(i--);		
+		}
+		return adjustedEntries;
+	}	
 }

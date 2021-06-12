@@ -31,8 +31,7 @@ public class SmartSearchControllerTest
         var controller = new SmartSearchController(null);
         // Terminläne 60 Minuten, keine An- oder Abfahrt
         var result = controller.createCalendarFromUserInput(userPrefs, 60, 0, 0, weekdays, openingHours);
-        var hashmaptest = createEntryListForEachCalendar(result);
-        assertEquals(1, result.findEntries("test").size());
+        assertEquals(1, result.findEntries("test").size()); // assert ist nur platzhalter
     }
 
 
@@ -208,7 +207,7 @@ public class SmartSearchControllerTest
         for (var day : DayOfWeek.values()) 
         {
             var entrys = new ArrayList<Entry<String>>();
-            // Sonntages keine Einträge
+            // Sonntags keine Einträge
             if (day.getValue() == 7)
                 continue;
             // 2 Einträge (also Mittagspause von 12-14h) an Dienstagen, Donnerstag und Samstag
@@ -259,23 +258,6 @@ public class SmartSearchControllerTest
         entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
         return entryUser;
     }
-
-    public HashMap<String, List<Entry<?>>> createEntryListForEachCalendar(Calendar calendar) 
-	{			
-		var output = new HashMap<String, List<Entry<?>>>();
-        var zoneId = ZoneId.systemDefault();			
-        var tempList = new ArrayList<Entry<?>>();
-        var firstEntry = LocalDate.ofInstant(calendar.getEarliestTimeUsed(), zoneId);
-        var lastEntry = LocalDate.ofInstant(calendar.getLatestTimeUsed(), zoneId);
-        var entries = calendar.findEntries(firstEntry, lastEntry, zoneId);
- 	    for (var entry : entries.values())            	
-            for (var singleEntry : entry)
-                tempList.add(singleEntry); 	        	
-        output.put(calendar.getName(), tempList);	
-				
-		return output;
-	}
-
 
 //Nico Tests
 //Start findSelectedWeekdays
