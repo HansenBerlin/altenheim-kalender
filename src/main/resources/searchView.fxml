@@ -9,8 +9,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SplitMenuButton?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -31,7 +30,7 @@
       <RowConstraints maxHeight="50.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="150.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="100.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="340.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="430.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="100.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
@@ -135,6 +134,8 @@
          <children>
             <Button fx:id="btnBack" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="ZURÜCK" />
             <Button fx:id="btnConfirm" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="WEITER" />
+            <Button minHeight="40.0" mnemonicParsing="false" onAction="#testUpdate" prefHeight="40.0" prefWidth="170.0" text="SPEICHERN" />
+            <Button minHeight="40.0" mnemonicParsing="false" onAction="#resetTest" prefHeight="40.0" prefWidth="170.0" text="LADEN" />
          </children>
          <GridPane.margin>
             <Insets top="30.0" />
@@ -142,6 +143,64 @@
       </HBox>
       <VBox fx:id="stepOneUserInput" alignment="TOP_CENTER" spacing="20.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
          <children>
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Terminname">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <TextField fx:id="txtAppointmentName" prefHeight="26.0" prefWidth="288.0">
+                           <HBox.margin>
+                              <Insets left="80.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ToggleSwitch fx:id="toogleUseNextAppointment" text="Nächstmöglicher Termin">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </ToggleSwitch>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="zwischen">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <DatePicker fx:id="startDate" maxWidth="100.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="und">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <DatePicker fx:id="endDate" maxWidth="100.0" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
             <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
                <children>
                   <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -154,36 +213,11 @@
                               <Insets right="20.0" />
                            </HBox.margin>
                         </Text>
-                        <Slider fx:id="sliderAppointmentDuration" blockIncrement="15.0" majorTickUnit="30.0" max="480.0" minWidth="100.0" minorTickCount="15" prefWidth="450.0" snapToTicks="true" />
-                     </children>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </HBox>
-               </children>
-            </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
-               <children>
-                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Terminsuche zwischen">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
+                        <Slider fx:id="sliderAppointmentDuration" blockIncrement="15.0" majorTickUnit="60.0" max="240.0" minWidth="100.0" minorTickCount="15" prefHeight="49.0" prefWidth="299.0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
                            <HBox.margin>
-                              <Insets right="20.0" />
-                           </HBox.margin>
-                        </Text>
-                        <DatePicker fx:id="startDate" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="und">
-                           <font>
-                              <Font name="DejaVu Sans ExtraLight" size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="20.0" right="20.0" />
-                           </HBox.margin>
-                        </Text>
-                        <DatePicker fx:id="endDate" />
+                              <Insets left="60.0" right="20.0" />
+                           </HBox.margin></Slider>
+                        <TextField fx:id="txtDuration" prefHeight="26.0" prefWidth="144.0" promptText="manuelle Eingabe" />
                      </children>
                      <padding>
                         <Insets left="20.0" />
@@ -200,7 +234,7 @@
                               <Font size="14.0" />
                            </font>
                            <HBox.margin>
-                              <Insets right="20.0" />
+                              <Insets right="4.0" />
                            </HBox.margin>
                         </Text>
                         <CheckBox fx:id="tickMonday" mnemonicParsing="false" text="Mo" />
@@ -221,7 +255,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bevorzugte Terminzeit zwischen">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Terminzeit zwischen">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -229,7 +263,10 @@
                               <Insets right="20.0" />
                            </HBox.margin>
                         </Text>
-                        <TimeField fx:id="timeStart" maxHeight="20.0" nodeOrientation="LEFT_TO_RIGHT" />
+                        <TimeField fx:id="timeStart" maxHeight="20.0" nodeOrientation="LEFT_TO_RIGHT">
+                           <HBox.margin>
+                              <Insets left="28.0" />
+                           </HBox.margin></TimeField>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="und">
                            <font>
                               <Font name="DejaVu Sans ExtraLight" size="14.0" />
@@ -254,15 +291,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="22.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fahrtzeit einbeziehen">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Text>
-                        <ToggleSwitch fx:id="toggleUseTravelDuration" />
+                        <ToggleSwitch fx:id="toggleUseTravelDuration" prefHeight="20.0" prefWidth="210.0" text="Fahrtzeit einbeziehen" />
                         <SplitMenuButton fx:id="dropdownVehicle" mnemonicParsing="false" text="Verkehrsmittel">
                           <items>
                             <MenuItem mnemonicParsing="false" text="Fußgänger" />
@@ -301,15 +330,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Freie Slots einplanen">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Text>
-                        <ToggleSwitch fx:id="toggleUseMargin" />
+                        <ToggleSwitch fx:id="toggleUseMargin" prefHeight="20.0" prefWidth="210.0" text="Freie Slots einplanen" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="vorher">
                            <font>
                               <Font size="14.0" />
@@ -339,15 +360,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Öffnungszeiten einbeziehen">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Text>
-                        <ToggleSwitch fx:id="toggleUseOpeningHours" />
+                        <ToggleSwitch fx:id="toggleUseOpeningHours" prefHeight="20.0" prefWidth="210.0" text="Öffnungszeiten einbeziehen" />
                         <SplitMenuButton fx:id="dropdownToDestinationOpeningOptions" mnemonicParsing="false" text="Ziel">
                            <items>
                               <MenuItem mnemonicParsing="false" text="auto: wie Fahrtzeit" />
@@ -371,15 +384,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="wiederkehrender Termin">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Text>
-                        <ToggleSwitch fx:id="toggleRecurringDate" />
+                        <ToggleSwitch fx:id="toggleRecurringDate" prefHeight="20.0" prefWidth="210.0" text="wiederkehrender Termin" />
                         <SplitMenuButton fx:id="dropdownInterval" mnemonicParsing="false" text="Intervall">
                            <items>
                               <MenuItem mnemonicParsing="false" text="täglich" />
@@ -408,6 +413,27 @@
                   </HBox>
                </children>
             </AnchorPane>
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ToggleSwitch fx:id="toggleRecurringDate1" prefHeight="20.0" prefWidth="210.0" selected="true" text="alle Vorschläge anzeigen" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Anzahl festlegen">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Slider fx:id="sliderRecurrences1" maxWidth="120.0" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
          </children>
          <GridPane.margin>
             <Insets />
@@ -415,13 +441,6 @@
       </VBox>
       <VBox fx:id="stepThreeUserInput" alignment="TOP_CENTER" disable="true" spacing="20.0" visible="false" GridPane.rowIndex="3">
          <children>
-            <TableView focusTraversable="false" maxWidth="698.0">
-              <columns>
-                <TableColumn fx:id="columnStartDate" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="200.0" text="Termin Start" />
-                <TableColumn fx:id="columnEndDate" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="200.0" text="Termin Ende" />
-                  <TableColumn fx:id="columnTick" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="200.0" text="Auswahl" />
-              </columns>
-            </TableView>
             <AnchorPane maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0" style="-fx-border-color: #6d25bf; -fx-border-width: 1;">
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

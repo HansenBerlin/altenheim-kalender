@@ -1,8 +1,15 @@
 package com.altenheim.kalender.interfaces;
 
-import com.calendarfx.model.Calendar;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.List;
 
-public interface IAppointmentEntryFactory 
+import com.altenheim.kalender.TempTestClasses.ICreateDummyEntries;
+import com.calendarfx.model.Entry;
+
+public interface IAppointmentEntryFactory extends ICreateDummyEntries
 {
-    public Calendar createEntrys(String calendarName);
+    public void createRandomCalendarList(String calendarName);
+    public Entry<String> createUserSettingsEntry(LocalTime startSearchTime, LocalTime endSearchTime);
+    public HashMap<String, List<Entry<?>>> createEntryListForEachCalendar();
 }
