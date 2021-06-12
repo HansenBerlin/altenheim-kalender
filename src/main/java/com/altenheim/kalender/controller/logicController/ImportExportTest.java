@@ -16,8 +16,10 @@ import com.calendarfx.model.Interval;
 import net.fortuna.ical4j.data.*;
 import net.fortuna.ical4j.model.property.*;
 import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.ComponentList;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.component.CalendarComponent;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.util.RandomUidGenerator;
 import net.fortuna.ical4j.validate.ValidationException;
@@ -27,19 +29,39 @@ public class ImportExportTest
 {
     public com.calendarfx.model.Calendar importFile(String path) throws ParseException, IOException, ParserException
     {
-        var stream = new FileInputStream(path);
-        var builder = new CalendarBuilder();
-        var calendar = builder.build(stream);
-        var components = calendar.getComponents();
-        var calNameProp = (Property) calendar.getProperties().getProperty("X-WR-CALNAME");
-        com.calendarfx.model.Calendar cal = new com.calendarfx.model.Calendar();
-        if(calNameProp != null)
-            cal.setName(calNameProp.getValue());
-        System.out.println(cal.getName());
-
-        for (int i = 1; i < components.size(); i++)         
+        ComponentList<CalendarComponent> components = null;
+        com.calendarfx.model.Calendar cal;
+        try 
         {
-            var start = (DtStart)((Property) components.get(i).getProperties().getProperty("DTSTART"));
+            
+            var stream = new FileInputStream(path);
+            var builder = new CalendarBuilder();
+            var calendar = builder.build(stream);
+            components = calendar.getComponents();
+            if(calendar.getProperties().getProperty("X-WR-CALNAME") != null)
+            {
+                var calName = ((Property)calendar.getProperties().getProperty("X-WR-CALNAME")).getValue();
+                cal = new com.calendarfx.model.Calendar(calName);
+
+            }else
+            {
+                cal = new com.calendarfx.model.Calendar();
+            }
+            
+        } catch (IOException | ParserException e) 
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        for (int i = 0; i < components.size(); i++)         
+        {
+            if(i < 10)
+            {
+                if(!components.get(i).getClass().equals(VEvent.class))
+                    continue;
+            }
+            var start = (DtStart)(components.get(i).getProperties().getProperty("DTSTART"));
             var end = (DtEnd)((Property) components.get(i).getProperties().getProperty("DTEND"));
             var startMilli = start.getDate().toInstant().toEpochMilli();
             var endMilli = end.getDate().toInstant().toEpochMilli();            
