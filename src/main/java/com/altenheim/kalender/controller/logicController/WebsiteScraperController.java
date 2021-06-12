@@ -34,7 +34,13 @@ import java.util.Timer;
 
         public void run() 
         {
-            System.out.println("Scraping...");      
+            System.out.println("Scraping...");  
+            try {
+				HWRCalendarICS();
+			} catch (IOException | ParseException | ParserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
 
 		// #################################### Main - muss letzlich gelöscht werden
@@ -47,7 +53,6 @@ import java.util.Timer;
 //		} // ################################## Main Ende
 		
 		public void HWRCalendarICS() throws IOException, ParseException, ParserException {
-			run();
 			URL url = new URL(urlFinder());
 
 			String line = "";
