@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import com.altenheim.kalender.controller.logicController.SmartSearchController;
@@ -13,9 +14,24 @@ import com.calendarfx.model.Entry;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class SmartSearchControllerTest 
 {  
+    @Test
+    void testInput()
+    {
+        boolean[] weekdays = { true, true, true, true, true, true, true };
+        var userPrefs = createEntryDummy(10, 18, 1, 1);
+        var openingHours = createOpeningHours();
+        var controller = new SmartSearchController(null);
+        var result = controller.createCalendarFromUserInput(userPrefs, 60, 0, 0, weekdays, openingHours);
+
+        assertEquals(1, result.findEntries("test").size());
+    }
+
+
     @Test
     void findAvailableTimeSlot_oneDayOnePossibleSuggestionOnSameDay_shouldReturnOneEntry()
     {
@@ -175,6 +191,52 @@ public class SmartSearchControllerTest
         var result = controller.findAvailableTimeSlot(entryUser, 600);
         
         assertEquals(1, result.size());
+    }
+
+    public HashMap<DayOfWeek, List<Entry<String>>> createOpeningHours()
+    {
+        var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
+        var startTime = LocalTime.of(8, 0);
+        var endTimeAlt = LocalTime.of(12, 0);
+        var startTimeAlt = LocalTime.of(14, 0);
+        var endTime = LocalTime.of(20, 0);
+
+        for (var day : DayOfWeek.values()) 
+        {
+            var entrys = new ArrayList<Entry<String>>();
+            if (day.getValue() %2 == 0)
+            {
+                var entryOne = new Entry<String>();
+                var entryTwo = new Entry<String>();
+                entryOne.changeStartTime(startTime);
+                entryOne.changeEndTime(endTimeAlt);
+                entryTwo.changeStartTime(startTimeAlt);
+                entryTwo.changeEndTime(endTime);
+                entrys.add(entryOne);
+                entrys.add(entryTwo);
+            }
+            else
+            {
+                var entryOne = new Entry<String>();
+                entryOne.changeStartTime(startTime);
+                entryOne.changeEndTime(endTime);               
+                entrys.add(entryOne);
+            }
+            openingHours.put(day, entrys);            
+        }
+        return openingHours;        
+    } 
+
+    private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
+    {
+        var entryUser = new Entry<String>("User Preference");
+        var startDate = LocalDate.of(2021, 1, startDay);  
+        var endDate = LocalDate.of(2021, 1, endDay);  
+        entryUser.changeStartDate(startDate);
+        entryUser.changeEndDate(endDate);
+        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
+        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
+        return entryUser;
     }
 
 
@@ -683,37 +745,5 @@ void reduceListLength_TwoEntry_shouldReturnOneEntry(){
     
     assertEquals(5, result.size());
     
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
-    {
-        var entryUser = new Entry<String>("User Preference");
-        var startDate = LocalDate.of(2021, 1, startDay);  
-        var endDate = LocalDate.of(2021, 1, endDay);  
-        entryUser.changeStartDate(startDate);
-        entryUser.changeEndDate(endDate);
-        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
-        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
-        return entryUser;
-    }
+}   
 }
