@@ -1,6 +1,10 @@
 package com.altenheim.kalender.controller.logicController;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -224,8 +228,8 @@ public class SmartSearchController implements ISmartSearchController
 
 	private boolean[] weekdays = { true, true, true, true, true, true, true };
 
-	public Calendar createCalendarFromUserInput(Entry<String> userPrefs, int duration, 
-		int marginPre, int marginPost, boolean[] weekdays)
+	public Calendar createCalendarFromUserInput(Entry<String> userPrefs, int duration, int marginPre, 
+		int marginPost, boolean[] weekdays, HashMap<DayOfWeek, List<Entry<String>>> openingHours)
 	{
 		int startSeconds = userPrefs.getStartTime().toSecondOfDay();
 		int endSeconds =  userPrefs.getEndTime().toSecondOfDay();
@@ -235,32 +239,76 @@ public class SmartSearchController implements ISmartSearchController
 			endSeconds - startSeconds < durationInSecsWithMargins)
 			return null;
 
-		var calendar = new Calendar();		
-		var entry = setRFC2445RecurrenceRule(weekdays, userPrefs);
-		calendar.addEntries(entry);
+		List<Entry<String>> possibleEntries = null;
+		if (openingHours != null)		
+			possibleEntries = adjustToOpeningHours(duration, userPrefs, createOpeningHours());
+		if (possibleEntries == null)
+		{
+			var sameEntries = new ArrayList<Entry<String>>();
+			{
+				var startDate = userPrefs.getStartDate()
+				for (int i = 0; i < ; i++) {
+					
+				}
+			}
+		}
+			possibleEntries = addRFC2445RecurrenceRule(weekdays, adjustedEntries)
+
+		
+		
+
+		var calendar = new Calendar();
+
 
 		return calendar;
 	}	
 
-	public Entry<String> setRFC2445RecurrenceRule(boolean[] weekdays, Entry<String> userPrefs)
+	public List<Entry<String>> addRFC2445RecurrenceRule(boolean[] weekdays, List<Entry<String>> adjustedEntries)
 	{
-		String[] weekdaysRule = { "MO,", "TU,", "WE,", "TH,", "FR,", "SA,", "SU," };
-		String reccurenceDays = "";
+		//var listWithRecurrencingDates = new ArrayList<Entry<String>>();
+		String[] weekdaysRule = { "MO", "TU", "WE", "TH", "FR", "SA", "SU" };		
 
-		for (int i = 0; i < weekdays.length; i++) 		
-			if (weekdays[i])
-				reccurenceDays = reccurenceDays + weekdaysRule[i];	
-				
-		if (!reccurenceDays.isBlank())
-			reccurenceDays = reccurenceDays.substring(0, reccurenceDays.length() - 1);
-
-		userPrefs.setRecurrenceRule("FREQ=WEEKLY;BYDAY=" + reccurenceDays + ";INTERVAL=1");
-		return userPrefs;
+		for (int i = 0; i < adjustedEntries.size(); i++) 
+		{
+			if (weekdays[adjustedEntries.get(i).getStartDate().getDayOfWeek().getValue()])
+				adjustedEntries.get(i).setRecurrenceRule("FREQ=WEEKLY;BYDAY=" + weekdaysRule[i] + ";INTERVAL=1;UNTIL=" + endDate);
+			else
+				adjustedEntries.remove(i--);		
+		}			
+		//userPrefs.setRecurrenceRule("FREQ=WEEKLY;BYDAY=" + reccurenceDays + ";INTERVAL=1");
+		return adjustedEntries;
 	}	
 
+	public List<Entry<String>> adjustToOpeningHours(int duration, Entry<String> rawData, HashMap<DayOfWeek, List<Entry<String>>> openingHours)
+	{
+		long durationInMillis = duration * 60000;
+		var adjustedEntrys = new ArrayList<Entry<String>>();
+		
+		for (int i = 0; i < openingHours.size(); i++) 
+		{
+			var day = openingHours.get(DayOfWeek.of(i));
+			var startTimeRaw = rawData.getStartMillis();
+			var endTimeRaw = rawData.getEndMillis();			
+			
+			for (int j = 0; j < day.size(); j++) 
+			{
+				var startTimeOpen = day.get(i).getStartMillis();
+				var endTimeOpen= day.get(i).getEndMillis();
+				if (startTimeRaw < startTimeOpen)
+					startTimeRaw = startTimeOpen;
+				if (endTimeRaw > endTimeOpen)
+					endTimeRaw = endTimeOpen;
+				if (endTimeRaw - startTimeRaw < durationInMillis)
+					continue;
+				else						
+					adjustedEntrys.add(createEntryFromMillis(startTimeRaw, endTimeRaw));						
+			}
+		}
+		return adjustedEntrys;
+	}
 
 	// ist nur zum Testen hier um Öffnungszeiten zu generieren
-	private Map<DayOfWeek, List<Entry<String>>> createOpeningHours()
+	private HashMap<DayOfWeek, List<Entry<String>>> createOpeningHours()
     {
         var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
         var startTime = LocalTime.of(8, 0);
