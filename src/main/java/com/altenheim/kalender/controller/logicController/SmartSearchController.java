@@ -210,7 +210,7 @@ public class SmartSearchController implements ISmartSearchController
 		return entry;
 	}
 
-	private Entry<String> createEntryForOneDay(LocalDate startAndEnd, LocalTime start, LocalTime end)
+	private Entry<String> createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end)
 	{
 		var entry = new Entry<String>();				
 		entry.changeStartTime(start);
@@ -218,93 +218,74 @@ public class SmartSearchController implements ISmartSearchController
 		entry.changeStartDate(startAndEnd);
 		entry.changeEndDate(startAndEnd);
 		return entry;
-	}
-	
-
-	// Anfahrt, Abfahrt, Margin pre, Margin post, Wochentage, 
-	// Start Ende Zeit, Start Ende Datum, Anzahl, Öffnungszeiten
-	
-	// Übergabe Dauer und Anfang und Ende
-	// Dauer erhöhen um Anfahrt vorne und evtl hinten, selbes mit Margin
-	// Liste aufbauen mit Öffnungszeiten berücksichtigt
-	// Liste aufbauen mit Wochentagen berücksichtigt
-	// Traveltime erst hinterher checken
-	// Abfangen Traveltime ist zu lang für start und endtime?
-	// int interval, int recurrences in dritter methde erst
-
+	}	
 
 	public Calendar createCalendarFromUserInput(Entry<String> userPrefs, int duration, int marginPre, 
 		int marginPost, boolean[] weekdays, HashMap<DayOfWeek, List<Entry<String>>> openingHours)
 	{
-		int startSeconds = userPrefs.getStartTime().toSecondOfDay();
-		int endSeconds =  userPrefs.getEndTime().toSecondOfDay();
-		int durationInSecsWithMargins = (duration + marginPre + marginPost) * 60;
-		
-		if (startSeconds < marginPre || endSeconds > 86400 - marginPost ||
-			endSeconds - startSeconds < durationInSecsWithMargins)
+		ArrayList<Entry<?>> possibleEntries = null;
+		var calendar = new Calendar();
+		var weeksduration = (int)(userPrefs.getEndDate().toEpochDay() -
+			userPrefs.getStartDate().toEpochDay())/7;
+
+		if (userPrefs.getEndTime().toSecondOfDay() - userPrefs.getStartTime().toSecondOfDay() 
+			< (duration + marginPre + marginPost) * 60)
 			return null;
 
-		ArrayList<Entry<?>> possibleEntries = null;
 		if (openingHours != null)		
 			possibleEntries = adjustToOpeningHours(duration, userPrefs, openingHours);
 		else
+		{
 			possibleEntries	= new ArrayList<Entry<?>>();	
 			for (int i = 0; i < 7 ; i++)				
-				possibleEntries.add(createEntryForOneDay(userPrefs.getStartDate(), userPrefs.getStartTime(), userPrefs.getEndTime()));					
-		var weeksduration = (int)(userPrefs.getEndMillis() - userPrefs.getStartMillis())/604799502;
-		var calendar = new Calendar();
-		for (Entry<?> entry : possibleEntries) 
-		{
-			entry.setId("test");			
-		}
+				possibleEntries.add(createEntry(userPrefs.getStartDate().plusDays(i), 
+					userPrefs.getStartTime(), userPrefs.getEndTime()));
+		}		
 		calendar.addEntries(addRFC2445RecurrenceRule(weekdays, possibleEntries, weeksduration));
-
+		//calendar.getLatestTimeUsed().
 		return calendar;
 	}	
 
 	private ArrayList<Entry<?>> addRFC2445RecurrenceRule(boolean[] weekdays, ArrayList<Entry<?>> adjustedEntries, int weeksCount)
 	{
-		//var listWithRecurrencingDates = new ArrayList<Entry<String>>();
 		String[] weekdaysRule = { "MO", "TU", "WE", "TH", "FR", "SA", "SU" };		
 
 		for (int i = 0; i < adjustedEntries.size(); i++) 
 		{
-			if (weekdays[adjustedEntries.get(i).getStartDate().getDayOfWeek().getValue()])
-				adjustedEntries.get(i).setRecurrenceRule("FREQ=WEEKLY;BYDAY=" + weekdaysRule[i] + ";INTERVAL=1;COUNT=" + weeksCount);
+			var checkForWeekday = adjustedEntries.get(i).getStartDate().getDayOfWeek().getValue()-1;
+			if (weekdays[checkForWeekday])
+				adjustedEntries.get(i).setRecurrenceRule("FREQ=WEEKLY;BYDAY=" + weekdaysRule[checkForWeekday] 
+																			  + ";INTERVAL=1;COUNT=" 
+																			  + weeksCount);
 			else
 				adjustedEntries.remove(i--);		
-		}			
-		//userPrefs.setRecurrenceRule("FREQ=WEEKLY;BYDAY=" + reccurenceDays + ";INTERVAL=1");
-		//Every 10 days, 5 occurrences:
- 		//DTSTART;TZID=America/New_York:19970902T090000
- 		//RRULE:FREQ=DAILY;INTERVAL=10;COUNT=5//
-
+		}
 		return adjustedEntries;
 	}	
 
-	private ArrayList<Entry<?>> adjustToOpeningHours(int duration, Entry<?> rawData, HashMap<DayOfWeek, List<Entry<String>>> openingHours)
+	private ArrayList<Entry<?>> adjustToOpeningHours(int duration, Entry<?> rawData, 
+		HashMap<DayOfWeek, List<Entry<String>>> openingHours)
 	{
-		long durationInMillis = duration * 60000;
 		var adjustedEntrys = new ArrayList<Entry<?>>();
 		
 		for (int i = 0; i < openingHours.size(); i++) 
 		{
 			var day = openingHours.get(DayOfWeek.of(i+1));
-			var startTimeRaw = rawData.getStartMillis();
-			var endTimeRaw = rawData.getEndMillis();			
+			var startTimeRaw = rawData.getStartTime();
+			var endTimeRaw = rawData.getEndTime();			
 			
 			for (int j = 0; j < day.size(); j++) 
 			{
-				var startTimeOpen = day.get(j).getStartMillis();
-				var endTimeOpen= day.get(j).getEndMillis();
-				if (startTimeRaw < startTimeOpen)
+				var startTimeOpen = day.get(j).getStartTime();
+				var endTimeOpen= day.get(j).getEndTime();
+				if (startTimeRaw.isBefore(startTimeOpen))
 					startTimeRaw = startTimeOpen;
-				if (endTimeRaw > endTimeOpen)
+				if (endTimeRaw.isAfter(endTimeOpen))
 					endTimeRaw = endTimeOpen;
-				if (endTimeRaw - startTimeRaw < durationInMillis)
+				if (endTimeRaw.toSecondOfDay() - startTimeRaw.toSecondOfDay() < duration * 60)
 					continue;
 				else						
-					adjustedEntrys.add(createEntryFromMillis(startTimeRaw, endTimeRaw));						
+					adjustedEntrys.add(createEntry(rawData.getStartDate().plusDays(i), startTimeRaw, endTimeRaw));						
 			}
 		}
 		return adjustedEntrys;

@@ -3,16 +3,16 @@ package com.altenheim.kalender;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+
 import com.altenheim.kalender.controller.logicController.SmartSearchController;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,14 +20,18 @@ import java.util.List;
 public class SmartSearchControllerTest 
 {  
     @Test
-    void testInput()
+    void testInput() // Testet alle Methoden zusammen, also kein Unittest, nur erstmal für mich :-)
     {
-        boolean[] weekdays = { true, true, true, true, true, true, true };
-        var userPrefs = createEntryDummy(10, 18, 1, 1);
-        var openingHours = createOpeningHours();
+        // Terminsuche an allen Wochentagen
+        boolean[] weekdays = { true, true, true, true, true, false, false };
+        // Terminsuche zwischen dem 1.1 und 31.12.2021, täglich zwischen 10 und 12
+        var userPrefs = createEntryDummy(12, 14, 1, 15, 1, 1);
+        // Öffnungszeit täglich von 8-20 Uhr
+        var openingHours = createIrregularOpeningHours();
         var controller = new SmartSearchController(null);
+        // Terminläne 60 Minuten, keine An- oder Abfahrt
         var result = controller.createCalendarFromUserInput(userPrefs, 60, 0, 0, weekdays, openingHours);
-
+        var hashmaptest = createEntryListForEachCalendar(result);
         assertEquals(1, result.findEntries("test").size());
     }
 
@@ -193,7 +197,7 @@ public class SmartSearchControllerTest
         assertEquals(1, result.size());
     }
 
-    public HashMap<DayOfWeek, List<Entry<String>>> createOpeningHours()
+    public HashMap<DayOfWeek, List<Entry<String>>> createIrregularOpeningHours()
     {
         var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
         var startTime = LocalTime.of(8, 0);
@@ -204,6 +208,10 @@ public class SmartSearchControllerTest
         for (var day : DayOfWeek.values()) 
         {
             var entrys = new ArrayList<Entry<String>>();
+            // Sonntages keine Einträge
+            if (day.getValue() == 7)
+                continue;
+            // 2 Einträge (also Mittagspause von 12-14h) an Dienstagen, Donnerstag und Samstag
             if (day.getValue() %2 == 0)
             {
                 var entryOne = new Entry<String>();
@@ -215,6 +223,7 @@ public class SmartSearchControllerTest
                 entrys.add(entryOne);
                 entrys.add(entryTwo);
             }
+            // Montag, Mittwoch und Freitag Öffnung von 8-20h
             else
             {
                 var entryOne = new Entry<String>();
@@ -225,7 +234,7 @@ public class SmartSearchControllerTest
             openingHours.put(day, entrys);            
         }
         return openingHours;        
-    } 
+    }     
 
     private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
     {
@@ -238,6 +247,34 @@ public class SmartSearchControllerTest
         entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
         return entryUser;
     }
+
+    private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay, int startMonth, int endMonth)
+    {
+        var entryUser = new Entry<String>("User Preference");
+        var startDate = LocalDate.of(2021, startMonth, startDay);  
+        var endDate = LocalDate.of(2021, endMonth, endDay);  
+        entryUser.changeStartDate(startDate);
+        entryUser.changeEndDate(endDate);
+        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
+        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
+        return entryUser;
+    }
+
+    public HashMap<String, List<Entry<?>>> createEntryListForEachCalendar(Calendar calendar) 
+	{			
+		var output = new HashMap<String, List<Entry<?>>>();
+        var zoneId = ZoneId.systemDefault();			
+        var tempList = new ArrayList<Entry<?>>();
+        var firstEntry = LocalDate.ofInstant(calendar.getEarliestTimeUsed(), zoneId);
+        var lastEntry = LocalDate.ofInstant(calendar.getLatestTimeUsed(), zoneId);
+        var entries = calendar.findEntries(firstEntry, lastEntry, zoneId);
+ 	    for (var entry : entries.values())            	
+            for (var singleEntry : entry)
+                tempList.add(singleEntry); 	        	
+        output.put(calendar.getName(), tempList);	
+				
+		return output;
+	}
 
 
 //Nico Tests
