@@ -2,14 +2,18 @@ package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.interfaces.IWebsiteScraperController;
 import com.altenheim.kalender.models.SettingsModel;
-    import java.io.BufferedReader;
-    import java.io.FileOutputStream;
-    import java.io.FileReader;
-    import java.io.IOException;
-    import java.net.URL;
-    import java.nio.channels.Channels;
-    import java.nio.channels.ReadableByteChannel;
-    import java.util.Timer;
+import net.fortuna.ical4j.data.ParserException;
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.util.Timer;
     import java.util.TimerTask;
 
 
@@ -33,31 +37,49 @@ import com.altenheim.kalender.models.SettingsModel;
             System.out.println("Scraping...");      
         }
 
-		// ####################################main
-		public void main(String[] args) throws IOException 
-		{
+		// #################################### Main - muss letzlich gelöscht werden
+//		public void main(String[] args) throws IOException 
+//		{
+//			System.out.println("start");
+//			HWRCalendarICS();
+//					
+//			System.out.println("finished");
+//		} // ################################## Main Ende
+		
+		public void HWRCalendarICS() throws IOException, ParseException, ParserException {
 			run();
 			URL url = new URL(urlFinder());
 
 			String line = "";
-			downloadFile(url, line);
+			downloadIcs(url, line);
 			
-			// Ausgabe
-			try (BufferedReader br = new BufferedReader(new FileReader("information.ics"))) {
-				while ((line = br.readLine()) != null) {
-					System.out.println(line);
-				}
-			}
+			// Ausgabe des File-Inhalts
+//			try (BufferedReader br = new BufferedReader(new FileReader("hwrCalendar.ics"))) {
+//				while ((line = br.readLine()) != null) {
+//					System.out.println(line);
+//				}
+//			}
+			
+			//Übergabe String path an Import-Funktion
+			Path ics = Paths.get("hwrCalendar.ics");
+			String pathOfIcs = ics.toAbsolutePath().toString();
+			ImportExportTest x = new ImportExportTest(); //aktivieren
+			x.importFile(pathOfIcs); //aktivieren
+			
+			//Ausgabe Path des Files
+//			System.out.println(pathOfIcs);
 
-		} // ##################################Main End
+		}
 
-		public void downloadFile(URL url, String fileName) throws IOException 
-		{ // static?
+		public void downloadIcs(URL url, String fileName) throws IOException 
+		{
 			ReadableByteChannel rbc = Channels.newChannel(url.openStream());
 			FileOutputStream fos = new FileOutputStream("information.ics");
 			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 			fos.close(); // optional
         }
+		
+		//String-Generator vorübergehend hardcoded via inputa und inputb
         public String urlFinder() 
         {
             String inputa;
