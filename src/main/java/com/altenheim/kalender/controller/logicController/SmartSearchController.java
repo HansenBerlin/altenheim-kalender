@@ -40,7 +40,7 @@ public class SmartSearchController implements ISmartSearchController
 
 
 
-	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration) 
+	public ArrayList<Entry<?>> findAvailableTimeSlot(Entry<?> input, int duration) 
 	{			
 		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
 			input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values();
@@ -48,7 +48,7 @@ public class SmartSearchController implements ISmartSearchController
 		long end = input.getEndMillis();
 		long userStart = start;
 		long userEnd = end;
-		var output = new ArrayList<Entry<String>>();
+		var output = new ArrayList<Entry<?>>();
 
 		for (var entries : result) 		
 		{		
@@ -209,10 +209,10 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 	
 	
 	
-	private boolean checkForDuplicates(ArrayList<Entry<String>> currentEntries)
+	private boolean checkForDuplicates(ArrayList<Entry<?>> currentEntries)
 	{
 		if (currentEntries.size() < 2)
-		return false;
+			return false;
 		return (currentEntries.get(currentEntries.size()-2).getStartMillis() 
 		== currentEntries.get(currentEntries.size()-1).getStartMillis());
 	}
@@ -257,7 +257,7 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		else return duration + marginPre + marginPost;
 	}
 
-	public Calendar createCalendarFromUserInput(Entry<String> userPrefs, boolean[] weekdays, HashMap<DayOfWeek, List<Entry<String>>> openingHours, int updatedDuration)
+	public Calendar createCalendarFromUserInput(Entry<?> userPrefs, boolean[] weekdays, HashMap<DayOfWeek, List<Entry<?>>> openingHours, int updatedDuration)
 	{
 		ArrayList<Entry<?>> possibleEntries = null;
 		var possibleRecurringDates = new Calendar();
@@ -275,7 +275,7 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		return possibleRecurringDates;
 	}	
 
-	public ArrayList<Entry<?>> adjustToOpeningHours(int duration, Entry<?> rawData, HashMap<DayOfWeek, List<Entry<String>>> openingHours)
+	public ArrayList<Entry<?>> adjustToOpeningHours(int duration, Entry<?> rawData, HashMap<DayOfWeek, List<Entry<?>>> openingHours)
 	{
 		var adjustedEntrys = new ArrayList<Entry<?>>();
 		
@@ -302,7 +302,7 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		return adjustedEntrys;
 	} 
 
-	public ArrayList<Entry<?>> addRFC2445RecurrenceRule(boolean[] weekdays, ArrayList<Entry<?>> adjustedEntries, Entry<String> userPrefs)
+	public ArrayList<Entry<?>> addRFC2445RecurrenceRule(boolean[] weekdays, ArrayList<Entry<?>> adjustedEntries, Entry<?> userPrefs)
 	{
 		String[] weekdaysRule = { "MO", "TU", "WE", "TH", "FR", "SA", "SU" };
 		var weeksduration = (int)(userPrefs.getEndDate().toEpochDay() -
@@ -321,31 +321,35 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		return adjustedEntries;
 	}
 	
-	public List<Entry<String>> createFinalListForTableView(int intervalInDays, int maxSuggestions, Calendar finalDates, int duration)
+	public List<Entry<?>> createFinalListForTableView(int intervalInDays, int maxSuggestions, Calendar finalDates, int duration)
 	{
 		var firstLookup = LocalDate.ofInstant(finalDates.getEarliestTimeUsed(), ZoneId.systemDefault());
 		var lastLookup = LocalDate.ofInstant(finalDates.getLatestTimeUsed(), ZoneId.systemDefault());
-		var possibleSlots = new ArrayList<Entry<String>>();		
+		var possibleSlots = new ArrayList<Entry<?>>();		
 
 		for (int i = 0; i < maxSuggestions; i++) 
 		{
 			var entries = finalDates.findEntries(firstLookup, lastLookup, ZoneId.systemDefault());
-			for (var entry : entries.values()) 
+			for (var entriesDay : entries.values()) 
 			{
-				if (possibleSlots.size() > maxSuggestions)
-					break;
-				else
+				for (var entry : entriesDay) 
 				{
-					int sizeBefore = possibleSlots.size();
-					possibleSlots.addAll(findAvailableTimeSlot((Entry<String>)entry, duration));
-					if (possibleSlots.size() > sizeBefore)
-					{
-						firstLookup = firstLookup.plusDays(intervalInDays);
+					if (possibleSlots.size() > maxSuggestions)
 						break;
+					else
+					{
+						int sizeBefore = possibleSlots.size();
+						possibleSlots.addAll(findAvailableTimeSlot(entry, duration));					
+						if (possibleSlots.size() > sizeBefore)
+						{
+							firstLookup = firstLookup.plusDays(intervalInDays);
+							break;
+						}
 					}
-				}
+				}				
 			}			
 		}
 		return possibleSlots;
 	}
 }
+

@@ -10,8 +10,8 @@ import com.calendarfx.model.Entry;
 
 public interface ISmartSearchController 
 {
-	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration);
-	public Calendar createCalendarFromUserInput(Entry<String> userPrefs, boolean[] weekdays, 
-		HashMap<DayOfWeek, List<Entry<String>>> openingHours, int updatedDuration);
+	public ArrayList<Entry<?>> findAvailableTimeSlot(Entry<?> input, int duration);
+	public Calendar createCalendarFromUserInput(Entry<?> userPrefs, boolean[] weekdays, 
+		HashMap<DayOfWeek, List<Entry<?>>> openingHours, int updatedDuration);
   
 }

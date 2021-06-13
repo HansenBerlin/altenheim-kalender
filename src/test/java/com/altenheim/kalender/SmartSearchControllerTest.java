@@ -21,8 +21,7 @@ public class SmartSearchControllerTest
     @Test
     void updateDuration_noMargins_ShouldReturnSameValueAsInput()
     {
-        var userPrefs = createEntryDummy(12, 14, 1, 1, 1, 1);
-        
+        var userPrefs = createEntryDummy(12, 14, 1, 1, 1, 1);        
         var controller = new SmartSearchController(null);
         var result = controller.updateDuration(userPrefs, 60, 0, 0);
 
@@ -32,8 +31,7 @@ public class SmartSearchControllerTest
     @Test
     void updateDuration_withMargins_ShouldReturnDurationPlusMargin()
     {
-        var userPrefs = createEntryDummy(12, 14, 1, 1, 1, 1);
-        
+        var userPrefs = createEntryDummy(12, 14, 1, 1, 1, 1);        
         var controller = new SmartSearchController(null);
         var result = controller.updateDuration(userPrefs, 60, 15, 15);
         
@@ -43,8 +41,7 @@ public class SmartSearchControllerTest
     @Test
     void updateDuration_withMarginsOverlapping_ShouldReturnNoValue()
     {
-        var userPrefs = createEntryDummy(12, 14, 1, 1, 1, 1);
-        
+        var userPrefs = createEntryDummy(12, 14, 1, 1, 1, 1);        
         var controller = new SmartSearchController(null);
         var result = controller.updateDuration(userPrefs, 60, 60, 60);
         
@@ -60,7 +57,7 @@ public class SmartSearchControllerTest
     @Test
     void adjustToOpeningHours_noPrefs_ShouldReturnNinePossibleEntries()
     {
-        var userPrefs = createEntryDummy(10, 20, 1, 1, 1, 1);        
+        var userPrefs = createEntryDummy2(10, 20, 1, 1, 1, 1);        
         var openingHours = createIrregularOpeningHours();        
         var controller = new SmartSearchController(null);
         var result = controller.adjustToOpeningHours(60, userPrefs, openingHours);
@@ -97,7 +94,7 @@ public class SmartSearchControllerTest
     // unwesentlich und von daher überall gleich.
 
     @Test
-    void addRFC2445RecurrenceRule_noWeekdayPreferenceSearchForFourWeeks_ShouldReturn7Entries()
+    void addRFC2445RecurrenceRule_noWeekdayPreferenceSearchForFourWeeks_shouldsetreccurenceTo4()
     {        
         boolean[] weekdays = { true, true, true, true, true, true, true };
         var userPrefs = createEntryDummy(10, 12, 1, 29, 1, 1);
@@ -114,11 +111,11 @@ public class SmartSearchControllerTest
         boolean countAsserts = true;
         for (var entry : result) 
         {
-            if (!"COUNT=4".contains(entry.getRecurrenceRule())); 
+            String recrule = entry.getRecurrenceRule();
+            if (!recrule.contains("COUNT=4"))
                 countAsserts = false;           
         }
         
-        assertEquals(7, result.size());
         assertEquals(true, countAsserts);
     }
 
@@ -127,7 +124,6 @@ public class SmartSearchControllerTest
     {        
         boolean[] weekdays = { true, false, true, false, false, false, false };
         var userPrefs = createEntryDummy(10, 12, 1, 29, 1, 1);
-
         var oneWeekEntries = new ArrayList<Entry<?>>();
 
         for (int i = 0; i < 7 ; i++) 
@@ -140,6 +136,30 @@ public class SmartSearchControllerTest
         var result = controller.addRFC2445RecurrenceRule(weekdays, oneWeekEntries, userPrefs);
         
         assertEquals(2, result.size());
+    }
+
+    @Test 
+    void integrationTest_allFunctionsForSmartSearch()
+    {
+        var userPrefs = createEntryDummy(10, 12, 4, 29, 1, 1);
+        boolean[] weekdays = { true, false, false, false, false, false, false };
+        var openingHours = createIrregularOpeningHours();
+
+        var entryOneCalendar = createEntryDummy(9, 14, 4, 4, 1, 1);
+        var entryTwoCalendar = createEntryDummy(16, 18, 11, 11, 1, 1);
+        var entryThreeCalendar = createEntryDummy(9, 10, 18, 18, 1, 1);
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var calendarMockEntries = new Calendar();
+        calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar);
+        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+
+        var controller = new SmartSearchController(allEntriesMock);
+        var updatedDuration = controller.updateDuration(userPrefs, 30, 30, 30);
+        var updatesCalendar = controller.createCalendarFromUserInput(userPrefs, weekdays, openingHours, updatedDuration);
+        var finalEntries = controller.createFinalListForTableView(14, 10, updatesCalendar, updatedDuration);
+
+        assertEquals(1, finalEntries.size());
+
     }
 
 
@@ -308,9 +328,9 @@ public class SmartSearchControllerTest
         assertEquals(1, result.size());
     }
 
-    public HashMap<DayOfWeek, List<Entry<String>>> createIrregularOpeningHours()
+    public HashMap<DayOfWeek, List<Entry<?>>> createIrregularOpeningHours()
     {
-        var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
+        var openingHours = new HashMap<DayOfWeek, List<Entry<?>>>();
         var startTime = LocalTime.of(8, 0);
         var endTimeAlt = LocalTime.of(12, 0);
         var startTimeAlt = LocalTime.of(14, 0);
@@ -318,15 +338,15 @@ public class SmartSearchControllerTest
 
         for (var day : DayOfWeek.values()) 
         {
-            var entrys = new ArrayList<Entry<String>>();
+            var entrys = new ArrayList<Entry<?>>();
             // Sonntags keine Einträge
             if (day.getValue() == 7)
                 continue;
             // 2 Einträge (also Mittagspause von 12-14h) an Dienstagen, Donnerstag und Samstag
             if (day.getValue() %2 == 0)
             {
-                var entryOne = new Entry<String>();
-                var entryTwo = new Entry<String>();
+                var entryOne = new Entry();
+                var entryTwo = new Entry();
                 entryOne.changeStartTime(startTime);
                 entryOne.changeEndTime(endTimeAlt);
                 entryTwo.changeStartTime(startTimeAlt);
@@ -360,6 +380,18 @@ public class SmartSearchControllerTest
     }
 
     private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay, int startMonth, int endMonth)
+    {
+        var entryUser = new Entry<String>("User Preference");
+        var startDate = LocalDate.of(2021, startMonth, startDay);  
+        var endDate = LocalDate.of(2021, endMonth, endDay);  
+        entryUser.changeStartDate(startDate);
+        entryUser.changeEndDate(endDate);
+        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
+        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
+        return entryUser;
+    }
+
+    private Entry<?> createEntryDummy2(int startTime, int EndTime, int startDay, int endDay, int startMonth, int endMonth)
     {
         var entryUser = new Entry<String>("User Preference");
         var startDate = LocalDate.of(2021, startMonth, startDay);  
