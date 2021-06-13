@@ -280,10 +280,10 @@ public class SmartSearchController implements ISmartSearchController {
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Flow: 
-	// 1. Wenn Margins/Fahrtzeiten eingegeben werden Aufruf von Update Duration aus der View. --> neue Duration
-	// 2. Aufruf createCalendarFromUserInput mit Übergabe der updated duration oder der default --> Kalender mit möglichen Einträgen
+	// 1. Aufruf createCalendarFromUserInput mit Übergabe der duration oder der default --> Kalender mit möglichen Einträgen
 	//    nach Berücksichtigung der Öffnungszeiten (muss in Kalender eingetragen werden um die Recurrencedates zu nutzen, spart Lauf-
 	//    zeit und Redundanz)
+	// 2. Wenn Margins/Fahrtzeiten eingegeben werden Aufruf von Update Duration aus der View. --> neue Duration
 	// 3. Aufruf createfinalList... mit Übergabe des erzeugten Kalenders, hier wird auch die Vorschlagsfunktion aufgerufen, Intervalle berücksichtigt
 	//    etc. --> fertige Liste mit Einträgen
 	
@@ -295,12 +295,12 @@ public class SmartSearchController implements ISmartSearchController {
 		else return duration + marginPre + marginPost;
 	}
 
-	public Calendar createCalendarFromUserInput(Entry<?> userPrefs, boolean[] weekdays, HashMap<DayOfWeek, List<Entry<?>>> openingHours, int updatedDuration)
+	public Calendar createCalendarFromUserInput(Entry<?> userPrefs, boolean[] weekdays, HashMap<DayOfWeek, List<Entry<?>>> openingHours, int duration)
 	{
 		ArrayList<Entry<?>> possibleEntries = null;
 		var possibleRecurringDates = new Calendar();
 		if (openingHours != null)		
-			possibleEntries = adjustToOpeningHours(updatedDuration, userPrefs, openingHours);
+			possibleEntries = adjustToOpeningHours(duration, userPrefs, openingHours);
 		else
 		{
 			possibleEntries	= new ArrayList<Entry<?>>();	
@@ -389,8 +389,5 @@ public class SmartSearchController implements ISmartSearchController {
 		}
 		return possibleSlots;
 	}
-
-
-	
 }
 

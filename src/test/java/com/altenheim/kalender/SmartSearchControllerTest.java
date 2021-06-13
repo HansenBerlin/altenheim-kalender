@@ -149,18 +149,18 @@ public class SmartSearchControllerTest
         var entryOneCalendar = createEntryDummy(9, 14, 4, 1, 4, 1);
         var entryTwoCalendar = createEntryDummy(16, 18, 11, 1, 11, 1);
         var entryThreeCalendar = createEntryDummy(9, 10, 18, 1, 18, 1);
+        int duration = 60;
         var allEntriesMock = mock(ICalendarEntriesModel.class);
         var calendarMockEntries = new Calendar();
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar);
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
 
         var controller = new SmartSearchController(allEntriesMock);
-        var updatedDuration = controller.updateDuration(userPrefs, 30, 30, 30);
-        var updatesCalendar = controller.createCalendarFromUserInput(userPrefs, weekdays, openingHours, updatedDuration);
+        var updatesCalendar = controller.createCalendarFromUserInput(userPrefs, weekdays, openingHours, duration);
+        var updatedDuration = controller.updateDuration(userPrefs, duration, 30, 30);
         var finalEntries = controller.createFinalListForTableView(14, 10, updatesCalendar, updatedDuration);
 
         assertEquals(3, finalEntries.size());
-
     }
 
     @Test
