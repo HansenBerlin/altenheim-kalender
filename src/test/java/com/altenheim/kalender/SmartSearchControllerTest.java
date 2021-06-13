@@ -18,21 +18,81 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SmartSearchControllerTest 
-{  
+{
+
     @Test
-    void testInput() // Testet alle Methoden zusammen, also kein Unittest, nur erstmal für mich :-)
+    void updateDuration_noMargins_ShouldReturnSameValueAsInput()
     {
-        // Terminsuche an allen Wochentagen
-        boolean[] weekdays = { true, true, true, true, true, false, false };
-        // Terminsuche zwischen dem 1.1 und 31.12.2021, täglich zwischen 10 und 12
-        var userPrefs = createEntryDummy(12, 14, 1, 15, 1, 1);
-        // Öffnungszeit täglich von 8-20 Uhr
-        var openingHours = createIrregularOpeningHours();
+        var userPrefs = createEntryDummy(12, 14, 1, 1, 1, 1);
+        
         var controller = new SmartSearchController(null);
-        // Terminläne 60 Minuten, keine An- oder Abfahrt
-        var result = controller.createCalendarFromUserInput(userPrefs, 60, 0, 0, weekdays, openingHours);
-        assertEquals(1, result.findEntries("test").size()); // assert ist nur platzhalter
+        var result = controller.updateDuration(userPrefs, 60, 0, 0);
+
+        assertEquals(60, result);
     }
+
+    @Test
+    void updateDuration_withMargins_ShouldReturnDurationPlusMargin()
+    {
+        var userPrefs = createEntryDummy(12, 14, 1, 1, 1, 1);
+        
+        var controller = new SmartSearchController(null);
+        var result = controller.updateDuration(userPrefs, 60, 15, 15);
+        
+        assertEquals(90, result);
+    }
+
+    @Test
+    void updateDuration_withMarginsOverlapping_ShouldReturnNoValue()
+    {
+        var userPrefs = createEntryDummy(12, 14, 1, 1, 1, 1);
+        
+        var controller = new SmartSearchController(null);
+        var result = controller.updateDuration(userPrefs, 60, 60, 60);
+        
+        assertEquals(-1, result);
+    }
+
+    // Öffnungszeiten für die folgenden Tests:
+    // Montag, Mittwoch, Freitag: offen von 8 - 20 Uhr
+    // Dienstag, Donnerstag und Samstag wie oben, aber Mittagspause von 12-14 Uhr
+    // Sonntag geschlossen
+    @Test
+    void adjustToOpeningHours_noPrefs_ShouldReturnNinePossibleEntries()
+    {
+        var userPrefs = createEntryDummy(10, 20, 1, 1, 1, 1);        
+        var openingHours = createIrregularOpeningHours();        
+        var controller = new SmartSearchController(null);
+        var result = controller.adjustToOpeningHours(60, userPrefs, openingHours);
+        
+        assertEquals(9, result.size());
+    }
+
+    @Test
+    void adjustToOpeningHours_onlyPrefsDuringLunchBreak_ShouldReturnThreePossibleEntries()
+    {
+        var userPrefs = createEntryDummy(12, 14, 1, 1, 1, 1);
+        var openingHours = createIrregularOpeningHours();        
+        var controller = new SmartSearchController(null);
+        var result = controller.adjustToOpeningHours(60, userPrefs, openingHours);
+        
+        assertEquals(3, result.size());
+    }
+
+    @Test
+    void adjustToOpeningHours_onlyPrefAtNight_ShouldReturnNoEntries()
+    {
+        var userPrefs = createEntryDummy(21, 23, 1, 1, 1, 1);
+        var openingHours = createIrregularOpeningHours();        
+        var controller = new SmartSearchController(null);
+        var result = controller.adjustToOpeningHours(60, userPrefs, openingHours);
+        
+        assertEquals(0, result.size());
+    }
+
+
+
+
 
 
     @Test
