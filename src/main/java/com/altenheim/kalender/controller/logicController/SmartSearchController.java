@@ -1,5 +1,6 @@
 package com.altenheim.kalender.controller.logicController;
 
+
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -9,14 +10,14 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import org.threeten.extra.Days;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
 
-public class SmartSearchController implements ISmartSearchController 
-{
+public class SmartSearchController implements ISmartSearchController {
 
 	private ICalendarEntriesModel administrateEntries;
 
@@ -24,24 +25,9 @@ public class SmartSearchController implements ISmartSearchController
 	{
 		this.administrateEntries = administrateEntries;
 	}
-//Start main functions
-	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, int maxNumberOfReturnEntrys){
-		var workingEntrys = findSelectedWeekdays(input, weekdays);
-		workingEntrys = encloseEntryDayTimes(workingEntrys, selectedHours);
-		var output = new ArrayList<Entry<String>>();
-		for (Entry<String> entry : workingEntrys) {
-			output.addAll(findAvailableTimeSlot(entry, duration));
-			if (output.size()>= maxNumberOfReturnEntrys ) {
-				output = reduceListLength(output, maxNumberOfReturnEntrys);
-			}
-		}
-		return output;
-	}
 
 
-
-	public ArrayList<Entry<?>> findAvailableTimeSlot(Entry<?> input, int duration) 
-	{			
+	public ArrayList<Entry<?>> findAvailableTimeSlot(Entry<?> input, int duration) {			
 		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
 			input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values();
 		long start = input.getStartMillis();
@@ -50,8 +36,7 @@ public class SmartSearchController implements ISmartSearchController
 		long userEnd = end;
 		var output = new ArrayList<Entry<?>>();
 
-		for (var entries : result) 		
-		{		
+		for (var entries : result) 				
 			for (int i = 0; i <= entries.size(); i++) 
 			{		
 				if (i >= 0 && i < entries.size())
@@ -65,46 +50,114 @@ public class SmartSearchController implements ISmartSearchController
 					output.add(createEntryFromMillis(start, end));
 				if (checkForDuplicates(output))
 					output.remove(output.size()-1);							
-			}		
-		}			
+			}
+		if (output.isEmpty()) {
+			output.add(input);
+		}		
 		return output;
 	}
 
-//End main functions
+	public ArrayList<Entry<?>> findAvailableTimeSlot(Entry<?> input, int duration, boolean[] weekdays, Entry<?>	selectedHours, int maxNumberOfReturnEntrys){
+		var workingEntrys = findSelectedWeekdays(input, weekdays);
+		workingEntrys = encloseEntryDayTimes(workingEntrys, selectedHours);
+		var output = new ArrayList<Entry<?>>();
 
-//compare Opening Hours with selected Hours
-
-public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input, int length) {
-		while (input.size()>length) {
-			input.remove(input.size()-1);
+		for (Entry<?> entry : workingEntrys) {
+			output.addAll(findAvailableTimeSlot(entry, duration));
+			if (output.size()>= maxNumberOfReturnEntrys ) {
+				reduceListLength(output, maxNumberOfReturnEntrys);
+				break;
+			}
 		}
-		return input;
+		return output;
+	}
+	
+	public ArrayList<Entry<?>> findAvailableTimeSlot(Entry<?> input, int duration, boolean[] weekdays, Entry<?>	selectedHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys){
+		modifySelectedHours(selectedHours, timeBefore, timeAfter);
+		return findAvailableTimeSlot(input, duration, weekdays, selectedHours, maxNumberOfReturnEntrys);
+	}
+	
+	public ArrayList<Entry<?>> findAvailableTimeSlot(Entry<?> input, int duration, boolean[] weekdays, Entry<?>	selectedHours, ArrayList<ArrayList<Entry<?>>> openingHours, int maxNumberOfReturnEntrys){
+		openingHours = compareSelectedAndOpenHours(openingHours, selectedHours);
+		var workingEntrys = new ArrayList<Entry<?>>();
+		workingEntrys.addAll(findSelectedWeekdays(input, weekdays));
+		var entryList = new ArrayList<Entry<?>>();
+		var output = new ArrayList<Entry<?>>(); 
+		for (Entry<?> entry : workingEntrys) 
+			entryList.addAll(encloseEntryDayTimes(entry, openingHours));
+		
+		for (Entry<?> entry : entryList) {
+			output.addAll(findAvailableTimeSlot(entry, duration));
+			if (output.size()>= maxNumberOfReturnEntrys ) {
+				reduceListLength(output, maxNumberOfReturnEntrys);
+				break;
+			}
+		}
+
+		return output;
+	}
+	
+	public ArrayList<Entry<?>> findAvailableTimeSlot(Entry<?> input, int duration, boolean[] weekdays, Entry<?>	selectedHours, ArrayList<ArrayList<Entry<?>>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys){
+		openingHours = modifySelectedHoursList(openingHours, timeBefore, timeAfter);
+		duration += timeAfter + timeBefore;
+		return  findAvailableTimeSlot(input, duration, weekdays, selectedHours, openingHours, maxNumberOfReturnEntrys);
 	}
 
-	//return a list of search entrys only for the selected WeekDays in the selected time periode
-	public ArrayList<Entry<String>> findSelectedWeekdays(Entry<String> input, boolean[] weekdays) {
-		var output = new ArrayList<Entry<String>>();
+
+	public ArrayList<ArrayList<Entry<?>>> compareSelectedAndOpenHours(ArrayList<ArrayList<Entry<?>>> inputOpeningHours, Entry<?> selectedHours) {
+		var output = new ArrayList<ArrayList<Entry<?>>>();
+		for (ArrayList<Entry<?>> day : inputOpeningHours) {
+			if (day != null && !day.isEmpty()) {
+				var outputDay = new ArrayList<Entry<?>>();
+				for (Entry<?> entry : day) {
+					Entry<?> workEntry = new Entry<>();
+					if (entry.getStartTime().isAfter(selectedHours.getStartTime())) {
+						if (entry.getStartTime().isAfter(selectedHours.getEndTime())) 
+							continue;
+						else 
+							workEntry.changeStartTime(entry.getStartTime());					
+					} else
+						workEntry.changeStartTime(selectedHours.getStartTime());
+					if (entry.getEndTime().isBefore(selectedHours.getEndTime())) {
+						if (entry.getEndTime().isBefore(selectedHours.getStartTime()))
+							continue;
+						else
+							workEntry.changeEndTime(entry.getEndTime());
+					} else 
+						workEntry.changeEndTime(selectedHours.getEndTime());
+					outputDay.add(workEntry);
+				}
+				output.add(outputDay);
+			} else 
+				output.add(null);
+		}
+		return output;
+	}
+	
+	public ArrayList<Entry<?>> reduceListLength(ArrayList<Entry<?>> input, int length) {
+		while (input.size()>length) 
+			input.remove(input.size()-1);
+		return input;
+	}
+	
+	public ArrayList<Entry<?>> findSelectedWeekdays(Entry<?> input, boolean[] weekdays) {
+		var output = new ArrayList<Entry<?>>();
 		var start = input.getStartDate();
 		var end = input.getEndDate();
 		LocalDate now = input.getStartDate();
 		
 		while (now.isBefore(end) || now.equals(end)) {
 			if (weekdays[now.getDayOfWeek().getValue()-1]) {
-				// Tag ist ausgewählt
-				
 				if (now.equals(end)) {
-					
 					output.add(createEntryFormStartAndEndDate(start, end));
 					return output;
-				} else {
+				} else 
 					now = now.plusDays(1);
-				}
 			} else {
-				//Tag ist nicht ausgewählt
 				if (start.equals(now)) {
-					if (now.equals(end)) {
+					if (now.equals(end))
 						return output;
-					} else {
+					else {
 						start = start.plusDays(1);
 						now = now.plusDays(1);
 					}
@@ -122,17 +175,16 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		}
 		return output;
 	}
-	//vielleicht unnötig
-	public ArrayList<Entry<String>> encloseEntryDayTimes(ArrayList<Entry<String>> input, Entry<String>	selectedHours) {
-		var output = new ArrayList<Entry<String>>();
-		for (Entry<String> entry : input) {
+	
+	public ArrayList<Entry<?>> encloseEntryDayTimes(ArrayList<Entry<?>> input, Entry<?>	selectedHours) {
+		var output = new ArrayList<Entry<?>>();
+		for (Entry<?> entry : input) 
 			output.addAll(encloseEntryDayTimes(entry, selectedHours));
-		}
 		return output;
 	}
-
-	public ArrayList<Entry<String>> encloseEntryDayTimes(Entry<String> input, Entry<String>	selectedHours) {
-		var output = new ArrayList<Entry<String>>();
+	
+	public ArrayList<Entry<?>> encloseEntryDayTimes(Entry<?> input, Entry<?>	selectedHours) {
+		var output = new ArrayList<Entry<?>>();
 		int periode = Days.between(input.getStartDate(), input.getEndDate()).getAmount();
 		LocalDate day;
 		for (int i = 0; i <= periode; i++) {
@@ -142,62 +194,48 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		return output;
 	}	
 	
-	public ArrayList<Entry<String>> encloseEntryDayTimes(Entry<String> input, ArrayList<ArrayList<Entry<String>>> selectedHours) {
-		var output = new ArrayList<Entry<String>>();
+	public ArrayList<Entry<?>> encloseEntryDayTimes(Entry<?> input, ArrayList<ArrayList<Entry<?>>> selectedHours) {
+		var output = new ArrayList<Entry<?>>();
 		int periode = Days.between(input.getStartDate(), input.getEndDate()).getAmount();
 		LocalDate day;
-
 		for (int i = 0; i <= periode; i++) {
 			day = input.getStartDate().plusDays(i);
 			var daynumber = day.getDayOfWeek().getValue()-1; //Weekdays don´t start bye 0
-
 			var selectedHoursDay = selectedHours.get(daynumber);
-			if (selectedHoursDay != null) {
-				if (!selectedHoursDay.isEmpty()) {
-					for (Entry<String> entry : selectedHoursDay) {
-						output.add(createEntryFormStartAndEndDateAndTime(day, day, entry.getStartTime(), entry.getEndTime()));
-					}
-				}
-			}
-			
-			
+			if (selectedHoursDay != null && !selectedHoursDay.isEmpty()) 
+				for (Entry<?> entry : selectedHoursDay)
+					output.add(createEntryFormStartAndEndDateAndTime(day, day, entry.getStartTime(), entry.getEndTime()));
 		}
 		return output;
 	}
-
-	public ArrayList<ArrayList<Entry<String>>> modifySelectedHoursList(ArrayList<ArrayList<Entry<String>>> selectedHours, int timeBefore, int timeAfter) {
-		for (ArrayList<Entry<String>> entry : selectedHours) {
-			entry = modifySelectedHours(entry, timeBefore, timeAfter);
-		}
+	
+	public ArrayList<ArrayList<Entry<?>>> modifySelectedHoursList(ArrayList<ArrayList<Entry<?>>> selectedHours, int timeBefore, int timeAfter) {
+		for (ArrayList<Entry<?>> entry : selectedHours) 
+			modifySelectedHours(entry, timeBefore, timeAfter);
 		return selectedHours;
 	}
 	
-	public ArrayList<Entry<String>> modifySelectedHours(ArrayList<Entry<String>> selectedHours, int timeBefore, int timeAfter) {
-		for (Entry<String> entry : selectedHours) {
-			entry = modifySelectedHours(entry, timeBefore, timeAfter);
-		}
+	public ArrayList<Entry<?>> modifySelectedHours(ArrayList<Entry<?>> selectedHours, int timeBefore, int timeAfter) {
+		for (Entry<?> entry : selectedHours) 
+			modifySelectedHours(entry, timeBefore, timeAfter);
 		return selectedHours;
 	}
 	
-	public Entry<String> modifySelectedHours(Entry<String> selectedHours, int timeBefore, int timeAfter) {
+	public Entry<?> modifySelectedHours(Entry<?> selectedHours, int timeBefore, int timeAfter) {
 		selectedHours.changeStartTime(selectedHours.getStartTime().minusMinutes(timeBefore));
 		selectedHours.changeEndTime(selectedHours.getEndTime().plusMinutes(timeAfter));
 		return selectedHours;
 	}
-
-
-
 	
-
-	private Entry<String> createEntryFormStartAndEndDate(LocalDate start, LocalDate end) {
-		var entry = new Entry<String>();
+	private Entry<?> createEntryFormStartAndEndDate(LocalDate start, LocalDate end) {
+		var entry = new Entry();
 		entry.changeStartDate(start);
 		entry.changeEndDate(end);
 		return entry;
 	}
-
-	private Entry<String> createEntryFormStartAndEndDateAndTime(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
-		var entry = new Entry<String>();
+	
+	private Entry<?> createEntryFormStartAndEndDateAndTime(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+		var entry = new Entry();
 		entry.changeStartDate(startDate);
 		entry.changeEndDate(endDate);
 		entry.changeStartTime(startTime);
@@ -217,9 +255,9 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		== currentEntries.get(currentEntries.size()-1).getStartMillis());
 	}
 	
-	private Entry<String> createEntryFromMillis(long start, long end)
+	private Entry<?> createEntryFromMillis(long start, long end)
 	{
-		var entry = new Entry<String>();
+		var entry = new Entry();
 		var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
 		var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());		
 		entry.changeStartTime(dateStart.toLocalTime());
@@ -229,9 +267,9 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		return entry;
 	}
 	
-	private Entry<String> createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end)
+	private Entry<?> createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end)
 	{
-		var entry = new Entry<String>();				
+		var entry = new Entry();				
 		entry.changeStartTime(start);
 		entry.changeEndTime(end);
 		entry.changeStartDate(startAndEnd);
@@ -249,7 +287,7 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 	// 3. Aufruf createfinalList... mit Übergabe des erzeugten Kalenders, hier wird auch die Vorschlagsfunktion aufgerufen, Intervalle berücksichtigt
 	//    etc. --> fertige Liste mit Einträgen
 	
-	public int updateDuration(Entry<String> userPrefs, int duration, int marginPre, int marginPost)
+	public int updateDuration(Entry<?> userPrefs, int duration, int marginPre, int marginPost)
 	{
 		if (userPrefs.getEndTime().toSecondOfDay() - userPrefs.getStartTime().toSecondOfDay() 
 			< (duration + marginPre + marginPost) * 60)
@@ -351,5 +389,8 @@ public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input,
 		}
 		return possibleSlots;
 	}
+
+
+	
 }
 

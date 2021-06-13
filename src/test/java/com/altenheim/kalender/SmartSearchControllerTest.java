@@ -57,7 +57,7 @@ public class SmartSearchControllerTest
     @Test
     void adjustToOpeningHours_noPrefs_ShouldReturnNinePossibleEntries()
     {
-        var userPrefs = createEntryDummy2(10, 20, 1, 1, 1, 1);        
+        var userPrefs = createEntryDummy(10, 20, 1, 1, 1, 1);        
         var openingHours = createIrregularOpeningHours();        
         var controller = new SmartSearchController(null);
         var result = controller.adjustToOpeningHours(60, userPrefs, openingHours);
@@ -97,11 +97,11 @@ public class SmartSearchControllerTest
     void addRFC2445RecurrenceRule_noWeekdayPreferenceSearchForFourWeeks_shouldsetreccurenceTo4()
     {        
         boolean[] weekdays = { true, true, true, true, true, true, true };
-        var userPrefs = createEntryDummy(10, 12, 1, 29, 1, 1);
+        var userPrefs = createEntryDummy(10, 12, 1, 1, 29, 1);
         var oneWeekEntries = new ArrayList<Entry<?>>();
         for (int i = 0; i < 7 ; i++) 
         {
-            var entry = createEntryDummy(10, 20, i+1, i+1, 1, 1);
+            var entry = createEntryDummy(10, 20, i+1, 1, i+1, 1);
             oneWeekEntries.add(entry);            
         }
 
@@ -123,12 +123,12 @@ public class SmartSearchControllerTest
     void addRFC2445RecurrenceRule_twoWeekdaysPreferenceSearchForFourWeeks_ShouldReturn2Entries()
     {        
         boolean[] weekdays = { true, false, true, false, false, false, false };
-        var userPrefs = createEntryDummy(10, 12, 1, 29, 1, 1);
+        var userPrefs = createEntryDummy(10, 12, 1, 1, 29, 1);
         var oneWeekEntries = new ArrayList<Entry<?>>();
 
         for (int i = 0; i < 7 ; i++) 
         {
-            var entry = createEntryDummy(10, 20, i+1, i+1, 1, 1);
+            var entry = createEntryDummy(10, 20, i+1, 1, i+1, 1);
             oneWeekEntries.add(entry);            
         }
 
@@ -138,16 +138,17 @@ public class SmartSearchControllerTest
         assertEquals(2, result.size());
     }
 
+    // noch nicht fertig
     @Test 
     void integrationTest_allFunctionsForSmartSearch()
     {
-        var userPrefs = createEntryDummy(10, 12, 4, 29, 1, 1);
+        var userPrefs = createEntryDummy(10, 12, 4, 1, 29, 1);
         boolean[] weekdays = { true, false, false, false, false, false, false };
         var openingHours = createIrregularOpeningHours();
 
-        var entryOneCalendar = createEntryDummy(9, 14, 4, 4, 1, 1);
-        var entryTwoCalendar = createEntryDummy(16, 18, 11, 11, 1, 1);
-        var entryThreeCalendar = createEntryDummy(9, 10, 18, 18, 1, 1);
+        var entryOneCalendar = createEntryDummy(9, 14, 4, 1, 4, 1);
+        var entryTwoCalendar = createEntryDummy(16, 18, 11, 1, 11, 1);
+        var entryThreeCalendar = createEntryDummy(9, 10, 18, 1, 18, 1);
         var allEntriesMock = mock(ICalendarEntriesModel.class);
         var calendarMockEntries = new Calendar();
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar);
@@ -158,14 +159,9 @@ public class SmartSearchControllerTest
         var updatesCalendar = controller.createCalendarFromUserInput(userPrefs, weekdays, openingHours, updatedDuration);
         var finalEntries = controller.createFinalListForTableView(14, 10, updatesCalendar, updatedDuration);
 
-        assertEquals(1, finalEntries.size());
+        assertEquals(3, finalEntries.size());
 
     }
-
-
-
-
-
 
     @Test
     void findAvailableTimeSlot_oneDayOnePossibleSuggestionOnSameDay_shouldReturnOneEntry()
@@ -357,7 +353,7 @@ public class SmartSearchControllerTest
             // Montag, Mittwoch und Freitag Öffnung von 8-20h
             else
             {
-                var entryOne = new Entry<String>();
+                var entryOne = new Entry();
                 entryOne.changeStartTime(startTime);
                 entryOne.changeEndTime(endTime);               
                 entrys.add(entryOne);
@@ -367,9 +363,9 @@ public class SmartSearchControllerTest
         return openingHours;        
     }     
 
-    private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
+    private Entry<?> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
     {
-        var entryUser = new Entry<String>("User Preference");
+        var entryUser = new Entry("User Preference");
         var startDate = LocalDate.of(2021, 1, startDay);  
         var endDate = LocalDate.of(2021, 1, endDay);  
         entryUser.changeStartDate(startDate);
@@ -378,36 +374,13 @@ public class SmartSearchControllerTest
         entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
         return entryUser;
     }
-
-    private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay, int startMonth, int endMonth)
-    {
-        var entryUser = new Entry<String>("User Preference");
-        var startDate = LocalDate.of(2021, startMonth, startDay);  
-        var endDate = LocalDate.of(2021, endMonth, endDay);  
-        entryUser.changeStartDate(startDate);
-        entryUser.changeEndDate(endDate);
-        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
-        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
-        return entryUser;
-    }
-
-    private Entry<?> createEntryDummy2(int startTime, int EndTime, int startDay, int endDay, int startMonth, int endMonth)
-    {
-        var entryUser = new Entry<String>("User Preference");
-        var startDate = LocalDate.of(2021, startMonth, startDay);  
-        var endDate = LocalDate.of(2021, endMonth, endDay);  
-        entryUser.changeStartDate(startDate);
-        entryUser.changeEndDate(endDate);
-        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
-        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
-        return entryUser;
-    }
+    
 
 //Nico Tests
 //Start findSelectedWeekdays
     @Test
     void findSelectedWeekdays_oneDaySelectedInOneWeek_shouldReturnOneEntry(){
-        var entryUser = new Entry<String>("User Preference");
+        var entryUser = new Entry("User Preference");
         entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
         entryUser.changeEndDate(LocalDate.of(2021, 6, 13));
         boolean[] weekdays = {true, false, false, false, false,     false, false};
@@ -423,7 +396,7 @@ public class SmartSearchControllerTest
 
     @Test
     void findSelectedWeekdays_nullDaysSelectedInOneWeek_shouldReturnNullEntry(){
-        var entryUser = new Entry<String>("User Preference");
+        var entryUser = new Entry("User Preference");
         entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
         entryUser.changeEndDate(LocalDate.of(2021, 6, 13));
         boolean[] weekdays = {false, false, false, false, false,     false, false};
@@ -439,7 +412,7 @@ public class SmartSearchControllerTest
 
     @Test
     void findSelectedWeekdays_threeDaysSelectedInOneWeek_shouldReturnThreeEntry(){
-        var entryUser = new Entry<String>("User Preference");
+        var entryUser = new Entry("User Preference");
         entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
         entryUser.changeEndDate(LocalDate.of(2021, 6, 13));
         boolean[] weekdays = {true, false, true, false, true,     false, false};
@@ -455,7 +428,7 @@ public class SmartSearchControllerTest
 
     @Test
     void findSelectedWeekdays_threeDaysOneDoubleSelectedInOneWeek_shouldReturnTwoEntry(){
-        var entryUser = new Entry<String>("User Preference");
+        var entryUser = new Entry("User Preference");
         entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
         entryUser.changeEndDate(LocalDate.of(2021, 6, 13));
         boolean[] weekdays = {true, true, false, true, false,     false, false};
@@ -471,7 +444,7 @@ public class SmartSearchControllerTest
 
     @Test
     void findSelectedWeekdays_sevenDaysOneSevenDaysLongSelectedInOneWeek_shouldReturnOneEntry(){
-        var entryUser = new Entry<String>("User Preference");
+        var entryUser = new Entry("User Preference");
         entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
         entryUser.changeEndDate(LocalDate.of(2021, 6, 13));
         boolean[] weekdays = {true, true, true, true, true,     true, true};
@@ -487,7 +460,7 @@ public class SmartSearchControllerTest
 
     @Test
     void findSelectedWeekdays_threeDaysOneDoubleSelectedTwoWeek_shouldReturnFourEntry(){
-        var entryUser = new Entry<String>("User Preference");
+        var entryUser = new Entry("User Preference");
         entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
         entryUser.changeEndDate(LocalDate.of(2021, 6, 20));
         boolean[] weekdays = {true, true, false, true, false,     false, false};
@@ -506,11 +479,11 @@ public class SmartSearchControllerTest
 // Start encloseEntryDayTimes
 @Test
 void encloseEntryDayTimes_OneEntryTwoWeekLength_shouldReturnFourteenEntryWithCorrectTimes(){
-    var entryUser = new Entry<String>("User Preference");
+    var entryUser = new Entry("User Preference");
     entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
     entryUser.changeEndDate(LocalDate.of(2021, 6, 20));
 
-    var selectedHours = new Entry<String>("Selected Hours");
+    var selectedHours = new Entry("Selected Hours");
     selectedHours.changeStartTime(LocalTime.of(10, 0));
     selectedHours.changeEndTime(LocalTime.of(18, 0));
 
@@ -520,7 +493,7 @@ void encloseEntryDayTimes_OneEntryTwoWeekLength_shouldReturnFourteenEntryWithCor
     var controller = new SmartSearchController(allEntriesMock);
     var result = controller.encloseEntryDayTimes(entryUser, selectedHours);
     
-    for (Entry<String> entry : result) {
+    for (Entry<?> entry : result) {
         assertEquals(selectedHours.getStartTime(), entry.getStartTime());
         assertEquals(selectedHours.getEndTime(), entry.getEndTime());
     }
@@ -530,11 +503,11 @@ void encloseEntryDayTimes_OneEntryTwoWeekLength_shouldReturnFourteenEntryWithCor
 
 @Test
 void encloseEntryDayTimes_fourEntryTwoWeekLength_shouldReturnNineEntryWithCorrectTimes(){
-    var entryOne = new Entry<String>("Test");
-    var entryTwo = new Entry<String>("Test");
-    var entryThree = new Entry<String>("Test");
-    var entryFour = new Entry<String>("Test");
-    ArrayList<Entry<String>> entrylist = new ArrayList<Entry<String>>();
+    var entryOne = new Entry("Test");
+    var entryTwo = new Entry("Test");
+    var entryThree = new Entry("Test");
+    var entryFour = new Entry("Test");
+    ArrayList<Entry<?>> entrylist = new ArrayList<Entry<?>>();
 
     entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//1
     entryOne.changeEndDate(LocalDate.of(2021, 6, 7));
@@ -553,7 +526,7 @@ void encloseEntryDayTimes_fourEntryTwoWeekLength_shouldReturnNineEntryWithCorrec
     entrylist.add(entryFour);
    
     
-    var selectedHours = new Entry<String>("Selected Hours");
+    var selectedHours = new Entry("Selected Hours");
     selectedHours.changeStartTime(LocalTime.of(10, 0));
     selectedHours.changeEndTime(LocalTime.of(18, 0));
 
@@ -563,7 +536,7 @@ void encloseEntryDayTimes_fourEntryTwoWeekLength_shouldReturnNineEntryWithCorrec
     var controller = new SmartSearchController(allEntriesMock);
     var result = controller.encloseEntryDayTimes(entrylist, selectedHours);
     
-    for (Entry<String> entry : result) {
+    for (Entry<?> entry : result) {
         assertEquals(selectedHours.getStartTime(), entry.getStartTime());
         assertEquals(selectedHours.getEndTime(), entry.getEndTime());
     }
@@ -572,17 +545,17 @@ void encloseEntryDayTimes_fourEntryTwoWeekLength_shouldReturnNineEntryWithCorrec
 
 @Test
 void encloseEntryDayTimes_OneEntryOneDayLength_shouldReturnOneEntryWithCorrectOpenTimes(){
-    var entryOne = new Entry<String>("Test");
+    var entryOne = new Entry("Test");
     
     entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
     entryOne.changeEndDate(LocalDate.of(2021, 6, 7));
     
-    var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
+    var selectedHours = new ArrayList<ArrayList<Entry<?>>>();
 
 
-    var selectedHoursDay0 = new ArrayList<Entry<String>>();
+    var selectedHoursDay0 = new ArrayList<Entry<?>>();
 
-    var hours = new Entry<String>("Selected Hours");
+    var hours = new Entry("Selected Hours");
     hours.changeStartTime(LocalTime.of(10, 0));
     hours.changeEndTime(LocalTime.of(18, 0));
     selectedHoursDay0.add(hours);
@@ -603,22 +576,22 @@ void encloseEntryDayTimes_OneEntryOneDayLength_shouldReturnOneEntryWithCorrectOp
 
 @Test
 void encloseEntryDayTimes_OneEntryOneDayLength_shouldReturnTwoEntryWithCorrectOpenTimes(){
-    var entryOne = new Entry<String>("Test");
+    var entryOne = new Entry("Test");
     
     entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
     entryOne.changeEndDate(LocalDate.of(2021, 6, 7));
     
-    var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
+    var selectedHours = new ArrayList<ArrayList<Entry<?>>>();
 
 
-    var selectedHoursDay0 = new ArrayList<Entry<String>>();
+    var selectedHoursDay0 = new ArrayList<Entry<?>>();
 
-    var hours = new Entry<String>("Selected Hours");
+    var hours = new Entry("Selected Hours");
     hours.changeStartTime(LocalTime.of(10, 0));
     hours.changeEndTime(LocalTime.of(14, 0));
     selectedHoursDay0.add(hours);
 
-    var hours1 = new Entry<String>("Selected Hours");
+    var hours1 = new Entry("Selected Hours");
     hours1.changeStartTime(LocalTime.of(15, 0));
     hours1.changeEndTime(LocalTime.of(20, 0));
     selectedHoursDay0.add(hours1);
@@ -642,22 +615,22 @@ void encloseEntryDayTimes_OneEntryOneDayLength_shouldReturnTwoEntryWithCorrectOp
 
 @Test
 void encloseEntryDayTimes_OneEntryTwoDayLength_shouldReturnThreeEntryWithCorrectOpenTimes(){
-    var entryOne = new Entry<String>("Test");
+    var entryOne = new Entry("Test");
     
     entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
     entryOne.changeEndDate(LocalDate.of(2021, 6, 8));//1
     
-    var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
+    var selectedHours = new ArrayList<ArrayList<Entry<?>>>();
 
 
-    var selectedHoursDay0 = new ArrayList<Entry<String>>();
+    var selectedHoursDay0 = new ArrayList<Entry<?>>();
 
-    var hours = new Entry<String>("Selected Hours");
+    var hours = new Entry("Selected Hours");
     hours.changeStartTime(LocalTime.of(10, 0));
     hours.changeEndTime(LocalTime.of(14, 0));
     selectedHoursDay0.add(hours);
 
-    var hours1 = new Entry<String>("Selected Hours");
+    var hours1 = new Entry("Selected Hours");
     hours1.changeStartTime(LocalTime.of(15, 0));
     hours1.changeEndTime(LocalTime.of(20, 0));
     selectedHoursDay0.add(hours1);
@@ -665,9 +638,9 @@ void encloseEntryDayTimes_OneEntryTwoDayLength_shouldReturnThreeEntryWithCorrect
     selectedHours.add(selectedHoursDay0);
 
 
-    var selectedHoursDay1 = new ArrayList<Entry<String>>();
+    var selectedHoursDay1 = new ArrayList<Entry<?>>();
 
-    var hours2 = new Entry<String>("Selected Hours");
+    var hours2 = new Entry("Selected Hours");
     hours2.changeStartTime(LocalTime.of(10, 0));
     hours2.changeEndTime(LocalTime.of(14, 0));
     selectedHoursDay1.add(hours2);
@@ -695,22 +668,22 @@ void encloseEntryDayTimes_OneEntryTwoDayLength_shouldReturnThreeEntryWithCorrect
 
 @Test
 void encloseEntryDayTimes_OneEntryTwoDayLength_shouldReturnTwoEntryWithCorrectOpenTimes(){
-    var entryOne = new Entry<String>("Test");
+    var entryOne = new Entry("Test");
     
     entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
     entryOne.changeEndDate(LocalDate.of(2021, 6, 8));//1
     
-    var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
+    var selectedHours = new ArrayList<ArrayList<Entry<?>>>();
 
 
-    var selectedHoursDay0 = new ArrayList<Entry<String>>();
+    var selectedHoursDay0 = new ArrayList<Entry<?>>();
 
-    var hours = new Entry<String>("Selected Hours");
+    var hours = new Entry("Selected Hours");
     hours.changeStartTime(LocalTime.of(10, 0));
     hours.changeEndTime(LocalTime.of(14, 0));
     selectedHoursDay0.add(hours);
 
-    var hours1 = new Entry<String>("Selected Hours");
+    var hours1 = new Entry("Selected Hours");
     hours1.changeStartTime(LocalTime.of(15, 0));
     hours1.changeEndTime(LocalTime.of(20, 0));
     selectedHoursDay0.add(hours1);
@@ -718,7 +691,7 @@ void encloseEntryDayTimes_OneEntryTwoDayLength_shouldReturnTwoEntryWithCorrectOp
     selectedHours.add(selectedHoursDay0);
 
 
-    var selectedHoursDay1 = new ArrayList<Entry<String>>();
+    var selectedHoursDay1 = new ArrayList<Entry<?>>();
     //Day 1 is Empty
 
     selectedHours.add(selectedHoursDay1);
@@ -740,22 +713,22 @@ void encloseEntryDayTimes_OneEntryTwoDayLength_shouldReturnTwoEntryWithCorrectOp
 
 @Test
 void encloseEntryDayTimes_OneEntryTwoDayLength_OneDayHoursEmpty_shouldReturnTwoEntryWithCorrectOpenTimes(){
-    var entryOne = new Entry<String>("Test");
+    var entryOne = new Entry("Test");
     
     entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
     entryOne.changeEndDate(LocalDate.of(2021, 6, 8));//1
     
-    var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
+    var selectedHours = new ArrayList<ArrayList<Entry<?>>>();
 
 
-    var selectedHoursDay0 = new ArrayList<Entry<String>>();
+    var selectedHoursDay0 = new ArrayList<Entry<?>>();
 
-    var hours = new Entry<String>("Selected Hours");
+    var hours = new Entry("Selected Hours");
     hours.changeStartTime(LocalTime.of(10, 0));
     hours.changeEndTime(LocalTime.of(14, 0));
     selectedHoursDay0.add(hours);
 
-    var hours1 = new Entry<String>("Selected Hours");
+    var hours1 = new Entry("Selected Hours");
     hours1.changeStartTime(LocalTime.of(15, 0));
     hours1.changeEndTime(LocalTime.of(20, 0));
     selectedHoursDay0.add(hours1);
@@ -785,7 +758,7 @@ void encloseEntryDayTimes_OneEntryTwoDayLength_OneDayHoursEmpty_shouldReturnTwoE
 //Start modifySelectedHours
 @Test
 void modifySelectedHours_OneEntryOneDayLength_shouldReturnOneEntryWithCorrectTimes(){
-    var  entry = new Entry<String>("User Preference");
+    var  entry = new Entry("User Preference");
     entry.changeStartDate(LocalDate.of(2021, 6, 7));
     entry.changeStartTime(LocalTime.of(16, 00));
     entry.changeEndDate(LocalDate.of(2021, 6, 7));
@@ -808,15 +781,15 @@ void modifySelectedHours_OneEntryOneDayLength_shouldReturnOneEntryWithCorrectTim
 @Test
 void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnTwoEntryWithCorrectTimes(){
     
-    var input = new ArrayList<Entry<String>>();
-    var  entry = new Entry<String>("User Preference");
+    var input = new ArrayList<Entry<?>>();
+    var  entry = new Entry("User Preference");
     entry.changeStartDate(LocalDate.of(2021, 6, 7));
     entry.changeStartTime(LocalTime.of(16, 00));
     entry.changeEndDate(LocalDate.of(2021, 6, 7));
     entry.changeEndTime(LocalTime.of(20, 00));
     input.add(entry);
 
-    var  entry2 = new Entry<String>("User Preference");
+    var  entry2 = new Entry("User Preference");
     entry2.changeStartDate(LocalDate.of(2021, 6, 8));
     entry2.changeStartTime(LocalTime.of(16, 00));
     entry2.changeEndDate(LocalDate.of(2021, 6, 8));
@@ -829,7 +802,7 @@ void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnTwoEntryWithCorrectTim
     var controller = new SmartSearchController(allEntriesMock);
     var result = controller.modifySelectedHours(input, 60, 60);
     
-    for (Entry<String> resultEntry : result) {
+    for (Entry<?> resultEntry : result) {
         assertEquals(LocalTime.of(15, 00), resultEntry.getStartTime());
         assertEquals(LocalTime.of(21, 00), resultEntry.getEndTime());
     }
@@ -839,15 +812,15 @@ void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnTwoEntryWithCorrectTim
 @Test
 void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnFourEntryWithCorrectTimes(){
     
-    var input = new ArrayList<Entry<String>>();
-    var  entry = new Entry<String>("User Preference");
+    var input = new ArrayList<Entry<?>>();
+    var  entry = new Entry("User Preference");
     entry.changeStartDate(LocalDate.of(2021, 6, 7));
     entry.changeStartTime(LocalTime.of(16, 00));
     entry.changeEndDate(LocalDate.of(2021, 6, 7));
     entry.changeEndTime(LocalTime.of(20, 00));
     input.add(entry);
 
-    var  entry2 = new Entry<String>("User Preference");
+    var  entry2 = new Entry("User Preference");
     entry2.changeStartDate(LocalDate.of(2021, 6, 8));
     entry2.changeStartTime(LocalTime.of(16, 00));
     entry2.changeEndDate(LocalDate.of(2021, 6, 8));
@@ -855,15 +828,15 @@ void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnFourEntryWithCorrectTi
     input.add(entry2);
 
 
-    var input1 = new ArrayList<Entry<String>>();
-    var  entry3 = new Entry<String>("User Preference");
+    var input1 = new ArrayList<Entry<?>>();
+    var  entry3 = new Entry("User Preference");
     entry3.changeStartDate(LocalDate.of(2021, 6, 7));
     entry3.changeStartTime(LocalTime.of(16, 00));
     entry3.changeEndDate(LocalDate.of(2021, 6, 7));
     entry3.changeEndTime(LocalTime.of(20, 00));
     input1.add(entry3);
 
-    var  entry4 = new Entry<String>("User Preference");
+    var  entry4 = new Entry("User Preference");
     entry4.changeStartDate(LocalDate.of(2021, 6, 8));
     entry4.changeStartTime(LocalTime.of(16, 00));
     entry4.changeEndDate(LocalDate.of(2021, 6, 8));
@@ -872,7 +845,7 @@ void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnFourEntryWithCorrectTi
 
     
 
-    ArrayList<ArrayList<Entry<String>>> input2 = new ArrayList<ArrayList<Entry<String>>>();
+    ArrayList<ArrayList<Entry<?>>> input2 = new ArrayList<ArrayList<Entry<?>>>();
     input2.add(input);
     input2.add(input1);
     var allEntriesMock = mock(ICalendarEntriesModel.class);
@@ -881,8 +854,8 @@ void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnFourEntryWithCorrectTi
     var controller = new SmartSearchController(allEntriesMock);
     var result = controller.modifySelectedHoursList(input2, 60, 60);
     int numberResults = 0;
-    for (ArrayList<Entry<String>> resultEntry : result) {
-        for (Entry<String> ent : resultEntry) {
+    for (ArrayList<Entry<?>> resultEntry : result) {
+        for (Entry<?> ent : resultEntry) {
             assertEquals(LocalTime.of(15, 00), ent.getStartTime());
             assertEquals(LocalTime.of(21, 00), ent.getEndTime());
             numberResults++;
@@ -897,7 +870,7 @@ void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnFourEntryWithCorrectTi
 @Test
 void reduceListLength_TwoEntry_shouldReturnOneEntry(){
     
-    var input = new ArrayList<Entry<String>>();
+    var input = new ArrayList<Entry<?>>();
     for (int i = 0; i < 10; i++) {
         input.add(null);
     }
@@ -908,5 +881,92 @@ void reduceListLength_TwoEntry_shouldReturnOneEntry(){
     
     assertEquals(5, result.size());
     
-}   
+}
+
+
+@Test
+void findAvailableTimeSlot_RetrunSevenEntrys(){
+    
+    var input = new Entry();
+    input = createEntryDummy(10, 19, 1, 6, 7, 6);
+    boolean[] weekdays = {true, true, true, true, true, true, true};
+    
+    ArrayList<ArrayList<Entry<?>>> openingHours = createOpeningHours();
+    
+
+    var entryOneCalendar = createEntryDummy(10, 14, 1, 1);
+    var entryTwoCalendar = createEntryDummy(16, 18, 1, 1);
+    var allEntriesMock = mock(ICalendarEntriesModel.class);
+    var calendarMockEntries = new Calendar();
+    calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar);
+    when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+
+    var controller = new SmartSearchController(allEntriesMock);
+    var result = controller.findAvailableTimeSlot(input, 60, weekdays, input, openingHours, 20, 20, 50);
+    
+    assertEquals(7, result.size());
+    
+}
+
+@Test
+void findAvailableTimeSlot_Return(){
+    
+    var input = new Entry();
+    input = createEntryDummy(10, 19, 7, 6, 20, 6);
+    boolean[] weekdays = {true, true, false, false, true, true, true};
+    
+    ArrayList<ArrayList<Entry<?>>> openingHours = createOpeningHours1();
+    
+
+    var entryOneCalendar = createEntryDummy(10, 19, 7, 6, 8, 6);
+    //var entryTwoCalendar = createEntryDummy(14, 15, 15, 6, 15, 6);
+    var allEntriesMock = mock(ICalendarEntriesModel.class);
+    var calendarMockEntries = new Calendar();
+    calendarMockEntries.addEntries(entryOneCalendar);
+    when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+
+    var controller = new SmartSearchController(allEntriesMock);
+    var result = controller.findAvailableTimeSlot(input, 60, weekdays, input, openingHours, 20, 20, 50);
+    
+    assertEquals(12, result.size());
+    
+}
+
+    private Entry<?> createEntryDummy(int startTime, int EndTime, int startDay, int startMonth, int endDay, int endMonth)
+    {
+        var entryUser = new Entry("User Preference");
+        var startDate = LocalDate.of(2021, startMonth, startDay);  
+        var endDate = LocalDate.of(2021, endMonth, endDay);  
+        entryUser.changeStartDate(startDate);
+        entryUser.changeEndDate(endDate);
+        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
+        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
+        return entryUser;
+    }
+    private  ArrayList<ArrayList<Entry<?>>> createOpeningHours() {
+        ArrayList<ArrayList<Entry<?>>> openingHours = new ArrayList<ArrayList<Entry<?>>>();
+        for (int i = 0; i < 7; i++) {
+            var day1 = new ArrayList<Entry<?>>();
+            day1.add(createEntryDummy(10, 15, 1, 1));
+            openingHours.add( day1);
+        }
+        return openingHours;
+    }
+
+    private  ArrayList<ArrayList<Entry<?>>> createOpeningHours1() {
+        ArrayList<ArrayList<Entry<?>>> openingHours = new ArrayList<ArrayList<Entry<?>>>();
+        for (int i = 0; i < 6; i++) {
+            var day1 = new ArrayList<Entry<?>>();
+            if (i%2==0) {
+                day1.add(createEntryDummy(10, 13, 1, 1));
+                day1.add(createEntryDummy(16, 22, 1, 1));
+            }else{
+                day1.add(createEntryDummy(10, 22, 1, 1));
+            }
+            
+            openingHours.add( day1);
+        }
+        openingHours.add(new ArrayList<Entry<?>>());
+        return openingHours;
+    }
 }
