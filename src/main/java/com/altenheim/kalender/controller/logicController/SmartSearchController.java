@@ -22,30 +22,6 @@ public class SmartSearchController implements ISmartSearchController
 		this.administrateEntries = administrateEntries;
 	}
 //Start main functions
-	//Abfrage mit den Grundlegenden Daten
-	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, int maxNumberOfReturnEntrys){
-		var workingEntrys = findSelectedWeekdays(input, weekdays);
-		workingEntrys = encloseEntryDayTimes(workingEntrys, selectedHours);
-		var output = new ArrayList<Entry<String>>();
-		for (Entry<String> entry : workingEntrys) {
-			output.addAll(findAvailableTimeSlot(entry, duration));
-			if (output.size()>= maxNumberOfReturnEntrys ) {
-				output = reduceListLength(output, maxNumberOfReturnEntrys);
-			}
-		}
-		return output;
-	}
-	// Abfrage mit den Grundlegenden Daten, Fahrzeit oder freie Solts
-	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, int maxNumberOfReturnEntrys, int timeBefore, int timeAfter){
-		selectedHours = modifySelectedHours(selectedHours, timeBefore, timeAfter);
-		return findAvailableTimeSlot(input, duration, weekdays, selectedHours, maxNumberOfReturnEntrys);
-	}
-	// Abfrage mit den Grundlegenden Daten, Öffnungszeiten
-
-	// Abfrage mit den Grundlegenden Daten, Fahrzeit oder freie Solts, Öffnungszeiten
-
-
-
 	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration) 
 	{			
 		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
@@ -76,6 +52,48 @@ public class SmartSearchController implements ISmartSearchController
 		return output;
 	}
 
+	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, int maxNumberOfReturnEntrys){
+		var workingEntrys = findSelectedWeekdays(input, weekdays);
+		workingEntrys = encloseEntryDayTimes(workingEntrys, selectedHours);
+		var output = new ArrayList<Entry<String>>();
+		for (Entry<String> entry : workingEntrys) {
+			output.addAll(findAvailableTimeSlot(entry, duration));
+			if (output.size()>= maxNumberOfReturnEntrys ) {
+				output = reduceListLength(output, maxNumberOfReturnEntrys);
+				break;
+			}
+		}
+		return output;
+	}
+	
+	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys){
+		selectedHours = modifySelectedHours(selectedHours, timeBefore, timeAfter);
+		return findAvailableTimeSlot(input, duration, weekdays, selectedHours, maxNumberOfReturnEntrys);
+	}
+	
+	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, ArrayList<ArrayList<Entry<String>>> openingHours, int maxNumberOfReturnEntrys){
+		openingHours = compareSelectedAndOpenHours(openingHours, selectedHours);
+		var workingEntrys = findSelectedWeekdays(input, weekdays);
+		var entryList = new ArrayList<Entry<String>>();
+		for (Entry<String> entry : workingEntrys) {
+			entryList = encloseEntryDayTimes(entry, openingHours);
+		}
+		var output = new ArrayList<Entry<String>>();
+		for (Entry<String> entry : entryList) {
+			output.addAll(findAvailableTimeSlot(entry, duration));
+			if (output.size()>= maxNumberOfReturnEntrys ) {
+				output = reduceListLength(output, maxNumberOfReturnEntrys);
+				break;
+			}
+		}
+		return output;
+	}
+	
+	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, ArrayList<ArrayList<Entry<String>>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys){
+		openingHours = modifySelectedHoursList(openingHours, timeBefore, timeAfter);
+		selectedHours = modifySelectedHours(selectedHours, timeBefore, timeAfter);
+		return  findAvailableTimeSlot(input, duration, weekdays, selectedHours, openingHours, maxNumberOfReturnEntrys);
+	}
 //End main functions
 
 //compare Opening Hours with selected Hours
@@ -114,7 +132,7 @@ public class SmartSearchController implements ISmartSearchController
 		return output;
 	}
 
-public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input, int length) {
+	public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input, int length) {
 		while (input.size()>length) {
 			input.remove(input.size()-1);
 		}
