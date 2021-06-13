@@ -686,7 +686,53 @@ void reduceListLength_TwoEntry_shouldReturnOneEntry(){
 }
 
 
+@Test
+void findAvailableTimeSlot_RetrunSevenEntrys(){
+    
+    var input = new Entry<String>();
+    input = createEntryDummy(10, 19, 1, 6, 7, 6);
+    boolean[] weekdays = {true, true, true, true, true, true, true};
+    
+    ArrayList<ArrayList<Entry<String>>> openingHours = createOpeningHours();
+    
 
+    var entryOneCalendar = createEntryDummy(10, 14, 1, 1);
+    var entryTwoCalendar = createEntryDummy(16, 18, 1, 1);
+    var allEntriesMock = mock(ICalendarEntriesModel.class);
+    var calendarMockEntries = new Calendar();
+    calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar);
+    when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+
+    var controller = new SmartSearchController(allEntriesMock);
+    var result = controller.findAvailableTimeSlot(input, 60, weekdays, input, openingHours, 20, 20, 50);
+    
+    assertEquals(7, result.size());
+    
+}
+
+@Test
+void findAvailableTimeSlot_Return(){
+    
+    var input = new Entry<String>();
+    input = createEntryDummy(10, 19, 7, 6, 20, 6);
+    boolean[] weekdays = {true, true, false, false, true, true, true};
+    
+    ArrayList<ArrayList<Entry<String>>> openingHours = createOpeningHours1();
+    
+
+    var entryOneCalendar = createEntryDummy(10, 19, 7, 6, 8, 6);
+    //var entryTwoCalendar = createEntryDummy(14, 15, 15, 6, 15, 6);
+    var allEntriesMock = mock(ICalendarEntriesModel.class);
+    var calendarMockEntries = new Calendar();
+    calendarMockEntries.addEntries(entryOneCalendar);
+    when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+
+    var controller = new SmartSearchController(allEntriesMock);
+    var result = controller.findAvailableTimeSlot(input, 60, weekdays, input, openingHours, 20, 20, 50);
+    
+    assertEquals(12, result.size());
+    
+}
 
 
 
@@ -715,5 +761,42 @@ void reduceListLength_TwoEntry_shouldReturnOneEntry(){
         entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
         entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
         return entryUser;
+    }
+    private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int startMonth, int endDay, int endMonth)
+    {
+        var entryUser = new Entry<String>("User Preference");
+        var startDate = LocalDate.of(2021, startMonth, startDay);  
+        var endDate = LocalDate.of(2021, endMonth, endDay);  
+        entryUser.changeStartDate(startDate);
+        entryUser.changeEndDate(endDate);
+        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
+        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
+        return entryUser;
+    }
+    private  ArrayList<ArrayList<Entry<String>>> createOpeningHours() {
+        ArrayList<ArrayList<Entry<String>>> openingHours = new ArrayList<ArrayList<Entry<String>>>();
+        for (int i = 0; i < 7; i++) {
+            var day1 = new ArrayList<Entry<String>>();
+            day1.add(createEntryDummy(10, 15, 1, 1));
+            openingHours.add( day1);
+        }
+        return openingHours;
+    }
+
+    private  ArrayList<ArrayList<Entry<String>>> createOpeningHours1() {
+        ArrayList<ArrayList<Entry<String>>> openingHours = new ArrayList<ArrayList<Entry<String>>>();
+        for (int i = 0; i < 6; i++) {
+            var day1 = new ArrayList<Entry<String>>();
+            if (i%2==0) {
+                day1.add(createEntryDummy(10, 13, 1, 1));
+                day1.add(createEntryDummy(16, 22, 1, 1));
+            }else{
+                day1.add(createEntryDummy(10, 22, 1, 1));
+            }
+            
+            openingHours.add( day1);
+        }
+        openingHours.add(new ArrayList<Entry<String>>());
+        return openingHours;
     }
 }

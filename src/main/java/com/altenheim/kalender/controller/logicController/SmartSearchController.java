@@ -45,7 +45,10 @@ public class SmartSearchController implements ISmartSearchController {
 					output.add(createEntryFromMillis(start, end));
 				if (checkForDuplicates(output))
 					output.remove(output.size()-1);							
-			}		
+			}
+		if (output.isEmpty()) {
+			output.add(input);
+		}		
 		return output;
 	}
 
@@ -71,12 +74,13 @@ public class SmartSearchController implements ISmartSearchController {
 	
 	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, ArrayList<ArrayList<Entry<String>>> openingHours, int maxNumberOfReturnEntrys){
 		openingHours = compareSelectedAndOpenHours(openingHours, selectedHours);
-		var workingEntrys = findSelectedWeekdays(input, weekdays);
+		var workingEntrys = new ArrayList<Entry<String>>();
+		workingEntrys.addAll(findSelectedWeekdays(input, weekdays));
 		var entryList = new ArrayList<Entry<String>>();
-
+		var output = new ArrayList<Entry<String>>(); 
 		for (Entry<String> entry : workingEntrys) 
-			entryList = encloseEntryDayTimes(entry, openingHours);
-		var output = new ArrayList<Entry<String>>();
+			entryList.addAll(encloseEntryDayTimes(entry, openingHours));
+		
 		for (Entry<String> entry : entryList) {
 			output.addAll(findAvailableTimeSlot(entry, duration));
 			if (output.size()>= maxNumberOfReturnEntrys ) {
@@ -84,17 +88,18 @@ public class SmartSearchController implements ISmartSearchController {
 				break;
 			}
 		}
+
 		return output;
 	}
 	
 	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, ArrayList<ArrayList<Entry<String>>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys){
 		openingHours = modifySelectedHoursList(openingHours, timeBefore, timeAfter);
-		selectedHours = modifySelectedHours(selectedHours, timeBefore, timeAfter);
+		duration += timeAfter + timeBefore;
 		return  findAvailableTimeSlot(input, duration, weekdays, selectedHours, openingHours, maxNumberOfReturnEntrys);
 	}
 
 
-public ArrayList<ArrayList<Entry<String>>> compareSelectedAndOpenHours(ArrayList<ArrayList<Entry<String>>> inputOpeningHours, Entry<String> selectedHours) {
+	public ArrayList<ArrayList<Entry<String>>> compareSelectedAndOpenHours(ArrayList<ArrayList<Entry<String>>> inputOpeningHours, Entry<String> selectedHours) {
 		var output = new ArrayList<ArrayList<Entry<String>>>();
 		for (ArrayList<Entry<String>> day : inputOpeningHours) {
 			if (day != null && !day.isEmpty()) {
