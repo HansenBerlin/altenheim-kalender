@@ -12,8 +12,7 @@ import org.threeten.extra.Days;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
 
-public class SmartSearchController implements ISmartSearchController 
-{
+public class SmartSearchController implements ISmartSearchController {
 
 	private ICalendarEntriesModel administrateEntries;
 
@@ -21,9 +20,9 @@ public class SmartSearchController implements ISmartSearchController
 	{
 		this.administrateEntries = administrateEntries;
 	}
-//Start main functions
-	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration) 
-	{			
+
+
+	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration) {			
 		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
 			input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values();
 		long start = input.getStartMillis();
@@ -32,8 +31,7 @@ public class SmartSearchController implements ISmartSearchController
 		long userEnd = end;
 		var output = new ArrayList<Entry<String>>();
 
-		for (var entries : result) 		
-		{		
+		for (var entries : result) 				
 			for (int i = 0; i <= entries.size(); i++) 
 			{		
 				if (i >= 0 && i < entries.size())
@@ -48,7 +46,6 @@ public class SmartSearchController implements ISmartSearchController
 				if (checkForDuplicates(output))
 					output.remove(output.size()-1);							
 			}		
-		}			
 		return output;
 	}
 
@@ -56,10 +53,11 @@ public class SmartSearchController implements ISmartSearchController
 		var workingEntrys = findSelectedWeekdays(input, weekdays);
 		workingEntrys = encloseEntryDayTimes(workingEntrys, selectedHours);
 		var output = new ArrayList<Entry<String>>();
+
 		for (Entry<String> entry : workingEntrys) {
 			output.addAll(findAvailableTimeSlot(entry, duration));
 			if (output.size()>= maxNumberOfReturnEntrys ) {
-				output = reduceListLength(output, maxNumberOfReturnEntrys);
+				reduceListLength(output, maxNumberOfReturnEntrys);
 				break;
 			}
 		}
@@ -67,7 +65,7 @@ public class SmartSearchController implements ISmartSearchController
 	}
 	
 	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys){
-		selectedHours = modifySelectedHours(selectedHours, timeBefore, timeAfter);
+		modifySelectedHours(selectedHours, timeBefore, timeAfter);
 		return findAvailableTimeSlot(input, duration, weekdays, selectedHours, maxNumberOfReturnEntrys);
 	}
 	
@@ -75,14 +73,14 @@ public class SmartSearchController implements ISmartSearchController
 		openingHours = compareSelectedAndOpenHours(openingHours, selectedHours);
 		var workingEntrys = findSelectedWeekdays(input, weekdays);
 		var entryList = new ArrayList<Entry<String>>();
-		for (Entry<String> entry : workingEntrys) {
+
+		for (Entry<String> entry : workingEntrys) 
 			entryList = encloseEntryDayTimes(entry, openingHours);
-		}
 		var output = new ArrayList<Entry<String>>();
 		for (Entry<String> entry : entryList) {
 			output.addAll(findAvailableTimeSlot(entry, duration));
 			if (output.size()>= maxNumberOfReturnEntrys ) {
-				output = reduceListLength(output, maxNumberOfReturnEntrys);
+				reduceListLength(output, maxNumberOfReturnEntrys);
 				break;
 			}
 		}
@@ -94,10 +92,9 @@ public class SmartSearchController implements ISmartSearchController
 		selectedHours = modifySelectedHours(selectedHours, timeBefore, timeAfter);
 		return  findAvailableTimeSlot(input, duration, weekdays, selectedHours, openingHours, maxNumberOfReturnEntrys);
 	}
-//End main functions
 
-//compare Opening Hours with selected Hours
-	public ArrayList<ArrayList<Entry<String>>> compareSelectedAndOpenHours(ArrayList<ArrayList<Entry<String>>> inputOpeningHours, Entry<String> selectedHours) {
+
+public ArrayList<ArrayList<Entry<String>>> compareSelectedAndOpenHours(ArrayList<ArrayList<Entry<String>>> inputOpeningHours, Entry<String> selectedHours) {
 		var output = new ArrayList<ArrayList<Entry<String>>>();
 		for (ArrayList<Entry<String>> day : inputOpeningHours) {
 			if (day != null && !day.isEmpty()) {
@@ -105,41 +102,34 @@ public class SmartSearchController implements ISmartSearchController
 				for (Entry<String> entry : day) {
 					Entry<String> workEntry = new Entry<>();
 					if (entry.getStartTime().isAfter(selectedHours.getStartTime())) {
-						if (entry.getStartTime().isAfter(selectedHours.getEndTime())) {
+						if (entry.getStartTime().isAfter(selectedHours.getEndTime())) 
 							continue;
-						} else {
-							workEntry.changeStartTime(entry.getStartTime());
-						}						
-					} else {
+						else 
+							workEntry.changeStartTime(entry.getStartTime());					
+					} else
 						workEntry.changeStartTime(selectedHours.getStartTime());
-					}
 					if (entry.getEndTime().isBefore(selectedHours.getEndTime())) {
-						if (entry.getEndTime().isBefore(selectedHours.getStartTime())) {
+						if (entry.getEndTime().isBefore(selectedHours.getStartTime()))
 							continue;
-						} else {
+						else
 							workEntry.changeEndTime(entry.getEndTime());
-						}
-					} else {
+					} else 
 						workEntry.changeEndTime(selectedHours.getEndTime());
-					}
 					outputDay.add(workEntry);
 				}
 				output.add(outputDay);
-			} else {
+			} else 
 				output.add(null);
-			}
 		}
 		return output;
 	}
-
+	
 	public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input, int length) {
-		while (input.size()>length) {
+		while (input.size()>length) 
 			input.remove(input.size()-1);
-		}
 		return input;
 	}
-
-	//return a list of search entrys only for the selected WeekDays in the selected time periode
+	
 	public ArrayList<Entry<String>> findSelectedWeekdays(Entry<String> input, boolean[] weekdays) {
 		var output = new ArrayList<Entry<String>>();
 		var start = input.getStartDate();
@@ -148,21 +138,16 @@ public class SmartSearchController implements ISmartSearchController
 		
 		while (now.isBefore(end) || now.equals(end)) {
 			if (weekdays[now.getDayOfWeek().getValue()-1]) {
-				// Tag ist ausgewählt
-				
 				if (now.equals(end)) {
-					
 					output.add(createEntryFormStartAndEndDate(start, end));
 					return output;
-				} else {
+				} else 
 					now = now.plusDays(1);
-				}
 			} else {
-				//Tag ist nicht ausgewählt
 				if (start.equals(now)) {
-					if (now.equals(end)) {
+					if (now.equals(end))
 						return output;
-					} else {
+					else {
 						start = start.plusDays(1);
 						now = now.plusDays(1);
 					}
@@ -180,15 +165,14 @@ public class SmartSearchController implements ISmartSearchController
 		}
 		return output;
 	}
-	//vielleicht unnötig
+	
 	public ArrayList<Entry<String>> encloseEntryDayTimes(ArrayList<Entry<String>> input, Entry<String>	selectedHours) {
 		var output = new ArrayList<Entry<String>>();
-		for (Entry<String> entry : input) {
+		for (Entry<String> entry : input) 
 			output.addAll(encloseEntryDayTimes(entry, selectedHours));
-		}
 		return output;
 	}
-
+	
 	public ArrayList<Entry<String>> encloseEntryDayTimes(Entry<String> input, Entry<String>	selectedHours) {
 		var output = new ArrayList<Entry<String>>();
 		int periode = Days.between(input.getStartDate(), input.getEndDate()).getAmount();
@@ -204,36 +188,26 @@ public class SmartSearchController implements ISmartSearchController
 		var output = new ArrayList<Entry<String>>();
 		int periode = Days.between(input.getStartDate(), input.getEndDate()).getAmount();
 		LocalDate day;
-
 		for (int i = 0; i <= periode; i++) {
 			day = input.getStartDate().plusDays(i);
 			var daynumber = day.getDayOfWeek().getValue()-1; //Weekdays don´t start bye 0
-
 			var selectedHoursDay = selectedHours.get(daynumber);
-			if (selectedHoursDay != null) {
-				if (!selectedHoursDay.isEmpty()) {
-					for (Entry<String> entry : selectedHoursDay) {
-						output.add(createEntryFormStartAndEndDateAndTime(day, day, entry.getStartTime(), entry.getEndTime()));
-					}
-				}
-			}
-			
-			
+			if (selectedHoursDay != null && !selectedHoursDay.isEmpty()) 
+				for (Entry<String> entry : selectedHoursDay)
+					output.add(createEntryFormStartAndEndDateAndTime(day, day, entry.getStartTime(), entry.getEndTime()));
 		}
 		return output;
 	}
-
+	
 	public ArrayList<ArrayList<Entry<String>>> modifySelectedHoursList(ArrayList<ArrayList<Entry<String>>> selectedHours, int timeBefore, int timeAfter) {
-		for (ArrayList<Entry<String>> entry : selectedHours) {
-			entry = modifySelectedHours(entry, timeBefore, timeAfter);
-		}
+		for (ArrayList<Entry<String>> entry : selectedHours) 
+			modifySelectedHours(entry, timeBefore, timeAfter);
 		return selectedHours;
 	}
 	
 	public ArrayList<Entry<String>> modifySelectedHours(ArrayList<Entry<String>> selectedHours, int timeBefore, int timeAfter) {
-		for (Entry<String> entry : selectedHours) {
-			entry = modifySelectedHours(entry, timeBefore, timeAfter);
-		}
+		for (Entry<String> entry : selectedHours) 
+			modifySelectedHours(entry, timeBefore, timeAfter);
 		return selectedHours;
 	}
 	
@@ -242,14 +216,14 @@ public class SmartSearchController implements ISmartSearchController
 		selectedHours.changeEndTime(selectedHours.getEndTime().plusMinutes(timeAfter));
 		return selectedHours;
 	}
-
+	
 	private Entry<String> createEntryFormStartAndEndDate(LocalDate start, LocalDate end) {
 		var entry = new Entry<String>();
 		entry.changeStartDate(start);
 		entry.changeEndDate(end);
 		return entry;
 	}
-
+	
 	private Entry<String> createEntryFormStartAndEndDateAndTime(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
 		var entry = new Entry<String>();
 		entry.changeStartDate(startDate);
@@ -258,9 +232,8 @@ public class SmartSearchController implements ISmartSearchController
 		entry.changeEndTime(endTime);
 		return entry;
 	}
-
-	private Entry<String> createEntryFromMillis(long start, long end)
-	{
+	
+	private Entry<String> createEntryFromMillis(long start, long end){
 		var entry = new Entry<String>();
 		var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
 		var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());		
@@ -270,9 +243,8 @@ public class SmartSearchController implements ISmartSearchController
 		entry.changeEndDate(dateEnd.toLocalDate());
 		return entry;
 	}
-
-	public boolean checkForDuplicates(ArrayList<Entry<String>> currentEntries)
-	{
+	
+	private boolean checkForDuplicates(ArrayList<Entry<String>> currentEntries)	{
 		if (currentEntries.size() < 2)
 			return false;
 		return (currentEntries.get(currentEntries.size()-2).getStartMillis() 
