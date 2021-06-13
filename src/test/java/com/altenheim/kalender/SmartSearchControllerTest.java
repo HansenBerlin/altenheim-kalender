@@ -6,8 +6,6 @@ import static org.mockito.Mockito.when;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
-
 import com.altenheim.kalender.controller.logicController.SmartSearchController;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.calendarfx.model.Calendar;
@@ -56,7 +54,9 @@ public class SmartSearchControllerTest
     // Öffnungszeiten für die folgenden Tests:
     // Montag, Mittwoch, Freitag: offen von 8 - 20 Uhr
     // Dienstag, Donnerstag und Samstag wie oben, aber Mittagspause von 12-14 Uhr
-    // Sonntag geschlossen
+    // Sonntag geschlossen. 
+    // Der Tag der Prefs ist fürs Testen dieser Unit unwesentlich und von daher überall gleich.
+
     @Test
     void adjustToOpeningHours_noPrefs_ShouldReturnNinePossibleEntries()
     {
@@ -88,6 +88,58 @@ public class SmartSearchControllerTest
         var result = controller.adjustToOpeningHours(60, userPrefs, openingHours);
         
         assertEquals(0, result.size());
+    }
+
+    // Hier wesentlich: an welchen Wochentagen soll gesucht werden und in welcher
+    // Range (die in den user prefs gespeichert ist). Also: Suche an Montagen und Freitagen
+    // pref start bis Ende umfasst 20 Wochen sollte 20 Einträge je montags und Freitags zurück-
+    // liefern, also insgesamt 40. Die Uhrzeit der Prefs ist fürs Testen dieser Unit
+    // unwesentlich und von daher überall gleich.
+
+    @Test
+    void addRFC2445RecurrenceRule_noWeekdayPreferenceSearchForFourWeeks_ShouldReturn7Entries()
+    {        
+        boolean[] weekdays = { true, true, true, true, true, true, true };
+        var userPrefs = createEntryDummy(10, 12, 1, 29, 1, 1);
+        var oneWeekEntries = new ArrayList<Entry<?>>();
+        for (int i = 0; i < 7 ; i++) 
+        {
+            var entry = createEntryDummy(10, 20, i+1, i+1, 1, 1);
+            oneWeekEntries.add(entry);            
+        }
+
+        var controller = new SmartSearchController(null);
+        var result = controller.addRFC2445RecurrenceRule(weekdays, oneWeekEntries, userPrefs);
+
+        boolean countAsserts = true;
+        for (var entry : result) 
+        {
+            if (!"COUNT=4".contains(entry.getRecurrenceRule())); 
+                countAsserts = false;           
+        }
+        
+        assertEquals(7, result.size());
+        assertEquals(true, countAsserts);
+    }
+
+    @Test
+    void addRFC2445RecurrenceRule_twoWeekdaysPreferenceSearchForFourWeeks_ShouldReturn2Entries()
+    {        
+        boolean[] weekdays = { true, false, true, false, false, false, false };
+        var userPrefs = createEntryDummy(10, 12, 1, 29, 1, 1);
+
+        var oneWeekEntries = new ArrayList<Entry<?>>();
+
+        for (int i = 0; i < 7 ; i++) 
+        {
+            var entry = createEntryDummy(10, 20, i+1, i+1, 1, 1);
+            oneWeekEntries.add(entry);            
+        }
+
+        var controller = new SmartSearchController(null);
+        var result = controller.addRFC2445RecurrenceRule(weekdays, oneWeekEntries, userPrefs);
+        
+        assertEquals(2, result.size());
     }
 
 
