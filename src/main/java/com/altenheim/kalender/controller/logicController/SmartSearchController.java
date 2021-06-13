@@ -22,6 +22,7 @@ public class SmartSearchController implements ISmartSearchController
 		this.administrateEntries = administrateEntries;
 	}
 //Start main functions
+	//Abfrage mit den Grundlegenden Daten
 	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, int maxNumberOfReturnEntrys){
 		var workingEntrys = findSelectedWeekdays(input, weekdays);
 		workingEntrys = encloseEntryDayTimes(workingEntrys, selectedHours);
@@ -34,6 +35,14 @@ public class SmartSearchController implements ISmartSearchController
 		}
 		return output;
 	}
+	// Abfrage mit den Grundlegenden Daten, Fahrzeit oder freie Solts
+	public ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, boolean[] weekdays, Entry<String>	selectedHours, int maxNumberOfReturnEntrys, int timeBefore, int timeAfter){
+		selectedHours = modifySelectedHours(selectedHours, timeBefore, timeAfter);
+		return findAvailableTimeSlot(input, duration, weekdays, selectedHours, maxNumberOfReturnEntrys);
+	}
+	// Abfrage mit den Grundlegenden Daten, Öffnungszeiten
+
+	// Abfrage mit den Grundlegenden Daten, Fahrzeit oder freie Solts, Öffnungszeiten
 
 
 
@@ -70,6 +79,40 @@ public class SmartSearchController implements ISmartSearchController
 //End main functions
 
 //compare Opening Hours with selected Hours
+	public ArrayList<ArrayList<Entry<String>>> compareSelectedAndOpenHours(ArrayList<ArrayList<Entry<String>>> inputOpeningHours, Entry<String> selectedHours) {
+		var output = new ArrayList<ArrayList<Entry<String>>>();
+		for (ArrayList<Entry<String>> day : inputOpeningHours) {
+			if (day != null && !day.isEmpty()) {
+				var outputDay = new ArrayList<Entry<String>>();
+				for (Entry<String> entry : day) {
+					Entry<String> workEntry = new Entry<>();
+					if (entry.getStartTime().isAfter(selectedHours.getStartTime())) {
+						if (entry.getStartTime().isAfter(selectedHours.getEndTime())) {
+							continue;
+						} else {
+							workEntry.changeStartTime(entry.getStartTime());
+						}						
+					} else {
+						workEntry.changeStartTime(selectedHours.getStartTime());
+					}
+					if (entry.getEndTime().isBefore(selectedHours.getEndTime())) {
+						if (entry.getEndTime().isBefore(selectedHours.getStartTime())) {
+							continue;
+						} else {
+							workEntry.changeEndTime(entry.getEndTime());
+						}
+					} else {
+						workEntry.changeEndTime(selectedHours.getEndTime());
+					}
+					outputDay.add(workEntry);
+				}
+				output.add(outputDay);
+			} else {
+				output.add(null);
+			}
+		}
+		return output;
+	}
 
 public ArrayList<Entry<String>> reduceListLength(ArrayList<Entry<String>> input, int length) {
 		while (input.size()>length) {
