@@ -55,6 +55,42 @@ public class SmartSearchController implements ISmartSearchController {
 			}
 		return output;
 	}
+
+	public ArrayList<Entry<?>> findPossibleTimeSlotsWithoutOpening(Entry<?> input, int duration, boolean[] weekdays, 
+		ArrayList<ArrayList<Entry<?>>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys)
+	{
+		var daysduration = (int) (input.getEndDate().toEpochDay() - input.getStartDate().toEpochDay());
+		var output = new ArrayList<Entry<?>>(); 
+		var start = input.getStartTime();
+		var end = input.getEndTime();
+
+		for (int i = 0; i <= daysduration; i++) 
+		{
+			var date = input.getStartDate().plusDays(i);
+
+			if(!isValidWeekday(weekdays, date))
+				continue;
+			
+			for (var day : openingHours.get(i%7))
+			{
+				var entry = createEntry(date, start, end);
+				if (start.isBefore(day.getStartTime()))
+					entry.changeStartTime(day.getStartTime());
+				if (end.isAfter(day.getEndTime()))
+					entry.changeEndTime(day.getEndTime());
+				output.addAll(findAvailableTimeSlotAngepasstOhneOeffZt(entry, duration, timeBefore, timeAfter));
+			}
+			
+		}
+		return output;
+	}
+
+	
+
+	private boolean isValidWeekday(boolean[] weekdays, LocalDate inputDate)
+	{
+		return weekdays[inputDate.getDayOfWeek().getValue()-1];
+	}
 	
 	
 	public ArrayList<ArrayList<Entry<?>>> modifyOpeningHours(ArrayList<ArrayList<Entry<?>>> inputOpeningHours, Entry<?> selectedHours, int timeBefore, int timeAfter) {
@@ -197,9 +233,47 @@ public class SmartSearchController implements ISmartSearchController {
 				if (checkForDuplicates(output))
 					output.remove(output.size()-1);							
 			}
-		if (output.isEmpty()) {
+		if (result.isEmpty())
 			output.add(input);
-		}		
+		if (output.isEmpty()) 
+			return new ArrayList<Entry<?>>();
+			
+		return output;
+	}
+
+	public ArrayList<Entry<?>> findAvailableTimeSlotAngepasstOhneOeffZt(Entry<?> input, int duration, int before, int after) {			
+		
+		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
+			input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values();		
+		var output = new ArrayList<Entry<?>>();
+		long start = input.getStartMillis() + before * 60000;
+		long end = input.getEndMillis() - after * 60000; 
+		var entrytest = createEntryFromMillis(start, end);
+		long userStart = start;
+		long userEnd = end;
+
+		for (var entries : result) 				
+			for (int i = 0; i <= entries.size(); i++) 
+			{		
+				entrytest = createEntryFromMillis(start, end);
+				System.out.println(entrytest);
+
+				if (i >= 0 && i < entries.size())
+					end = entries.get(i).getStartMillis();
+				if (i > 0)				
+					start = entries.get(i-1).getEndMillis();			
+				if (i == entries.size())				
+					end = userEnd;
+				if (end < start)
+					continue;	
+				if ((end - start)/60000 >= duration && !((end-userStart)/60000 <= duration || (userEnd-start)/60000 <= duration))
+					output.add(createEntryFromMillis(start, end));
+				if (checkForDuplicates(output))
+					output.remove(output.size()-1);							
+			}
+		if (result.isEmpty())
+			output.add(input);
+						
 		return output;
 	}
 
