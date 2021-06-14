@@ -276,439 +276,439 @@ public class SmartSearchControllerTest
         assertEquals(4, result.size());
     }
 
-//End findSelectedWeekdays
+    //End findSelectedWeekdays
 
-// Start encloseEntryDayTimes
-@Test
-void encloseEntryDayTimes_OneEntryTwoWeekLength_shouldReturnFourteenEntryWithCorrectTimes(){
-    var entryUser = new Entry<String>("User Preference");
-    entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
-    entryUser.changeEndDate(LocalDate.of(2021, 6, 20));
+    // Start encloseEntryDayTimes
+//    @Test
+//    void encloseEntryDayTimes_OneEntryTwoWeekLength_shouldReturnFourteenEntryWithCorrectTimes(){
+//        var entryUser = new Entry<String>("User Preference");
+//        entryUser.changeStartDate(LocalDate.of(2021, 6, 7));
+//        entryUser.changeEndDate(LocalDate.of(2021, 6, 20));
+//    
+//        var selectedHours = new Entry<String>("Selected Hours");
+//        selectedHours.changeStartTime(LocalTime.of(10, 0));
+//        selectedHours.changeEndTime(LocalTime.of(18, 0));
+//    
+//        var allEntriesMock = mock(ICalendarEntriesModel.class);
+//        
+//        
+//        var controller = new SmartSearchController(allEntriesMock);
+//        var result = controller.encloseEntryDayTimes(entryUser, selectedHours);
+//        
+//        for (Entry<String> entry : result) {
+//            assertEquals(selectedHours.getStartTime(), entry.getStartTime());
+//            assertEquals(selectedHours.getEndTime(), entry.getEndTime());
+//        }
+//        
+//        assertEquals(14, result.size());
+//    }
+//    
+//    @Test
+//    void encloseEntryDayTimes_fourEntryTwoWeekLength_shouldReturnNineEntryWithCorrectTimes(){
+//        var entryOne = new Entry<String>("Test");
+//        var entryTwo = new Entry<String>("Test");
+//        var entryThree = new Entry<String>("Test");
+//        var entryFour = new Entry<String>("Test");
+//        ArrayList<Entry<String>> entrylist = new ArrayList<Entry<String>>();
+//    
+//        entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//1
+//        entryOne.changeEndDate(LocalDate.of(2021, 6, 7));
+//        entrylist.add(entryOne);
+//        
+//        entryTwo.changeStartDate(LocalDate.of(2021, 6, 8));//3
+//        entryTwo.changeEndDate(LocalDate.of(2021, 6, 10));
+//        entrylist.add(entryTwo);
+//        
+//        entryThree.changeStartDate(LocalDate.of(2021, 6,15));//3
+//        entryThree.changeEndDate(LocalDate.of(2021, 6, 17));
+//        entrylist.add(entryThree);
+//        
+//        entryFour.changeStartDate(LocalDate.of(2021, 6, 19));//2
+//        entryFour.changeEndDate(LocalDate.of(2021, 6, 20));
+//        entrylist.add(entryFour);
+//    
+//        
+//        var selectedHours = new Entry<String>("Selected Hours");
+//        selectedHours.changeStartTime(LocalTime.of(10, 0));
+//        selectedHours.changeEndTime(LocalTime.of(18, 0));
+//    
+//        var allEntriesMock = mock(ICalendarEntriesModel.class);
+//        
+//        
+//        var controller = new SmartSearchController(allEntriesMock);
+//        var result = controller.encloseEntryDayTimes(entrylist, selectedHours);
+//        
+//        for (Entry<String> entry : result) {
+//            assertEquals(selectedHours.getStartTime(), entry.getStartTime());
+//            assertEquals(selectedHours.getEndTime(), entry.getEndTime());
+//        }
+//        assertEquals(9, result.size());
+//    }
+//    
+    @Test
+    void encloseEntryDayTimes_OneEntryOneDayLength_shouldReturnOneEntryWithCorrectOpenTimes(){
+        var entryOne = new Entry<String>("Test");
 
-    var selectedHours = new Entry<String>("Selected Hours");
-    selectedHours.changeStartTime(LocalTime.of(10, 0));
-    selectedHours.changeEndTime(LocalTime.of(18, 0));
+        entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
+        entryOne.changeEndDate(LocalDate.of(2021, 6, 7));
 
-    var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
+
+
+        var selectedHoursDay0 = new ArrayList<Entry<String>>();
+
+        var hours = new Entry<String>("Selected Hours");
+        hours.changeStartTime(LocalTime.of(10, 0));
+        hours.changeEndTime(LocalTime.of(18, 0));
+        selectedHoursDay0.add(hours);
+
+        selectedHours.add(selectedHoursDay0);
+
+
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
     
-    
-    var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.encloseEntryDayTimes(entryUser, selectedHours);
-    
-    for (Entry<String> entry : result) {
-        assertEquals(selectedHours.getStartTime(), entry.getStartTime());
-        assertEquals(selectedHours.getEndTime(), entry.getEndTime());
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.encloseEntryDayTimes(entryOne, selectedHours);
+
+        assertEquals(LocalTime.of(10, 00), result.get(0).getStartTime());
+        assertEquals(LocalTime.of(18, 00), result.get(0).getEndTime());
+
+        assertEquals(1, result.size());
     }
-    
-    assertEquals(14, result.size());
-}
 
-@Test
-void encloseEntryDayTimes_fourEntryTwoWeekLength_shouldReturnNineEntryWithCorrectTimes(){
-    var entryOne = new Entry<String>("Test");
-    var entryTwo = new Entry<String>("Test");
-    var entryThree = new Entry<String>("Test");
-    var entryFour = new Entry<String>("Test");
-    ArrayList<Entry<String>> entrylist = new ArrayList<Entry<String>>();
+    @Test
+    void encloseEntryDayTimes_OneEntryOneDayLength_shouldReturnTwoEntryWithCorrectOpenTimes(){
+        var entryOne = new Entry<String>("Test");
 
-    entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//1
-    entryOne.changeEndDate(LocalDate.of(2021, 6, 7));
-    entrylist.add(entryOne);
-    
-    entryTwo.changeStartDate(LocalDate.of(2021, 6, 8));//3
-    entryTwo.changeEndDate(LocalDate.of(2021, 6, 10));
-    entrylist.add(entryTwo);
-    
-    entryThree.changeStartDate(LocalDate.of(2021, 6,15));//3
-    entryThree.changeEndDate(LocalDate.of(2021, 6, 17));
-    entrylist.add(entryThree);
-    
-    entryFour.changeStartDate(LocalDate.of(2021, 6, 19));//2
-    entryFour.changeEndDate(LocalDate.of(2021, 6, 20));
-    entrylist.add(entryFour);
-   
-    
-    var selectedHours = new Entry<String>("Selected Hours");
-    selectedHours.changeStartTime(LocalTime.of(10, 0));
-    selectedHours.changeEndTime(LocalTime.of(18, 0));
+        entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
+        entryOne.changeEndDate(LocalDate.of(2021, 6, 7));
 
-    var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
+
+
+        var selectedHoursDay0 = new ArrayList<Entry<String>>();
+
+        var hours = new Entry<String>("Selected Hours");
+        hours.changeStartTime(LocalTime.of(10, 0));
+        hours.changeEndTime(LocalTime.of(14, 0));
+        selectedHoursDay0.add(hours);
+
+        var hours1 = new Entry<String>("Selected Hours");
+        hours1.changeStartTime(LocalTime.of(15, 0));
+        hours1.changeEndTime(LocalTime.of(20, 0));
+        selectedHoursDay0.add(hours1);
+
+        selectedHours.add(selectedHoursDay0);
+
+
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
     
-    
-    var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.encloseEntryDayTimes(entrylist, selectedHours);
-    
-    for (Entry<String> entry : result) {
-        assertEquals(selectedHours.getStartTime(), entry.getStartTime());
-        assertEquals(selectedHours.getEndTime(), entry.getEndTime());
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.encloseEntryDayTimes(entryOne, selectedHours);
+
+        assertEquals(LocalTime.of(10, 00), result.get(0).getStartTime());
+        assertEquals(LocalTime.of(14, 00), result.get(0).getEndTime());
+
+        assertEquals(LocalTime.of(15, 00), result.get(1).getStartTime());
+        assertEquals(LocalTime.of(20, 00), result.get(1).getEndTime());
+
+        assertEquals(2, result.size());
     }
-    assertEquals(9, result.size());
-}
 
-@Test
-void encloseEntryDayTimes_OneEntryOneDayLength_shouldReturnOneEntryWithCorrectOpenTimes(){
-    var entryOne = new Entry<String>("Test");
+    @Test
+    void encloseEntryDayTimes_OneEntryTwoDayLength_shouldReturnThreeEntryWithCorrectOpenTimes(){
+        var entryOne = new Entry<String>("Test");
+
+        entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
+        entryOne.changeEndDate(LocalDate.of(2021, 6, 8));//1
+
+        var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
+
+
+        var selectedHoursDay0 = new ArrayList<Entry<String>>();
+
+        var hours = new Entry<String>("Selected Hours");
+        hours.changeStartTime(LocalTime.of(10, 0));
+        hours.changeEndTime(LocalTime.of(14, 0));
+        selectedHoursDay0.add(hours);
+
+        var hours1 = new Entry<String>("Selected Hours");
+        hours1.changeStartTime(LocalTime.of(15, 0));
+        hours1.changeEndTime(LocalTime.of(20, 0));
+        selectedHoursDay0.add(hours1);
+
+        selectedHours.add(selectedHoursDay0);
+
+
+        var selectedHoursDay1 = new ArrayList<Entry<String>>();
+
+        var hours2 = new Entry<String>("Selected Hours");
+        hours2.changeStartTime(LocalTime.of(10, 0));
+        hours2.changeEndTime(LocalTime.of(14, 0));
+        selectedHoursDay1.add(hours2);
+
+        selectedHours.add(selectedHoursDay1);
+
+
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
     
-    entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
-    entryOne.changeEndDate(LocalDate.of(2021, 6, 7));
-    
-    var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.encloseEntryDayTimes(entryOne, selectedHours);
 
+        assertEquals(LocalTime.of(10, 00), result.get(0).getStartTime());
+        assertEquals(LocalTime.of(14, 00), result.get(0).getEndTime());
 
-    var selectedHoursDay0 = new ArrayList<Entry<String>>();
+        assertEquals(LocalTime.of(15, 00), result.get(1).getStartTime());
+        assertEquals(LocalTime.of(20, 00), result.get(1).getEndTime());
 
-    var hours = new Entry<String>("Selected Hours");
-    hours.changeStartTime(LocalTime.of(10, 0));
-    hours.changeEndTime(LocalTime.of(18, 0));
-    selectedHoursDay0.add(hours);
+        assertEquals(LocalTime.of(10, 00), result.get(2).getStartTime());
+        assertEquals(LocalTime.of(14, 00), result.get(2).getEndTime());
 
-    selectedHours.add(selectedHoursDay0);
-
-
-    var allEntriesMock = mock(ICalendarEntriesModel.class);
-  
-    var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.encloseEntryDayTimes(entryOne, selectedHours);
-
-    assertEquals(LocalTime.of(10, 00), result.get(0).getStartTime());
-    assertEquals(LocalTime.of(18, 00), result.get(0).getEndTime());
-    
-    assertEquals(1, result.size());
-}
-
-@Test
-void encloseEntryDayTimes_OneEntryOneDayLength_shouldReturnTwoEntryWithCorrectOpenTimes(){
-    var entryOne = new Entry<String>("Test");
-    
-    entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
-    entryOne.changeEndDate(LocalDate.of(2021, 6, 7));
-    
-    var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
-
-
-    var selectedHoursDay0 = new ArrayList<Entry<String>>();
-
-    var hours = new Entry<String>("Selected Hours");
-    hours.changeStartTime(LocalTime.of(10, 0));
-    hours.changeEndTime(LocalTime.of(14, 0));
-    selectedHoursDay0.add(hours);
-
-    var hours1 = new Entry<String>("Selected Hours");
-    hours1.changeStartTime(LocalTime.of(15, 0));
-    hours1.changeEndTime(LocalTime.of(20, 0));
-    selectedHoursDay0.add(hours1);
-
-    selectedHours.add(selectedHoursDay0);
-
-
-    var allEntriesMock = mock(ICalendarEntriesModel.class);
-  
-    var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.encloseEntryDayTimes(entryOne, selectedHours);
-
-    assertEquals(LocalTime.of(10, 00), result.get(0).getStartTime());
-    assertEquals(LocalTime.of(14, 00), result.get(0).getEndTime());
-    
-    assertEquals(LocalTime.of(15, 00), result.get(1).getStartTime());
-    assertEquals(LocalTime.of(20, 00), result.get(1).getEndTime());
-    
-    assertEquals(2, result.size());
-}
-
-@Test
-void encloseEntryDayTimes_OneEntryTwoDayLength_shouldReturnThreeEntryWithCorrectOpenTimes(){
-    var entryOne = new Entry<String>("Test");
-    
-    entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
-    entryOne.changeEndDate(LocalDate.of(2021, 6, 8));//1
-    
-    var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
-
-
-    var selectedHoursDay0 = new ArrayList<Entry<String>>();
-
-    var hours = new Entry<String>("Selected Hours");
-    hours.changeStartTime(LocalTime.of(10, 0));
-    hours.changeEndTime(LocalTime.of(14, 0));
-    selectedHoursDay0.add(hours);
-
-    var hours1 = new Entry<String>("Selected Hours");
-    hours1.changeStartTime(LocalTime.of(15, 0));
-    hours1.changeEndTime(LocalTime.of(20, 0));
-    selectedHoursDay0.add(hours1);
-
-    selectedHours.add(selectedHoursDay0);
-
-
-    var selectedHoursDay1 = new ArrayList<Entry<String>>();
-
-    var hours2 = new Entry<String>("Selected Hours");
-    hours2.changeStartTime(LocalTime.of(10, 0));
-    hours2.changeEndTime(LocalTime.of(14, 0));
-    selectedHoursDay1.add(hours2);
-
-    selectedHours.add(selectedHoursDay1);
-
-
-    var allEntriesMock = mock(ICalendarEntriesModel.class);
-  
-    var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.encloseEntryDayTimes(entryOne, selectedHours);
-
-    assertEquals(LocalTime.of(10, 00), result.get(0).getStartTime());
-    assertEquals(LocalTime.of(14, 00), result.get(0).getEndTime());
-    
-    assertEquals(LocalTime.of(15, 00), result.get(1).getStartTime());
-    assertEquals(LocalTime.of(20, 00), result.get(1).getEndTime());
-
-    assertEquals(LocalTime.of(10, 00), result.get(2).getStartTime());
-    assertEquals(LocalTime.of(14, 00), result.get(2).getEndTime());
-    
-    assertEquals(3, result.size());
-}
-
-
-@Test
-void encloseEntryDayTimes_OneEntryTwoDayLength_shouldReturnTwoEntryWithCorrectOpenTimes(){
-    var entryOne = new Entry<String>("Test");
-    
-    entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
-    entryOne.changeEndDate(LocalDate.of(2021, 6, 8));//1
-    
-    var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
-
-
-    var selectedHoursDay0 = new ArrayList<Entry<String>>();
-
-    var hours = new Entry<String>("Selected Hours");
-    hours.changeStartTime(LocalTime.of(10, 0));
-    hours.changeEndTime(LocalTime.of(14, 0));
-    selectedHoursDay0.add(hours);
-
-    var hours1 = new Entry<String>("Selected Hours");
-    hours1.changeStartTime(LocalTime.of(15, 0));
-    hours1.changeEndTime(LocalTime.of(20, 0));
-    selectedHoursDay0.add(hours1);
-
-    selectedHours.add(selectedHoursDay0);
-
-
-    var selectedHoursDay1 = new ArrayList<Entry<String>>();
-    //Day 1 is Empty
-
-    selectedHours.add(selectedHoursDay1);
-
-
-    var allEntriesMock = mock(ICalendarEntriesModel.class);
-  
-    var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.encloseEntryDayTimes(entryOne, selectedHours);
-
-    assertEquals(LocalTime.of(10, 00), result.get(0).getStartTime());
-    assertEquals(LocalTime.of(14, 00), result.get(0).getEndTime());
-    
-    assertEquals(LocalTime.of(15, 00), result.get(1).getStartTime());
-    assertEquals(LocalTime.of(20, 00), result.get(1).getEndTime());
-    
-    assertEquals(2, result.size());
-}
-
-@Test
-void encloseEntryDayTimes_OneEntryTwoDayLength_OneDayHoursEmpty_shouldReturnTwoEntryWithCorrectOpenTimes(){
-    var entryOne = new Entry<String>("Test");
-    
-    entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
-    entryOne.changeEndDate(LocalDate.of(2021, 6, 8));//1
-    
-    var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
-
-
-    var selectedHoursDay0 = new ArrayList<Entry<String>>();
-
-    var hours = new Entry<String>("Selected Hours");
-    hours.changeStartTime(LocalTime.of(10, 0));
-    hours.changeEndTime(LocalTime.of(14, 0));
-    selectedHoursDay0.add(hours);
-
-    var hours1 = new Entry<String>("Selected Hours");
-    hours1.changeStartTime(LocalTime.of(15, 0));
-    hours1.changeEndTime(LocalTime.of(20, 0));
-    selectedHoursDay0.add(hours1);
-
-    selectedHours.add(selectedHoursDay0);
-    //Day 1 is null
-    selectedHours.add(null);
-
-
-
-
-    var allEntriesMock = mock(ICalendarEntriesModel.class);
-  
-    var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.encloseEntryDayTimes(entryOne, selectedHours);
-
-    assertEquals(LocalTime.of(10, 00), result.get(0).getStartTime());
-    assertEquals(LocalTime.of(14, 00), result.get(0).getEndTime());
-    
-    assertEquals(LocalTime.of(15, 00), result.get(1).getStartTime());
-    assertEquals(LocalTime.of(20, 00), result.get(1).getEndTime());
-    
-    assertEquals(2, result.size());
-}
-//End encloseEntryDayTimes
-
-//Start modifySelectedHours
-@Test
-void modifySelectedHours_OneEntryOneDayLength_shouldReturnOneEntryWithCorrectTimes(){
-    var  entry = new Entry<String>("User Preference");
-    entry.changeStartDate(LocalDate.of(2021, 6, 7));
-    entry.changeStartTime(LocalTime.of(16, 00));
-    entry.changeEndDate(LocalDate.of(2021, 6, 7));
-    entry.changeEndTime(LocalTime.of(20, 00));
-
-    
-
-    var allEntriesMock = mock(ICalendarEntriesModel.class);
-    
-    
-    var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.modifySelectedHours(entry, 60, 60);
-    
-    
-    assertEquals(LocalTime.of(15, 00), result.getStartTime());
-    assertEquals(LocalTime.of(21, 00), result.getEndTime());
-}
-
-
-@Test
-void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnTwoEntryWithCorrectTimes(){
-    
-    var input = new ArrayList<Entry<String>>();
-    var  entry = new Entry<String>("User Preference");
-    entry.changeStartDate(LocalDate.of(2021, 6, 7));
-    entry.changeStartTime(LocalTime.of(16, 00));
-    entry.changeEndDate(LocalDate.of(2021, 6, 7));
-    entry.changeEndTime(LocalTime.of(20, 00));
-    input.add(entry);
-
-    var  entry2 = new Entry<String>("User Preference");
-    entry2.changeStartDate(LocalDate.of(2021, 6, 8));
-    entry2.changeStartTime(LocalTime.of(16, 00));
-    entry2.changeEndDate(LocalDate.of(2021, 6, 8));
-    entry2.changeEndTime(LocalTime.of(20, 00));
-    input.add(entry2);
-
-    var allEntriesMock = mock(ICalendarEntriesModel.class);
-    
-    
-    var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.modifySelectedHours(input, 60, 60);
-    
-    for (Entry<String> resultEntry : result) {
-        assertEquals(LocalTime.of(15, 00), resultEntry.getStartTime());
-        assertEquals(LocalTime.of(21, 00), resultEntry.getEndTime());
+        assertEquals(3, result.size());
     }
+
+
+    @Test
+    void encloseEntryDayTimes_OneEntryTwoDayLength_shouldReturnTwoEntryWithCorrectOpenTimes(){
+        var entryOne = new Entry<String>("Test");
+
+        entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
+        entryOne.changeEndDate(LocalDate.of(2021, 6, 8));//1
+
+        var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
+
+
+        var selectedHoursDay0 = new ArrayList<Entry<String>>();
+
+        var hours = new Entry<String>("Selected Hours");
+        hours.changeStartTime(LocalTime.of(10, 0));
+        hours.changeEndTime(LocalTime.of(14, 0));
+        selectedHoursDay0.add(hours);
+
+        var hours1 = new Entry<String>("Selected Hours");
+        hours1.changeStartTime(LocalTime.of(15, 0));
+        hours1.changeEndTime(LocalTime.of(20, 0));
+        selectedHoursDay0.add(hours1);
+
+        selectedHours.add(selectedHoursDay0);
+
+
+        var selectedHoursDay1 = new ArrayList<Entry<String>>();
+        //Day 1 is Empty
+
+        selectedHours.add(selectedHoursDay1);
+
+
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
     
-}
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.encloseEntryDayTimes(entryOne, selectedHours);
 
-@Test
-void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnFourEntryWithCorrectTimes(){
-    
-    var input = new ArrayList<Entry<String>>();
-    var  entry = new Entry<String>("User Preference");
-    entry.changeStartDate(LocalDate.of(2021, 6, 7));
-    entry.changeStartTime(LocalTime.of(16, 00));
-    entry.changeEndDate(LocalDate.of(2021, 6, 7));
-    entry.changeEndTime(LocalTime.of(20, 00));
-    input.add(entry);
+        assertEquals(LocalTime.of(10, 00), result.get(0).getStartTime());
+        assertEquals(LocalTime.of(14, 00), result.get(0).getEndTime());
 
-    var  entry2 = new Entry<String>("User Preference");
-    entry2.changeStartDate(LocalDate.of(2021, 6, 8));
-    entry2.changeStartTime(LocalTime.of(16, 00));
-    entry2.changeEndDate(LocalDate.of(2021, 6, 8));
-    entry2.changeEndTime(LocalTime.of(20, 00));
-    input.add(entry2);
+        assertEquals(LocalTime.of(15, 00), result.get(1).getStartTime());
+        assertEquals(LocalTime.of(20, 00), result.get(1).getEndTime());
 
-
-    var input1 = new ArrayList<Entry<String>>();
-    var  entry3 = new Entry<String>("User Preference");
-    entry3.changeStartDate(LocalDate.of(2021, 6, 7));
-    entry3.changeStartTime(LocalTime.of(16, 00));
-    entry3.changeEndDate(LocalDate.of(2021, 6, 7));
-    entry3.changeEndTime(LocalTime.of(20, 00));
-    input1.add(entry3);
-
-    var  entry4 = new Entry<String>("User Preference");
-    entry4.changeStartDate(LocalDate.of(2021, 6, 8));
-    entry4.changeStartTime(LocalTime.of(16, 00));
-    entry4.changeEndDate(LocalDate.of(2021, 6, 8));
-    entry4.changeEndTime(LocalTime.of(20, 00));
-    input.add(entry4);
-
-    
-
-    ArrayList<ArrayList<Entry<String>>> input2 = new ArrayList<ArrayList<Entry<String>>>();
-    input2.add(input);
-    input2.add(input1);
-    var allEntriesMock = mock(ICalendarEntriesModel.class);
-    
-    
-    var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.modifySelectedHoursList(input2, 60, 60);
-    int numberResults = 0;
-    for (ArrayList<Entry<String>> resultEntry : result) {
-        for (Entry<String> ent : resultEntry) {
-            assertEquals(LocalTime.of(15, 00), ent.getStartTime());
-            assertEquals(LocalTime.of(21, 00), ent.getEndTime());
-            numberResults++;
-        }  
+        assertEquals(2, result.size());
     }
-    assertEquals(4, numberResults);
-    
-}
-//End modifySelectedHours
+
+    @Test
+    void encloseEntryDayTimes_OneEntryTwoDayLength_OneDayHoursEmpty_shouldReturnTwoEntryWithCorrectOpenTimes(){
+        var entryOne = new Entry<String>("Test");
+
+        entryOne.changeStartDate(LocalDate.of(2021, 6, 7));//0
+        entryOne.changeEndDate(LocalDate.of(2021, 6, 8));//1
+
+        var selectedHours = new ArrayList<ArrayList<Entry<String>>>();
 
 
-@Test
-void reduceListLength_TwoEntry_shouldReturnOneEntry(){
+        var selectedHoursDay0 = new ArrayList<Entry<String>>();
+
+        var hours = new Entry<String>("Selected Hours");
+        hours.changeStartTime(LocalTime.of(10, 0));
+        hours.changeEndTime(LocalTime.of(14, 0));
+        selectedHoursDay0.add(hours);
+
+        var hours1 = new Entry<String>("Selected Hours");
+        hours1.changeStartTime(LocalTime.of(15, 0));
+        hours1.changeEndTime(LocalTime.of(20, 0));
+        selectedHoursDay0.add(hours1);
+
+        selectedHours.add(selectedHoursDay0);
+        //Day 1 is null
+        selectedHours.add(null);
+
+
+
+
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
     
-    var input = new ArrayList<Entry<String>>();
-    for (int i = 0; i < 10; i++) {
-        input.add(null);
+        var controller = new SmartSearchController(allEntriesMock);
+        var result = controller.encloseEntryDayTimes(entryOne, selectedHours);
+
+        assertEquals(LocalTime.of(10, 00), result.get(0).getStartTime());
+        assertEquals(LocalTime.of(14, 00), result.get(0).getEndTime());
+
+        assertEquals(LocalTime.of(15, 00), result.get(1).getStartTime());
+        assertEquals(LocalTime.of(20, 00), result.get(1).getEndTime());
+
+        assertEquals(2, result.size());
     }
-    var allEntriesMock = mock(ICalendarEntriesModel.class);
+    //End encloseEntryDayTimes
 
-    var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.reduceListLength(input, 5);
-    
-    assertEquals(5, result.size());
-    
-}
+    //Start modifySelectedHours
+//    @Test
+//    void modifySelectedHours_OneEntryOneDayLength_shouldReturnOneEntryWithCorrectTimes(){
+//        var  entry = new Entry<String>("User Preference");
+//        entry.changeStartDate(LocalDate.of(2021, 6, 7));
+//        entry.changeStartTime(LocalTime.of(16, 00));
+//        entry.changeEndDate(LocalDate.of(2021, 6, 7));
+//        entry.changeEndTime(LocalTime.of(20, 00));
+//
+//
+//
+//        var allEntriesMock = mock(ICalendarEntriesModel.class);
+//
+//
+//        var controller = new SmartSearchController(allEntriesMock);
+//        var result = controller.modifySelectedHours(entry, 60, 60);
+//
+//
+//        assertEquals(LocalTime.of(15, 00), result.getStartTime());
+//        assertEquals(LocalTime.of(21, 00), result.getEndTime());
+//    }
+//
+//
+//    @Test
+//    void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnTwoEntryWithCorrectTimes(){
+//
+//        var input = new ArrayList<Entry<String>>();
+//        var  entry = new Entry<String>("User Preference");
+//        entry.changeStartDate(LocalDate.of(2021, 6, 7));
+//        entry.changeStartTime(LocalTime.of(16, 00));
+//        entry.changeEndDate(LocalDate.of(2021, 6, 7));
+//        entry.changeEndTime(LocalTime.of(20, 00));
+//        input.add(entry);
+//
+//        var  entry2 = new Entry<String>("User Preference");
+//        entry2.changeStartDate(LocalDate.of(2021, 6, 8));
+//        entry2.changeStartTime(LocalTime.of(16, 00));
+//        entry2.changeEndDate(LocalDate.of(2021, 6, 8));
+//        entry2.changeEndTime(LocalTime.of(20, 00));
+//        input.add(entry2);
+//
+//        var allEntriesMock = mock(ICalendarEntriesModel.class);
+//
+//
+//        var controller = new SmartSearchController(allEntriesMock);
+//        var result = controller.modifySelectedHours(input, 60, 60);
+//
+//        for (Entry<String> resultEntry : result) {
+//            assertEquals(LocalTime.of(15, 00), resultEntry.getStartTime());
+//            assertEquals(LocalTime.of(21, 00), resultEntry.getEndTime());
+//        }
+//
+//    }
+//
+//    @Test
+//    void modifySelectedHours_TwoEntryOneTwoLength_shouldReturnFourEntryWithCorrectTimes(){
+//
+//        var input = new ArrayList<Entry<String>>();
+//        var  entry = new Entry<String>("User Preference");
+//        entry.changeStartDate(LocalDate.of(2021, 6, 7));
+//        entry.changeStartTime(LocalTime.of(16, 00));
+//        entry.changeEndDate(LocalDate.of(2021, 6, 7));
+//        entry.changeEndTime(LocalTime.of(20, 00));
+//        input.add(entry);
+//
+//        var  entry2 = new Entry<String>("User Preference");
+//        entry2.changeStartDate(LocalDate.of(2021, 6, 8));
+//        entry2.changeStartTime(LocalTime.of(16, 00));
+//        entry2.changeEndDate(LocalDate.of(2021, 6, 8));
+//        entry2.changeEndTime(LocalTime.of(20, 00));
+//        input.add(entry2);
+//
+//
+//        var input1 = new ArrayList<Entry<String>>();
+//        var  entry3 = new Entry<String>("User Preference");
+//        entry3.changeStartDate(LocalDate.of(2021, 6, 7));
+//        entry3.changeStartTime(LocalTime.of(16, 00));
+//        entry3.changeEndDate(LocalDate.of(2021, 6, 7));
+//        entry3.changeEndTime(LocalTime.of(20, 00));
+//        input1.add(entry3);
+//
+//        var  entry4 = new Entry<String>("User Preference");
+//        entry4.changeStartDate(LocalDate.of(2021, 6, 8));
+//        entry4.changeStartTime(LocalTime.of(16, 00));
+//        entry4.changeEndDate(LocalDate.of(2021, 6, 8));
+//        entry4.changeEndTime(LocalTime.of(20, 00));
+//        input.add(entry4);
+//
+//
+//
+//        ArrayList<ArrayList<Entry<String>>> input2 = new ArrayList<ArrayList<Entry<String>>>();
+//        input2.add(input);
+//        input2.add(input1);
+//        var allEntriesMock = mock(ICalendarEntriesModel.class);
+//
+//
+//        var controller = new SmartSearchController(allEntriesMock);
+//        var result = controller.modifySelectedHoursList(input2, 60, 60);
+//        int numberResults = 0;
+//        for (ArrayList<Entry<String>> resultEntry : result) {
+//            for (Entry<String> ent : resultEntry) {
+//                assertEquals(LocalTime.of(15, 00), ent.getStartTime());
+//                assertEquals(LocalTime.of(21, 00), ent.getEndTime());
+//                numberResults++;
+//            }  
+//        }
+//        assertEquals(4, numberResults);
+//
+//    }
+    //End modifySelectedHours
 
 
-@Test
-void findAvailableTimeSlot_RetrunSevenEntrys(){
-    
-    var input = new Entry<String>();
-    input = createEntryDummy(10, 19, 1, 6, 7, 6);
-    boolean[] weekdays = {true, true, true, true, true, true, true};
-    
-    ArrayList<ArrayList<Entry<String>>> openingHours = createOpeningHours();
-    
+//    @Test
+//    void reduceListLength_TwoEntry_shouldReturnOneEntry(){
+//
+//        var input = new ArrayList<Entry<String>>();
+//        for (int i = 0; i < 10; i++) {
+//            input.add(null);
+//        }
+//        var allEntriesMock = mock(ICalendarEntriesModel.class);
+//
+//        var controller = new SmartSearchController(allEntriesMock);
+//        var result = controller.reduceListLength(input, 5);
+//
+//        assertEquals(5, result.size());
+//
+//    }
 
-    var entryOneCalendar = createEntryDummy(10, 14, 1, 1);
-    var entryTwoCalendar = createEntryDummy(16, 18, 1, 1);
-    var allEntriesMock = mock(ICalendarEntriesModel.class);
-    var calendarMockEntries = new Calendar();
-    calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar);
-    when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
 
-    var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.findAvailableTimeSlot(input, 60, weekdays, input, openingHours, 20, 20, 50);
-    
-    assertEquals(7, result.size());
-    
-}
+//    @Test
+//    void findAvailableTimeSlot_RetrunSevenEntrys(){
+//        
+//        var input = new Entry<String>();
+//        input = createEntryDummy(10, 19, 1, 6, 7, 6);
+//        boolean[] weekdays = {true, true, true, true, true, true, true};
+//        
+//        ArrayList<ArrayList<Entry<String>>> openingHours = createOpeningHours();
+//        
+//    
+//        var entryOneCalendar = createEntryDummy(10, 14, 1, 1);
+//        var entryTwoCalendar = createEntryDummy(16, 18, 1, 1);
+//        var allEntriesMock = mock(ICalendarEntriesModel.class);
+//        var calendarMockEntries = new Calendar();
+//        calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar);
+//        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+//    
+//        var controller = new SmartSearchController(allEntriesMock);
+//        var result = controller.findAvailableTimeSlot(input, 60, weekdays, input, openingHours, 20, 20, 50);
+//        
+//        assertEquals(7, result.size());
+//        
+//    }
 
 @Test
 void findAvailableTimeSlot_Return(){
@@ -728,7 +728,7 @@ void findAvailableTimeSlot_Return(){
     when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
 
     var controller = new SmartSearchController(allEntriesMock);
-    var result = controller.findAvailableTimeSlot(input, 60, weekdays, input, openingHours, 20, 20, 50);
+    var result = controller.findPossibleTimeSlots(input, 60, weekdays, openingHours, 20, 20, 50);
     
     assertEquals(12, result.size());
     
