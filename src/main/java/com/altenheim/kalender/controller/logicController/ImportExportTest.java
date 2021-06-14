@@ -11,7 +11,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.GregorianCalendar;
 import com.calendarfx.model.Entry;
-import com.calendarfx.model.Interval;
 
 import net.fortuna.ical4j.data.*;
 import net.fortuna.ical4j.model.property.*;
@@ -37,13 +36,13 @@ public class ImportExportTest
             var stream = new FileInputStream(path);
             var builder = new CalendarBuilder();
             var calendar = builder.build(stream);
-            components = calendar.getComponents();
+            components = calendar.getComponents("VEVENT");
             if(calendar.getProperties().getProperty("X-WR-CALNAME") != null)
             {
                 var calName = ((Property)calendar.getProperties().getProperty("X-WR-CALNAME")).getValue();
                 cal = new com.calendarfx.model.Calendar(calName);
 
-            }else
+             }else
             {
                 cal = new com.calendarfx.model.Calendar();
             }
@@ -56,11 +55,6 @@ public class ImportExportTest
 
         for (int i = 0; i < components.size(); i++)         
         {
-            if(i < 10)
-            {
-                if(!components.get(i).getClass().equals(VEvent.class))
-                    continue;
-            }
             var start = (DtStart)(components.get(i).getProperties().getProperty("DTSTART"));
             var end = (DtEnd)((Property) components.get(i).getProperties().getProperty("DTEND"));
             var startMilli = start.getDate().toInstant().toEpochMilli();
@@ -70,10 +64,11 @@ public class ImportExportTest
             entry.setTitle(summary);
             var locationProp = (Property) components.get(i).getProperties().getProperty("LOCATION");
             if(locationProp != null)
+            {
                 entry.setLocation(locationProp.getValue());
+            }
             cal.addEntry(entry);
         }
-        System.out.println(cal.findEntries("").get(0).getInterval().toString());
         return cal;
     } 
 
