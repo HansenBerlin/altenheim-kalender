@@ -46,7 +46,7 @@ public class InjectorFactory
         guiSetup = new GuiSetupController(jMetroStyle, allViews);
 
         guiSetup.init();        
-        ioCt.loadCalendarsFromFile();     
+        //ioCt.loadCalendarsFromFile();     
         settings.addPropertyChangeListener(new ChangeListener());
         //websiteCt.startScraperTask();
     }      
