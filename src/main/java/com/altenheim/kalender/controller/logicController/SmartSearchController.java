@@ -55,37 +55,7 @@ public class SmartSearchController implements ISmartSearchController {
 			}
 		return output;
 	}
-
-
-	public ArrayList<Entry<?>> findAvailableTimeSlot(Entry<?> input, int duration) {			
-		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
-			input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values();
-		long start = input.getStartMillis();
-		long end = input.getEndMillis();
-		long userStart = start;
-		long userEnd = end;
-		var output = new ArrayList<Entry<?>>();
-
-		for (var entries : result) 				
-			for (int i = 0; i <= entries.size(); i++) 
-			{		
-				if (i >= 0 && i < entries.size())
-					end = entries.get(i).getStartMillis();
-				if (i > 0)				
-					start = entries.get(i-1).getEndMillis();				
-				if (i == entries.size())				
-					end = userEnd;								
-				if (end - start >= duration*59000 && !(end-userStart <= duration*59000
-					|| userEnd-start <= duration*59000))
-					output.add(createEntryFromMillis(start, end));
-				if (checkForDuplicates(output))
-					output.remove(output.size()-1);							
-			}
-		if (output.isEmpty()) {
-			output.add(input);
-		}		
-		return output;
-	}
+	
 	
 	public ArrayList<ArrayList<Entry<?>>> modifyOpeningHours(ArrayList<ArrayList<Entry<?>>> inputOpeningHours, Entry<?> selectedHours, int timeBefore, int timeAfter) {
 		var output = new ArrayList<ArrayList<Entry<?>>>();
@@ -188,16 +158,51 @@ public class SmartSearchController implements ISmartSearchController {
 		entry.changeStartTime(startTime);
 		entry.changeEndTime(endTime);
 		return entry;
-	}
+	}	
 	
-	private boolean checkForDuplicates(ArrayList<Entry<?>> currentEntries)
+	private Entry<?> createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end)
 	{
-		if (currentEntries.size() < 2)
-			return false;
-		return (currentEntries.get(currentEntries.size()-2).getStartMillis() 
-		== currentEntries.get(currentEntries.size()-1).getStartMillis());
+		var entry = new Entry();				
+		entry.changeStartTime(start);
+		entry.changeEndTime(end);
+		entry.changeStartDate(startAndEnd);
+		entry.changeEndDate(startAndEnd);
+		return entry;
+	}	
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	public ArrayList<Entry<?>> findAvailableTimeSlot(Entry<?> input, int duration) {			
+		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
+			input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values();
+		long start = input.getStartMillis();
+		long end = input.getEndMillis();
+		long userStart = start;
+		long userEnd = end;
+		var output = new ArrayList<Entry<?>>();
+
+		for (var entries : result) 				
+			for (int i = 0; i <= entries.size(); i++) 
+			{		
+				if (i >= 0 && i < entries.size())
+					end = entries.get(i).getStartMillis();
+				if (i > 0)				
+					start = entries.get(i-1).getEndMillis();				
+				if (i == entries.size())				
+					end = userEnd;								
+				if (end - start >= duration*59000 && !(end-userStart <= duration*59000
+					|| userEnd-start <= duration*59000))
+					output.add(createEntryFromMillis(start, end));
+				if (checkForDuplicates(output))
+					output.remove(output.size()-1);							
+			}
+		if (output.isEmpty()) {
+			output.add(input);
+		}		
+		return output;
 	}
-	
+
 	private Entry<?> createEntryFromMillis(long start, long end)
 	{
 		var entry = new Entry();
@@ -209,16 +214,14 @@ public class SmartSearchController implements ISmartSearchController {
 		entry.changeEndDate(dateEnd.toLocalDate());
 		return entry;
 	}
-	
-	private Entry<?> createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end)
+
+	private boolean checkForDuplicates(ArrayList<Entry<?>> currentEntries)
 	{
-		var entry = new Entry();				
-		entry.changeStartTime(start);
-		entry.changeEndTime(end);
-		entry.changeStartDate(startAndEnd);
-		entry.changeEndDate(startAndEnd);
-		return entry;
-	}	
+		if (currentEntries.size() < 2)
+			return false;
+		return (currentEntries.get(currentEntries.size()-2).getStartMillis() 
+		== currentEntries.get(currentEntries.size()-1).getStartMillis());
+	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -230,43 +233,40 @@ public class SmartSearchController implements ISmartSearchController {
 	// 3. Aufruf createfinalList... mit Übergabe des erzeugten Kalenders, hier wird auch die Vorschlagsfunktion aufgerufen, Intervalle berücksichtigt
 	//    etc. --> fertige Liste mit Einträgen
 	
-	public int updateDuration(Entry<?> userPrefs, int duration, int marginPre, int marginPost)
-	{
-		if (userPrefs.getEndTime().toSecondOfDay() - userPrefs.getStartTime().toSecondOfDay() 
-			< (duration + marginPre + marginPost) * 60)
+	public int updateDuration(Entry<?> userPrefs, int duration, int marginPre, int marginPost) {
+		if (userPrefs.getEndTime().toSecondOfDay()
+				- userPrefs.getStartTime().toSecondOfDay() < (duration + marginPre + marginPost) * 60)
 			return -1;
-		else return duration + marginPre + marginPost;
+		else
+			return duration + marginPre + marginPost;
 	}
 
-	public Calendar createCalendarFromUserInput(Entry<?> userPrefs, boolean[] weekdays, HashMap<DayOfWeek, List<Entry<?>>> openingHours, int duration)
-	{
+	public Calendar createCalendarFromUserInput(Entry<?> userPrefs, boolean[] weekdays,
+			HashMap<DayOfWeek, List<Entry<?>>> openingHours, int duration) {
 		ArrayList<Entry<?>> possibleEntries = null;
 		var possibleRecurringDates = new Calendar();
-		if (openingHours != null)		
+		if (openingHours != null)
 			possibleEntries = adjustToOpeningHours(duration, userPrefs, openingHours);
-		else
-		{
-			possibleEntries	= new ArrayList<Entry<?>>();	
-			for (int i = 0; i < 7 ; i++)				
-				possibleEntries.add(createEntry(userPrefs.getStartDate().plusDays(i), 
-					userPrefs.getStartTime(), userPrefs.getEndTime()));
-		}		
+		else {
+			possibleEntries = new ArrayList<Entry<?>>();
+			for (int i = 0; i < 7; i++)
+				possibleEntries.add(createEntry(userPrefs.getStartDate().plusDays(i), userPrefs.getStartTime(),
+						userPrefs.getEndTime()));
+		}
 		possibleRecurringDates.addEntries(addRFC2445RecurrenceRule(weekdays, possibleEntries, userPrefs));
 
 		return possibleRecurringDates;
 	}	
 
-	public ArrayList<Entry<?>> adjustToOpeningHours(int duration, Entry<?> rawData, HashMap<DayOfWeek, List<Entry<?>>> openingHours)
-	{
+	public ArrayList<Entry<?>> adjustToOpeningHours(int duration, Entry<?> rawData,
+			HashMap<DayOfWeek, List<Entry<?>>> openingHours) {
 		var adjustedEntrys = new ArrayList<Entry<?>>();
-		
-		for (int i = 0; i < openingHours.size(); i++) 
-		{
-			var day = openingHours.get(DayOfWeek.of(i+1));			
-			for (int j = 0; j < day.size(); j++) 
-			{
+
+		for (int i = 0; i < openingHours.size(); i++) {
+			var day = openingHours.get(DayOfWeek.of(i + 1));
+			for (int j = 0; j < day.size(); j++) {
 				var startTimeOpen = day.get(j).getStartTime();
-				var endTimeOpen= day.get(j).getEndTime();
+				var endTimeOpen = day.get(j).getEndTime();
 				var startTimeRaw = rawData.getStartTime();
 				var endTimeRaw = rawData.getEndTime();
 
@@ -276,59 +276,51 @@ public class SmartSearchController implements ISmartSearchController {
 					endTimeRaw = endTimeOpen;
 				if (endTimeRaw.toSecondOfDay() - startTimeRaw.toSecondOfDay() < duration * 60)
 					continue;
-				else						
-					adjustedEntrys.add(createEntry(rawData.getStartDate().plusDays(i), startTimeRaw, endTimeRaw));						
+				else
+					adjustedEntrys.add(createEntry(rawData.getStartDate().plusDays(i), startTimeRaw, endTimeRaw));
 			}
 		}
 		return adjustedEntrys;
-	} 
+	}
 
-	public ArrayList<Entry<?>> addRFC2445RecurrenceRule(boolean[] weekdays, ArrayList<Entry<?>> adjustedEntries, Entry<?> userPrefs)
-	{
+	public ArrayList<Entry<?>> addRFC2445RecurrenceRule(boolean[] weekdays, ArrayList<Entry<?>> adjustedEntries,
+			Entry<?> userPrefs) {
 		String[] weekdaysRule = { "MO", "TU", "WE", "TH", "FR", "SA", "SU" };
-		var weeksduration = (int)(userPrefs.getEndDate().toEpochDay() -
-			userPrefs.getStartDate().toEpochDay())/7;		
+		var weeksduration = (int) (userPrefs.getEndDate().toEpochDay() - userPrefs.getStartDate().toEpochDay()) / 7;
 
-		for (int i = 0; i < adjustedEntries.size(); i++) 
-		{
-			var checkForWeekday = adjustedEntries.get(i).getStartDate().getDayOfWeek().getValue()-1;
+		for (int i = 0; i < adjustedEntries.size(); i++) {
+			var checkForWeekday = adjustedEntries.get(i).getStartDate().getDayOfWeek().getValue() - 1;
 			if (weekdays[checkForWeekday])
-				adjustedEntries.get(i).setRecurrenceRule("FREQ=WEEKLY;BYDAY=" + weekdaysRule[checkForWeekday] 
-																			  + ";INTERVAL=1;COUNT=" 
-																			  + weeksduration);
+				adjustedEntries.get(i).setRecurrenceRule(
+						"FREQ=WEEKLY;BYDAY=" + weekdaysRule[checkForWeekday] + ";INTERVAL=1;COUNT=" + weeksduration);
 			else
-				adjustedEntries.remove(i--);		
+				adjustedEntries.remove(i--);
 		}
 		return adjustedEntries;
 	}
 	
-	public List<Entry<?>> createFinalListForTableView(int intervalInDays, int maxSuggestions, Calendar finalDates, int duration)
-	{
+	public List<Entry<?>> createFinalListForTableView(int intervalInDays, int maxSuggestions, Calendar finalDates,
+			int duration) {
 		var firstLookup = LocalDate.ofInstant(finalDates.getEarliestTimeUsed(), ZoneId.systemDefault());
 		var lastLookup = LocalDate.ofInstant(finalDates.getLatestTimeUsed(), ZoneId.systemDefault());
-		var possibleSlots = new ArrayList<Entry<?>>();		
+		var possibleSlots = new ArrayList<Entry<?>>();
 
-		for (int i = 0; i < maxSuggestions; i++) 
-		{
+		for (int i = 0; i < maxSuggestions; i++) {
 			var entries = finalDates.findEntries(firstLookup, lastLookup, ZoneId.systemDefault());
-			for (var entriesDay : entries.values()) 
-			{
-				for (var entry : entriesDay) 
-				{
+			for (var entriesDay : entries.values()) {
+				for (var entry : entriesDay) {
 					if (possibleSlots.size() > maxSuggestions)
 						break;
-					else
-					{
+					else {
 						int sizeBefore = possibleSlots.size();
-						possibleSlots.addAll(findAvailableTimeSlot(entry, duration));					
-						if (possibleSlots.size() > sizeBefore)
-						{
+						possibleSlots.addAll(findAvailableTimeSlot(entry, duration));
+						if (possibleSlots.size() > sizeBefore) {
 							firstLookup = firstLookup.plusDays(intervalInDays);
 							break;
 						}
 					}
-				}				
-			}			
+				}
+			}
 		}
 		return possibleSlots;
 	}
