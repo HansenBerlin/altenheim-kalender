@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.time.DayOfWeek;
 
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
