@@ -123,7 +123,7 @@ public class IOController implements IIOController
     }
 
 
-    public void loadContactsTFromFile() throws IOException, ClassNotFoundException
+    public void loadContactsFromFile() throws IOException, ClassNotFoundException
     {
         var path = settings.getCustomPathToSavedFiles();
         if (path == null)
@@ -147,7 +147,7 @@ public class IOController implements IIOController
     }
 
 
-    public void writeMailTeamplates(MailTemplateModel templates)
+    public void writeMailTemplates(MailTemplateModel templates)
     {
     }
 
@@ -183,5 +183,5 @@ public class IOController implements IIOController
         var uid = iD.generateUid();
         event.getProperties().add(uid); 
         return event;           
-    } 
+    }
 }

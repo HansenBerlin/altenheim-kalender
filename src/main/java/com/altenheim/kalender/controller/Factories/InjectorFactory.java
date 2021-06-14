@@ -1,22 +1,21 @@
-package com.altenheim.kalender;
+package com.altenheim.kalender.controller.Factories;
 
 import java.util.ArrayList;
-
 import com.altenheim.kalender.controller.logicController.*;
 import com.altenheim.kalender.controller.viewController.*;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.*;
 import jfxtras.styles.jmetro.JMetro;
 
-public class ObjectFactory
+public class InjectorFactory
 {    
-    GuiSetupController guiSetup;
-    ViewRootsInterface allViews;
-    JMetro jMetroStyle;
+    private GuiSetupController guiSetup;
+    private IViewRootsModel allViews;
+    private JMetro jMetroStyle;
 
-    protected GuiSetupController getGuiController() { return guiSetup; }
-    protected ViewRootsInterface getAllViews() { return allViews; }
-    protected JMetro getJMetroSetup() { return jMetroStyle; }
+    public GuiSetupController getGuiController() { return guiSetup; }
+    public IViewRootsModel getAllViews() { return allViews; }
+    public JMetro getJMetroSetup() { return jMetroStyle; }
 
     public void createServices() throws Exception 
     {     
@@ -26,23 +25,23 @@ public class ObjectFactory
         var contacts = new ArrayList<ContactModel>();
         var settings = new SettingsModel();
 
-        ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
-        ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
-        IAppointmentEntryFactory appointmentEntryCreator = new AppointmentEntryFactory(calendarEntriesModel, customCalendarView, contacts);
-        IExportController exportCt = new ExportController(appointmentEntryCreator, customCalendarView, contacts, settings);
-        IIOController ioCt = new IOController(appointmentEntryCreator, customCalendarView, contacts, settings);
-        ISettingsController settingsCt = new SettingsController(ioCt, exportCt);
         IGoogleAPIController apiCt = new GoogleAPIController();
         IMailCreationController mailCreationCt = new MailCreationController(); 
+        ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
+        IContactFactory contactFactory = new ContactFactory(contacts);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings);
+        ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
+        IAppointmentEntryFactory appointmentEntryCreator = new EntryFactory(calendarEntriesModel, customCalendarView, contacts);
+        IExportController exportCt = new ExportController(appointmentEntryCreator, customCalendarView, contacts, settings);
+        IIOController ioCt = new IOController(appointmentEntryCreator, customCalendarView, contacts, settings);
         IImportController importCt = new ImportController(calendarEntriesModel, websiteCt, appointmentEntryCreator, customCalendarView, contacts, settings);        
        
-        var searchVCt = new SearchViewController(smartSearch, appointmentEntryCreator, contacts, mailTemplates, settings, apiCt, ioCt);
-        var plannerVCt = new PlannerViewController(calendarEntriesModel, appointmentEntryCreator, importCt, exportCt, customCalendarView);
-        var mailVCt = new MailTemplateViewController(ioCt, settingsCt, mailCreationCt, contacts);
+        var settingsVCt = new SettingsViewController(settings);        
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
-        var contactsVCt = new ContactsViewController(contacts, apiCt, ioCt);
-        var settingsVCt = new SettingsViewController(settingsCt, settings);        
+        var contactsVCt = new ContactsViewController(contacts, contactFactory, apiCt, ioCt);
+        var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts);
+        var searchVCt = new SearchViewController(smartSearch, appointmentEntryCreator, contacts, contactFactory, mailTemplates, settings, apiCt, ioCt);
+        var plannerVCt = new PlannerViewController(calendarEntriesModel, appointmentEntryCreator, importCt, exportCt, customCalendarView);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);        
         guiSetup = new GuiSetupController(jMetroStyle, allViews);
 

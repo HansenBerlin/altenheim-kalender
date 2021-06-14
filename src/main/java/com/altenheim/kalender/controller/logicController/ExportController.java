@@ -1,7 +1,6 @@
 package com.altenheim.kalender.controller.logicController;
 
 import java.util.List;
-
 import com.altenheim.kalender.controller.viewController.CalendarViewOverride;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
 import com.altenheim.kalender.interfaces.IExportController;

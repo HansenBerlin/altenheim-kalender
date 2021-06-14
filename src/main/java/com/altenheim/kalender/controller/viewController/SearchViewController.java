@@ -1,6 +1,5 @@
 package com.altenheim.kalender.controller.viewController;
 
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
@@ -11,8 +10,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import com.altenheim.kalender.models.*;
 import java.io.IOException;
 import java.util.List;
-
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
+import com.altenheim.kalender.interfaces.IContactFactory;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
@@ -42,17 +41,19 @@ public class SearchViewController extends ResponsiveController
     private ISmartSearchController smartSearch;
     private IAppointmentEntryFactory entryFactory;
     private List<ContactModel> contacts;
+    private IContactFactory contactFactory;
     private MailTemplateModel mailTemplates;
     private SettingsModel settings;
     private IGoogleAPIController api;
     private IIOController iOController;
 
     public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory entryFactory, List<ContactModel> contacts, 
-        MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api, IIOController iOController)
+        IContactFactory contactFactory, MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api, IIOController iOController)
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
         this.contacts = contacts;
+        this.contactFactory = contactFactory;
         this.mailTemplates = mailTemplates;
         this.settings = settings;
         this.api = api;
@@ -117,7 +118,7 @@ public class SearchViewController extends ResponsiveController
         for (int i = 0; i < 5; i++)        
             entryFactory.createRandomCalendarList("Test " + i);
         iOController.writeCalendarFiles();*/
-        entryFactory.createContactsList(100);
+        entryFactory.createRandomContactsList(100);
         iOController.saveContactsToFile();     
     }
 

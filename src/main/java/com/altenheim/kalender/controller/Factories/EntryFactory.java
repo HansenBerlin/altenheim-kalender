@@ -1,12 +1,9 @@
-package com.altenheim.kalender.controller.logicController;
+package com.altenheim.kalender.controller.Factories;
 
-import com.altenheim.kalender.TempTestClasses.CreateDummyEntries;
-import com.altenheim.kalender.TempTestClasses.ICreateDummyEntries;
 import com.altenheim.kalender.controller.viewController.CalendarViewOverride;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -20,12 +17,12 @@ import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 
 
-public class AppointmentEntryFactory extends CreateDummyEntries implements IAppointmentEntryFactory
+public class EntryFactory extends ContactFactory implements IAppointmentEntryFactory
 {    
     private ICalendarEntriesModel allCalendars;
     private CalendarViewOverride calendarView;
 
-    public AppointmentEntryFactory(ICalendarEntriesModel allCalendars, CalendarViewOverride calendarView, List<ContactModel> contacts)
+    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarViewOverride calendarView, List<ContactModel> contacts)
     {
         super(contacts);
         this.allCalendars = allCalendars;
@@ -101,18 +98,6 @@ public class AppointmentEntryFactory extends CreateDummyEntries implements IAppo
         entry.changeEndTime(endTime);
         return entry;
     }	
-
-	public Entry<String> createUserSettingsEntry(LocalTime startSearchTime, LocalTime endSearchTime)
-	{
-		var startAndEndDate = LocalDate.of(2021, 1, 1);        
-        var entry = new Entry<String>("Test");
-        entry.changeStartDate(startAndEndDate);
-        entry.changeEndDate(startAndEndDate);
-        entry.changeStartTime(startSearchTime);
-        entry.changeEndTime(endSearchTime);
-
-		return entry;
-	}
 
     private int rG(int startInclusive, int endInclusive)
     {
