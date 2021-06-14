@@ -1,6 +1,6 @@
 package com.altenheim.kalender.controller.viewController;
 
-import com.altenheim.kalender.interfaces.ViewRootsInterface;
+import com.altenheim.kalender.interfaces.IViewRootsModel;
 import com.altenheim.kalender.resourceClasses.StylePresets;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,13 +20,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.Style;
 
 public class MainWindowController extends ResponsiveController
 {
     private Stage stage;
-    private ViewRootsInterface allViewsInformation;
+    private IViewRootsModel allViewsInformation;
     private GuiSetupController guiSetup;
     private Map<String, Pair<Button, Pane>> allButtonsWithBackgrounds;
     private boolean initilizationDone;
@@ -47,7 +46,7 @@ public class MainWindowController extends ResponsiveController
     @FXML private HBox topButtonRow;
 
 
-    public MainWindowController(Stage stage, ViewRootsInterface allViewsInformation, GuiSetupController guiSetup)
+    public MainWindowController(Stage stage, IViewRootsModel allViewsInformation, GuiSetupController guiSetup)
     {
         this.stage = stage;
         this.allViewsInformation = allViewsInformation;

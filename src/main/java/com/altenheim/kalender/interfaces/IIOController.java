@@ -1,6 +1,5 @@
 package com.altenheim.kalender.interfaces;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import com.altenheim.kalender.models.MailTemplateModel;
@@ -13,9 +12,9 @@ public interface IIOController
     public void writeCalendarFiles() throws FileNotFoundException, ValidationException, IOException;
     public void loadCalendarsFromFile() throws FileNotFoundException, IOException, ParserException;
     public void saveContactsToFile() throws IOException;
-    public void loadContactsTFromFile() throws IOException, ClassNotFoundException;
+    public void loadContactsFromFile() throws IOException, ClassNotFoundException;
     public void writeSettings(SettingsModel settings);
     public SettingsModel restoreSettings();
-    public void writeMailTeamplates(MailTemplateModel templates);
+    public void writeMailTemplates(MailTemplateModel templates);
     public MailTemplateModel restoreMailTemplates();    
 }

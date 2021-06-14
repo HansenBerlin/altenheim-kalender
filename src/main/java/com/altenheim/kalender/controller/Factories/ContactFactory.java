@@ -1,4 +1,4 @@
-package com.altenheim.kalender.TempTestClasses;
+package com.altenheim.kalender.controller.Factories;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -6,21 +6,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.altenheim.kalender.interfaces.IContactFactory;
 import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.SerializableEntry;
 
 
-public class CreateDummyEntries implements ICreateDummyEntries
+public class ContactFactory implements IContactFactory
 {
     private int iDCounter;
     private List<ContactModel> contacts;
 
-    public CreateDummyEntries(List<ContactModel> contacts)
+    public ContactFactory(List<ContactModel> contacts)
     {
         this.contacts = contacts;
     }
 
-    public void createContactsList(int amount)
+    public void createRandomContactsList(int amount)
     {
         var contacts = new ArrayList<ContactModel>();
         for (int i = 0; i < amount; i++)
@@ -29,7 +31,7 @@ public class CreateDummyEntries implements ICreateDummyEntries
             String surName = "ThisIsASurname" + i;
             String phoneNumber = "0153-22446688" + i;
             String mail = "mailadress@testmailadress.com" + i;        
-            contacts.add(new ContactModel(testFirstName, surName, mail, iDCounter, phoneNumber, createOpeningHours()));       
+            //contacts.add(new ContactModel(testFirstName, surName, mail, iDCounter, phoneNumber, createOpeningHours()));       
             iDCounter++;
         }      
 
@@ -70,4 +72,11 @@ public class CreateDummyEntries implements ICreateDummyEntries
         }
         return openingHours;        
     }    
+
+    
+    public void createContact()
+    {
+
+    }
+
 }

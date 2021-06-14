@@ -6,9 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
-
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
-
 import org.json.*;
 
 
@@ -19,16 +17,16 @@ public class GoogleAPIController implements IGoogleAPIController
     private static final String FINDDESTINATIONSQUERY= "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=%s";
 
     
-    public String showOpeningHours(String locationSearchUserInput)
+    public String getOpeningHours(String locationSearchUserInput)
     {          
         String input = locationSearchUserInput.replaceAll(" ", "%20");
         String searchQuery = String.format(FINDPLACEQUERY, input);        
 
         try 
         {
-            var jsonResponse = httpRequest(searchQuery);
+            var jsonResponse = makeHttpRequest(searchQuery);
             var id = parseJsonForLocationId(jsonResponse);        
-            var jsonResponseDetail = httpRequest(String.format(OPENINGHOURSQUERY, id)); 
+            var jsonResponseDetail = makeHttpRequest(String.format(OPENINGHOURSQUERY, id)); 
             return parseJsonForOpeningHours(jsonResponseDetail);           
         } 
         catch (IOException | InterruptedException e) 
@@ -47,7 +45,7 @@ public class GoogleAPIController implements IGoogleAPIController
         String searchQuery = String.format(FINDDESTINATIONSQUERY, start, end);
         try 
         {            
-            var jsonBody = httpRequest(searchQuery);
+            var jsonBody = makeHttpRequest(searchQuery);
             var json = new JSONObject(jsonBody);
             var elements = json.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);        
             returnValues[0] = elements.getJSONObject("duration").getInt("value");        
@@ -64,7 +62,7 @@ public class GoogleAPIController implements IGoogleAPIController
     } 
 
 
-    private String httpRequest(String requestString) throws IOException, InterruptedException
+    private String makeHttpRequest(String requestString) throws IOException, InterruptedException
     {
         var client = HttpClient.newHttpClient();
         var request = HttpRequest.newBuilder().uri(URI.create(requestString)).build();
