@@ -31,10 +31,10 @@ public class InjectorFactory
         IContactFactory contactFactory = new ContactFactory(contacts);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings);
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
-        IAppointmentEntryFactory appointmentEntryCreator = new EntryFactory(calendarEntriesModel, customCalendarView, contacts);
-        IExportController exportCt = new ExportController(appointmentEntryCreator, contacts, settings, mailTemplates);
-        IIOController ioCt = new IOController(appointmentEntryCreator, contacts, settings, mailTemplates);
-        IImportController importCt = new ImportController(calendarEntriesModel, appointmentEntryCreator, contacts, settings, mailTemplates);        
+        IEntryFactory appointmentEntryCreator = new EntryFactory(calendarEntriesModel, customCalendarView, contacts);
+        IIOController ioCt = new IOController(appointmentEntryCreator, contacts, settings, mailTemplates, calendarEntriesModel);
+        IExportController exportCt = new ExportController(appointmentEntryCreator, contacts, settings, mailTemplates, calendarEntriesModel);
+        IImportController importCt = new ImportController(appointmentEntryCreator, contacts, settings, mailTemplates, calendarEntriesModel);        
        
         var settingsVCt = new SettingsViewController(settings);        
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);

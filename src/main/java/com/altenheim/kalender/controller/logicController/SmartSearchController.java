@@ -6,7 +6,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
-import com.altenheim.kalender.models.SuggestionsModel;
 import com.calendarfx.model.Entry;
 
 public class SmartSearchController implements ISmartSearchController 

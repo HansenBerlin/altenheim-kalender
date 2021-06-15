@@ -10,7 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import com.altenheim.kalender.models.*;
 import java.io.IOException;
 import java.util.List;
-import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
+import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.IContactFactory;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.interfaces.IIOController;
@@ -39,7 +39,7 @@ public class SearchViewController extends ResponsiveController
     private TableView<SuggestionsModel> tableSuggestions;
     private int userStep = 1;    
     private ISmartSearchController smartSearch;
-    private IAppointmentEntryFactory entryFactory;
+    private IEntryFactory entryFactory;
     private List<ContactModel> contacts;
     private IContactFactory contactFactory;
     private List<MailTemplateModel> mailTemplates;
@@ -47,7 +47,7 @@ public class SearchViewController extends ResponsiveController
     private IGoogleAPIController api;
     private IIOController iOController;
 
-    public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory entryFactory, List<ContactModel> contacts, 
+    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<ContactModel> contacts, 
         IContactFactory contactFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api, IIOController iOController)
     {
         this.smartSearch = smartSearch;

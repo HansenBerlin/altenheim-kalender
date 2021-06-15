@@ -8,13 +8,10 @@ import com.altenheim.kalender.models.SettingsModel;
 
 public class ImportController extends IOController implements IImportController
 {
-    private ICalendarEntriesModel allEntries;
 
-    public ImportController(ICalendarEntriesModel allEntries, IAppointmentEntryFactory administrateEntries, 
-        List<ContactModel> allContacts, SettingsModel settings, List<MailTemplateModel> mailTemplates)
+    public ImportController(IEntryFactory administrateEntries, List<ContactModel> allContacts, SettingsModel settings,
+            List<MailTemplateModel> mailTemplates, ICalendarEntriesModel allEntries) 
     {
-        super(administrateEntries, allContacts, settings, mailTemplates);
-        this.allEntries = allEntries;
-    }
-    
+        super(administrateEntries, allContacts, settings, mailTemplates, allEntries);
+    }    
 }

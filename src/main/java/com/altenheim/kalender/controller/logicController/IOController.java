@@ -1,8 +1,11 @@
 package com.altenheim.kalender.controller.logicController;
 
 import java.io.File;
-import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
+
+import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.IIOController;
+import com.altenheim.kalender.models.CalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.models.SettingsModel;
@@ -30,15 +33,15 @@ import net.fortuna.ical4j.validate.ValidationException;
 
 public class IOController implements IIOController
 {
-    private IAppointmentEntryFactory administrateEntries;
+    private ICalendarEntriesModel allEntries;
     private List<ContactModel> allContacts;
     private SettingsModel settings;
     private List<MailTemplateModel> mailTemplates;
 
-    public IOController(IAppointmentEntryFactory administrateEntries, List<ContactModel> allContacts, 
-        SettingsModel settings, List<MailTemplateModel> mailTemplates)
+    public IOController(IEntryFactory administrateEntries, List<ContactModel> allContacts, 
+        SettingsModel settings, List<MailTemplateModel> mailTemplates, ICalendarEntriesModel allEntries)
     {
-        this.administrateEntries = administrateEntries;
+        this.allEntries = allEntries;
         this.allContacts = allContacts;
         this.settings = settings;
         this.mailTemplates = mailTemplates;
@@ -47,20 +50,20 @@ public class IOController implements IIOController
 
     public void writeCalendarFiles() throws ValidationException, IOException
     {
-        var allCalendars = administrateEntries.createEntryListForEachCalendar();
-        for (var calendarSet : allCalendars.entrySet()) 
+        var allCalendars = allEntries.getAllCalendars();
+        for (var calendarSet : allCalendars) 
         {
             var icsCalendar = new Calendar();
             icsCalendar.getProperties().add(new ProdId("-//Smart Planner//iCal4j 1.0//DE"));
             icsCalendar.getProperties().add(Version.VERSION_2_0);
             icsCalendar.getProperties().add(CalScale.GREGORIAN);
-            icsCalendar.getProperties().add(new Name(calendarSet.getKey()));
-            for (var entry : calendarSet.getValue())        
+            //icsCalendar.getProperties().add(new Name(calendarSet.getKey()));
+            /*for (var entry : calendarSet.clear();)        
                 icsCalendar.getComponents().add(createIcalEntryFromCalFXEntry(entry));        
             var fout = new FileOutputStream("icsFiles/" + calendarSet.getKey() + ".ics");
             var outputter = new CalendarOutputter();
             outputter.output(icsCalendar, fout);
-            fout.close();          
+            fout.close();     */     
         }        
     }
 

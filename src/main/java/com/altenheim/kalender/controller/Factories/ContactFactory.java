@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.altenheim.kalender.interfaces.IContactFactory;
 import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.SerializableEntry;
