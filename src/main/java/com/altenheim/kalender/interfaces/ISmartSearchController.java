@@ -10,6 +10,5 @@ import com.calendarfx.model.Entry;
 
 public interface ISmartSearchController 
 {
-	public ArrayList<Entry<?>> findAvailableTimeSlot(Entry<?> input, int duration);
-	public ArrayList<Entry<?>> findPossibleTimeSlots(Entry<?> input, int duration, boolean[] weekdays, ArrayList<ArrayList<Entry<?>>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys);
+	public ArrayList<Entry<?>> findPossibleTimeSlotsWithoutOpening(Entry<?> input, int duration, boolean[] weekdays, ArrayList<ArrayList<Entry<?>>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys);
 }

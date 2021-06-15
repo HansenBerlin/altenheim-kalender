@@ -47,6 +47,7 @@ public class SmartSearchController implements ISmartSearchController {
 					entry.changeEndTime(day.getEndTime());
 				output.addAll(findAvailableTimeSlot(entry, duration, timeBefore, timeAfter));
 
+				//auslagern
 				if (output.size()>=maxNumberOfReturnEntrys) {
 					while (output.size()>maxNumberOfReturnEntrys) {
 						output.remove(output.size()-1);
