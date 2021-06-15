@@ -3,7 +3,6 @@ package com.altenheim.kalender;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import com.altenheim.kalender.controller.logicController.SmartSearchController;

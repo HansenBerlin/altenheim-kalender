@@ -4,32 +4,41 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 
 
 public class CalendarEntriesModel implements ICalendarEntriesModel
 {    
-    private List<Calendar> calendars;    
+    private List<Calendar> calendars;   
+    
+    public CalendarEntriesModel()
+    {
+        calendars = new ArrayList<Calendar>();
+    }
 
     public void addCalendar(Calendar calendar)
     {
-        calendars = new ArrayList<Calendar>();
         calendars.add(calendar);
     }
 
-    public List<Entry<String>> getSpecificRange(LocalDate startDate, LocalDate endDate)
+    public List<Calendar> getAllCalendars()
+    {
+        return calendars;
+    }
+
+    public List<Entry<?>> getSpecificRange(LocalDate startDate, LocalDate endDate)
     {
         var calendar = calendars.get(0);
         var result = calendar.findEntries(startDate, endDate, ZoneId.systemDefault());
         var allEntries = result.values();
-        var returnValue = new ArrayList<Entry<String>>();
+        var returnValue = new ArrayList<Entry<?>>();
         for (var entries : allEntries) 
         {
             for (var entry : entries) 
             {
-                returnValue.add((Entry<String>)entry);
+                returnValue.add((Entry<?>)entry);
             }            
         }
         return returnValue;        
@@ -43,10 +52,5 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
     public Calendar getSpecificCalendarByIndex(int index)
     {
         return calendars.get(index);
-    }
-
-    public void saveDate(ICalendarEntryModel newEntry)
-    {
-       // nach Schema der Logik in der Factory implementieren  
     }
 }
