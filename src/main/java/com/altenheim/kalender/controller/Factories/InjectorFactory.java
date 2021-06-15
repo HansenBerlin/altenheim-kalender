@@ -21,26 +21,26 @@ public class InjectorFactory
     {     
         jMetroStyle = new JMetro();   
         var customCalendarView = new CalendarViewOverride();       
-        var mailTemplates = new MailTemplateModel();
+        var mailTemplates = new ArrayList<MailTemplateModel>();
         var contacts = new ArrayList<ContactModel>();
         var settings = new SettingsModel();
 
         IGoogleAPIController apiCt = new GoogleAPIController();
-        IMailCreationController mailCreationCt = new MailCreationController(); 
+        IMailCreationController mailCreationCt = new MailCreationController(null); 
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
         IContactFactory contactFactory = new ContactFactory(contacts);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings);
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
         IAppointmentEntryFactory appointmentEntryCreator = new EntryFactory(calendarEntriesModel, customCalendarView, contacts);
-        IExportController exportCt = new ExportController(appointmentEntryCreator, customCalendarView, contacts, settings);
-        IIOController ioCt = new IOController(appointmentEntryCreator, customCalendarView, contacts, settings);
-        IImportController importCt = new ImportController(calendarEntriesModel, websiteCt, appointmentEntryCreator, customCalendarView, contacts, settings);        
+        IExportController exportCt = new ExportController(appointmentEntryCreator, contacts, settings, mailTemplates);
+        IIOController ioCt = new IOController(appointmentEntryCreator, contacts, settings, mailTemplates);
+        IImportController importCt = new ImportController(calendarEntriesModel, appointmentEntryCreator, contacts, settings, mailTemplates);        
        
         var settingsVCt = new SettingsViewController(settings);        
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(contacts, contactFactory, apiCt, ioCt);
-        var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts);
-        var searchVCt = new SearchViewController(smartSearch, appointmentEntryCreator, contacts, contactFactory, mailTemplates, settings, apiCt, ioCt);
+        var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates);
+        var searchVCt = new SearchViewController(smartSearch, appointmentEntryCreator, contacts, contactFactory, null, settings, apiCt, ioCt);
         var plannerVCt = new PlannerViewController(calendarEntriesModel, appointmentEntryCreator, importCt, exportCt, customCalendarView);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);        
         guiSetup = new GuiSetupController(jMetroStyle, allViews);

@@ -1,7 +1,6 @@
 package com.altenheim.kalender.controller.logicController;
 
 import java.io.File;
-import com.altenheim.kalender.controller.viewController.CalendarViewOverride;
 import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.models.ContactModel;
@@ -31,19 +30,18 @@ import net.fortuna.ical4j.validate.ValidationException;
 
 public class IOController implements IIOController
 {
-
     private IAppointmentEntryFactory administrateEntries;
-    private CalendarViewOverride calendarView;
     private List<ContactModel> allContacts;
     private SettingsModel settings;
+    private List<MailTemplateModel> mailTemplates;
 
-    public IOController(IAppointmentEntryFactory administrateEntries, CalendarViewOverride calendarView, 
-        List<ContactModel> allContacts, SettingsModel settings)
+    public IOController(IAppointmentEntryFactory administrateEntries, List<ContactModel> allContacts, 
+        SettingsModel settings, List<MailTemplateModel> mailTemplates)
     {
         this.administrateEntries = administrateEntries;
-        this.calendarView = calendarView;
         this.allContacts = allContacts;
         this.settings = settings;
+        this.mailTemplates = mailTemplates;
     }
     
 
@@ -107,7 +105,7 @@ public class IOController implements IIOController
         }
 
         calendarSource.getCalendars().addAll(calendars);
-        calendarView.getCalendarSources().addAll(calendarSource);        
+        //calendarView.getCalendarSources().addAll(calendarSource);        
     }
 
 
