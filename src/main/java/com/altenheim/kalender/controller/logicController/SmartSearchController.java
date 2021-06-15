@@ -56,6 +56,7 @@ public class SmartSearchController implements ISmartSearchController {
 		return output;
 	}
 
+	// Ist die einzige Methode, plus leicht angepasste slot-Suche (s.u.) die wir brauchen
 	public ArrayList<Entry<?>> findPossibleTimeSlotsWithoutOpening(Entry<?> input, int duration, boolean[] weekdays, 
 		ArrayList<ArrayList<Entry<?>>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys)
 	{
@@ -68,7 +69,7 @@ public class SmartSearchController implements ISmartSearchController {
 		{
 			var date = input.getStartDate().plusDays(i);
 
-			if(!isValidWeekday(weekdays, date))
+			if(!weekdays[date.getDayOfWeek().getValue()-1])
 				continue;
 			
 			for (var day : openingHours.get(i%7))
@@ -79,18 +80,10 @@ public class SmartSearchController implements ISmartSearchController {
 				if (end.isAfter(day.getEndTime()))
 					entry.changeEndTime(day.getEndTime());
 				output.addAll(findAvailableTimeSlotAngepasstOhneOeffZt(entry, duration, timeBefore, timeAfter));
-			}
-			
+			}			
 		}
 		return output;
-	}
-
-	
-
-	private boolean isValidWeekday(boolean[] weekdays, LocalDate inputDate)
-	{
-		return weekdays[inputDate.getDayOfWeek().getValue()-1];
-	}
+	}	
 	
 	
 	public ArrayList<ArrayList<Entry<?>>> modifyOpeningHours(ArrayList<ArrayList<Entry<?>>> inputOpeningHours, Entry<?> selectedHours, int timeBefore, int timeAfter) {
@@ -248,16 +241,12 @@ public class SmartSearchController implements ISmartSearchController {
 		var output = new ArrayList<Entry<?>>();
 		long start = input.getStartMillis() + before * 60000;
 		long end = input.getEndMillis() - after * 60000; 
-		var entrytest = createEntryFromMillis(start, end);
 		long userStart = start;
 		long userEnd = end;
 
 		for (var entries : result) 				
 			for (int i = 0; i <= entries.size(); i++) 
-			{		
-				entrytest = createEntryFromMillis(start, end);
-				System.out.println(entrytest);
-
+			{
 				if (i >= 0 && i < entries.size())
 					end = entries.get(i).getStartMillis();
 				if (i > 0)				
