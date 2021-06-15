@@ -42,13 +42,13 @@ public class SearchViewController extends ResponsiveController
     private IAppointmentEntryFactory entryFactory;
     private List<ContactModel> contacts;
     private IContactFactory contactFactory;
-    private MailTemplateModel mailTemplates;
+    private List<MailTemplateModel> mailTemplates;
     private SettingsModel settings;
     private IGoogleAPIController api;
     private IIOController iOController;
 
     public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory entryFactory, List<ContactModel> contacts, 
-        IContactFactory contactFactory, MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api, IIOController iOController)
+        IContactFactory contactFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api, IIOController iOController)
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;

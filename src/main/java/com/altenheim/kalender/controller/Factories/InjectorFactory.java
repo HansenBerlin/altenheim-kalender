@@ -26,7 +26,7 @@ public class InjectorFactory
         var settings = new SettingsModel();
 
         IGoogleAPIController apiCt = new GoogleAPIController();
-        IMailCreationController mailCreationCt = new MailCreationController(null); 
+        IMailCreationController mailCreationCt = new MailCreationController(mailTemplates); 
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
         IContactFactory contactFactory = new ContactFactory(contacts);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings);
@@ -40,7 +40,7 @@ public class InjectorFactory
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(contacts, contactFactory, apiCt, ioCt);
         var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates);
-        var searchVCt = new SearchViewController(smartSearch, appointmentEntryCreator, contacts, contactFactory, null, settings, apiCt, ioCt);
+        var searchVCt = new SearchViewController(smartSearch, appointmentEntryCreator, contacts, contactFactory, mailTemplates, settings, apiCt, ioCt);
         var plannerVCt = new PlannerViewController(calendarEntriesModel, appointmentEntryCreator, importCt, exportCt, customCalendarView);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);        
         guiSetup = new GuiSetupController(jMetroStyle, allViews);
