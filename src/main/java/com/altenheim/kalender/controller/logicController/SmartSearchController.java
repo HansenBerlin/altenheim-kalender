@@ -20,14 +20,53 @@ public class SmartSearchController implements ISmartSearchController {
 	}
 
 
-	public ArrayList<Entry<?>> findPossibleTimeSlotsWithoutOpening(Entry<?> input, int duration, boolean[] weekdays, 
+	public ArrayList<Entry<?>> findPossibleTimeSlotsNew(Entry<?> input, int duration, boolean[] weekdays, 
+		ArrayList<ArrayList<Entry<?>>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys){
+
+		var output = new ArrayList<Entry<?>>(); 
+		var start = input.getStartTime();
+		var end = input.getEndTime();
+
+		int i = 0;
+		while (output.size()<maxNumberOfReturnEntrys) {
+		i++;
+			var date = input.getStartDate().plusDays(i);
+
+			if(!weekdays[date.getDayOfWeek().getValue()-1])
+				continue;
+			
+			for (var day : openingHours.get(i%7))
+			{
+				var entry = createEntry(date, start, end);
+				if (end.isBefore(day.getStartTime()) || start.isAfter(day.getEndTime())) {
+					continue;
+				}
+				if (start.isBefore(day.getStartTime()))
+					entry.changeStartTime(day.getStartTime());
+				if (end.isAfter(day.getEndTime()))
+					entry.changeEndTime(day.getEndTime());
+				output.addAll(findAvailableTimeSlot(entry, duration, timeBefore, timeAfter));
+
+				
+				
+
+			}			
+		}
+		if (output.size()>=maxNumberOfReturnEntrys) 
+			reduceListLenght(output, maxNumberOfReturnEntrys);
+		
+		return output;
+
+	}
+
+
+	public ArrayList<Entry<?>> findPossibleTimeSlots(Entry<?> input, int duration, boolean[] weekdays, 
 		ArrayList<ArrayList<Entry<?>>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys)
 	{
 		var daysduration = (int) (input.getEndDate().toEpochDay() - input.getStartDate().toEpochDay());
 		var output = new ArrayList<Entry<?>>(); 
 		var start = input.getStartTime();
 		var end = input.getEndTime();
-
 		for (int i = 0; i <= daysduration; i++) 
 		{
 			var date = input.getStartDate().plusDays(i);
@@ -47,18 +86,21 @@ public class SmartSearchController implements ISmartSearchController {
 					entry.changeEndTime(day.getEndTime());
 				output.addAll(findAvailableTimeSlot(entry, duration, timeBefore, timeAfter));
 
-				//auslagern
 				if (output.size()>=maxNumberOfReturnEntrys) {
-					while (output.size()>maxNumberOfReturnEntrys) {
-						output.remove(output.size()-1);
-					}
+					reduceListLenght(output, maxNumberOfReturnEntrys);
 					return output;
 				}
+
 			}			
 		}
 		return output;
 	}	
 
+	private void reduceListLenght(ArrayList<Entry<?>> list, int maxNumberOfEntrys) {
+		while (list.size()>maxNumberOfEntrys) {
+			list.remove(list.size()-1);
+		}
+	}
 
 	private Entry<?> createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end)
 	{
