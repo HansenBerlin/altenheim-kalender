@@ -81,15 +81,17 @@ public class SmartSearchControllerTest
         var entryThreeCalendar = createEntryDummy(16, 17, 1, 1);
         var allEntriesMock = mock(ICalendarEntriesModel.class);
         var calendarMockEntries = new Calendar();
-
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar);
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
         var controller = new SmartSearchController(allEntriesMock);
         var result = controller.findAvailableTimeSlot(entryUser, 60, 0, 0);
 
         long totalMinutes = 0;
-        for (var entry : result)        
+        System.out.println(result.size());
+        for (var entry : result) { 
+            System.out.println(entry.getDuration().toMinutes());
             totalMinutes+=entry.getDuration().toMinutes();
+         }
         assertEquals(360, totalMinutes);
     }
 
@@ -250,7 +252,7 @@ public class SmartSearchControllerTest
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
 
         var controller2 = new SmartSearchController(allEntriesMock);
-        var result2 = controller2.findPossibleTimeSlots(input, 60, weekdays, openingHours2, 30, 30, 50);
+        var result2 = controller2.findPossibleTimeSlots(input, 60, weekdays, openingHours2, 30, 30, 9,0);
 
         assertEquals(9, result2.size()); 
         // 10-13, 16-22 geöffnet an Montagen, Mittwoch, Freitag, Sonntag zu, sonst 10-22
@@ -277,7 +279,7 @@ public class SmartSearchControllerTest
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
 
         var controller2 = new SmartSearchController(allEntriesMock);
-        var result2 = controller2.findPossibleTimeSlots(input, 60, weekdays, openingHours2, 20, 20, 50);
+        var result2 = controller2.findPossibleTimeSlots(input, 60, weekdays, openingHours2, 20, 20, 7,0);
 
         //assertEquals(7, result.size());     // failt, deshalb hier erstmal auskommentiert  
         assertEquals(7, result2.size());
@@ -303,7 +305,7 @@ public class SmartSearchControllerTest
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
 
         var controller2 = new SmartSearchController(allEntriesMock);
-        var result2 = controller2.findPossibleTimeSlots(input, 600, weekdays, openingHours2, 60, 60, 5);
+        var result2 = controller2.findPossibleTimeSlots(input, 600, weekdays, openingHours2, 60, 60, 0,0);
         
         assertEquals(0, result2.size()); 
     }
@@ -323,7 +325,7 @@ public class SmartSearchControllerTest
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
 
         var controller2 = new SmartSearchController(allEntriesMock);
-        var result2 = controller2.findPossibleTimeSlots(input, 60, weekdays, openingHours2, 60, 60, 5);
+        var result2 = controller2.findPossibleTimeSlots(input, 60, weekdays, openingHours2, 60, 60, 1, 0);
         
         assertEquals(1, result2.size()); 
         // möglich:
@@ -344,8 +346,10 @@ public class SmartSearchControllerTest
         calendarMockEntries.addEntries(entryOneCalendar);
         when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
 
+        
+
         var controller2 = new SmartSearchController(allEntriesMock);
-        var result2 = controller2.findPossibleTimeSlots(input, 30, weekdays, openingHours2, 30, 30, 5);
+        var result2 = controller2.findPossibleTimeSlots(input, 30, weekdays, openingHours2, 30, 30, 2, 0);
         
         assertEquals(2, result2.size()); 
 
