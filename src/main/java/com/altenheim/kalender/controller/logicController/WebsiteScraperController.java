@@ -2,25 +2,23 @@ package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.interfaces.IWebsiteScraperController;
 import com.altenheim.kalender.models.SettingsModel;
-import net.fortuna.ical4j.data.ParserException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class WebsiteScraperController extends TimerTask implements IWebsiteScraperController
 {
     private SettingsModel settings;
+	private ImportExportTest icsImport;
 
-    public WebsiteScraperController(SettingsModel settings)
+    public WebsiteScraperController(SettingsModel settings, ImportExportTest icsImport)
     {
         this.settings = settings;        
+		this.icsImport = icsImport;
     }
 
     public void startScraperTask()
@@ -30,31 +28,28 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
     }
 
     public void run() 
-    {
-        System.out.println("Scraping...");  
-        try {
-			importHwrIcs();
-		} catch (IOException | ParseException | ParserException e) {
-			e.printStackTrace();
-		}
+	{
+		downloadIcs();
+     	importHwrIcs();	
     }
 	
-	public void importHwrIcs() throws IOException, ParseException, ParserException {
-		URL url = new URL(settings.geturlvariables());
-		downloadIcs(url, "");
-		//Übergabe String path an Import-Funktion
-		Path ics = Paths.get(settings.getPath());
+	public void importHwrIcs()  {
+		var ics = Paths.get(settings.getPath());
 		var pathOfIcs = ics.toAbsolutePath().toString();
-		var icsimport = new ImportExportTest();
-		icsimport.importFile(pathOfIcs);
+		icsImport.importFile(pathOfIcs);
 	}
-
-	public void downloadIcs(URL url, String fileName) throws IOException 
+	
+	public void downloadIcs() 
 	{
-		ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-		FileOutputStream fos = new FileOutputStream(settings.getPath());
-		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-		fos.close();
+		try {
+			var fos = new FileOutputStream(settings.getPath());
+			var url = new URL(settings.getUrl());
+			var rbc = Channels.newChannel(url.openStream());
+			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 	
 	
