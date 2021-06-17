@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class SettingsModel implements Serializable
 {
-    public final static String APICYPHER = "vzAX1n7COi82yQPOqQa1gA==";
+    public final static String APICYPHERTEXT = "vzAX1n7COi82yQPOqQa1gA==";
     public final static String PASSWORDHASH = "zmug2qLvMu11eKqbckKNVs+FjCcmDSK8p3feHqObn/2cwNbtPNG3y8VR5z16Po/zPFPLgjPBYB6muGS8GcBftNqU14PiRl0ho1pq2CovNXYD2TxrMAI3ZANtL375wQbJxAvQZLBXwo6jQ6AxFGe6gA==";
 
     private String pathToSaveBackupFiles = null;

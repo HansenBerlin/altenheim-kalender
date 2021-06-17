@@ -47,7 +47,7 @@ public class SecureAesController
     private Pair<IvParameterSpec, SecretKeySpec> createSpecs(String password, String salt)
             throws NoSuchAlgorithmException, InvalidKeySpecException
     {
-        byte[] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         var ivSpec = new IvParameterSpec(iv);
         var factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         var spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 256);
