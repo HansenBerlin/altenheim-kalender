@@ -57,7 +57,7 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
 		return output;
 	}
     
-    public void createRandomCalendarList(String calendarName) 
+    public void createRandomCalendarList()
     {
         int dayOfMonth;
         var calendar = new Calendar();
@@ -97,7 +97,49 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
         entry.changeStartTime(startTime);
         entry.changeEndTime(endTime);
         return entry;
-    }	
+    }
+
+    public Entry<String> createUserEntry (LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd)
+    {
+        var entry = new Entry<String>();
+        entry.changeStartTime(timeStart);
+        entry.changeStartDate(dateStart);
+        entry.changeEndTime(timeEnd);
+        entry.changeEndDate(dateEnd);
+        return entry;
+    }
+
+    public ArrayList<ArrayList<Entry<?>>> createOpeningHoursWithLunchBreak() {
+        ArrayList<ArrayList<Entry<?>>> openingHours = new ArrayList<ArrayList<Entry<?>>>();
+        for (int i = 0; i < 6; i++) {
+            var day1 = new ArrayList<Entry<?>>();
+            if (i%2==0) {
+                day1.add(createEntryDummy(10, 13, 1, 1));
+                day1.add(createEntryDummy(16, 22, 1, 1));
+            }else{
+                day1.add(createEntryDummy(10, 22, 1, 1));
+            }
+
+            openingHours.add(day1);
+        }
+        openingHours.add(new ArrayList<Entry<?>>());
+        return openingHours;
+    }
+
+
+    private Entry<?> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
+    {
+        var entryUser = new Entry("User Preference");
+        var startDate = LocalDate.of(2021, 1, startDay);
+        var endDate = LocalDate.of(2021, 1, endDay);
+        entryUser.changeStartDate(startDate);
+        entryUser.changeEndDate(endDate);
+        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
+        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
+        return entryUser;
+    }
+
+
 
     private int rG(int startInclusive, int endInclusive)
     {

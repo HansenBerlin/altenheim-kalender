@@ -156,4 +156,11 @@ public class SmartSearchController implements ISmartSearchController
 		return (currentEntries.get(currentEntries.size()-2).getStartMillis() 
 		== currentEntries.get(currentEntries.size()-1).getStartMillis());
 	}	
+
+	public ArrayList<Entry<?>> findPossibleTimeSlots(Entry<?> input, int duration, boolean[] weekdays,
+													 ArrayList<ArrayList<Entry<?>>> openingHours,
+													 int timeBefore, int timeAfter, int maxNumberOfReturnEntrys) {
+		System.out.println("Test");
+		return null;
+	}
 }
