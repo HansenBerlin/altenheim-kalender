@@ -87,7 +87,6 @@ public class SmartSearchControllerTest
         var result = controller.findAvailableTimeSlot(entryUser, 60, 0, 0);
 
         long totalMinutes = 0;
-        System.out.println(result.size());
         for (var entry : result) { 
             totalMinutes+=entry.getDuration().toMinutes();
          }
