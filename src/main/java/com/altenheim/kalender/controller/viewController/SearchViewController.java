@@ -35,9 +35,8 @@ public class SearchViewController extends ResponsiveController
         dropdownToDestinationTravelTimeOption, dropdownVehicle;        
     @FXML private Spinner<Integer> sliderSuggestionCount;  
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
-        
-    private TableView<SuggestionsModel> tableSuggestions;
-    private int userStep = 1;    
+
+    private int userStep = 1;
     private ISmartSearchController smartSearch;
     private IEntryFactory entryFactory;
     private List<ContactModel> contacts;
@@ -47,8 +46,10 @@ public class SearchViewController extends ResponsiveController
     private IGoogleAPIController api;
     private IIOController iOController;
 
-    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<ContactModel> contacts, 
-        IContactFactory contactFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api, IIOController iOController)
+    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory,
+                                List<ContactModel> contacts, IContactFactory contactFactory,
+                                List<MailTemplateModel> mailTemplates, SettingsModel settings,
+                                IGoogleAPIController api, IIOController iOController)
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
@@ -63,14 +64,13 @@ public class SearchViewController extends ResponsiveController
     @FXML
     private void initialize()
     {
-        tableSuggestions = createTable();
+        TableView<SuggestionsModel> tableSuggestions = createTable();
         stepThreeUserInput.getChildren().add(tableSuggestions);
     }
 
     @FXML
     private void updateUserStepView(ActionEvent event) 
-    {       
-        
+    {
         String[] headings = {"Basisinformationen" , "Optionale Informationen", "Vorschlagsauswahl" };
         Circle[] images = { imgFirstStep, imgSecondStep, imgThirdStep };
         VBox[] allSteps = { stepOneUserInput, stepTwoUserInput, stepThreeUserInput }; 
@@ -80,7 +80,10 @@ public class SearchViewController extends ResponsiveController
         if (button.equals(btnConfirm))
         {
             if (userStep == 3)
+            {
+                startRequest();
                 return;
+            }
             incrementor = 1;
         }
         else if (button.equals(btnBack) && userStep == 1)        
@@ -91,6 +94,21 @@ public class SearchViewController extends ResponsiveController
         changeViewState(allSteps[currentIndex], allSteps[requestedIndex], images[currentIndex], images[requestedIndex]); 
         userStep += incrementor; 
         txtHeaderStep.setText(headings[currentIndex]);
+
+    }
+
+    private void startRequest()
+    {
+        var userPrefs = entryFactory.createUserEntry(startDate.getValue(), endDate.getValue(),
+                timeStart.getValue(), timeEnd.getValue());
+        int duration = (int)sliderAppointmentDuration.getValue();
+        var openingHours = entryFactory.createOpeningHoursWithLunchBreak();
+        int timeBefore = (int)sliderMarginBeforeAppointment.getValue();
+        int timeAfter = (int)sliderMarginAfterAppointment.getValue();
+        boolean[] weekdays = { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),
+                tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(), tickSunday.isSelected() };
+
+        smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, openingHours, timeBefore, timeAfter, 10);
     }
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC)

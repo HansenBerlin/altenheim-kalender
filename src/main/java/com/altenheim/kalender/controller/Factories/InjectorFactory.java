@@ -31,17 +31,17 @@ public class InjectorFactory
         IContactFactory contactFactory = new ContactFactory(contacts);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings);
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
-        IEntryFactory appointmentEntryCreator = new EntryFactory(calendarEntriesModel, customCalendarView, contacts);
-        IIOController ioCt = new IOController(appointmentEntryCreator, contacts, settings, mailTemplates, calendarEntriesModel);
-        IExportController exportCt = new ExportController(appointmentEntryCreator, contacts, settings, mailTemplates, calendarEntriesModel);
-        IImportController importCt = new ImportController(appointmentEntryCreator, contacts, settings, mailTemplates, calendarEntriesModel);        
+        IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, contacts);
+        IIOController ioCt = new IOController(entryFactory, contacts, settings, mailTemplates, calendarEntriesModel);
+        IExportController exportCt = new ExportController(entryFactory, contacts, settings, mailTemplates, calendarEntriesModel);
+        IImportController importCt = new ImportController(entryFactory, contacts, settings, mailTemplates, calendarEntriesModel);
        
         var settingsVCt = new SettingsViewController(settings);        
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(contacts, contactFactory, apiCt, ioCt);
         var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates);
-        var searchVCt = new SearchViewController(smartSearch, appointmentEntryCreator, contacts, contactFactory, mailTemplates, settings, apiCt, ioCt);
-        var plannerVCt = new PlannerViewController(calendarEntriesModel, appointmentEntryCreator, importCt, exportCt, customCalendarView);
+        var searchVCt = new SearchViewController(smartSearch, entryFactory, contacts, contactFactory, mailTemplates, settings, apiCt, ioCt);
+        var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);        
         guiSetup = new GuiSetupController(jMetroStyle, allViews);
 
@@ -49,5 +49,6 @@ public class InjectorFactory
         //ioCt.loadCalendarsFromFile();     
         settings.addPropertyChangeListener(new ChangeListener());
         //websiteCt.startScraperTask();
+        entryFactory.createRandomCalendarList();
     }      
 }
