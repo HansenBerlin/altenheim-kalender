@@ -6,6 +6,7 @@ import java.beans.PropertyChangeSupport;
 
 public class SettingsModel
 {
+    private String path = "hwrCalendar.ics";
     private String pathToSaveBackupFiles = null;
     private String urlvariables = null;
     private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
@@ -25,6 +26,9 @@ public class SettingsModel
 
     public void seturlvariables(String url) {this.urlvariables = url;}
     public String geturlvariables() { return urlvariables; }
+
+    public void setPath(String path) {this.path = path;}
+    public String getPath() { return path; }
 
     public void setCustomPathToSavedFiles() { }
     public String getCustomPathToSavedFiles() { return pathToSaveBackupFiles; }
