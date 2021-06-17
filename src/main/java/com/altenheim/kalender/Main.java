@@ -10,12 +10,8 @@ import net.fortuna.ical4j.data.ParserException;
 
 public class Main  
 {
-    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException, ParseException, ParserException 
-    {
-        //StartJFX.main(args);
-        var testImportExport = new ImportExportTest();
-        testImportExport.importFile();
-        testImportExport.exportFile();
-
+    public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException 
+    {       
+        JavaFXLauncher.main(args);              
     }
 }

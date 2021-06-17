@@ -1,10 +1,10 @@
 package com.altenheim.kalender.models;
 
 import com.altenheim.kalender.controller.viewController.*;
-import com.altenheim.kalender.interfaces.ViewRootsInterface;
+import com.altenheim.kalender.interfaces.IViewRootsModel;
 import javafx.scene.layout.GridPane;
 
-public class ViewRootsModel implements ViewRootsInterface
+public class ViewRootsModel implements IViewRootsModel
 {
     private GridPane[] allViews;
     private ResponsiveController[] allControllers;   
