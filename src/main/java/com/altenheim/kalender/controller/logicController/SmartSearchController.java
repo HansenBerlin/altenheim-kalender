@@ -6,12 +6,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import com.calendarfx.model.Entry;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
+import com.calendarfx.model.Entry;
 
-public class SmartSearchController implements ISmartSearchController {
 
+public class SmartSearchController implements ISmartSearchController 
+{
 	private ICalendarEntriesModel administrateEntries;
 
 	public SmartSearchController(ICalendarEntriesModel administrateEntries) 

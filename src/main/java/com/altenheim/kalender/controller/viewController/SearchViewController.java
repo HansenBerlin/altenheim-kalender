@@ -1,6 +1,5 @@
 package com.altenheim.kalender.controller.viewController;
 
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
@@ -8,9 +7,14 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
+import com.altenheim.kalender.models.*;
+import java.io.IOException;
+import java.util.List;
+import com.altenheim.kalender.interfaces.IEntryFactory;
+import com.altenheim.kalender.interfaces.IContactFactory;
+import com.altenheim.kalender.interfaces.IGoogleAPIController;
+import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
-import com.altenheim.kalender.models.SuggestionsModel;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -28,22 +32,32 @@ public class SearchViewController extends ResponsiveController
         toggleAutoSuggest, toogleUseNextAppointment;  
     @FXML private Slider sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment, sliderAppointmentDuration;
     @FXML private SplitMenuButton dropdownToDestinationOpeningOptions, dropdownInterval,dropdownStartAt, 
-        dropdownToDestinationTravelTimeOption, dropdownVehicle;
-    private TableView<SuggestionsModel> tableSuggestions;
-    //private TableColumn<String, String> columnStartDate;
-    //private TableColumn<String, String> columnEndDate;
-    //@FXML private TableColumn<Button, String> columnTick;
+        dropdownToDestinationTravelTimeOption, dropdownVehicle;        
     @FXML private Spinner<Integer> sliderSuggestionCount;  
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
-
+        
+    private TableView<SuggestionsModel> tableSuggestions;
     private int userStep = 1;    
     private ISmartSearchController smartSearch;
-    private IAppointmentEntryFactory factory;
+    private IEntryFactory entryFactory;
+    private List<ContactModel> contacts;
+    private IContactFactory contactFactory;
+    private List<MailTemplateModel> mailTemplates;
+    private SettingsModel settings;
+    private IGoogleAPIController api;
+    private IIOController iOController;
 
-    public SearchViewController(ISmartSearchController smartSearch, IAppointmentEntryFactory factory)
+    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<ContactModel> contacts, 
+        IContactFactory contactFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api, IIOController iOController)
     {
         this.smartSearch = smartSearch;
-        this.factory = factory;
+        this.entryFactory = entryFactory;
+        this.contacts = contacts;
+        this.contactFactory = contactFactory;
+        this.mailTemplates = mailTemplates;
+        this.settings = settings;
+        this.api = api;
+        this.iOController = iOController;
     }
 
     @FXML
@@ -90,21 +104,29 @@ public class SearchViewController extends ResponsiveController
     }
 
     @FXML
-    private void testUpdate(ActionEvent event)
-    {      
-        var testEntry = factory.createUserSettingsEntry(timeStart.getValue(), timeEnd.getValue());
+    private void testUpdate(ActionEvent event) throws IOException, ClassNotFoundException
+    {   /*
+        var testEntry = entryFactory.createUserSettingsEntry(timeStart.getValue(), timeEnd.getValue());
         var result = smartSearch.findAvailableTimeSlot(testEntry, (int)sliderAppointmentDuration.getValue());
         for (var entry : result) 
         {
             SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime());
             System.out.println(entry.getStartTime() + " " + entry.getEndTime());
         }
+        iOController.writeCalendarFiles(null);
+
+        for (int i = 0; i < 5; i++)        
+            entryFactory.createRandomCalendarList("Test " + i);
+        iOController.writeCalendarFiles();*/
+        entryFactory.createRandomContactsList(100);
+        iOController.saveContactsToFile();     
     }
 
     @FXML
-    private void resetTest(ActionEvent event)
+    private void resetTest(ActionEvent event) throws IOException, ClassNotFoundException
     {
-        SuggestionsModel.data.clear();
+        //SuggestionsModel.data.clear();
+        //settings.setScrapingInterval(settings.getScrapingInterval()+1000);        
     }
 
 
