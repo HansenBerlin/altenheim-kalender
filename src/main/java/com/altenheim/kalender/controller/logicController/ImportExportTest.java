@@ -1,13 +1,12 @@
 ﻿package com.altenheim.kalender.controller.logicController;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.GregorianCalendar;
 import com.calendarfx.model.Entry;
@@ -86,7 +85,51 @@ public class ImportExportTest
             var entry = entries.get(i);
             icsCalendar.getComponents().add(createIcalEntryFromCalFXEntry(entry));
         }
-        var fout = new FileOutputStream("testExport.ics");
+        var fout = new FileOutputStream(calName + ".ics");
+        var outputter = new CalendarOutputter();
+        outputter.output(icsCalendar, fout);
+        System.out.println("File created in root directory.");
+    }
+
+    public void exportFile(com.calendarfx.model.Calendar[] cal) throws ValidationException, IOException
+    {
+        var test = true;
+        for(int i = 0; i < cal.length; i++)
+        {
+            var entries = cal[i].findEntries("");
+            var calName = cal[i].getName();
+            var icsCalendar = new Calendar();
+            icsCalendar.getProperties().add(new ProdId("-//Smart Planner//iCal4j 1.0//DE"));
+            icsCalendar.getProperties().add(Version.VERSION_2_0);
+            icsCalendar.getProperties().add(CalScale.GREGORIAN);
+            icsCalendar.getProperties().add(new XProperty("X-WR-CALNAME", calName));
+            for(int j = 0; j < entries.size(); j++)
+            {
+                var entry = entries.get(j);
+                icsCalendar.getComponents().add(createIcalEntryFromCalFXEntry(entry));
+            }
+            var path = calName + ".ics";
+            var fout = new FileOutputStream(path);
+            var outputter = new CalendarOutputter();
+            outputter.output(icsCalendar, fout);
+            var file = new File(path);
+            if(!file.exists())
+                test = false;
+        }
+        if(test)
+            System.out.println("Files created in root directory.");
+        else
+            System.out.println("An error has occurred.");
+    }
+
+    public void exportFile(Entry<?> ent) throws ValidationException, IOException
+    {
+        var icsCalendar = new Calendar();
+        icsCalendar.getProperties().add(new ProdId("-//Smart Planner//iCal4j 1.0//DE"));
+        icsCalendar.getProperties().add(Version.VERSION_2_0);
+        icsCalendar.getProperties().add(CalScale.GREGORIAN);
+        icsCalendar.getComponents().add(createIcalEntryFromCalFXEntry(ent));
+        var fout = new FileOutputStream(ent.getTitle() + ".ics");
         var outputter = new CalendarOutputter();
         outputter.output(icsCalendar, fout);
         System.out.println("File created in root directory.");
@@ -118,15 +161,4 @@ public class ImportExportTest
         return event;           
     }
 
-    private Entry<String> createCalFXEntryDummy(int startTime, int EndTime, int startDay, int endDay)
-    {
-        var entryUser = new Entry<String>("User Preference");
-        var startDate = LocalDate.of(2021, 1, startDay);  
-        var endDate = LocalDate.of(2021, 1, endDay);  
-        entryUser.changeStartDate(startDate);
-        entryUser.changeEndDate(endDate);
-        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
-        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
-        return entryUser;
-    }
 }
