@@ -8,7 +8,7 @@ public class SettingsModel
 {
     private String path = "hwrCalendar.ics";
     private String pathToSaveBackupFiles = null;
-    private String urlvariables = null;
+    private String url = null;
     private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
     public Long scrapingIntervalInMinutes = (long) 2000;     
 
@@ -24,12 +24,12 @@ public class SettingsModel
         propertyChange.addPropertyChangeListener(listener);
     }
 
-    public void seturlvariables(String url) {this.urlvariables = url;}
-    public String geturlvariables() { return urlvariables; }
+    public void setUrl(String url) {this.url = url;}
+    public String getUrl() { return url; }
 
     public void setPath(String path) {this.path = path;}
     public String getPath() { return path; }
 
-    public void setCustomPathToSavedFiles() { }
+    public void setCustomPathToSavedFiles(String pathToSaveBackupFiles) {this.pathToSaveBackupFiles = pathToSaveBackupFiles;}
     public String getCustomPathToSavedFiles() { return pathToSaveBackupFiles; }
 }
