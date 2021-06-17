@@ -1,5 +1,5 @@
 * {
-    -style1-color: rgba(230, 135, 11, 0.9);
+    -style1-color: rgba(79, 186, 116, 0.9);
     -style2-color: rgba(65.0, 143.0, 203.0, 0.9);
     -style3-color: rgba(247.0, 209.0, 91.0, 0.9);
     -style4-color: rgba(157.0, 91.0, 159.0, 0.9);
@@ -7,8 +7,8 @@
     -style6-color: rgba(249.0, 132.0, 75.0, 0.9);
     -style7-color: rgba(174.0, 102.0, 62.0, 0.9);
 
-    -weekend-fill-color: rgb(0.0, 0.0, 0.0);
-    -today-fill-color: rgb(206, 221, 0);
+    -weekend-fill-color: rgb(151, 151, 151);
+    -today-fill-color: rgb(79, 186, 116);
 
     -usage-very-low-color: lightgreen;
     -usage-low-color: green;
@@ -31,7 +31,7 @@
 #toolbar {
     -fx-padding: 10.0;
     -fx-border-width: 0.0 0.0 0.5 0.0;
-    -fx-border-color: gray;
+    -fx-border-color: rgb(47, 32, 189);
 }
 
 #switcher {
@@ -49,9 +49,9 @@
 }
 
 #date-picker {
-    -fx-border-color: lightgray transparent transparent transparent;
+    -fx-border-color: rgb(107, 107, 107) transparent transparent transparent;
     -fx-border-insets: 0.0 6.0 0.0 6.0;
-    -fx-background-color: rgb(245.0, 245.0, 245.0);
+    -fx-background-color: rgb(107, 107, 107);
     -fx-min-width: 200.0px;
     -fx-min-height: 180.0px;
 }
@@ -80,7 +80,7 @@
 }
 
 .calendar-view .button-icon {
-    -fx-icon-color: rgb(100, 100, 100);
+    -fx-icon-color: rgb(0, 0, 0);
     -fx-icon-size: 14.0px;
 }
 
@@ -92,7 +92,7 @@
  */
 
 .calendar-page {
-    -fx-background-color: white;
+    -fx-background-color: rgb(255, 255, 255);
 }
 
 .calendar-page > .container > .content {
@@ -120,7 +120,7 @@
  */
 
 .day-page > .container > .content > .left-side > .header {
-    -fx-background-color: rgb(31, 31, 31);
+    -fx-background-color: rgb(204, 204, 204);
     -fx-background-radius: 6px;
     -fx-padding: 0 1em 0 1em;
 }
@@ -128,7 +128,7 @@
 .day-page > .container > .content > .left-side > .header > .today-label {
     -fx-font-family: Arial;
     -fx-font-size: 12.0em;
-    -fx-text-fill: rgb(56, 56, 56);
+    -fx-text-fill: rgb(79, 186, 116);
 }
 
 .day-page > .container > .content > .left-side > .agenda-view {
@@ -147,7 +147,7 @@
 
 .day-page > .container > .content > .left-side > .header > .year-month-view > .container > .week-label,
 .day-page > .container > .content > .left-side > .header > .year-month-view > .container > .day-of-week-label {
-    -fx-text-fill: white;
+    -fx-text-fill: rgb(0, 0, 0);
     -fx-font-size: 10.0px;
 }
 
@@ -162,7 +162,7 @@
 }
 
 .day-page > .container > .content > .left-side > .header > .year-month-view > .container > .current-date-border {
-    -fx-border-color: transparent transparent firebrick transparent;
+    -fx-border-color: transparent transparent rgb(92, 92, 92) transparent;
     -fx-border-width: 2.0;
 }
 
@@ -171,13 +171,13 @@
 }
 
 .day-page > .container > .content > .left-side > .header > .year-month-view > .container > .day-of-month-label {
-    -fx-text-fill: white;
+    -fx-text-fill: rgb(92, 92, 92);
     -fx-font-size: .9em;
 }
 
 .day-page > .container > .content > .left-side > .header > .year-month-view > .container > .day-not-of-month-label {
-    -fx-text-fill: lightgray;
-    -fx-text-stroke: black;
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-text-stroke: rgb(255, 0, 212);
     -fx-font-size: .8em;
 }
 
@@ -371,13 +371,13 @@
 }
 
 .year-month-view > .container > .day-of-week-label {
-    -fx-border-color: transparent transparent lightgray transparent;
+    -fx-border-color: transparent transparent rgb(45, 221, 90) transparent;
     -fx-padding: 0.0 0.0 5.0 0.0;
 }
 
 .year-month-view > .container > .week-label,
 .year-month-view > .container > .day-of-week-label {
-    -fx-text-fill: gray;
+    -fx-text-fill: rgb(0, 0, 0);
     -fx-font-size: 10.0px;
 }
 
@@ -392,7 +392,7 @@
 }
 
 .year-month-view > .container > .current-date-border {
-    -fx-border-color: transparent transparent firebrick transparent;
+    -fx-border-color: transparent transparent rgb(33, 117, 63) transparent;
     -fx-border-width: 2.0;
 }
 
@@ -473,13 +473,13 @@
 }
 
 .month-view > .container > .current-week {
-    -fx-border-color: salmon transparent transparent transparent;
+    -fx-border-color: rgb(45, 221, 90) transparent transparent transparent;
 }
 
 .month-view > .container > .today {
     -fx-background-color: lavenderblush;
     -fx-text-fill: red;
-    -fx-border-color: firebrick transparent transparent transparent;
+    -fx-border-color: rgb(35, 105, 60) transparent transparent transparent;
 }
 
 .month-view > .container > .day > .entries-pane {
@@ -516,12 +516,12 @@
 }
 
 .month-view > .container > .day > .header > .week-of-year-label {
-    -fx-text-fill: white;
-    -fx-background-color: gray;
+    -fx-text-fill: rgb(0, 0, 0);
+    -fx-background-color: rgb(204, 204, 204);
 }
 
 .month-view > .container > .day > .header > .current-week-of-year-label {
-    -fx-text-fill: lightcoral;
+    -fx-text-fill: rgb(0, 0, 0);
     -fx-background-color: lavenderblush;
 }
 
@@ -548,7 +548,7 @@
 }
 
 .month-view > .container > .day > .header > .today-label {
-    -fx-text-fill: firebrick;
+    -fx-text-fill: rgb(36, 110, 62);
     -fx-background-insets: 0.0 4.0px 0.0 4.0px;
     -fx-alignment: center-right;
 }
@@ -633,8 +633,8 @@
 }
 
 .time-scale > .time-label {
-    -fx-font-size: 0.8em;
-    -fx-text-fill: gray;
+    -fx-font-size: 1em;
+    -fx-text-fill: rgb(0, 0, 0);
 }
 
 .time-scale > .date-label {
@@ -646,7 +646,7 @@
 }
 
 .time-scale > .current-time-label {
-    -fx-font-size: 0.8em;
+    -fx-font-size: 1em;
     -fx-text-fill: firebrick;
 }
 
@@ -687,11 +687,11 @@
 
 .all-day-view > .container > .day-region {
     -fx-border-width: 0.0 0.0 5.0 0.0;
-    -fx-border-color: transparent transparent lightgray transparent;
+    -fx-border-color: transparent transparent rgb(45, 221, 90) transparent;
 }
 
 .all-day-view > .container > .today {
-    -fx-border-color: transparent transparent firebrick transparent;
+    -fx-border-color: transparent transparent rgb(28, 105, 55) transparent;
     -fx-background-color: lavenderblush;
 }
 
@@ -718,7 +718,7 @@
 }
 
 .agenda-view > .container > .status-label {
-    -fx-text-fill: gray;
+    -fx-text-fill: rgb(0, 0, 0);
     -fx-alignment: center;
 }
 
@@ -747,7 +747,7 @@
     -fx-padding: 0.0 0.0 4.0 0.0;
     -fx-font-size: 0.8em;
     -fx-font-weight: bold;
-    -fx-text-fill: gray;
+    -fx-text-fill: rgb(0, 0, 0);
 }
 
 .agenda-view-list-cell > .container > .header > .today,
@@ -1873,6 +1873,7 @@
 
 .button-bar > .container > .button.left-pill {
     -fx-background-radius: 3 0 0 3;
+    -fx-background-color: rgb(204, 204, 204);
 }
 
 .button-bar > .container > .button.left-pill:focused {
@@ -1881,6 +1882,7 @@
 
 .button-bar > .container > .button.right-pill {
     -fx-background-radius: 0 3 3 0;
+    -fx-background-color: rgb(204, 204, 204);
 }
 
 .button-bar > .container > .button.right-pill:focused {
@@ -1890,6 +1892,7 @@
 
 .button-bar > .container > .button.center-pill {
     -fx-background-radius: 0;
+    -fx-background-color: rgb(204, 204, 204);
 }
 
 .button-bar > .container > .button.center-pill:focused {
