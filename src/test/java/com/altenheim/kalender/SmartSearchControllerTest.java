@@ -89,7 +89,6 @@ public class SmartSearchControllerTest
         long totalMinutes = 0;
         System.out.println(result.size());
         for (var entry : result) { 
-            System.out.println(entry.getDuration().toMinutes());
             totalMinutes+=entry.getDuration().toMinutes();
          }
         assertEquals(360, totalMinutes);
@@ -354,6 +353,58 @@ public class SmartSearchControllerTest
         assertEquals(2, result2.size()); 
 
         // möglich: 2 Termine
+    }
+
+    @Test
+    void findAvailableTimeSlot_withIntervall_ReturnSixEntrys(){
+        var input = new Entry();
+        input = createEntryDummy(16, 20, 1, 11, 8, 11);
+        boolean[] weekdays = {true, true, true, true, true, true, true}; 
+        ArrayList<ArrayList<Entry<?>>> openingHours2 = createOpeningHours(); 
+               
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var calendarMockEntries = new Calendar();
+       
+        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+
+        var controller2 = new SmartSearchController(allEntriesMock);
+        var result2 = controller2.findPossibleTimeSlots(input, 30, weekdays, openingHours2, 30, 30, 6, 10);
+        var day = LocalDate.of(2021, 11, 1);
+        for (Entry<?> entry : result2) {
+            assertEquals(entry.getStartDate(), day);
+            day = day.plusDays(10);
+        }
+        assertEquals(6, result2.size()); 
+
+        // möglich: 6 Termine mit 10 Tagen Abstand
+    }
+
+    @Test
+    void findAvailableTimeSlot_withIntervall_ReturnThreeEntrys(){
+        var input = new Entry();
+        input = createEntryDummy(16, 20, 1, 11, 8, 11);
+        boolean[] weekdays = {true, false, true, false, true, false, true}; 
+        ArrayList<ArrayList<Entry<?>>> openingHours2 = createOpeningHours(); 
+               
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var calendarMockEntries = new Calendar();
+       
+        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+
+        var controller2 = new SmartSearchController(allEntriesMock);
+        var result2 = controller2.findPossibleTimeSlots(input, 30, weekdays, openingHours2, 30, 30, 3, 1);
+        var day = LocalDate.of(2021, 11, 1);
+        
+        assertEquals(result2.get(0).getStartDate(), day);
+        day = day.plusDays(2);
+        assertEquals(result2.get(1).getStartDate(), day);
+        day = day.plusDays(2);
+        assertEquals(result2.get(2).getStartDate(), day);
+        day = day.plusDays(2);
+        
+        assertEquals(3, result2.size()); 
+
+        // möglich: 3 Termine 
     }
 
    ///////////////////////////////////////////////////////////////////////////
