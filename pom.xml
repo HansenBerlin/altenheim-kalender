@@ -28,10 +28,10 @@
       <scope>test</scope> 
     </dependency>   
     <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-controls</artifactId>
-        <version>16</version>
-      </dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>16</version>
+    </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
@@ -58,7 +58,7 @@
       <artifactId>json</artifactId>
       <version>20210307</version>
     </dependency>
-       <dependency>
+    <dependency>
       <groupId>org.mnode.ical4j</groupId>
       <artifactId>ical4j</artifactId>
       <version>3.0.25</version>
