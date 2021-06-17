@@ -10,12 +10,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.GregorianCalendar;
-
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.IImportController;
 import com.altenheim.kalender.interfaces.IWebsiteScraperController;
 import com.calendarfx.model.Entry;
-
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.data.ParserException;
@@ -50,7 +48,6 @@ public class ImportController extends IOController implements IImportController
         com.calendarfx.model.Calendar cal;
         try 
         {
-            
             var stream = new FileInputStream(path);
             var builder = new CalendarBuilder();
             var calendar = builder.build(stream);
@@ -59,12 +56,10 @@ public class ImportController extends IOController implements IImportController
             {
                 var calName = ((Property)calendar.getProperties().getProperty("X-WR-CALNAME")).getValue();
                 cal = new com.calendarfx.model.Calendar(calName);
-
             }else
             {
                 cal = new com.calendarfx.model.Calendar();
-            }
-            
+            }      
         } catch (IOException | ParserException e) 
         {
             e.printStackTrace();
@@ -103,6 +98,7 @@ public class ImportController extends IOController implements IImportController
         icsCalendar.getProperties().add(Version.VERSION_2_0);
         icsCalendar.getProperties().add(CalScale.GREGORIAN);
         icsCalendar.getProperties().add(new XProperty("X-WR-CALNAME", calName));
+        
         for(int i = 0; i < entries.size(); i++)
         {
             var entry = entries.get(i);
