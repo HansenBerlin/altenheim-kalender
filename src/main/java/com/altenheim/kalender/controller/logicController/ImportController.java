@@ -1,18 +1,17 @@
 package com.altenheim.kalender.controller.logicController;
 
-import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
-import com.altenheim.kalender.interfaces.IImportController;
-import com.altenheim.kalender.interfaces.IWebsiteScraperController;
+import java.util.List;
+import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.models.ContactModel;
+import com.altenheim.kalender.models.MailTemplateModel;
+import com.altenheim.kalender.models.SettingsModel;
 
 public class ImportController extends IOController implements IImportController
 {
-    private ICalendarEntriesModel allEntries;
-    private IWebsiteScraperController scraper;
 
-    public ImportController(ICalendarEntriesModel allEntries, IWebsiteScraperController scraper)
+    public ImportController(IEntryFactory administrateEntries, List<ContactModel> allContacts, SettingsModel settings,
+            List<MailTemplateModel> mailTemplates, ICalendarEntriesModel allEntries) 
     {
-        this.allEntries = allEntries;
-        this.scraper = scraper;
-    }
-    
+        super(administrateEntries, allContacts, settings, mailTemplates, allEntries);
+    }    
 }

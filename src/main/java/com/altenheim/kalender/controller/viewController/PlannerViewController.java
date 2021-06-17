@@ -6,24 +6,24 @@ public class PlannerViewController extends ResponsiveController
 {    
     private CalendarViewOverride customCalendar; 
     private ICalendarEntriesModel allEntries;
-    private IAppointmentEntryFactory entryFactory;
+    private IEntryFactory entryFactory;
     private IImportController importController;
     private IExportController exportController;
 
 
-    public PlannerViewController(ICalendarEntriesModel allEntries, IAppointmentEntryFactory entryFactory,
-        IImportController importController, IExportController exportController)
+    public PlannerViewController(ICalendarEntriesModel allEntries, IEntryFactory entryFactory, 
+        IImportController importController, IExportController exportController, CalendarViewOverride custumCalendar)
     {
         this.allEntries = allEntries;
         this.entryFactory = entryFactory;
         this.importController = importController;
         this.exportController = exportController;
+        this.customCalendar = custumCalendar;        
     }
     
     public void addCustomCalendarView()
     {
-        customCalendar = new CalendarViewOverride();
-        childContainer.add(customCalendar, 0, 0, 1, 1);
+        childContainer.add(this.customCalendar, 0, 0, 1, 1);
     }
 
     public void changeContentPosition() 

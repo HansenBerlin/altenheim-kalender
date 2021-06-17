@@ -1,7 +1,7 @@
 package com.altenheim.kalender;
 
+import com.altenheim.kalender.controller.Factories.InjectorFactory;
 import com.altenheim.kalender.controller.viewController.MainWindowController;
-import com.altenheim.kalender.resourceClasses.FxmlFiles;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +13,7 @@ public class JavaFXLauncher extends Application
     @Override
     public void start(Stage primaryStage) throws Exception 
     { 
-        var objectFactory = new ObjectFactory();
+        var objectFactory = new InjectorFactory();
         objectFactory.createServices();
         var jMetroStyle = objectFactory.getJMetroSetup();
         var guiSetup = objectFactory.getGuiController();
@@ -37,8 +37,5 @@ public class JavaFXLauncher extends Application
     public static void main(String[] args)
     {
         launch(args);    
-    }
-
-    
-    
+    }    
 }
