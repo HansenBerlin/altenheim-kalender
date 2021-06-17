@@ -1,6 +1,6 @@
 package com.altenheim.kalender.controller.viewController;
 
-import com.altenheim.kalender.interfaces.ViewRootsInterface;
+import com.altenheim.kalender.interfaces.IViewRootsModel;
 import com.altenheim.kalender.resourceClasses.FxmlFiles;
 import com.altenheim.kalender.resourceClasses.StylePresets;
 import java.io.FileNotFoundException;
@@ -18,14 +18,17 @@ import jfxtras.styles.jmetro.Style;
 public class GuiSetupController 
 {
     private JMetro jMetroStyle;    
-    private ViewRootsInterface viewsInformation;
+    private IViewRootsModel viewsInformation;
     public boolean isDarkmodeActive = false;
 
-    public GuiSetupController(JMetro jMetroStyle, ViewRootsInterface viewsInformation) 
+    public JMetro getJMetroStyle() { return jMetroStyle; }
+
+    public GuiSetupController(JMetro jMetroStyle, IViewRootsModel viewsInformation) 
     {
         this.jMetroStyle = jMetroStyle;
         this.viewsInformation = viewsInformation;  
-    }  
+    } 
+    
 
     public void init() throws IOException
     {       
