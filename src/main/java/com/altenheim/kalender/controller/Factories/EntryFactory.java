@@ -1,6 +1,5 @@
 package com.altenheim.kalender.controller.Factories;
 
-import com.altenheim.kalender.controller.viewController.CalendarViewOverride;
 import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
@@ -15,14 +14,15 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
+import com.calendarfx.view.CalendarView;
 
 
 public class EntryFactory extends ContactFactory implements IEntryFactory
 {    
     private ICalendarEntriesModel allCalendars;
-    private CalendarViewOverride calendarView;
+    private CalendarView calendarView;
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarViewOverride calendarView, List<ContactModel> contacts)
+    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarView calendarView, List<ContactModel> contacts)
     {
         super(contacts);
         this.allCalendars = allCalendars;
@@ -60,9 +60,8 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
     public void createRandomCalendarList()
     {
         int dayOfMonth;
-        var calendar = new Calendar();
-        var calendearSource = new CalendarSource("Saved Calendars");
-        calendar.setName(String.format("%d", calendar.hashCode()));
+        var calendar = new Calendar("TestKalender");
+        calendar.setName(calendar.getName());
         for (int i = 1; i <= 12; i++) 
         {
             if (Arrays.asList(new int[]{1, 3, 5, 7, 8, 10, 12}).contains(i))
@@ -81,9 +80,15 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
                 }
             }            
         }
+        addCalendarToView(calendar);
+    }
+
+    public void addCalendarToView(Calendar calendar)
+    {
         allCalendars.addCalendar(calendar);
-        calendearSource.getCalendars().addAll(allCalendars.getAllCalendars());
-        calendarView.getCalendarSources().addAll(calendearSource);  
+        var calendarSource = new CalendarSource("Saved Calendars");
+        calendarSource.getCalendars().addAll(calendar);
+        calendarView.getCalendarSources().addAll(calendarSource);
     }
 
     private Entry<String> createRandomEntry(int day, int month, int startT, int endT)

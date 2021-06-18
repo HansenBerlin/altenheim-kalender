@@ -7,8 +7,8 @@ import com.calendarfx.model.Entry;
 
 public interface ICalendarEntriesModel
 {
-    public Calendar getSpecificCalendarByIndex(int index);
-    public void addCalendar(Calendar calendar);
-    public List<Entry<?>> getSpecificRange(LocalDate startDate, LocalDate endDate); 
-    public List<Calendar> getAllCalendars();
+    Calendar getSpecificCalendarByIndex(int index);
+    void addCalendar(Calendar calendar);
+    List<Entry<?>> getSpecificRange(LocalDate startDate, LocalDate endDate);
+    List<Calendar> getAllCalendars();
 }

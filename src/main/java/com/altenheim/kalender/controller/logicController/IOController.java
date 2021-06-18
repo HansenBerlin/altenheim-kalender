@@ -5,7 +5,6 @@ import java.io.File;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.IIOController;
-import com.altenheim.kalender.models.CalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.models.SettingsModel;
@@ -18,24 +17,20 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 import net.fortuna.ical4j.data.*;
 import net.fortuna.ical4j.model.property.*;
 import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Property;
-import net.fortuna.ical4j.model.component.VEvent;
-import net.fortuna.ical4j.util.RandomUidGenerator;
 import net.fortuna.ical4j.validate.ValidationException;
 
 public class IOController implements IIOController
 {
     private ICalendarEntriesModel allEntries;
     private List<ContactModel> allContacts;
-    private SettingsModel settings;
+    protected SettingsModel settings;
     private List<MailTemplateModel> mailTemplates;
 
     public IOController(IEntryFactory administrateEntries, List<ContactModel> allContacts, 
@@ -114,7 +109,7 @@ public class IOController implements IIOController
 
     public void saveContactsToFile() throws IOException
     {         
-        var path = settings.getCustomPathToSavedFiles();
+        var path = settings.getPathToHwrScrapedFIle();
         if (path == null)
             path = "contactFiles/contacts.file";  
         var writeToFile = new FileOutputStream(path);
@@ -126,7 +121,7 @@ public class IOController implements IIOController
 
     public void loadContactsFromFile() throws IOException, ClassNotFoundException
     {
-        var path = settings.getCustomPathToSavedFiles();
+        var path = settings.getPathToIcsExportedFile();
         if (path == null)
             path = "contactFiles/contacts.file"; 
         var loadFile = new FileInputStream(path);
@@ -172,17 +167,5 @@ public class IOController implements IIOController
 	} 
 
     
-    private VEvent createIcalEntryFromCalFXEntry(Entry<?> entry)
-    {
-        var startTime = GregorianCalendar.from(entry.getStartAsZonedDateTime()).getTime();
-        var endTime = GregorianCalendar.from(entry.getEndAsZonedDateTime()).getTime();
-        var start = new DateTime(startTime);
-        var end = new DateTime(endTime);
-        var title = entry.getTitle();
-        var event = new VEvent(start, end, title);
-        var iD = new RandomUidGenerator();
-        var uid = iD.generateUid();
-        event.getProperties().add(uid); 
-        return event;           
-    }
+
 }

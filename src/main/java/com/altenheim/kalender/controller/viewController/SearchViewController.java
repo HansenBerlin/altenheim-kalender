@@ -99,8 +99,8 @@ public class SearchViewController extends ResponsiveController
 
     private void startRequest()
     {
-        var userPrefs = entryFactory.createUserEntry(startDate.getValue(), endDate.getValue(),
-                timeStart.getValue(), timeEnd.getValue());
+        var userPrefs = entryFactory.createUserEntry(startDate.getValue(),
+                endDate.getValue(), timeStart.getValue(), timeEnd.getValue());
         int duration = (int)sliderAppointmentDuration.getValue();
         var openingHours = entryFactory.createOpeningHoursWithLunchBreak();
         int timeBefore = (int)sliderMarginBeforeAppointment.getValue();
@@ -108,7 +108,13 @@ public class SearchViewController extends ResponsiveController
         boolean[] weekdays = { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),
                 tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(), tickSunday.isSelected() };
 
-        smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, openingHours, timeBefore, timeAfter, 10);
+        var suggestions = smartSearch.findPossibleTimeSlots(
+                userPrefs, duration, weekdays, openingHours, timeBefore, timeAfter, 10, 7);
+        for (var entry : suggestions)
+        {
+            SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime(), entry.getStartDate());
+            //System.out.println(entry.getStartTime() + " " + entry.getEndTime());
+        }
     }
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC)
@@ -154,16 +160,21 @@ public class SearchViewController extends ResponsiveController
 
     private TableView<SuggestionsModel> createTable()
     {
-        TableColumn<SuggestionsModel, String> startColumn = new TableColumn<>("Start");
-        TableColumn<SuggestionsModel, String> endColumn = new TableColumn<>("Ende");
+        TableColumn<SuggestionsModel, String> startTimeColumn = new TableColumn<>("Startzeit");
+        TableColumn<SuggestionsModel, String> endTimeColumn = new TableColumn<>("Endzeit");
+        TableColumn<SuggestionsModel, String> dateColumn = new TableColumn<>("Datum");
         TableView<SuggestionsModel> table = new TableView<SuggestionsModel>(SuggestionsModel.data);
 
-        startColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("startTime"));
-        endColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("endTime"));
-        startColumn.setPrefWidth(150);
-        endColumn.setPrefWidth(150);         
-        table.getColumns().add(startColumn);
-        table.getColumns().add(endColumn);
+        startTimeColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("startTime"));
+        endTimeColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("endTime"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("day"));
+
+        startTimeColumn.setPrefWidth(200);
+        endTimeColumn.setPrefWidth(200);
+        dateColumn.setPrefWidth(200);
+        table.getColumns().add(startTimeColumn);
+        table.getColumns().add(endTimeColumn);
+        table.getColumns().add(dateColumn);
         //table.setPrefHeight(200);
 
         return table;
