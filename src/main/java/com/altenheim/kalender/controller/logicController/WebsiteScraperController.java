@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.file.Paths;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class WebsiteScraperController implements  IWebsiteScraperController//extends TimerTask implements IWebsiteScraperController
