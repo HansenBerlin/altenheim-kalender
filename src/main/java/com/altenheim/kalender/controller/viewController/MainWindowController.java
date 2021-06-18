@@ -125,8 +125,8 @@ public class MainWindowController extends ResponsiveController
             applicationStyle.clear();
             applicationStyle.add(0, appCssFile);
 
-            updateCalendarStyle(guiSetup.getCalendarView(), calCssFile);
-        }               
+            //updateCalendarStyle(guiSetup.getCalendarView(), calCssFile);
+        }
     }
 
     private void updateCalendarStyle (CalendarView calendarView, String cssFile)
