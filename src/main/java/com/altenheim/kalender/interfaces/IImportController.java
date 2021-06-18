@@ -7,7 +7,7 @@ import java.text.ParseException;
 
 public interface IImportController
 {
-    public com.calendarfx.model.Calendar importFile(String path);
+    com.calendarfx.model.Calendar importFile(String path);
 
 
 }
