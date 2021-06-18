@@ -60,9 +60,9 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
     public void createRandomCalendarList()
     {
         int dayOfMonth;
-        var calendar = new Calendar();
+        var calendar = new Calendar("TestKalender");
         var calendearSource = new CalendarSource("Saved Calendars");
-        calendar.setName(String.format("%d", calendar.hashCode()));
+        calendar.setName(calendar.getName());
         for (int i = 1; i <= 12; i++) 
         {
             if (Arrays.asList(new int[]{1, 3, 5, 7, 8, 10, 12}).contains(i))

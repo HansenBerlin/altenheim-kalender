@@ -29,14 +29,15 @@ public class InjectorFactory
         IMailCreationController mailCreationCt = new MailCreationController(mailTemplates); 
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
         IContactFactory contactFactory = new ContactFactory(contacts);
-        IWebsiteScraperController websiteCt = new WebsiteScraperController(settings);
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
         IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, contacts);
         IIOController ioCt = new IOController(entryFactory, contacts, settings, mailTemplates, calendarEntriesModel);
         IExportController exportCt = new ExportController(entryFactory, contacts, settings, mailTemplates, calendarEntriesModel);
         IImportController importCt = new ImportController(entryFactory, contacts, settings, mailTemplates, calendarEntriesModel);
-       
-        var settingsVCt = new SettingsViewController(settings);        
+        IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt);
+
+
+        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, websiteCt, customCalendarView);
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(contacts, contactFactory, apiCt, ioCt);
         var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates);
@@ -45,10 +46,10 @@ public class InjectorFactory
         allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);        
         guiSetup = new GuiSetupController(jMetroStyle, allViews);
 
-        guiSetup.init();        
-        //ioCt.loadCalendarsFromFile();     
+        guiSetup.init();
+        //ioCt.loadCalendarsFromFile();
         settings.addPropertyChangeListener(new ChangeListener());
-        //websiteCt.startScraperTask();
-        entryFactory.createRandomCalendarList();
+        websiteCt.startScraperTask();
+        //entryFactory.createRandomCalendarList();
     }      
 }
