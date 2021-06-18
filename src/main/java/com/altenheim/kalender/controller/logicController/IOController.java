@@ -35,7 +35,7 @@ public class IOController implements IIOController
 {
     private ICalendarEntriesModel allEntries;
     private List<ContactModel> allContacts;
-    private SettingsModel settings;
+    protected SettingsModel settings;
     private List<MailTemplateModel> mailTemplates;
 
     public IOController(IEntryFactory administrateEntries, List<ContactModel> allContacts, 
@@ -114,7 +114,7 @@ public class IOController implements IIOController
 
     public void saveContactsToFile() throws IOException
     {         
-        var path = settings.getCustomPathToSavedFiles();
+        var path = settings.getPathToHwrScrapedFIle();
         if (path == null)
             path = "contactFiles/contacts.file";  
         var writeToFile = new FileOutputStream(path);
@@ -126,7 +126,7 @@ public class IOController implements IIOController
 
     public void loadContactsFromFile() throws IOException, ClassNotFoundException
     {
-        var path = settings.getCustomPathToSavedFiles();
+        var path = settings.getPathToIcsExportedFile();
         if (path == null)
             path = "contactFiles/contacts.file"; 
         var loadFile = new FileInputStream(path);
@@ -172,17 +172,5 @@ public class IOController implements IIOController
 	} 
 
     
-    private VEvent createIcalEntryFromCalFXEntry(Entry<?> entry)
-    {
-        var startTime = GregorianCalendar.from(entry.getStartAsZonedDateTime()).getTime();
-        var endTime = GregorianCalendar.from(entry.getEndAsZonedDateTime()).getTime();
-        var start = new DateTime(startTime);
-        var end = new DateTime(endTime);
-        var title = entry.getTitle();
-        var event = new VEvent(start, end, title);
-        var iD = new RandomUidGenerator();
-        var uid = iD.generateUid();
-        event.getProperties().add(uid); 
-        return event;           
-    }
+
 }
