@@ -34,7 +34,7 @@ public class ExportController implements IExportController
     {
         var entries = fxCalendar.findEntries("");
         var fxCalendarName = fxCalendar.getName();
-        var fout = new FileOutputStream(validate(new File(path + fxCalendarName + ".ics")));
+        var fout = new FileOutputStream(validate(new File(path + "/" + fxCalendarName + ".ics")));
         var iCalCalendar = initICalCalendar();
         iCalCalendar.getProperties().add(new XProperty("X-WR-CALNAME", fxCalendarName));
         for(int i = 0; i < entries.size(); i++)
