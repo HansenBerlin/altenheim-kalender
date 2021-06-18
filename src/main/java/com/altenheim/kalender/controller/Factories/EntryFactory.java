@@ -1,7 +1,7 @@
 package com.altenheim.kalender.controller.Factories;
 
 import com.altenheim.kalender.controller.viewController.CalendarViewOverride;
-import com.altenheim.kalender.interfaces.IAppointmentEntryFactory;
+import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 
 
-public class EntryFactory extends ContactFactory implements IAppointmentEntryFactory
+public class EntryFactory extends ContactFactory implements IEntryFactory
 {    
     private ICalendarEntriesModel allCalendars;
     private CalendarViewOverride calendarView;
@@ -57,12 +57,11 @@ public class EntryFactory extends ContactFactory implements IAppointmentEntryFac
 		return output;
 	}
     
-    public void createRandomCalendarList(String calendarName) 
+    public void createRandomCalendarList()
     {
         int dayOfMonth;
-        var calendar = new Calendar();
-        var calendearSource = new CalendarSource("Saved Calendars");
-        calendar.setName(String.format("%d", calendar.hashCode()));
+        var calendar = new Calendar("TestKalender");
+        calendar.setName(calendar.getName());
         for (int i = 1; i <= 12; i++) 
         {
             if (Arrays.asList(new int[]{1, 3, 5, 7, 8, 10, 12}).contains(i))
@@ -81,9 +80,15 @@ public class EntryFactory extends ContactFactory implements IAppointmentEntryFac
                 }
             }            
         }
+        addCalendarToView(calendar);
+    }
+
+    public void addCalendarToView(Calendar calendar)
+    {
         allCalendars.addCalendar(calendar);
-        calendearSource.getCalendars().addAll(allCalendars.getAllCalendars());
-        calendarView.getCalendarSources().addAll(calendearSource);  
+        var calendarSource = new CalendarSource("Saved Calendars");
+        calendarSource.getCalendars().addAll(calendar);
+        calendarView.getCalendarSources().addAll(calendarSource);
     }
 
     private Entry<String> createRandomEntry(int day, int month, int startT, int endT)
@@ -97,7 +102,49 @@ public class EntryFactory extends ContactFactory implements IAppointmentEntryFac
         entry.changeStartTime(startTime);
         entry.changeEndTime(endTime);
         return entry;
-    }	
+    }
+
+    public Entry<String> createUserEntry (LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd)
+    {
+        var entry = new Entry<String>();
+        entry.changeStartTime(timeStart);
+        entry.changeStartDate(dateStart);
+        entry.changeEndTime(timeEnd);
+        entry.changeEndDate(dateEnd);
+        return entry;
+    }
+
+    public ArrayList<ArrayList<Entry<?>>> createOpeningHoursWithLunchBreak() {
+        ArrayList<ArrayList<Entry<?>>> openingHours = new ArrayList<ArrayList<Entry<?>>>();
+        for (int i = 0; i < 6; i++) {
+            var day1 = new ArrayList<Entry<?>>();
+            if (i%2==0) {
+                day1.add(createEntryDummy(10, 13, 1, 1));
+                day1.add(createEntryDummy(16, 22, 1, 1));
+            }else{
+                day1.add(createEntryDummy(10, 22, 1, 1));
+            }
+
+            openingHours.add(day1);
+        }
+        openingHours.add(new ArrayList<Entry<?>>());
+        return openingHours;
+    }
+
+
+    private Entry<?> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
+    {
+        var entryUser = new Entry("User Preference");
+        var startDate = LocalDate.of(2021, 1, startDay);
+        var endDate = LocalDate.of(2021, 1, endDay);
+        entryUser.changeStartDate(startDate);
+        entryUser.changeEndDate(endDate);
+        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
+        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
+        return entryUser;
+    }
+
+
 
     private int rG(int startInclusive, int endInclusive)
     {

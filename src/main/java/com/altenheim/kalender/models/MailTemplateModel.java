@@ -1,6 +1,8 @@
 package com.altenheim.kalender.models;
 
-public class MailTemplateModel 
+import java.io.Serializable;
+
+public class MailTemplateModel implements Serializable
 {
     public String getTemplateOne()
     {

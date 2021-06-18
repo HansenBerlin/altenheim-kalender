@@ -21,33 +21,35 @@ public class InjectorFactory
     {     
         jMetroStyle = new JMetro();   
         var customCalendarView = new CalendarViewOverride();       
-        var mailTemplates = new MailTemplateModel();
+        var mailTemplates = new ArrayList<MailTemplateModel>();
         var contacts = new ArrayList<ContactModel>();
         var settings = new SettingsModel();
 
         IGoogleAPIController apiCt = new GoogleAPIController();
-        IMailCreationController mailCreationCt = new MailCreationController(); 
+        IMailCreationController mailCreationCt = new MailCreationController(mailTemplates); 
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
         IContactFactory contactFactory = new ContactFactory(contacts);
-        IWebsiteScraperController websiteCt = new WebsiteScraperController(settings);
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
-        IAppointmentEntryFactory appointmentEntryCreator = new EntryFactory(calendarEntriesModel, customCalendarView, contacts);
-        IExportController exportCt = new ExportController(appointmentEntryCreator, customCalendarView, contacts, settings);
-        IIOController ioCt = new IOController(appointmentEntryCreator, customCalendarView, contacts, settings);
-        IImportController importCt = new ImportController(calendarEntriesModel, websiteCt, appointmentEntryCreator, customCalendarView, contacts, settings);        
-       
-        var settingsVCt = new SettingsViewController(settings);        
+        IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, contacts);
+        IIOController ioCt = new IOController(entryFactory, contacts, settings, mailTemplates, calendarEntriesModel);
+        IExportController exportCt = new ExportController(settings, calendarEntriesModel);
+        IImportController importCt = new ImportController(settings);
+        IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt);
+
+        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, websiteCt, customCalendarView);
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(contacts, contactFactory, apiCt, ioCt);
-        var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts);
-        var searchVCt = new SearchViewController(smartSearch, appointmentEntryCreator, contacts, contactFactory, mailTemplates, settings, apiCt, ioCt);
-        var plannerVCt = new PlannerViewController(calendarEntriesModel, appointmentEntryCreator, importCt, exportCt, customCalendarView);
+        var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates);
+        var searchVCt = new SearchViewController(smartSearch, entryFactory, contacts, contactFactory, mailTemplates, settings, apiCt, ioCt);
+        var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);        
         guiSetup = new GuiSetupController(jMetroStyle, allViews);
 
-        guiSetup.init();        
-        ioCt.loadCalendarsFromFile();     
+        guiSetup.init();
+        //ioCt.loadCalendarsFromFile();
         settings.addPropertyChangeListener(new ChangeListener());
         //websiteCt.startScraperTask();
+        websiteCt.scrapeCalendar();
+        //entryFactory.createRandomCalendarList();
     }      
 }

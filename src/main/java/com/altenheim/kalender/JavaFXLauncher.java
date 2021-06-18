@@ -2,7 +2,6 @@ package com.altenheim.kalender;
 
 import com.altenheim.kalender.controller.Factories.InjectorFactory;
 import com.altenheim.kalender.controller.viewController.MainWindowController;
-import com.altenheim.kalender.resourceClasses.FxmlFiles;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,8 +37,5 @@ public class JavaFXLauncher extends Application
     public static void main(String[] args)
     {
         launch(args);    
-    }
-
-    
-    
+    }    
 }
