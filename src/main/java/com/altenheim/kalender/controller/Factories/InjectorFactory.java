@@ -52,5 +52,7 @@ public class InjectorFactory
         //websiteCt.startScraperTask();
         websiteCt.scrapeCalendar();
         //entryFactory.createRandomCalendarList();
+        //var testSetup = new InitialSetupController(settings, ioCt);
+        //testSetup.serializeDecryptedAPIKeyHash();
     }      
 }

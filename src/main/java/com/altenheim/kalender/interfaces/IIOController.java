@@ -17,4 +17,6 @@ public interface IIOController
     SettingsModel restoreSettings();
     void writeMailTemplates(MailTemplateModel templates);
     MailTemplateModel restoreMailTemplates();
+    void saveDecryptedPasswordHash(String hashedPassword);
+    String getDecryptedPasswordHash();
 }
