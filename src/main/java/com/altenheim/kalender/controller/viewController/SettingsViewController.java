@@ -23,19 +23,17 @@ public class SettingsViewController extends ResponsiveController
     private IExportController exportController;
     private ICalendarEntriesModel allCalendars;
     private IWebsiteScraperController websiteScraper;
-    private CalendarViewOverride customCalendarView;
     private IEntryFactory calendarFactory;
 
 
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
                                   IExportController exportController, ICalendarEntriesModel allCalendars,
-                                  IWebsiteScraperController websiteScraper, CalendarViewOverride customCalendarView)
+                                  IWebsiteScraperController websiteScraper )
     {
         this.settings = settings;
         this.importController = importController;
         this.exportController = exportController;
         this.allCalendars = allCalendars;
-        this.customCalendarView = customCalendarView;
         this.websiteScraper = websiteScraper;
         this.calendarFactory = calendarFactory;
     }

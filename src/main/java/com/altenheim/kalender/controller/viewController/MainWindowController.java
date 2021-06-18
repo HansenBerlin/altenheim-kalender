@@ -5,6 +5,9 @@ import com.altenheim.kalender.resourceClasses.StylePresets;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
+
+import com.calendarfx.model.CalendarSource;
+import com.calendarfx.view.CalendarView;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,7 +29,7 @@ public class MainWindowController extends ResponsiveController
 {
     private Stage stage;
     private IViewRootsModel allViewsInformation;
-    private GuiSetupController guiSetup;
+    private GuiUpdateController guiSetup;
     private Map<String, Pair<Button, Pane>> allButtonsWithBackgrounds;
     private boolean initilizationDone;
     private int currentView = 0;
@@ -46,7 +49,7 @@ public class MainWindowController extends ResponsiveController
     @FXML private HBox topButtonRow;
 
 
-    public MainWindowController(Stage stage, IViewRootsModel allViewsInformation, GuiSetupController guiSetup)
+    public MainWindowController(Stage stage, IViewRootsModel allViewsInformation, GuiUpdateController guiSetup)
     {
         this.stage = stage;
         this.allViewsInformation = allViewsInformation;
@@ -57,7 +60,7 @@ public class MainWindowController extends ResponsiveController
     @FXML 
     private void initialize() throws IOException 
     {
-        ((PlannerViewController)allViewsInformation.getAllViewControllers()[0]).addCustomCalendarView();
+        ((PlannerViewController)allViewsInformation.getAllViewControllers()[0]).updateCustomCalendarView(null);
         viewsRoot.getChildren().addAll(allViewsInformation.getAllViews());
         switchMode(null);
         setupMenuButtons();
@@ -87,15 +90,17 @@ public class MainWindowController extends ResponsiveController
     {
         if (darkModeActive)
         {
-            setColorsForDarkAndLightMode(Style.DARK, StylePresets.DARK_MENU_BACKGROUND, StylePresets.DARK_MAIN_BACKGROUND, 
-            StylePresets.DARK_PRIMARY, StylePresets.DARK_SECONDARY, StylePresets.DARK_SECONDARY_CSS, StylePresets.DARK_CSS_FILE);
+            setColorsForDarkAndLightMode(Style.DARK, StylePresets.DARK_MENU_BACKGROUND, StylePresets.DARK_MAIN_BACKGROUND,
+                    StylePresets.DARK_PRIMARY, StylePresets.DARK_SECONDARY, StylePresets.DARK_SECONDARY_CSS,
+                    StylePresets.DARK_APPLICATION_CSS_FILE, StylePresets.DARK_CALENDAR_CSS_FILE);
             currentSecondaryColor = StylePresets.DARK_SECONDARY;
         }
         else
         {
-            setColorsForDarkAndLightMode(Style.LIGHT, StylePresets.LIGHT_MENU_BACKGROUND, StylePresets.LIGHT_MAIN_BACKGROUND, 
-            StylePresets.LIGHT_PRIMARY, StylePresets.LIGHT_SECONDARY, StylePresets.LIGHT_SECONDARY_CSS, StylePresets.LIGHT_CSS_FILE);
-            currentSecondaryColor = StylePresets.LIGHT_SECONDARY;  
+            setColorsForDarkAndLightMode(Style.LIGHT, StylePresets.LIGHT_MENU_BACKGROUND, StylePresets.LIGHT_MAIN_BACKGROUND,
+                    StylePresets.LIGHT_PRIMARY, StylePresets.LIGHT_SECONDARY, StylePresets.LIGHT_SECONDARY_CSS,
+                    StylePresets.LIGHT_APPLICATION_CSS_FILE, StylePresets.LIGHT_CALENDAR_CSS_FILE);
+            currentSecondaryColor = StylePresets.LIGHT_SECONDARY;
         }
         if (event != null)
             updateViewOnButtonClicked(currentlyActive);
@@ -105,7 +110,7 @@ public class MainWindowController extends ResponsiveController
 
 
     private void setColorsForDarkAndLightMode(Style style, Background menu, Background background, 
-        Background primary, Background secondary, String secondaryCSS, String cssFile)
+        Background primary, Background secondary, String secondaryCSS, String appCssFile, String calCssFile)
     {
         guiSetup.getJMetroStyle().setStyle(style);
         vboxLeftPane.setBackground(menu);
@@ -116,10 +121,28 @@ public class MainWindowController extends ResponsiveController
             view.setBackground(background);
         if (initilizationDone)
         {
-            guiSetup.getJMetroStyle().getOverridingStylesheets().clear();
-            guiSetup.getJMetroStyle().getOverridingStylesheets().add(0, cssFile);
+            var applicationStyle = guiSetup.getJMetroStyle().getOverridingStylesheets();
+            applicationStyle.clear();
+            applicationStyle.add(0, appCssFile);
+
+            updateCalendarStyle(guiSetup.getCalendarView(), calCssFile);
         }               
-    } 
+    }
+
+    private void updateCalendarStyle (CalendarView calendarView, String cssFile)
+    {
+        var newView = new CalendarView();
+        newView.getStylesheets().add(cssFile);
+        var newCalendarSource = new CalendarSource();
+        var oldCalendarSources = calendarView.getCalendarSources();
+        for (var source: oldCalendarSources)
+        {
+            newCalendarSource.getCalendars().addAll(source.getCalendars());
+        }
+        ((PlannerViewController)allViewsInformation.getAllViewControllers()[0]).updateCustomCalendarView(newView);
+    }
+
+
 
 
     private void updateViewOnButtonClicked(Button pressed)

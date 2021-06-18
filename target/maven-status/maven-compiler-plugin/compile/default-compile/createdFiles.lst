@@ -1,6 +1,0 @@
-com\altenheim\kalender\Main.class
-com\altenheim\kalender\interfaces\ICalendarEntriesModel.class
-com\altenheim\kalender\models\MailTemplateModel.class
-com\altenheim\kalender\interfaces\IGoogleAPIController.class
-com\altenheim\kalender\interfaces\IMailCreationController.class
-com\altenheim\kalender\models\CalendarEntriesModel.class

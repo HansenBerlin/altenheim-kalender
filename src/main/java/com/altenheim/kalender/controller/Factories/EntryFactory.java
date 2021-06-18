@@ -15,14 +15,15 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
+import com.calendarfx.view.CalendarView;
 
 
 public class EntryFactory extends ContactFactory implements IEntryFactory
 {    
     private ICalendarEntriesModel allCalendars;
-    private CalendarViewOverride calendarView;
+    private CalendarView calendarView;
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarViewOverride calendarView, List<ContactModel> contacts)
+    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarView calendarView, List<ContactModel> contacts)
     {
         super(contacts);
         this.allCalendars = allCalendars;

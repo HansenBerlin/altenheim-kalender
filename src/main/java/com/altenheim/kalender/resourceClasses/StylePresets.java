@@ -20,8 +20,10 @@ public class StylePresets
     public static final Background TRANSPARENT = getPreset(9);
     public static final String DARK_SECONDARY_CSS = "-fx-background-color:#281b42";
     public static final String LIGHT_SECONDARY_CSS = "-fx-background-color:#4fba74";
-    public static final String DARK_CSS_FILE = getCssFile(true);
-    public static final String LIGHT_CSS_FILE = getCssFile(false);
+    public static final String DARK_APPLICATION_CSS_FILE = getApplicationCssFile(true);
+    public static final String LIGHT_APPLICATION_CSS_FILE = getApplicationCssFile(false);
+    public static final String DARK_CALENDAR_CSS_FILE = getCalendarCssFile(true);
+    public static final String LIGHT_CALENDAR_CSS_FILE = getCalendarCssFile(false);
 
     private static Background getPreset(int presetNumber) 
     {
@@ -61,17 +63,31 @@ public class StylePresets
         return new Background(new BackgroundFill(Color.web(stylesheet), CornerRadii.EMPTY, Insets.EMPTY));
     }   
     
-    private static String getCssFile(boolean isDark)
+    private static String getApplicationCssFile(boolean isDark)
     {
         var thisClass = new StylePresets();
-        return thisClass.getTemplate(isDark);            
+        return thisClass.getApplicationTemplate(isDark);
     }
 
-    private String getTemplate(boolean isDark)
+    private static String getCalendarCssFile(boolean isDark)
+    {
+        var thisClass = new StylePresets();
+        return thisClass.getCalendarTemplate(isDark);
+    }
+
+    private String getApplicationTemplate(boolean isDark)
     {
         if (isDark)
             return getClass().getResource("/darkMode.css").toExternalForm();
         else
             return getClass().getResource("/lightMode.css").toExternalForm();
+    }
+
+    private String getCalendarTemplate(boolean isDark)
+    {
+        if (isDark)
+            return getClass().getResource( "/calendarDark.css").toExternalForm();
+        else
+            return getClass().getResource( "/calendarLight.css").toExternalForm();
     }
 }

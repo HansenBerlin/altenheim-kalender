@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
+
+import com.calendarfx.view.CalendarView;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
@@ -15,20 +17,21 @@ import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.MDL2IconFont;
 import jfxtras.styles.jmetro.Style;
 
-public class GuiSetupController 
+public class GuiUpdateController
 {
     private JMetro jMetroStyle;    
     private IViewRootsModel viewsInformation;
-    public boolean isDarkmodeActive = false;
+    private boolean isDarkmodeActive = true;
 
     public JMetro getJMetroStyle() { return jMetroStyle; }
 
-    public GuiSetupController(JMetro jMetroStyle, IViewRootsModel viewsInformation) 
+
+    public GuiUpdateController(JMetro jMetroStyle, IViewRootsModel viewsInformation)
     {
         this.jMetroStyle = jMetroStyle;
-        this.viewsInformation = viewsInformation;  
-    } 
-    
+        this.viewsInformation = viewsInformation;
+    }
+
 
     public void init() throws IOException
     {       
@@ -42,14 +45,15 @@ public class GuiSetupController
     {
         if (isDarkmodeActive)
         {
-            jMetroStyle.setStyle(Style.DARK);        
-            jMetroStyle.getOverridingStylesheets().add(StylePresets.DARK_CSS_FILE);
-        }     
+            jMetroStyle.setStyle(Style.LIGHT);
+            jMetroStyle.getOverridingStylesheets().add(StylePresets.LIGHT_APPLICATION_CSS_FILE);
+        }
         else
         {
-            jMetroStyle.setStyle(Style.LIGHT);        
-            jMetroStyle.getOverridingStylesheets().add(StylePresets.LIGHT_CSS_FILE);
-        }         
+            jMetroStyle.setStyle(Style.DARK);
+            jMetroStyle.getOverridingStylesheets().add(StylePresets.DARK_APPLICATION_CSS_FILE);
+        }
+        isDarkmodeActive ^= true;
     }
 
 
