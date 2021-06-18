@@ -1,7 +1,6 @@
 package com.altenheim.kalender.controller.viewController;
 
 import java.util.List;
-
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
 

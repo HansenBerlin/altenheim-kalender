@@ -5,7 +5,6 @@ import com.altenheim.kalender.resourceClasses.StylePresets;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
-
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.view.CalendarView;
 import javafx.beans.value.ChangeListener;

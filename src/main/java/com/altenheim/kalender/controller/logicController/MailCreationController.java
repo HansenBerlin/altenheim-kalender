@@ -1,7 +1,9 @@
 package com.altenheim.kalender.controller.logicController;
 
 import java.awt.*;
-import java.net.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.List;
 import com.altenheim.kalender.interfaces.IMailCreationController;
 import com.altenheim.kalender.models.MailTemplateModel;

@@ -1,6 +1,5 @@
 package com.altenheim.kalender.controller.Factories;
 
-import com.altenheim.kalender.controller.viewController.CalendarViewOverride;
 import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
