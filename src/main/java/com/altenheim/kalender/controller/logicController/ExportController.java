@@ -4,13 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.GregorianCalendar;
-import java.util.List;
-
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
-import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.IExportController;
-import com.altenheim.kalender.models.ContactModel;
-import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.models.SettingsModel;
 import com.calendarfx.model.Entry;
 import net.fortuna.ical4j.data.CalendarOutputter;

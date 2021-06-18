@@ -5,7 +5,7 @@ import javafx.scene.layout.GridPane;
 
 public interface IViewRootsModel 
 {
-    public GridPane[] getAllViews();
-    public ResponsiveController[] getAllViewControllers();
-    public void addViewRootToList(int atIndex, GridPane view);
+    GridPane[] getAllViews();
+    ResponsiveController[] getAllViewControllers();
+    void addViewRootToList(int atIndex, GridPane view);
 }

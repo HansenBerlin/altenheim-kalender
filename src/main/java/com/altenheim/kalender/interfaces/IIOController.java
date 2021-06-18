@@ -9,12 +9,12 @@ import net.fortuna.ical4j.validate.ValidationException;
 
 public interface IIOController 
 {
-    public void writeCalendarFiles() throws FileNotFoundException, ValidationException, IOException;
-    public void loadCalendarsFromFile() throws FileNotFoundException, IOException, ParserException;
-    public void saveContactsToFile() throws IOException;
-    public void loadContactsFromFile() throws IOException, ClassNotFoundException;
-    public void writeSettings(SettingsModel settings);
-    public SettingsModel restoreSettings();
-    public void writeMailTemplates(MailTemplateModel templates);
-    public MailTemplateModel restoreMailTemplates();    
+    void writeCalendarFiles() throws FileNotFoundException, ValidationException, IOException;
+    void loadCalendarsFromFile() throws FileNotFoundException, IOException, ParserException;
+    void saveContactsToFile() throws IOException;
+    void loadContactsFromFile() throws IOException, ClassNotFoundException;
+    void writeSettings(SettingsModel settings);
+    SettingsModel restoreSettings();
+    void writeMailTemplates(MailTemplateModel templates);
+    MailTemplateModel restoreMailTemplates();
 }

@@ -1,41 +1,31 @@
 package com.altenheim.kalender.controller.viewController;
 
-import com.altenheim.kalender.controller.logicController.WebsiteScraperController;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
-import com.calendarfx.model.CalendarSource;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import net.fortuna.ical4j.data.ParserException;
-
 import java.io.IOException;
-import java.text.ParseException;
 
 public class SettingsViewController extends ResponsiveController
 {
-
-    @FXML
-    private Button btnExport, btnImport, btnCrawl, btnGenerate;
-
+    @FXML private Button btnExport, btnImport, btnCrawl, btnGenerate;
     private SettingsModel settings;
     private IImportController importController;
     private IExportController exportController;
     private ICalendarEntriesModel allCalendars;
     private IWebsiteScraperController websiteScraper;
-    private CalendarViewOverride customCalendarView;
     private IEntryFactory calendarFactory;
 
 
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
                                   IExportController exportController, ICalendarEntriesModel allCalendars,
-                                  IWebsiteScraperController websiteScraper, CalendarViewOverride customCalendarView)
+                                  IWebsiteScraperController websiteScraper )
     {
         this.settings = settings;
         this.importController = importController;
         this.exportController = exportController;
         this.allCalendars = allCalendars;
-        this.customCalendarView = customCalendarView;
         this.websiteScraper = websiteScraper;
         this.calendarFactory = calendarFactory;
     }

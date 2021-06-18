@@ -5,7 +5,6 @@ import java.io.File;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.IIOController;
-import com.altenheim.kalender.models.CalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.models.SettingsModel;
@@ -18,17 +17,13 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 import net.fortuna.ical4j.data.*;
 import net.fortuna.ical4j.model.property.*;
 import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Property;
-import net.fortuna.ical4j.model.component.VEvent;
-import net.fortuna.ical4j.util.RandomUidGenerator;
 import net.fortuna.ical4j.validate.ValidationException;
 
 public class IOController implements IIOController

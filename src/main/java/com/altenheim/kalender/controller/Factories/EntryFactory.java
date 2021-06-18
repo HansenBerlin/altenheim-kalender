@@ -1,6 +1,5 @@
 package com.altenheim.kalender.controller.Factories;
 
-import com.altenheim.kalender.controller.viewController.CalendarViewOverride;
 import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
@@ -15,14 +14,15 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
+import com.calendarfx.view.CalendarView;
 
 
 public class EntryFactory extends ContactFactory implements IEntryFactory
 {    
     private ICalendarEntriesModel allCalendars;
-    private CalendarViewOverride calendarView;
+    private CalendarView calendarView;
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarViewOverride calendarView, List<ContactModel> contacts)
+    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarView calendarView, List<ContactModel> contacts)
     {
         super(contacts);
         this.allCalendars = allCalendars;

@@ -1,10 +1,11 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
+import com.calendarfx.view.CalendarView;
 
 public class PlannerViewController extends ResponsiveController
 {    
-    private CalendarViewOverride customCalendar; 
+    private CalendarView customCalendar;
     private ICalendarEntriesModel allEntries;
     private IEntryFactory entryFactory;
     private IImportController importController;
@@ -12,23 +13,27 @@ public class PlannerViewController extends ResponsiveController
 
 
     public PlannerViewController(ICalendarEntriesModel allEntries, IEntryFactory entryFactory, 
-        IImportController importController, IExportController exportController, CalendarViewOverride custumCalendar)
+        IImportController importController, IExportController exportController, CalendarView custumCalendar)
     {
         this.allEntries = allEntries;
         this.entryFactory = entryFactory;
         this.importController = importController;
         this.exportController = exportController;
-        this.customCalendar = custumCalendar;        
+        this.customCalendar = custumCalendar;
     }
     
-    public void addCustomCalendarView()
+    public void updateCustomCalendarView(CalendarView calendarView)
     {
+        if (childContainer.getChildren().contains(this.customCalendar))
+        {
+            childContainer.getChildren().remove(this.customCalendar);
+            this.customCalendar = calendarView;
+        }
         childContainer.add(this.customCalendar, 0, 0, 1, 1);
     }
 
     public void changeContentPosition() 
     {
-        
     }    
 }
 
