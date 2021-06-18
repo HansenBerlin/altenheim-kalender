@@ -26,6 +26,7 @@ public class SettingsViewController extends ResponsiveController
     private CalendarViewOverride customCalendarView;
     private IEntryFactory calendarFactory;
 
+
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
                                   IExportController exportController, ICalendarEntriesModel allCalendars,
                                   IWebsiteScraperController websiteScraper, CalendarViewOverride customCalendarView)
@@ -49,30 +50,21 @@ public class SettingsViewController extends ResponsiveController
     {
         var button = (Button)event.getSource();
         if(button.equals(btnExport))
-            exportController.exportFile(allCalendars.getSpecificCalendarByIndex(0));
+            exportController.exportCalendarAsFile(allCalendars.getSpecificCalendarByIndex(0),
+                    settings.getPathToIcsExportedFile());
         else if (button.equals(btnImport))
         {
             var calendar = importController.importFile(settings.getPathToIcsExportedFile());
-            allCalendars.addCalendar(calendar);
-            var calendarSource = new CalendarSource("Saved Calendars");
-            calendarSource.getCalendars().addAll(calendar);
-            customCalendarView.getCalendarSources().addAll(calendarSource);
+            calendarFactory.addCalendarToView(calendar);
         }
         else if (button.equals(btnCrawl))
         {
             var calendar = importController.importFile(settings.getPathToHwrScrapedFIle());
-            allCalendars.addCalendar(calendar);
-            var calendarSource = new CalendarSource("Saved Calendars");
-            calendarSource.getCalendars().addAll(calendar);
-            customCalendarView.getCalendarSources().addAll(calendarSource);
+            calendarFactory.addCalendarToView(calendar);
         }
         else if (button.equals(btnGenerate))
         {
             calendarFactory.createRandomCalendarList();
-            var calendar = allCalendars.getSpecificCalendarByIndex(0);
-            var calendarSource = new CalendarSource("Saved Calendars");
-            calendarSource.getCalendars().addAll(calendar);
-            customCalendarView.getCalendarSources().addAll(calendarSource);
         }
     }
 }

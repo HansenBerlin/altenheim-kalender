@@ -61,7 +61,6 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
     {
         int dayOfMonth;
         var calendar = new Calendar("TestKalender");
-        var calendearSource = new CalendarSource("Saved Calendars");
         calendar.setName(calendar.getName());
         for (int i = 1; i <= 12; i++) 
         {
@@ -81,9 +80,15 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
                 }
             }            
         }
+        addCalendarToView(calendar);
+    }
+
+    public void addCalendarToView(Calendar calendar)
+    {
         allCalendars.addCalendar(calendar);
-        calendearSource.getCalendars().addAll(allCalendars.getAllCalendars());
-        calendarView.getCalendarSources().addAll(calendearSource);  
+        var calendarSource = new CalendarSource("Saved Calendars");
+        calendarSource.getCalendars().addAll(calendar);
+        calendarView.getCalendarSources().addAll(calendarSource);
     }
 
     private Entry<String> createRandomEntry(int day, int month, int startT, int endT)

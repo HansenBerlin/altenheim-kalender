@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 public class SettingsModel implements Serializable
 {
-    private String icsExportedFile = "TestKalender.ics";
-    private String hwrScrapedFile = "1415872094.ics";
+    private String icsExportedFile = "userFiles/exportedCalendars/TestKalender.ics";
+    private String hwrScrapedFile = "userFiles/crawledCalendarFiles/1415872094.ics";
 
     private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
     public Long scrapingIntervalInMinutes = (long) 60000;

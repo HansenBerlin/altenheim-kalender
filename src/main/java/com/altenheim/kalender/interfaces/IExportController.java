@@ -6,5 +6,5 @@ import java.io.IOException;
 
 public interface IExportController
 {
-    public void exportFile(com.calendarfx.model.Calendar fxCalendar) throws ValidationException, IOException;
+    void exportCalendarAsFile(com.calendarfx.model.Calendar fxCalendar, String path) throws ValidationException, IOException;
 }

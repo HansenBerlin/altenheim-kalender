@@ -12,7 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class WebsiteScraperController extends TimerTask implements IWebsiteScraperController
+public class WebsiteScraperController implements  IWebsiteScraperController//extends TimerTask implements IWebsiteScraperController
 {
     private SettingsModel settings;
     private IImportController icsImport;
@@ -22,6 +22,9 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
         this.settings = settings;
         this.icsImport = icsImport;
     }
+    /* Wirft im Build Fehler weil eine Methode nicht aufgerufen werden kann, die
+       hier irgendwo in der Vererbungshierarchie steht, deshalb wie unten erstmal
+       einmalig manueller Aufruf
 
     public void startScraperTask()
     {
@@ -30,6 +33,12 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
     }
 
     public void run()
+    {
+        downloadIcs();
+        importHwrIcs();
+    }*/
+
+    public void scrapeCalendar()
     {
         downloadIcs();
         importHwrIcs();

@@ -32,10 +32,9 @@ public class InjectorFactory
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
         IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, contacts);
         IIOController ioCt = new IOController(entryFactory, contacts, settings, mailTemplates, calendarEntriesModel);
-        IExportController exportCt = new ExportController(entryFactory, contacts, settings, mailTemplates, calendarEntriesModel);
-        IImportController importCt = new ImportController(entryFactory, contacts, settings, mailTemplates, calendarEntriesModel);
+        IExportController exportCt = new ExportController(settings, calendarEntriesModel);
+        IImportController importCt = new ImportController(settings);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt);
-
 
         var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, websiteCt, customCalendarView);
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
@@ -49,7 +48,8 @@ public class InjectorFactory
         guiSetup.init();
         //ioCt.loadCalendarsFromFile();
         settings.addPropertyChangeListener(new ChangeListener());
-        websiteCt.startScraperTask();
+        //websiteCt.startScraperTask();
+        websiteCt.scrapeCalendar();
         //entryFactory.createRandomCalendarList();
     }      
 }

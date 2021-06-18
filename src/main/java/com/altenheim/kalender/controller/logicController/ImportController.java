@@ -16,16 +16,17 @@ import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.PropertyList;
 import net.fortuna.ical4j.model.property.DtEnd;
 import net.fortuna.ical4j.model.property.DtStart;
 
-public class ImportController extends IOController implements IImportController
+public class ImportController implements IImportController
 {
+    protected SettingsModel settings;
 
-    public ImportController(IEntryFactory administrateEntries, List<ContactModel> allContacts, SettingsModel settings,
-            List<MailTemplateModel> mailTemplates, ICalendarEntriesModel allEntries) 
+    public ImportController(SettingsModel settings)
     {
-        super(administrateEntries, allContacts, settings, mailTemplates, allEntries);
+        this.settings = settings;
     }
 
     public com.calendarfx.model.Calendar importFile(String path)

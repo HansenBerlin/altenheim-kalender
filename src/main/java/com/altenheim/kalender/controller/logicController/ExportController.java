@@ -24,20 +24,22 @@ import net.fortuna.ical4j.model.property.XProperty;
 import net.fortuna.ical4j.util.RandomUidGenerator;
 import net.fortuna.ical4j.validate.ValidationException;
 
-public class ExportController extends IOController implements IExportController
+public class ExportController implements IExportController
 {
+    private ICalendarEntriesModel allEntries;
+    protected SettingsModel settings;
 
-    public ExportController(IEntryFactory administrateEntries, List<ContactModel> allContacts, SettingsModel settings,
-            List<MailTemplateModel> mailTemplates, ICalendarEntriesModel allEntries) 
+    public ExportController(SettingsModel settings, ICalendarEntriesModel allEntries)
     {
-        super(administrateEntries, allContacts, settings, mailTemplates, allEntries);
+        this.allEntries = allEntries;
+        this.settings = settings;
     }
 
-    public void exportFile(com.calendarfx.model.Calendar fxCalendar) throws ValidationException, IOException
+    public void exportCalendarAsFile(com.calendarfx.model.Calendar fxCalendar, String path) throws ValidationException, IOException
     {
         var entries = fxCalendar.findEntries("");
         var fxCalendarName = fxCalendar.getName();
-        var fout = new FileOutputStream(validate(new File(fxCalendarName + ".ics")));
+        var fout = new FileOutputStream(validate(new File(path + fxCalendarName + ".ics")));
         var iCalCalendar = initICalCalendar();
         iCalCalendar.getProperties().add(new XProperty("X-WR-CALNAME", fxCalendarName));
         for(int i = 0; i < entries.size(); i++)
@@ -81,5 +83,15 @@ public class ExportController extends IOController implements IExportController
         var uid = iD.generateUid();
         event.getProperties().add(uid);
         return event;
+    }
+
+    public void exportEntryAsFile(Entry<?> ent) throws ValidationException, IOException
+    {
+        var iCalCalendar = initICalCalendar();
+        iCalCalendar.getComponents().add(createIcalEntryFromCalFXEntry(ent));
+        var fout = new FileOutputStream(validate(new File(ent.getTitle() + ".ics")));
+        var outputter = new CalendarOutputter();
+        outputter.output(iCalCalendar, fout);
+        fout.close();
     }
 }
