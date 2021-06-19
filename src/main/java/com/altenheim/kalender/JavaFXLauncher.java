@@ -1,6 +1,7 @@
 package com.altenheim.kalender;
 
 import com.altenheim.kalender.controller.Factories.InjectorFactory;
+import com.altenheim.kalender.controller.viewController.InitialSetupController;
 import com.altenheim.kalender.controller.viewController.MainWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,6 @@ public class JavaFXLauncher extends Application
     { 
         var objectFactory = new InjectorFactory();
         objectFactory.createServices();
-        var jMetroStyle = objectFactory.getJMetroSetup();
         var guiSetup = objectFactory.getGuiController();
         var mainController = new MainWindowController(primaryStage, objectFactory.getAllViews(), guiSetup);
 
@@ -25,12 +25,17 @@ public class JavaFXLauncher extends Application
         
         Parent root = loader.load();        
         var scene = new Scene(root);
+        var jMetroStyle = objectFactory.getJMetroSetup();
         jMetroStyle.setScene(scene);
         guiSetup.setupColorMode();   
         
         primaryStage.setScene(scene);            
-        primaryStage.setTitle("Smart Planner HWR"); 
+        primaryStage.setTitle("Smart Planner HWR");
         primaryStage.setMaximized(true);
+
+        var initialSettingsLoader = objectFactory.getInitialSettingsLoader();
+        initialSettingsLoader.initialValidationCheck();
+
         primaryStage.show();  
     }
 

@@ -3,48 +3,72 @@ package com.altenheim.kalender.controller.viewController;
 import com.altenheim.kalender.controller.logicController.SecureAesController;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.models.SettingsModel;
-import javafx.scene.control.TextInputDialog;
+
 
 public class InitialSetupController
 {
     private SettingsModel settings;
     private IIOController ioController;
+    private PopupViewsController popup;
 
-    public InitialSetupController(SettingsModel settings, IIOController ioController)
+    public InitialSetupController(SettingsModel settings, IIOController ioController, PopupViewsController popup)
     {
         this.settings = settings;
         this.ioController = ioController;
+        this.popup = popup;
     }
 
-    public void serializeDecryptedAPIKeyHash()
+    private String decryptPassword(String password)
     {
-        var password = showDialog();
         try
         {
             var security = new SecureAesController();
             var hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_", SettingsModel.PASSWORDHASH);
-            ioController.saveDecryptedPasswordHash(hashedPasswordAfterUserValidation);
-            System.out.println("Erfolgreich entschlüsselt und gespeichert");
+            return hashedPasswordAfterUserValidation;
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            System.out.println("Entschlüsselung fehlgeschlagen");
+            return "";
         }
-            //var apiKeyDecrypted = security.decrypt(hashedPasswordAfterUserValidation, "e]<J3Grct{~'HJv-", SettingsModel.APICYPHERTEXT);
-        //System.out.println(apiKeyDecrypted);
     }
 
-    private String showDialog()
+    public void initialValidationCheck()
     {
-        var dialog = new TextInputDialog();
-        dialog.setTitle("Entschlüsselung");
-        dialog.setHeaderText("Einmalige Passworteingabe für erweiterte Funktionen zu nutzen.");
-        dialog.setContentText("Passwort eingeben: ");
-        var result = dialog.showAndWait();
-        if (result.isPresent())
-            return result.get();
-        else
-            return "";
+        if (ioController.loadHashedPassword().isBlank())
+        {
+            var userValidationPassed = validateUserPassword();
+            if (!userValidationPassed)
+            {
+                settings.setAdvancedFeaturesFlag(false);
+                return;
+            }
+        }
+        settings.setDecryptedPasswordHash(ioController.loadHashedPassword());
+        settings.setAdvancedFeaturesFlag(true);
+
+    }
+
+    private boolean validateUserPassword()
+    {
+        var password = popup.showPasswordInputDialog();
+        var security = new SecureAesController();
+        var hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_", SettingsModel.PASSWORDHASH);
+        while(hashedPasswordAfterUserValidation.isBlank())
+        {
+            if (popup.isRevalidationWanted())
+            {
+                password = popup.showPasswordInputDialog();
+                hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_", SettingsModel.PASSWORDHASH);
+            }
+            else
+            {
+                popup.showCancelDialog();
+                return false;
+            }
+        }
+        ioController.saveHashedPassword(hashedPasswordAfterUserValidation);
+        popup.showConfirmationDialog();
+        return true;
     }
 }

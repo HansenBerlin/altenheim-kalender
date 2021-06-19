@@ -44,7 +44,10 @@ public class IOController implements IIOController
     }
 
 
-    public void saveDecryptedPasswordHash(String hashedPassword) { this.hashedPassword = hashedPassword; }
+    public void saveDecryptedPasswordHash(String hashedPassword)
+    {
+        this.hashedPassword = hashedPassword;
+    }
     public String getDecryptedPasswordHash() { return hashedPassword; }
 
     public void writeCalendarFiles() throws ValidationException, IOException
@@ -82,28 +85,41 @@ public class IOController implements IIOController
         inputStream.close();
     }
 
-    public void saveHashedPassword(String passwordHash) throws IOException
+    public void saveHashedPassword(String passwordHash)
     {
         var path = settings.getPathToUserDirectory() + "savedHash";
-        if (path == null)
-            return;
-        var writeToFile = new FileOutputStream(path);
-        var convert = new ObjectOutputStream(writeToFile);
-        convert.writeObject(passwordHash);
-        convert.close();
+        try
+        {
+            var writeToFile = new FileOutputStream(path);
+            var convert = new ObjectOutputStream(writeToFile);
+            convert.writeObject(passwordHash);
+            convert.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 
-    public String loadHashedPassword() throws IOException, ClassNotFoundException
+    public String loadHashedPassword()
     {
-        var path = settings.getPathToIcsExportedFile() + "savedHash";
-        if (path == null)
+        var file = settings.getPasswordhashFile();
+        if(!file.exists())
             return "";
-        var loadFile = new FileInputStream(path);
-        var inputStream = new ObjectInputStream(loadFile);
-        var passwordHash = (String)inputStream.readObject();
-        inputStream.close();
-        return passwordHash;
+        try
+        {
+            var loadFile = new FileInputStream(settings.getPathToUserDirectory() + "savedHash");
+            var inputStream = new ObjectInputStream(loadFile);
+            var passwordHash = (String)inputStream.readObject();
+            inputStream.close();
+            return passwordHash;
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     public void writeSettings(SettingsModel settings)

@@ -1,5 +1,7 @@
 #/target/
 /wikiUploads/
+.wikiUploads/
+.wikiUploads
 .classpath
 .factorypath
 .project    
@@ -10,4 +12,5 @@
 *.zip
 *.tar.gz
 *.rar
+./userFiles/savedHash
 

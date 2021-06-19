@@ -2,6 +2,7 @@ package com.altenheim.kalender.models;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
 import java.io.Serializable;
 
 
@@ -13,10 +14,13 @@ public class SettingsModel implements Serializable
     private String icsExportedFile = "userFiles/exportedCalendars/TestKalender.ics";
     private String hwrScrapedFile = "userFiles/crawledCalendarFiles/1415872094.ics";
     private String userDirectory = "userfiles/";
+    private String decryptedPassword = "";
 
     private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
     public Long scrapingIntervalInMinutes = (long) 60000;
     private String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
+
+    private boolean useAdvancedFeatures = false; // je nachdem ob der pw hash erfolgreich geladen wird an oder aus, wegesuche und ÖZ dann ausgrauen
 
     public void addPropertyChangeListener(PropertyChangeListener listener)
     {
@@ -27,6 +31,10 @@ public class SettingsModel implements Serializable
     public String getPathToIcsExportedFile() { return icsExportedFile; }
     public String getPathToHwrScrapedFIle() { return hwrScrapedFile; }
     public String getPathToUserDirectory() { return userDirectory; }
+    public File getPasswordhashFile() { return new File(userDirectory + "savedHash"); }
+    public String getDecryptedPasswordHash() { return decryptedPassword; }
+    public void setDecryptedPasswordHash(String decryptedHash) { decryptedPassword = decryptedHash; }
+    public void setAdvancedFeaturesFlag(boolean useAdvancedFeatures) { this.useAdvancedFeatures = useAdvancedFeatures; }
 
     public String getUrl() { return url; }
     public long getScrapingInterval() { return scrapingIntervalInMinutes; }
