@@ -13,10 +13,13 @@ public class InjectorFactory
     private GuiUpdateController guiSetup;
     private IViewRootsModel allViews;
     private JMetro jMetroStyle;
+    private InitialSetupController initialSettingsLoader;
 
     public GuiUpdateController getGuiController() { return guiSetup; }
     public IViewRootsModel getAllViews() { return allViews; }
     public JMetro getJMetroSetup() { return jMetroStyle; }
+    public InitialSetupController getInitialSettingsLoader() { return initialSettingsLoader; }
+
 
     public void createServices() throws Exception 
     {     
@@ -26,7 +29,7 @@ public class InjectorFactory
         var contacts = new ArrayList<ContactModel>();
         var settings = new SettingsModel();
 
-        IGoogleAPIController apiCt = new GoogleAPIController();
+        IGoogleAPIController apiCt = new GoogleAPIController(settings);
         IMailCreationController mailCreationCt = new MailCreationController(mailTemplates); 
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
         IContactFactory contactFactory = new ContactFactory(contacts);
@@ -37,14 +40,17 @@ public class InjectorFactory
         IImportController importCt = new ImportController(settings);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt);
 
-        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, websiteCt);
+
+        var popupVCt = new PopupViewsController();
+        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, websiteCt, apiCt);
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(contacts, contactFactory, apiCt, ioCt);
         var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates);
         var searchVCt = new SearchViewController(smartSearch, entryFactory, contacts, contactFactory, mailTemplates, settings, apiCt, ioCt);
         var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView);
-        allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);        
+        allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews);
+        initialSettingsLoader = new InitialSetupController(settings, ioCt, popupVCt);
 
         guiSetup.init();
         //ioCt.loadCalendarsFromFile();
@@ -52,5 +58,5 @@ public class InjectorFactory
         //websiteCt.startScraperTask();
         websiteCt.scrapeCalendar();
         //entryFactory.createRandomCalendarList();
-    }      
+    }
 }

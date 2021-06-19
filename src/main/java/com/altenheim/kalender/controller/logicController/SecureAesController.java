@@ -24,8 +24,8 @@ public class SecureAesController
         catch(Exception e)
         {
             e.printStackTrace();
+            return "";
         }
-        return null;
     }
 
     public String decrypt(String password, String salt, String cypherText)
@@ -40,8 +40,8 @@ public class SecureAesController
         catch (Exception e)
         {
             e.printStackTrace();
+            return "";
         }
-        return null;
     }
 
     private Pair<IvParameterSpec, SecretKeySpec> createSpecs(String password, String salt)

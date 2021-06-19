@@ -16,11 +16,12 @@ public class SettingsViewController extends ResponsiveController
     private ICalendarEntriesModel allCalendars;
     private IWebsiteScraperController websiteScraper;
     private IEntryFactory calendarFactory;
+    private IGoogleAPIController googleApis;
 
 
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
                                   IExportController exportController, ICalendarEntriesModel allCalendars,
-                                  IWebsiteScraperController websiteScraper )
+                                  IWebsiteScraperController websiteScraper, IGoogleAPIController googleApis)
     {
         this.settings = settings;
         this.importController = importController;
@@ -28,6 +29,7 @@ public class SettingsViewController extends ResponsiveController
         this.allCalendars = allCalendars;
         this.websiteScraper = websiteScraper;
         this.calendarFactory = calendarFactory;
+        this.googleApis = googleApis;
     }
     
     public void changeContentPosition() 
@@ -36,12 +38,18 @@ public class SettingsViewController extends ResponsiveController
     }
 
     @FXML
-    void buttonClicked(ActionEvent event) throws IOException
-    {
+    void buttonClicked(ActionEvent event) throws IOException, InterruptedException {
         var button = (Button)event.getSource();
         if(button.equals(btnExport))
-            exportController.exportCalendarAsFile(allCalendars.getSpecificCalendarByIndex(0),
-                    settings.getPathToIcsExportedFile());
+        {
+            var returnValue = googleApis.getOpeningHours("Casablanca, 10247 Berlin, Rigaer Straße");
+            var reise = googleApis.searchForDestinationDistance("Ring Center, Potsdam, Germany", "Berlin Hauptbahnhof");
+            for (var entry : reise)
+            {
+                System.out.println(entry);
+            }
+            System.out.println(returnValue);
+        }
         else if (button.equals(btnImport))
         {
             var calendar = importController.importFile(settings.getPathToIcsExportedFile());
