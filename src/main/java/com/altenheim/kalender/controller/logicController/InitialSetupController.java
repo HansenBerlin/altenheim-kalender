@@ -23,21 +23,6 @@ public class InitialSetupController
         this.websiteScraper = websiteScraper;
     }
 
-    private String decryptPassword(String password)
-    {
-        try
-        {
-            var security = new SecureAesController();
-            var hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_", SettingsModel.PASSWORDHASH);
-            return hashedPasswordAfterUserValidation;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
     public void initializeSettings()
     {
         ioController.createUserPath();

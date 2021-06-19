@@ -10,7 +10,7 @@ public class ContactModel implements Serializable
     private String firstName;
     private String surName;
     private String streetAndNumber;
-    private String City;
+    private String city;
     private int postalCode;
     private String mail;
     private String phoneNumber;
@@ -19,12 +19,12 @@ public class ContactModel implements Serializable
     private Map<DayOfWeek, List<SerializableEntry>> openingHours;
 
     public ContactModel(String firstName, String surName, String mail, int iD, String streetAndNumber, 
-        String City, int postalCode, String phoneNumber, int mailTemplateId, Map<DayOfWeek, List<SerializableEntry>> openingHours)
+        String city, int postalCode, String phoneNumber, int mailTemplateId, Map<DayOfWeek, List<SerializableEntry>> openingHours)
     {
         this.firstName = firstName;
         this.surName = surName;
         this.streetAndNumber = streetAndNumber;
-        this.City = City;
+        this.city = city;
         this.postalCode = postalCode;
         this.mail = mail;
         this.phoneNumber = phoneNumber;

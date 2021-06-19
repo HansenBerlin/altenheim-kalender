@@ -39,9 +39,7 @@ public class ImportController implements IImportController
             return null;
         }
 
-        var fxCalendar = parseICal(iCalCalendar);
-
-        return fxCalendar;
+        return parseICal(iCalCalendar);
     }
 
     private com.calendarfx.model.Calendar parseICal(Calendar iCalCalendar)

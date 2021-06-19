@@ -129,19 +129,7 @@ public class SearchViewController extends ResponsiveController
 
     @FXML
     private void testUpdate(ActionEvent event) throws IOException, ClassNotFoundException
-    {   /*
-        var testEntry = entryFactory.createUserSettingsEntry(timeStart.getValue(), timeEnd.getValue());
-        var result = smartSearch.findAvailableTimeSlot(testEntry, (int)sliderAppointmentDuration.getValue());
-        for (var entry : result) 
-        {
-            SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime());
-            System.out.println(entry.getStartTime() + " " + entry.getEndTime());
-        }
-        iOController.writeCalendarFiles(null);
-
-        for (int i = 0; i < 5; i++)        
-            entryFactory.createRandomCalendarList("Test " + i);
-        iOController.writeCalendarFiles();*/
+    {
         entryFactory.createRandomContactsList(100);
         iOController.saveContactsToFile();     
     }
@@ -149,8 +137,7 @@ public class SearchViewController extends ResponsiveController
     @FXML
     private void resetTest(ActionEvent event) throws IOException, ClassNotFoundException
     {
-        //SuggestionsModel.data.clear();
-        //settings.setScrapingInterval(settings.getScrapingInterval()+1000);        
+        SuggestionsModel.data.clear();
     }
 
 
@@ -175,7 +162,6 @@ public class SearchViewController extends ResponsiveController
         table.getColumns().add(startTimeColumn);
         table.getColumns().add(endTimeColumn);
         table.getColumns().add(dateColumn);
-        //table.setPrefHeight(200);
 
         return table;
     }

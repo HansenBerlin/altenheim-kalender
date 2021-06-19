@@ -22,10 +22,8 @@ public class PopupViewsController
                 "werden nicht funktionieren. Nochmal versuchen?");
 
         var result = alert.showAndWait();
-        if (result.get() == ButtonType.OK)
-            return true;
-        else
-            return false;
+
+        return result.get() == ButtonType.OK;
     }
 
     public void showConfirmationDialog()
