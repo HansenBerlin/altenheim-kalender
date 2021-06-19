@@ -57,7 +57,7 @@ public class SettingsViewController extends ResponsiveController
         }
         else if (button.equals(btnCrawl))
         {
-            var calendar = importController.importFile(settings.getPathToHwrScrapedFIle());
+            var calendar = importController.importFile(settings.getPathToHwrScrapedFile());
             calendarFactory.addCalendarToView(calendar);
         }
         else if (button.equals(btnGenerate))

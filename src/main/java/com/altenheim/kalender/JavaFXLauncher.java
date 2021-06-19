@@ -1,7 +1,7 @@
 package com.altenheim.kalender;
 
 import com.altenheim.kalender.controller.Factories.InjectorFactory;
-import com.altenheim.kalender.controller.viewController.InitialSetupController;
+import com.altenheim.kalender.controller.logicController.ChangeListener;
 import com.altenheim.kalender.controller.viewController.MainWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,10 +13,11 @@ public class JavaFXLauncher extends Application
 {
     @Override
     public void start(Stage primaryStage) throws Exception 
-    { 
+    {
         var objectFactory = new InjectorFactory();
         objectFactory.createServices();
         var guiSetup = objectFactory.getGuiController();
+        guiSetup.init();
         var mainController = new MainWindowController(primaryStage, objectFactory.getAllViews(), guiSetup);
 
         var loader = new FXMLLoader();
@@ -34,6 +35,7 @@ public class JavaFXLauncher extends Application
         primaryStage.setMaximized(true);
 
         var initialSettingsLoader = objectFactory.getInitialSettingsLoader();
+        initialSettingsLoader.initializeSettings();
         initialSettingsLoader.initialValidationCheck();
 
         primaryStage.show();  

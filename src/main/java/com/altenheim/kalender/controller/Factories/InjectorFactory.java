@@ -40,7 +40,6 @@ public class InjectorFactory
         IImportController importCt = new ImportController(settings);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt);
 
-
         var popupVCt = new PopupViewsController();
         var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, websiteCt, apiCt);
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
@@ -50,13 +49,6 @@ public class InjectorFactory
         var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews);
-        initialSettingsLoader = new InitialSetupController(settings, ioCt, popupVCt);
-
-        guiSetup.init();
-        //ioCt.loadCalendarsFromFile();
-        settings.addPropertyChangeListener(new ChangeListener());
-        //websiteCt.startScraperTask();
-        websiteCt.scrapeCalendar();
-        //entryFactory.createRandomCalendarList();
+        initialSettingsLoader = new InitialSetupController(settings, ioCt, popupVCt, websiteCt);
     }
 }

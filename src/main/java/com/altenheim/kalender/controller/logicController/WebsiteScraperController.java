@@ -38,26 +38,28 @@ public class WebsiteScraperController implements  IWebsiteScraperController//ext
 
     public void scrapeCalendar()
     {
-        downloadIcs();
-        importHwrIcs();
+        if (isDownloadIcsSuccessful());
+            importHwrIcsFileToCalendar();
     }
 
-    public void importHwrIcs()  {
-        var ics = Paths.get(settings.getPathToHwrScrapedFIle());
+    private void importHwrIcsFileToCalendar()  {
+        var ics = Paths.get(settings.getPathToHwrScrapedFile());
         var pathOfIcs = ics.toAbsolutePath().toString();
         icsImport.importFile(pathOfIcs);
     }
 
-    public void downloadIcs()
+    private boolean isDownloadIcsSuccessful()
     {
         try {
-            var fos = new FileOutputStream(settings.getPathToHwrScrapedFIle());
+            var fos = new FileOutputStream(settings.getPathToHwrScrapedFile());
             var url = new URL(settings.getUrl());
             var rbc = Channels.newChannel(url.openStream());
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             fos.close();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

@@ -12,5 +12,5 @@
 *.zip
 *.tar.gz
 *.rar
-./userFiles/savedHash
-
+/userFiles/savedHash
+/altenheim-kalender.iml

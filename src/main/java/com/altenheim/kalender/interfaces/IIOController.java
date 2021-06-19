@@ -20,6 +20,8 @@ public interface IIOController
     void saveDecryptedPasswordHash(String hashedPassword);
     void saveHashedPassword(String passwordHash);
     String loadHashedPassword();
+    void createUserPath();
+
 
 
     String getDecryptedPasswordHash();

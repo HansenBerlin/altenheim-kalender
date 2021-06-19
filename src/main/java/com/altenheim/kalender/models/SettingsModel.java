@@ -29,7 +29,7 @@ public class SettingsModel implements Serializable
 
     public void setPathToIcsExportedFile(String path) { icsExportedFile = path; }
     public String getPathToIcsExportedFile() { return icsExportedFile; }
-    public String getPathToHwrScrapedFIle() { return hwrScrapedFile; }
+    public String getPathToHwrScrapedFile() { return hwrScrapedFile; }
     public String getPathToUserDirectory() { return userDirectory; }
     public File getPasswordhashFile() { return new File(userDirectory + "savedHash"); }
     public String getDecryptedPasswordHash() { return decryptedPassword; }

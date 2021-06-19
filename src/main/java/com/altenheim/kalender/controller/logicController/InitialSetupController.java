@@ -1,7 +1,9 @@
-package com.altenheim.kalender.controller.viewController;
+package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.controller.logicController.SecureAesController;
+import com.altenheim.kalender.controller.viewController.PopupViewsController;
 import com.altenheim.kalender.interfaces.IIOController;
+import com.altenheim.kalender.interfaces.IWebsiteScraperController;
 import com.altenheim.kalender.models.SettingsModel;
 
 
@@ -10,12 +12,15 @@ public class InitialSetupController
     private SettingsModel settings;
     private IIOController ioController;
     private PopupViewsController popup;
+    private IWebsiteScraperController websiteScraper;
 
-    public InitialSetupController(SettingsModel settings, IIOController ioController, PopupViewsController popup)
+    public InitialSetupController(SettingsModel settings, IIOController ioController, PopupViewsController popup,
+                                  IWebsiteScraperController websiteScraper)
     {
         this.settings = settings;
         this.ioController = ioController;
         this.popup = popup;
+        this.websiteScraper = websiteScraper;
     }
 
     private String decryptPassword(String password)
@@ -31,6 +36,16 @@ public class InitialSetupController
             e.printStackTrace();
             return "";
         }
+    }
+
+    public void initializeSettings()
+    {
+        ioController.createUserPath();
+        //ioCt.loadCalendarsFromFile();
+        settings.addPropertyChangeListener(new ChangeListener());
+        //websiteCt.startScraperTask();
+        websiteScraper.scrapeCalendar();
+        //entryFactory.createRandomCalendarList();
     }
 
     public void initialValidationCheck()

@@ -16,14 +16,10 @@ import java.io.ObjectOutputStream;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
-import com.calendarfx.model.CalendarSource;
+
 import com.calendarfx.model.Entry;
 import net.fortuna.ical4j.data.*;
-import net.fortuna.ical4j.model.property.*;
-import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.validate.ValidationException;
 
 public class IOController implements IIOController
@@ -55,6 +51,21 @@ public class IOController implements IIOController
 
     }
 
+    public void createUserPath()
+    {
+        var parentFolder = new File("userFiles");
+        if (!parentFolder.exists())
+            parentFolder.mkdir();
+        String[] folderNames = {"calendarBackup", "contacts", "crawledCalendarFiles", "exportedCalendars", "userSettings" };
+
+        for (var folderName : folderNames)
+        {
+            var newFolder = new File("userFiles/" + folderName);
+            if (!newFolder.exists())
+                newFolder.mkdir();
+        }
+    }
+
 
     public void loadCalendarsFromFile() throws IOException, ParserException
     {
@@ -63,7 +74,7 @@ public class IOController implements IIOController
 
     public void saveContactsToFile() throws IOException
     {
-        var path = settings.getPathToHwrScrapedFIle();
+        var path = settings.getPathToHwrScrapedFile();
         if (path == null)
             path = "contactFiles/contacts.file";
         var writeToFile = new FileOutputStream(path);
