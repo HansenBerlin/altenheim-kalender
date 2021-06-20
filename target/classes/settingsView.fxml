@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <GridPane alignment="CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
@@ -15,4 +24,217 @@
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
+   <children>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <MenuButton fx:id="selectionSpecialField" mnemonicParsing="false" text="Auswahl FB">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="IP" />
+                            <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Bank" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Bauwesen" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Elektrotechnik" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="FM" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Handel" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="IBA" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Immobilien" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Industrie" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Informatik" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Maschinenbau" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="PPM" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Spedition" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Tourismus" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Versicherung" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="WI" />
+                          </items>
+                        </MenuButton>
+                        <MenuButton fx:id="selectionCourse" mnemonicParsing="false" text="Kurs">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#changeCourse" text="A" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeCourse" text="B" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeCourse" text="C" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeCourse" text="keine Kurse" />
+                           </items>
+                        </MenuButton>
+                        <MenuButton fx:id="selectionSemester" mnemonicParsing="false" text="Semester">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#changeSemester" text="Sem. 1" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSemester" text="Sem. 2" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSemester" text="Sem. 3" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSemester" text="Sem. 4" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSemester" text="Sem. 5" />
+                              <MenuItem mnemonicParsing="false" onAction="#changeSemester" text="Sem. 6" />
+                           </items>
+                        </MenuButton>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Text fx:id="scrappingURL" strokeType="OUTSIDE" strokeWidth="0.0" text="scrappingURL" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="btnSave" alignment="CENTER" mnemonicParsing="false" onAction="#saveSettings" style="-fx-background-color: ;" text="Speichern" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Separator prefWidth="200.0" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="btnImport" mnemonicParsing="false" text="Import" />
+                        <MenuButton fx:id="selectionSpecialField1" mnemonicParsing="false" text="Colour">
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="Farbe 1 " />
+                              <MenuItem mnemonicParsing="false" text="Farbe 2" />
+                              <MenuItem mnemonicParsing="false" text="Farbe 3" />
+                              <MenuItem mnemonicParsing="false" text="Farbe 4" />
+                              <MenuItem mnemonicParsing="false" text="Farbe 5" />
+                           </items>
+                        </MenuButton>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="btnExport" mnemonicParsing="false" text="Export" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Separator prefWidth="200.0" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Straße" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hausnummer" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Plz" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stadt" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="E-Mail Adresse" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Text fx:id="showStreet" strokeType="OUTSIDE" strokeWidth="0.0" text="Straße" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Text fx:id="showHouseNumber" strokeType="OUTSIDE" strokeWidth="0.0" text="Hausnummer" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Text fx:id="showZipCode" strokeType="OUTSIDE" strokeWidth="0.0" text="Plz" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Text fx:id="showCity" strokeType="OUTSIDE" strokeWidth="0.0" text="Stadt" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Text fx:id="showMail" strokeType="OUTSIDE" strokeWidth="0.0" text="E-Mail Adresse" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="inputStreet" alignment="CENTER" text="Straße" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="inputHouseNumber" alignment="CENTER" text="Hausnummer" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="inputZipCode" alignment="CENTER" text="Plz" />
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="inputCity" alignment="CENTER" text="Stadt">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="inputMail" text="E-Mail Adresse">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Separator prefWidth="200.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <RadioButton fx:id="toolTipsOn" mnemonicParsing="false" text="Tool Tips AN" />
+                  <RadioButton fx:id="toolTipsOff" mnemonicParsing="false" text="Tool Tips AUS" />
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <padding>
+            <Insets left="30.0" />
+         </padding>
+      </VBox>
+   </children>
 </GridPane>
