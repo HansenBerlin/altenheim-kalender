@@ -7,6 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
+import com.altenheim.kalender.models.SettingsModel;
 import org.json.*;
 
 
@@ -16,36 +17,50 @@ public class GoogleAPIController implements IGoogleAPIController
     private static final String OPENINGHOURSQUERY = "https://maps.googleapis.com/maps/api/place/details/json?place_id=%s&fields=opening_hours&key=%s";
     private static final String FINDDESTINATIONSQUERY= "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=%s";
 
+    private SettingsModel settings;
+
+    public GoogleAPIController(SettingsModel settings)
+    {
+        this.settings = settings;
+    }
     
     public String getOpeningHours(String locationSearchUserInput)
-    {          
+    {
+        var security = new SecureAesController();
+        var apiKey = security.decrypt(settings.getDecryptedPasswordHash(), "e]<J3Grct{~'HJv-", SettingsModel.APICYPHERTEXT);
         String input = locationSearchUserInput.replaceAll(" ", "%20");
-        String searchQuery = String.format(FINDPLACEQUERY, input);        
 
         try 
         {
-            var jsonResponse = makeHttpRequest(searchQuery);
-            var id = parseJsonForLocationId(jsonResponse);        
-            var jsonResponseDetail = makeHttpRequest(String.format(OPENINGHOURSQUERY, id)); 
+            var jsonResponse = makeHttpRequest(String.format(FINDPLACEQUERY, input, apiKey));
+            var id = parseJsonForLocationId(jsonResponse);
+            var jsonResponseDetail = makeHttpRequest(String.format(OPENINGHOURSQUERY, id, apiKey));
             return parseJsonForOpeningHours(jsonResponseDetail);           
         } 
         catch (IOException | InterruptedException e) 
         {
             e.printStackTrace();
             return "Ungültige\nOrtseingabe";
-        }       
+        }
+        finally
+        {
+            apiKey = null;
+            security = null;
+        }
     }
 
 
     public int[] searchForDestinationDistance(String startAt, String destination)
     {
+        var security = new SecureAesController();
+        var apiKey = security.decrypt(settings.getDecryptedPasswordHash(), "e]<J3Grct{~'HJv-", SettingsModel.APICYPHERTEXT);
+
         int[] returnValues = new int[2];
         var start = startAt.replaceAll(" ", "%20");
         var end = destination.replaceAll(" ", "%20");
-        String searchQuery = String.format(FINDDESTINATIONSQUERY, start, end);
-        try 
+        try
         {            
-            var jsonBody = makeHttpRequest(searchQuery);
+            var jsonBody = makeHttpRequest(String.format(FINDDESTINATIONSQUERY, start, end, apiKey));
             var json = new JSONObject(jsonBody);
             var elements = json.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);        
             returnValues[0] = elements.getJSONObject("duration").getInt("value");        
@@ -56,6 +71,11 @@ public class GoogleAPIController implements IGoogleAPIController
             e.printStackTrace();
             returnValues[0] = -1;
             returnValues[1] = -1;
+        }
+        finally
+        {
+            apiKey = null;
+            security = null;
         }
 
         return returnValues;
