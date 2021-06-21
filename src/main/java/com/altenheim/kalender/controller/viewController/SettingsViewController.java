@@ -1,6 +1,9 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.models.SettingsModel;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -23,7 +26,7 @@ public class SettingsViewController extends ResponsiveController
     @FXML
     private RadioButton adressMailFirst, toolTipsOn, toolTipsOff;
     @FXML
-    private Text scrappingURL, showStreet, showHouseNumber, showCity, showZipCode, showMail;
+    private Text scrappingURL, adressTitle, showStreet, showHouseNumber, showCity, showZipCode, showMail;
     @FXML
     private MenuItem selectionSpecialFieldInsurance, selectionSpecialFieldWi;
     
@@ -36,10 +39,12 @@ public class SettingsViewController extends ResponsiveController
     @FXML
     private void initialize ()
     {
-        inputStreet.setText("Straße");
-        inputHouseNumber.setText(settings.getHouseNumber());
-        inputZipCode.setText(settings.getZipCOde());
-        inputCity.setText(settings.getCity());
+        showStreet.textProperty().bind(settings.getStreet());
+        showHouseNumber.textProperty().bind(settings.getHouseNumber());
+        showZipCode.textProperty().bind(settings.getZipCOde());
+        showCity.textProperty().bind(settings.getCity());
+        showMail.textProperty().bind(settings.getMail());
+        //entfernen sobald es funktioniert
         scrappingURL.setText(settings.getCalendarParser());
     }
 
@@ -65,19 +70,14 @@ public class SettingsViewController extends ResponsiveController
     void saveSettings(ActionEvent event) 
     {
         settings.setStreet(inputStreet.getText());
-        showStreet.setText(settings.getStreet());
 
         settings.setHouseNumber(inputHouseNumber.getText());
-        showHouseNumber.setText(settings.getHouseNumber());
 
         settings.setZipCode(inputZipCode.getText());
-        showZipCode.setText(settings.getZipCOde());
 
         settings.setCity(inputCity.getText());
-        showCity.setText(settings.getCity());
         
         settings.setMail(inputMail.getText());
-        showMail.setText(settings.getMail());
         
         String resultURL = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/"+ selectionSpecialField.getText() + "/semester"+ selectionSemester.getText().charAt(5) + "/kurs" + selectionCourse.getText().replaceFirst("keine Kurse", "");
         settings.setCalendarParser(resultURL);
