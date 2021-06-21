@@ -18,7 +18,7 @@ public class SettingsViewController extends ResponsiveController
     private SettingsModel settings;
 
     @FXML
-    private MenuButton selectionSpecialField, selectionCourse, selectionSemester;
+    private MenuButton selectionSpecialField, selectionCourse, selectionSemester, btnMenuScrapingIntervall;
     @FXML
     private Button btnImport, btnExport, btnSave;
     @FXML

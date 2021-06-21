@@ -69,9 +69,16 @@
                   </MenuButton>
                </children>
             </HBox>
-            <HBox alignment="TOP_CENTER">
+            <HBox alignment="TOP_CENTER" spacing="25.0">
                <children>
                   <Text fx:id="scrappingURL" strokeType="OUTSIDE" strokeWidth="0.0" text="scrappingURL" />
+                  <MenuButton fx:id="btnMenuScrapingIntervall" mnemonicParsing="false" text="Aktualisierungshäufigkeit">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="täglich" />
+                      <MenuItem mnemonicParsing="false" text="wöchentlich" />
+                        <MenuItem mnemonicParsing="false" text="beim Start" />
+                    </items>
+                  </MenuButton>
                </children>
             </HBox>
             <HBox alignment="TOP_CENTER">
