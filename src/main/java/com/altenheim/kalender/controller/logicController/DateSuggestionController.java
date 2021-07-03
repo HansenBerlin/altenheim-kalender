@@ -21,14 +21,16 @@ public class DateSuggestionController implements IDateSuggestionController
             {
                 return null;
             }
-
+            if (input.get(runNumber).getStartAsLocalDateTime().isAfter(startSearchDateTime)) {
+                startSearchDateTime = input.get(runNumber).getStartAsLocalDateTime();
+            }
             if (input.get(runNumber).getStartAsLocalDateTime().isBefore(startSearchDateTime.plusSeconds(1))
                 && input.get(runNumber).getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes(dateLenght).minusSeconds(1))) 
             {
                 var output = new Entry<String>();
                 output.changeEndDate(startSearchDateTime.plusMinutes(dateLenght).toLocalDate());
-                output.changeEndTime(startSearchDateTime.plusMinutes(dateLenght).toLocalTime());
                 output.changeStartDate(startSearchDateTime.toLocalDate());
+                output.changeEndTime(startSearchDateTime.plusMinutes(dateLenght).toLocalTime());
                 output.changeStartTime(startSearchDateTime.toLocalTime());
                 return output;
             }
