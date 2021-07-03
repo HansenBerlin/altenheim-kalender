@@ -9,7 +9,7 @@ public class DateSuggestionController implements IDateSuggestionController
 {
     public Entry<String> getDateSuggestionFromEntryList(ArrayList<Entry<?>> input, LocalDateTime startSearchDateTime, int dateLenght) 
     {
-        if (input == null || input.isEmpty() || input.get(input.size()).getEndAsLocalDateTime().isBefore(startSearchDateTime.plusMinutes((long) dateLenght + 1))) 
+        if (input == null || input.isEmpty() || input.get(input.size()-1).getEndAsLocalDateTime().isBefore(startSearchDateTime.plusMinutes((long) dateLenght + 1))) 
         {
             return null;
         }
@@ -17,7 +17,7 @@ public class DateSuggestionController implements IDateSuggestionController
         var runNumber = 0;
         while (true) 
         {
-            if (runNumber > input.size()) 
+            if (runNumber > input.size()-1) 
             {
                 return null;
             }
