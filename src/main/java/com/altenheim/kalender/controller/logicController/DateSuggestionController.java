@@ -1,21 +1,24 @@
 package com.altenheim.kalender.controller.logicController;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import com.altenheim.kalender.interfaces.IDateSuggestionController;
 import com.calendarfx.model.Entry;
 
-public class DateSuggestionController implements IDateSuggestionController {
-
-    public Entry<String> getDateSuggestionFromEntryList(ArrayList<Entry<?>> input, LocalDateTime startSearchDateTime, int dateLenght) {
-        if (input == null || input.isEmpty() || input.get(input.size()).getEndAsLocalDateTime().isBefore(startSearchDateTime.plusMinutes((long) dateLenght + 1))) {
+public class DateSuggestionController implements IDateSuggestionController 
+{
+    public Entry<String> getDateSuggestionFromEntryList(ArrayList<Entry<?>> input, LocalDateTime startSearchDateTime, int dateLenght) 
+    {
+        if (input == null || input.isEmpty() || input.get(input.size()).getEndAsLocalDateTime().isBefore(startSearchDateTime.plusMinutes((long) dateLenght + 1))) 
+        {
             return null;
         }
 
         var runNumber = 0;
-        while (true) {
-            if (runNumber > input.size()) {
+        while (true) 
+        {
+            if (runNumber > input.size()) 
+            {
                 return null;
             }
 
