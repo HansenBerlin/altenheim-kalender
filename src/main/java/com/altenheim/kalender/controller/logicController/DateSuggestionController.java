@@ -22,7 +22,7 @@ public class DateSuggestionController implements IDateSuggestionController
                 startSearchDateTime = input.get(runNumber).getStartAsLocalDateTime();
             
             if (entryStart.isBefore(startSearchDateTime.plusSeconds(1))
-                && entryStart.isAfter(startSearchDateTime.plusMinutes(dateLenght).minusSeconds(1)))
+                && input.get(runNumber).getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes(dateLenght).minusSeconds(1)))
                 return createEntry(startSearchDateTime, dateLenght);   
         }
         return null;
