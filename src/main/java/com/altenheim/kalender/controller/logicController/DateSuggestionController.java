@@ -7,26 +7,25 @@ import com.calendarfx.model.Entry;
 
 public class DateSuggestionController implements IDateSuggestionController 
 {
-    public Entry<String> getDateSuggestionFromEntryList(ArrayList<Entry<?>> input, LocalDateTime startSearchDateTime, int dateLenght) 
+    public Entry<String> getDateSuggestionFromEntryList(ArrayList<Entry<?>> input, LocalDateTime startSearchDateTimeInput, int dateLenght) 
     {
-        if (input == null || input.isEmpty() || input.get(input.size()-1).getEndAsLocalDateTime().isBefore(startSearchDateTime.plusMinutes((long) dateLenght + 1))) 
+        var startSearchDateTime  = LocalDateTime.of(startSearchDateTimeInput.toLocalDate(), startSearchDateTimeInput.toLocalTime());
+        
+        if (input.get(input.size()-1).getEndAsLocalDateTime().isBefore(startSearchDateTime.plusMinutes((long) dateLenght + 1))) 
             return null;
 
-        var runNumber = 0;
-        while (true) 
+        for (int runNumber = 0; runNumber < input.size(); runNumber++) 
         {
-            if (runNumber > input.size()-1)
-                return null;
+            var entryStart = input.get(runNumber).getStartAsLocalDateTime();
             
-            if (input.get(runNumber).getStartAsLocalDateTime().isAfter(startSearchDateTime))
+            if (entryStart.isAfter(startSearchDateTime))
                 startSearchDateTime = input.get(runNumber).getStartAsLocalDateTime();
             
-            if (input.get(runNumber).getStartAsLocalDateTime().isBefore(startSearchDateTime.plusSeconds(1))
-                && input.get(runNumber).getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes(dateLenght).minusSeconds(1)))
-                return createEntry(startSearchDateTime, dateLenght);
-            
-            runNumber++;
+            if (entryStart.isBefore(startSearchDateTime.plusSeconds(1))
+                && entryStart.isAfter(startSearchDateTime.plusMinutes(dateLenght).minusSeconds(1)))
+                return createEntry(startSearchDateTime, dateLenght);   
         }
+        return null;
     }
 
     private Entry<String> createEntry(LocalDateTime startDateTime, int dateLenght) {
