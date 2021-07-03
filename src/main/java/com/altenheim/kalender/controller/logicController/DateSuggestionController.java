@@ -10,25 +10,21 @@ public class DateSuggestionController implements IDateSuggestionController
     public Entry<String> getDateSuggestionFromEntryList(ArrayList<Entry<?>> input, LocalDateTime startSearchDateTime, int dateLenght) 
     {
         if (input == null || input.isEmpty() || input.get(input.size()-1).getEndAsLocalDateTime().isBefore(startSearchDateTime.plusMinutes((long) dateLenght + 1))) 
-        {
             return null;
-        }
 
         var runNumber = 0;
         while (true) 
         {
-            if (runNumber > input.size()-1) 
-            {
+            if (runNumber > input.size()-1)
                 return null;
-            }
-            if (input.get(runNumber).getStartAsLocalDateTime().isAfter(startSearchDateTime)) {
+            
+            if (input.get(runNumber).getStartAsLocalDateTime().isAfter(startSearchDateTime))
                 startSearchDateTime = input.get(runNumber).getStartAsLocalDateTime();
-            }
+            
             if (input.get(runNumber).getStartAsLocalDateTime().isBefore(startSearchDateTime.plusSeconds(1))
-                && input.get(runNumber).getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes(dateLenght).minusSeconds(1))) 
-            {
+                && input.get(runNumber).getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes(dateLenght).minusSeconds(1)))
                 return createEntry(startSearchDateTime, dateLenght);
-            }
+            
             runNumber++;
         }
     }
