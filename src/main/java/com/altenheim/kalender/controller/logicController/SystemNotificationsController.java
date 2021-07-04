@@ -25,7 +25,7 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
         this.administrateEntries = administrateEntries;
     }
 
-    public void startScraperTask()
+    public void startNotificationTask()
     {
         var timer = new Timer();
         timer.schedule(this, 0, settings.getEntrySystemMessageIntervalInMills());

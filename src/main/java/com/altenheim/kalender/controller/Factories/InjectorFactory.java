@@ -13,7 +13,7 @@ public class InjectorFactory
     private GuiUpdateController guiSetup;
     private IViewRootsModel allViews;
     private JMetro jMetroStyle;
-    private InitialSetupController initialSettingsLoader;
+    private InitialSetupController initialSettingsLoader;    
 
     public GuiUpdateController getGuiController() { return guiSetup; }
     public IViewRootsModel getAllViews() { return allViews; }
@@ -47,8 +47,9 @@ public class InjectorFactory
         var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates);
         var searchVCt = new SearchViewController(smartSearch, entryFactory, contacts, contactFactory, mailTemplates, settings, apiCt, ioCt);
         var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView);
+        var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews);
-        initialSettingsLoader = new InitialSetupController(settings, ioCt, popupVCt, websiteCt);
+        initialSettingsLoader = new InitialSetupController(settings, ioCt, popupVCt, websiteCt, systemNotificationsCt);
     }
 }
