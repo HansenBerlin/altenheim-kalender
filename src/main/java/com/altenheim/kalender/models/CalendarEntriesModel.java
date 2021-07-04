@@ -1,6 +1,7 @@
 package com.altenheim.kalender.models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,5 +53,25 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
     public Calendar getSpecificCalendarByIndex(int index)
     {
         return calendars.get(index);
+    }
+
+    public List<Entry<?>> getEntrysWithStartInSpecificRange(LocalDateTime start, LocalDateTime end) {
+        var returnValue = new ArrayList<Entry<?>>();
+        for (Calendar calendar : calendars) {
+            var result = calendar.findEntries(start.toLocalDate(), end.toLocalDate(), ZoneId.systemDefault());
+            var allEntries = result.values();
+        
+            for (var entries : allEntries) 
+            {
+                for (var entry : entries) 
+                {
+                    if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1)) && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1))) {
+                        returnValue.add((Entry<?>)entry); 
+                    }
+                    
+                }            
+            }
+        }
+        return returnValue; 
     }
 }
