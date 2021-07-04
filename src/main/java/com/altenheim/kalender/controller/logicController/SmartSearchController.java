@@ -60,14 +60,13 @@ public class SmartSearchController implements ISmartSearchController {
 				inInterval = true;
 				continue;
 			}
-
 			for (var day : openingHours.get(i % 7)) {
 				if (endTime.isBefore(day.getStartTime()) || startTime.isAfter(day.getEndTime()))
 					continue;
-
 				var entry = prepareEntry(startTime, endTime, day, date);
 				output.addAll(findAvailableTimeSlot(entry, duration, timeBefore, timeAfter));
 
+				//Interval function
 				if (intervalDays > 0 && intervalNumber >= output.size()) {
 					reduceListLenght(output, intervalNumber);
 					date = date.plusDays(intervalDays);
@@ -172,7 +171,6 @@ public class SmartSearchController implements ISmartSearchController {
 	private boolean checkForDuplicates(List<Entry<?>> currentEntries) {
 		if (currentEntries.size() < 2)
 			return false;
-		return (currentEntries.get(currentEntries.size() - 2).getStartMillis() == currentEntries
-				.get(currentEntries.size() - 1).getStartMillis());
+		return (currentEntries.get(currentEntries.size() - 2).getStartMillis() == currentEntries.get(currentEntries.size() - 1).getStartMillis());
 	}
 }

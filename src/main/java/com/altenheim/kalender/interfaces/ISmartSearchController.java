@@ -2,7 +2,6 @@ package com.altenheim.kalender.interfaces;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.calendarfx.model.Entry;
 
 public interface ISmartSearchController {
