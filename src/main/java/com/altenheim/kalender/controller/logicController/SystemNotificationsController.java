@@ -13,14 +13,16 @@ import com.altenheim.kalender.interfaces.ISystemNotificationsController;
 import com.altenheim.kalender.models.SettingsModel;
 import com.calendarfx.model.Entry;
 
-public class SystemNotificationsController extends TimerTask implements ISystemNotificationsController  {
+public class SystemNotificationsController extends TimerTask implements ISystemNotificationsController  
+{
     private SettingsModel settings;
     private ICalendarEntriesModel administrateEntries;
 
     private SystemTray tray = SystemTray.getSystemTray();
     private TrayIcon trayIcon = null;
    
-    public SystemNotificationsController(SettingsModel settings, ICalendarEntriesModel administrateEntries){
+    public SystemNotificationsController(SettingsModel settings, ICalendarEntriesModel administrateEntries)
+    {
         this.settings = settings;
         this.administrateEntries = administrateEntries;
     }
@@ -36,7 +38,8 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
         outputEntrysSystemMessage();
     }    
     
-    public void outputEntrysSystemMessage() {
+    public void outputEntrysSystemMessage() 
+    {
         var start = LocalDateTime.now();
         var end = start.plusSeconds(settings.getEntrySystemMessageIntervalInMills()/1000);
         var entrys = administrateEntries.getEntrysWithStartInSpecificRange(start, end);
@@ -49,23 +52,30 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
         outputSystemMessageForEntryList("Termin beginnt in "+(int)timeToAdd/60+" Minuten", entrys);   
     }
 
-    private void outputSystemMessageForEntryList(String title, List<Entry<?>> entrys) {
-        for (Entry<?> entry : entrys) {
+    private void outputSystemMessageForEntryList(String title, List<Entry<?>> entrys) 
+    {
+        for (Entry<?> entry : entrys) 
+        {
             trayIcon.displayMessage(title, entry.getTitle(), MessageType.INFO);
         }
     }
     
-    public void outputSystemMessage(String title, String message) {
+    public void outputSystemMessage(String title, String message) 
+    {
         trayIcon.displayMessage(title, message, MessageType.INFO);
     }
     
-    public boolean initializeSystemTrayAccess() {
+    public boolean initializeSystemTrayAccess() 
+    {
         boolean output = false;
-        if (SystemTray.isSupported()) {
+        if (SystemTray.isSupported()) 
+        {
             Image image = Toolkit.getDefaultToolkit().getImage("Images/Penaut.ico");
             
-            ActionListener listener = new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
+            ActionListener listener = new ActionListener() 
+            {
+                public void actionPerformed(ActionEvent e) 
+                {
                     //Hier könnte man eine Ansicht im Kalender öffnen                
                 }
             };
@@ -81,15 +91,16 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
             trayIcon.setToolTip("HWR Kalender");
             trayIcon.setImageAutoSize(true);
 
-            try {
+            try 
+            {
                 tray.add(trayIcon);
                 output = true;
-            } catch (AWTException e) {
+            } catch (AWTException e) 
+            {
                 output = false;
             }
         }
         return output;
-        
     }
     
 }
