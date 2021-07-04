@@ -2,9 +2,7 @@ package com.altenheim.kalender.models;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-
 import javafx.beans.property.SimpleStringProperty;
-
 
 public class SettingsModel
 {
@@ -34,7 +32,6 @@ public class SettingsModel
     public void setCustomPathToSavedFiles() { }
     public String getCustomPathToSavedFiles() { return pathToSaveBackupFiles; }
 
-    
     public void setCalendarParser(String scrappingURL) { this.scrappingURL = scrappingURL; }
     public String getCalendarParser() { return scrappingURL; }
     
@@ -44,13 +41,13 @@ public class SettingsModel
     public void setHouseNumber (String houseNumber) {this.houseNumber.set(houseNumber);;}
     public SimpleStringProperty getHouseNumber () {return houseNumber;}
     
-    public void setZipCode (String zipCode) {this.zipCode.set(zipCode);;}
+    public void setZipCode (String zipCode) {this.zipCode.set(zipCode);}
     public SimpleStringProperty getZipCOde () {return zipCode;}
 
     public void setCity (String city) {this.city.set(city);}
     public SimpleStringProperty getCity (){return city;}
     
-    public void setMail(String mail) { this.mail.set(mail);; }
+    public void setMail(String mail) { this.mail.set(mail);}
     public SimpleStringProperty getMail() { return mail; }
 
 }

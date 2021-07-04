@@ -29,42 +29,42 @@
          <children>
             <HBox alignment="TOP_CENTER" spacing="20.0">
                <children>
-                  <MenuButton fx:id="selectionSpecialField" mnemonicParsing="false" text="Auswahl FB">
+                  <MenuButton fx:id="selectionSpecialField" mnemonicParsing="false" onAction="#selectionScrapper" text="Auswahl FB">
                     <items>
-                      <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="IP" />
-                      <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Bank" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Bauwesen" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Elektrotechnik" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="FM" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Handel" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="IBA" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Immobilien" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Industrie" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Informatik" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Maschinenbau" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="PPM" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Spedition" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Tourismus" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="Versicherung" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSpecialField" text="WI" />
+                      <MenuItem fx:id="selection_AuswahlFB_IP" mnemonicParsing="false" onAction="#selectionScrapper" text="IP" />
+                      <MenuItem fx:id="selection_AuswahlFB_Bank" mnemonicParsing="false" onAction="#selectionScrapper" text="Bank" />
+                        <MenuItem fx:id="selection_AuswahlFB_Bauwesen" mnemonicParsing="false" onAction="#selectionScrapper" text="Bauwesen" />
+                        <MenuItem fx:id="selection_AuswahlFB_Elektrotechnik" mnemonicParsing="false" onAction="#selectionScrapper" text="Elektrotechnik" />
+                        <MenuItem fx:id="selection_AuswahlFB_FM" mnemonicParsing="false" onAction="#selectionScrapper" text="FM" />
+                        <MenuItem fx:id="selection_AuswahlFB_Handel" mnemonicParsing="false" onAction="#selectionScrapper" text="Handel" />
+                        <MenuItem fx:id="selection_AuswahlFB_IBA" mnemonicParsing="false" onAction="#selectionScrapper" text="IBA" />
+                        <MenuItem fx:id="selection_AuswahlFB_Immobilien" mnemonicParsing="false" onAction="#selectionScrapper" text="Immobilien" />
+                        <MenuItem fx:id="selection_AuswahlFB_Industrie" mnemonicParsing="false" onAction="#selectionScrapper" text="Industrie" />
+                        <MenuItem fx:id="selection_AuswahlFB_Informatik" mnemonicParsing="false" onAction="#selectionScrapper" text="Informatik" />
+                        <MenuItem fx:id="selection_AuswahlFB_Maschinenbau" mnemonicParsing="false" onAction="#selectionScrapper" text="Maschinenbau" />
+                        <MenuItem fx:id="selection_AuswahlFB_PPM" mnemonicParsing="false" onAction="#selectionScrapper" text="PPM" />
+                        <MenuItem fx:id="selection_AuswahlFB_Spedition" mnemonicParsing="false" onAction="#selectionScrapper" text="Spedition" />
+                        <MenuItem fx:id="selection_AuswahlFB_Tourismus" mnemonicParsing="false" onAction="#selectionScrapper" text="Tourismus" />
+                        <MenuItem fx:id="selection_AuswahlFB_Versicherung" mnemonicParsing="false" onAction="#selectionScrapper" text="Versicherung" />
+                        <MenuItem fx:id="selection_AuswahlFB_WI" mnemonicParsing="false" onAction="#selectionScrapper" text="WI" />
                     </items>
                   </MenuButton>
-                  <MenuButton fx:id="selectionCourse" mnemonicParsing="false" text="Kurs">
+                  <MenuButton fx:id="selectionCourse" mnemonicParsing="false" onAction="#selectionScrapper" text="Kurs">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#changeCourse" text="A" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeCourse" text="B" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeCourse" text="C" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeCourse" text="keine Kurse" />
+                        <MenuItem fx:id="selection_AuswahlKurs_A" mnemonicParsing="false" onAction="#selectionScrapper" text="A" />
+                        <MenuItem fx:id="selection_AuswahlKurs_B" mnemonicParsing="false" onAction="#selectionScrapper" text="B" />
+                        <MenuItem fx:id="selection_AuswahlKurs_C" mnemonicParsing="false" onAction="#selectionScrapper" text="C" />
+                        <MenuItem fx:id="selection_AuswahlKurs_keineKurse" mnemonicParsing="false" onAction="#selectionScrapper" text="keine Kurse" />
                      </items>
                   </MenuButton>
-                  <MenuButton fx:id="selectionSemester" mnemonicParsing="false" text="Semester">
+                  <MenuButton fx:id="selectionSemester" mnemonicParsing="false" onAction="#selectionScrapper" text="Semester">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#changeSemester" text="Sem. 1" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSemester" text="Sem. 2" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSemester" text="Sem. 3" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSemester" text="Sem. 4" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSemester" text="Sem. 5" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeSemester" text="Sem. 6" />
+                        <MenuItem fx:id="selection_AuswahlSemester_Sem1" mnemonicParsing="false" onAction="#selectionScrapper" text="Sem. 1" />
+                        <MenuItem fx:id="selection_AuswahlSemester_Sem2" mnemonicParsing="false" onAction="#selectionScrapper" text="Sem. 2" />
+                        <MenuItem fx:id="selection_AuswahlSemester_Sem3" mnemonicParsing="false" onAction="#selectionScrapper" text="Sem. 3" />
+                        <MenuItem fx:id="selection_AuswahlSemester_Sem4" mnemonicParsing="false" onAction="#selectionScrapper" text="Sem. 4" />
+                        <MenuItem fx:id="selection_AuswahlSemester_Sem5" mnemonicParsing="false" onAction="#selectionScrapper" text="Sem. 5" />
+                        <MenuItem fx:id="selection_AuswahlSemester_Sem6" mnemonicParsing="false" onAction="#selectionScrapper" text="Sem. 6" />
                      </items>
                   </MenuButton>
                </children>
