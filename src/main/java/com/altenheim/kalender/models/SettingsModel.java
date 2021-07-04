@@ -21,6 +21,7 @@ public class SettingsModel implements Serializable
     private String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
 
     public long entrySystemMessageIntervalInMillis = (long) 60000;
+    public long notificationTimeBeforeEntryInMillis = 900000;
 
     private boolean useAdvancedFeatures = false; // je nachdem ob der pw hash erfolgreich geladen wird an oder aus, wegesuche und ÖZ dann ausgrauen
 
@@ -48,5 +49,9 @@ public class SettingsModel implements Serializable
     public long getEntrySystemMessageIntervalInMills() { return entrySystemMessageIntervalInMillis;}
     public void setEntrySystemMessageIntervalInMillis(long entrySystemMessageIntervalInMillis) {
         this.entrySystemMessageIntervalInMillis = entrySystemMessageIntervalInMillis;
+    }
+    public long getnotificationTimeBeforeEntryInMillis() { return notificationTimeBeforeEntryInMillis;}
+    public void setnotificationTimeBeforeEntryInMillis(long notificationTimeBeforeEntryInMillis) {
+        this.notificationTimeBeforeEntryInMillis = notificationTimeBeforeEntryInMillis;
     }
 }
