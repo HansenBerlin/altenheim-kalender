@@ -20,6 +20,11 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
     private SystemTray tray = SystemTray.getSystemTray();
     private TrayIcon trayIcon = null;
    
+    public SystemNotificationsController(SettingsModel settings, ICalendarEntriesModel administrateEntries){
+        this.settings = settings;
+        this.administrateEntries = administrateEntries;
+    }
+
     public void startScraperTask()
     {
         var timer = new Timer();
