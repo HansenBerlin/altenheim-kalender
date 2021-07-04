@@ -1,6 +1,7 @@
 package com.altenheim.kalender.interfaces;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
@@ -11,4 +12,5 @@ public interface ICalendarEntriesModel
     void addCalendar(Calendar calendar);
     List<Entry<?>> getSpecificRange(LocalDate startDate, LocalDate endDate);
     List<Calendar> getAllCalendars();
+    List<Entry<?>> getEntrysWithStartInSpecificRange(LocalDateTime start, LocalDateTime end);
 }
