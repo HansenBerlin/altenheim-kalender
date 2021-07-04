@@ -9,7 +9,7 @@ public class SystemNotificationsControllerTest {
         
         var test = new SystemNotificationsController(null, null);
         test.initializeSystemTrayAccess();
-        test.outputEntrysSystemMessage();
+        test.outputSystemMessage("1", "2");
 
 
     }

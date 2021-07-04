@@ -18,7 +18,7 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
     private ICalendarEntriesModel administrateEntries;
 
     private SystemTray tray = SystemTray.getSystemTray();
-    private TrayIcon trayIcon = null;
+    private TrayIcon trayIcon;
    
     public SystemNotificationsController(SettingsModel settings, ICalendarEntriesModel administrateEntries)
     {
@@ -34,10 +34,10 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
 
     public void run()
     {
-        outputEntrysSystemMessage();
+        prepareSystemMessagesForEntrys();
     }    
     
-    public void outputEntrysSystemMessage() 
+    private void prepareSystemMessagesForEntrys() 
     {
         var start = LocalDateTime.now();
         var end = start.plusSeconds(settings.getEntrySystemMessageIntervalInMills()/1000);
@@ -51,11 +51,11 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
         outputSystemMessageForEntryList("Termin beginnt in "+(int)timeToAdd/60+" Minuten", entrys);   
     }
 
-    private void outputSystemMessageForEntryList(String title, List<Entry<?>> entrys) 
+    private void outputSystemMessageForEntryList(String messageTitle, List<Entry<?>> entries) 
     {
-        for (Entry<?> entry : entrys) 
+        for (Entry<?> entry : entries) 
         {
-            trayIcon.displayMessage(title, entry.getTitle(), MessageType.INFO);
+            trayIcon.displayMessage(messageTitle, entry.getTitle(), MessageType.INFO);
         }
     }
     
@@ -66,12 +66,11 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
     
     public boolean initializeSystemTrayAccess() 
     {
-        boolean output = false;
         if (SystemTray.isSupported()) 
         {
-            Image image = Toolkit.getDefaultToolkit().getImage("Images/Penaut.ico");
+            Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Images/Penaut.ico"));
             
-            ActionListener listener = new ActionListener() 
+            var listener = new ActionListener() 
             {
                 public void actionPerformed(ActionEvent e) 
                 {
@@ -93,13 +92,13 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
             try 
             {
                 tray.add(trayIcon);
-                output = true;
+                return true;
             } catch (AWTException e) 
             {
-                output = false;
+                return false;
             }
         }
-        return output;
+        return false;
     }
     
 }

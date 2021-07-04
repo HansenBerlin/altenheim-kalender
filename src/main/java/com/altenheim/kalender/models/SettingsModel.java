@@ -20,8 +20,8 @@ public class SettingsModel implements Serializable
     public Long scrapingIntervalInMinutes = (long) 60000;
     private String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
 
-    public long entrySystemMessageIntervalInMillis = (long) 60000;
-    public long notificationTimeBeforeEntryInMillis = 900000;
+    private long entrySystemMessageIntervalInMillis = 60000;
+    private long notificationTimeBeforeEntryInMillis = 900000;
 
     private boolean useAdvancedFeatures = false; // je nachdem ob der pw hash erfolgreich geladen wird an oder aus, wegesuche und ÖZ dann ausgrauen
 

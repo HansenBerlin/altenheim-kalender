@@ -66,7 +66,7 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
                 for (var entry : entries) 
                 {
                     if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1)) && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1))) {
-                        returnValue.add((Entry<?>)entry); 
+                        returnValue.add((Entry<?>)entry);
                     }
                     
                 }            
