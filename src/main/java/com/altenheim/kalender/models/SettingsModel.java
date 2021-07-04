@@ -20,6 +20,8 @@ public class SettingsModel implements Serializable
     public Long scrapingIntervalInMinutes = (long) 60000;
     private String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
 
+    public long entrySystemMessageIntervalInMillis = (long) 60000;
+
     private boolean useAdvancedFeatures = false; // je nachdem ob der pw hash erfolgreich geladen wird an oder aus, wegesuche und ÖZ dann ausgrauen
 
     public void addPropertyChangeListener(PropertyChangeListener listener)
@@ -43,5 +45,8 @@ public class SettingsModel implements Serializable
         propertyChange.firePropertyChange("scrapingIntervalInMillis", scrapingIntervalInMinutes, interval);
         scrapingIntervalInMinutes = interval;
     }
-
+    public long getEntrySystemMessageIntervalInMills() { return entrySystemMessageIntervalInMillis;}
+    public void setEntrySystemMessageIntervalInMillis(long entrySystemMessageIntervalInMillis) {
+        this.entrySystemMessageIntervalInMillis = entrySystemMessageIntervalInMillis;
+    }
 }
