@@ -17,7 +17,7 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
     private SettingsModel settings;
     private ICalendarEntriesModel administrateEntries;
 
-    private SystemTray tray = SystemTray.getSystemTray();
+    private SystemTray tray;
     private TrayIcon trayIcon;
    
     public SystemNotificationsController(SettingsModel settings, ICalendarEntriesModel administrateEntries)
@@ -88,7 +88,8 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
             trayIcon.addActionListener(listener);
             trayIcon.setToolTip("HWR Kalender");
             trayIcon.setImageAutoSize(true);
-
+            
+            tray = SystemTray.getSystemTray();
             try 
             {
                 tray.add(trayIcon);
