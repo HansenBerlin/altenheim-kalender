@@ -71,7 +71,7 @@
             </HBox>
             <HBox alignment="TOP_CENTER" spacing="25.0">
                <children>
-                  <Text fx:id="scrappingURL" strokeType="OUTSIDE" strokeWidth="0.0" text="scrappingURL" />
+                  <Text fx:id="txtShowScrappingURL" strokeType="OUTSIDE" strokeWidth="0.0" text="scrappingURL" />
                   <MenuButton fx:id="btnMenuScrapingIntervall" mnemonicParsing="false" text="Aktualisierungshäufigkeit">
                     <items>
                       <MenuItem mnemonicParsing="false" text="täglich" />

@@ -9,7 +9,7 @@ public class SettingsModel
     private String pathToSaveBackupFiles = null;
     private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
     public Long scrapingIntervalInMillis = (long) 2000;
-    private String scrappingURL =""; 
+    private String scrappingURL; 
     private SimpleStringProperty street = new SimpleStringProperty();
     private SimpleStringProperty houseNumber = new SimpleStringProperty();
     private SimpleStringProperty zipCode = new SimpleStringProperty();
