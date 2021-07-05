@@ -106,12 +106,12 @@ public class SmartSearchController implements ISmartSearchController {
 
 		for (var entries : result)
 			for (int i = 0; i <= entries.size(); i++) {
-				end = manipulateEndForFindAvailableTimeSlotFunction(i, entries, end, userEnd);
-				start = manipulateStartForFindAvailableTimeSlotFunction(i, start, entries);
+				end = manipulateEndTimeSlot(i, entries, end, userEnd);
+				start = manipulateStartTimeSlot(i, start, entries);
 
 				if (end < start)
 					continue;
-				output = createNewEntriesInRequirementsForFindAvailableTimeSlotFunction(end, start, duration, userStart, userEnd, output);
+				output = createNewEntriesInRequirements(end, start, duration, userStart, userEnd, output);
 			}
 		if (result.isEmpty())
 			output.add(input);
@@ -119,7 +119,7 @@ public class SmartSearchController implements ISmartSearchController {
 		return output;
 	}
 
-	private List<Entry<?>> createNewEntriesInRequirementsForFindAvailableTimeSlotFunction(long end, long start,
+	private List<Entry<?>> createNewEntriesInRequirements(long end, long start,
 			int duration, long userStart, long userEnd, List<Entry<?>> output) {
 		if ((end - start) / 60000 >= duration && !((end - userStart) / 60000 <= duration || (userEnd - start) / 60000 < duration))
 			output.add(createEntryFromMillis(start, end));
@@ -128,13 +128,13 @@ public class SmartSearchController implements ISmartSearchController {
 		return output;
 	}
 
-	private long manipulateStartForFindAvailableTimeSlotFunction(int i, long start, List<Entry<?>> entries) {
+	private long manipulateStartTimeSlot(int i, long start, List<Entry<?>> entries) {
 		if (i > 0)
 			start = entries.get(i - 1).getEndMillis();
 		return start;
 	}
 
-	private long manipulateEndForFindAvailableTimeSlotFunction(int i, List<Entry<?>> entries, long end, long userEnd) {
+	private long manipulateEndTimeSlot(int i, List<Entry<?>> entries, long end, long userEnd) {
 		if (i >= 0 && i < entries.size())
 			end = entries.get(i).getStartMillis();
 		if (i == entries.size())
