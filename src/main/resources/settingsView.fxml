@@ -29,7 +29,7 @@
          <children>
             <HBox alignment="TOP_CENTER" spacing="20.0">
                <children>
-                  <MenuButton fx:id="selectionSpecialField" mnemonicParsing="false" onAction="#selectionScrapper" text="Auswahl FB">
+                  <MenuButton fx:id="btnMenuSelectionSpecialField" mnemonicParsing="false" onAction="#selectionScrapper" text="Auswahl FB">
                     <items>
                       <MenuItem fx:id="selection_AuswahlFB_IP" mnemonicParsing="false" onAction="#selectionScrapper" text="IP" />
                       <MenuItem fx:id="selection_AuswahlFB_Bank" mnemonicParsing="false" onAction="#selectionScrapper" text="Bank" />
@@ -49,7 +49,7 @@
                         <MenuItem fx:id="selection_AuswahlFB_WI" mnemonicParsing="false" onAction="#selectionScrapper" text="WI" />
                     </items>
                   </MenuButton>
-                  <MenuButton fx:id="selectionCourse" mnemonicParsing="false" onAction="#selectionScrapper" text="Kurs">
+                  <MenuButton fx:id="btnMenuSelectionCourse" mnemonicParsing="false" onAction="#selectionScrapper" text="Kurs">
                      <items>
                         <MenuItem fx:id="selection_AuswahlKurs_A" mnemonicParsing="false" onAction="#selectionScrapper" text="A" />
                         <MenuItem fx:id="selection_AuswahlKurs_B" mnemonicParsing="false" onAction="#selectionScrapper" text="B" />
@@ -57,7 +57,7 @@
                         <MenuItem fx:id="selection_AuswahlKurs_keineKurse" mnemonicParsing="false" onAction="#selectionScrapper" text="keine Kurse" />
                      </items>
                   </MenuButton>
-                  <MenuButton fx:id="selectionSemester" mnemonicParsing="false" onAction="#selectionScrapper" text="Semester">
+                  <MenuButton fx:id="btnMenuSelectionSemester" mnemonicParsing="false" onAction="#selectionScrapper" text="Semester">
                      <items>
                         <MenuItem fx:id="selection_AuswahlSemester_Sem1" mnemonicParsing="false" onAction="#selectionScrapper" text="Sem. 1" />
                         <MenuItem fx:id="selection_AuswahlSemester_Sem2" mnemonicParsing="false" onAction="#selectionScrapper" text="Sem. 2" />
@@ -90,7 +90,7 @@
             <HBox alignment="TOP_CENTER" spacing="20.0">
                <children>
                   <Button fx:id="btnImport" mnemonicParsing="false" text="Import" />
-                  <MenuButton fx:id="selectionSpecialField1" mnemonicParsing="false" text="Colour">
+                  <MenuButton fx:id="btnMenuImportColour" mnemonicParsing="false" text="Colour">
                      <items>
                         <MenuItem mnemonicParsing="false" text="Farbe 1 " />
                         <MenuItem mnemonicParsing="false" text="Farbe 2" />
@@ -111,11 +111,11 @@
                <children>
                   <VBox spacing="5.0">
                      <children>
-                        <TextField fx:id="inputStreet" alignment="CENTER" promptText="Straße" />
-                        <TextField fx:id="inputHouseNumber" alignment="CENTER" promptText="Hausnummer" />
-                        <TextField fx:id="inputZipCode" alignment="CENTER" promptText="Plz" />
-                        <TextField fx:id="inputCity" alignment="CENTER" promptText="Stadt" />
-                        <TextField fx:id="inputMail" alignment="CENTER" promptText="E-Mail Adresse" />
+                        <TextField fx:id="txtInputStreet" alignment="CENTER" promptText="Straße" />
+                        <TextField fx:id="txtInputHouseNumber" alignment="CENTER" promptText="Hausnummer" />
+                        <TextField fx:id="txtInputZipCode" alignment="CENTER" promptText="Plz" />
+                        <TextField fx:id="txtInputCity" alignment="CENTER" promptText="Stadt" />
+                        <TextField fx:id="txtInputMail" alignment="CENTER" promptText="E-Mail Adresse" />
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -127,18 +127,18 @@
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
                   <VBox spacing="14.0">
                      <children>
-                        <Text fx:id="adressTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Eigene Adresse" />
-                        <Text fx:id="showStreet" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text fx:id="showHouseNumber" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text fx:id="showZipCode" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text fx:id="showCity" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text fx:id="showMail" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Text fx:id="txtShowAdressTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Eigene Adresse" />
+                        <Text fx:id="txtShowStreet" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Text fx:id="txtShowHouseNumber" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Text fx:id="txtShowZipCode" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Text fx:id="txtShowCity" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Text fx:id="txtShowMail" strokeType="OUTSIDE" strokeWidth="0.0" />
                      </children>
                   </VBox>
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <CheckBox mnemonicParsing="false" text="Tool Tips" />
+            <CheckBox fx:id="checkBoxToolTips" mnemonicParsing="false" text="Tool Tips" />
          </children>
          <opaqueInsets>
             <Insets />
