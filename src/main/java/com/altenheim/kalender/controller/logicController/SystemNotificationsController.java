@@ -17,7 +17,6 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
     private SettingsModel settings;
     private ICalendarEntriesModel administrateEntries;
 
-    private SystemTray tray;
     private TrayIcon trayIcon;
    
     public SystemNotificationsController(SettingsModel settings, ICalendarEntriesModel administrateEntries)
@@ -29,7 +28,7 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
     public void startNotificationTask()
     {
         var timer = new Timer();
-        timer.schedule(this, 0, settings.getEntrySystemMessageIntervalInMills());
+        timer.schedule(this, 0, settings.getEntrySystemMessageIntervalInMinutes()*60000);
     }
 
     public void run()
@@ -40,13 +39,13 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
     private void prepareSystemMessagesForEntrys() 
     {
         var start = LocalDateTime.now();
-        var end = start.plusSeconds(settings.getEntrySystemMessageIntervalInMills()/1000);
+        var end = start.plusMinutes(settings.getEntrySystemMessageIntervalInMinutes());
         var entrys = administrateEntries.getEntrysWithStartInSpecificRange(start, end);
         outputSystemMessageForEntryList("Termin beginnt jetzt", entrys);
-
-        var timeToAdd = settings.getnotificationTimeBeforeEntryInMillis()/1000;
-        start = start.plusSeconds(timeToAdd);
-        end = end.plusSeconds(timeToAdd);
+        
+        var timeToAdd = settings.getnotificationTimeBeforeEntryInMinutes();
+        start = start.plusMinutes(timeToAdd);
+        end = end.plusMinutes(timeToAdd);
         entrys = administrateEntries.getEntrysWithStartInSpecificRange(start, end);
         outputSystemMessageForEntryList("Termin beginnt in "+(int)timeToAdd/60+" Minuten", entrys);   
     }
@@ -89,7 +88,7 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
             trayIcon.setToolTip("HWR Kalender");
             trayIcon.setImageAutoSize(true);
             
-            tray = SystemTray.getSystemTray();
+            SystemTray tray = SystemTray.getSystemTray();
             try 
             {
                 tray.add(trayIcon);
