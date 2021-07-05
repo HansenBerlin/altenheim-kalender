@@ -15,15 +15,15 @@ public class SettingsViewController extends ResponsiveController
     private SettingsModel settings;
 
     @FXML
-    private MenuButton selectionSpecialField, selectionCourse, selectionSemester, btnMenuScrapingIntervall;
+    private MenuButton btnMenuSelectionSpecialField, btnMenuSelectionCourse, btnMenuSelectionSemester, btnMenuScrapingIntervall;
     @FXML
     private Button btnImport, btnExport, btnSave;
     @FXML
-    private TextField inputStreet, inputCity, inputZipCode, inputHouseNumber, inputMail;
+    private TextField txtInputStreet, txtInputCity, txtInputZipCode, txtInputHouseNumber, txtInputMail;
     @FXML
-    private RadioButton adressMailFirst, toolTipsOn, toolTipsOff;
+    private RadioButton rdbtnadressMailFirst, rdbtntoolTipsOn, rdbtntoolTipsOff;
     @FXML
-    private Text scrappingURL, adressTitle, showStreet, showHouseNumber, showCity, showZipCode, showMail;
+    private Text txtShowScrappingURL, txtShowAdressTitle, txtShowStreet, txtShowHouseNumber, txtShowCity, txtShowZipCode, txtShowMail;
     @FXML
     private MenuItem selectionSpecialFieldInsurance, selectionSpecialFieldWi;
     
@@ -36,46 +36,45 @@ public class SettingsViewController extends ResponsiveController
     @FXML
     private void initialize ()
     {
-        showStreet.textProperty().bind(settings.getStreet());
-        showHouseNumber.textProperty().bind(settings.getHouseNumber());
-        showZipCode.textProperty().bind(settings.getZipCOde());
-        showCity.textProperty().bind(settings.getCity());
-        showMail.textProperty().bind(settings.getMail());
+        txtShowStreet.textProperty().bind(settings.getStreet());
+        txtShowHouseNumber.textProperty().bind(settings.getHouseNumber());
+        txtShowZipCode.textProperty().bind(settings.getZipCOde());
+        txtShowCity.textProperty().bind(settings.getCity());
+        txtShowMail.textProperty().bind(settings.getMail());
         //entfernen sobald es funktioniert
-        scrappingURL.setText(settings.getCalendarParser());
+        txtShowScrappingURL.setText(settings.getCalendarParser());
     }
     
     @FXML 
     void selectionScrapper(ActionEvent event)
     {
-        System.out.println(((MenuItem)event.getSource()).getId());
-     if (((MenuItem)event.getSource()).getId().contains("selection_AuswahlFB_")) 
+        var item = (MenuItem)event.getSource();
+     if (item.getId().contains("selection_AuswahlFB_")) 
      {
-        selectionSpecialField.setText(((MenuItem)event.getSource()).getText());
+        btnMenuSelectionSpecialField.setText(item.getText());
      } 
-     else if (((MenuItem)event.getSource()).getId().contains("selection_AuswahlKurs_"))
+     else if (item.getId().contains("selection_AuswahlKurs_"))
      {
-        selectionCourse.setText(((MenuItem)event.getSource()).getText());
+        btnMenuSelectionCourse.setText(item.getText());
      } 
-     else if (((MenuItem)event.getSource()).getId().contains("selection_AuswahlSemester_"))
+     else if (item.getId().contains("selection_AuswahlSemester_"))
      {
-        selectionSemester.setText(((MenuItem)event.getSource()).getText());
+        btnMenuSelectionSemester.setText(item.getText());
      }
     }
       
     @FXML
     void saveSettings(ActionEvent event) 
     {
-        settings.setStreet(inputStreet.getText());
-        settings.setHouseNumber(inputHouseNumber.getText());
-        settings.setZipCode(inputZipCode.getText());
-        settings.setCity(inputCity.getText());
-        settings.setMail(inputMail.getText());
-        String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%c/kurs%s", selectionSpecialField.getText(), selectionSemester.getText().charAt(5), selectionCourse.getText().replaceFirst("keine Kurse", ""));
-        //String resultURL = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/"+ selectionSpecialField.getText() + "/semester"+ selectionSemester.getText().charAt(5) + "/kurs" + selectionCourse.getText().replaceFirst("keine Kurse", "");
+        settings.setStreet(txtInputStreet.getText());
+        settings.setHouseNumber(txtInputHouseNumber.getText());
+        settings.setZipCode(txtInputZipCode.getText());
+        settings.setCity(txtInputCity.getText());
+        settings.setMail(txtInputMail.getText());
+        String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%c/kurs%s", btnMenuSelectionSpecialField.getText(), btnMenuSelectionSemester.getText().charAt(5), btnMenuSelectionCourse.getText().replaceFirst("keine Kurse", ""));
         settings.setCalendarParser(resultURL);
         //kann später entfernt werden
-        scrappingURL.setText(settings.getCalendarParser());
+        txtShowScrappingURL.setText(settings.getCalendarParser());
     }
     public void changeContentPosition() {}
 }
