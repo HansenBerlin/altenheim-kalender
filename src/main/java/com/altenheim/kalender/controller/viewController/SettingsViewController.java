@@ -4,6 +4,7 @@ import com.altenheim.kalender.models.SettingsModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
@@ -15,7 +16,7 @@ public class SettingsViewController extends ResponsiveController
     private SettingsModel settings;
 
     @FXML
-    private MenuButton btnMenuSelectionSpecialField, btnMenuSelectionCourse, btnMenuSelectionSemester, btnMenuScrapingIntervall;
+    private MenuButton btnMenuSelectionSpecialField, btnMenuSelectionCourse, btnMenuSelectionSemester, btnMenuScrapingIntervall, btnMenuImportColour;
     @FXML
     private Button btnImport, btnExport, btnSave;
     @FXML
@@ -26,6 +27,8 @@ public class SettingsViewController extends ResponsiveController
     private Text txtShowScrappingURL, txtShowAdressTitle, txtShowStreet, txtShowHouseNumber, txtShowCity, txtShowZipCode, txtShowMail;
     @FXML
     private MenuItem selectionSpecialFieldInsurance, selectionSpecialFieldWi;
+    @FXML
+    private CheckBox checkBoxToolTips;
     
     
     public SettingsViewController(SettingsModel settings)
