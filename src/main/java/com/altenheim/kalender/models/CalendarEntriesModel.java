@@ -49,8 +49,7 @@ public class CalendarEntriesModel implements ICalendarEntriesModel {
         var returnValue = new ArrayList<Entry<?>>();
         var allEntries = new ArrayList<List<Entry<?>>>();
         for (Calendar calendar : calendars) {
-            var result = calendar.findEntries(start.toLocalDate(), end.toLocalDate(), ZoneId.systemDefault());
-            allEntries.addAll(result.values());
+            allEntries.addAll(calendar.findEntries(start.toLocalDate(), end.toLocalDate(), ZoneId.systemDefault()).values());
         }
         for (var entries : allEntries)
             for (var entry : entries)
