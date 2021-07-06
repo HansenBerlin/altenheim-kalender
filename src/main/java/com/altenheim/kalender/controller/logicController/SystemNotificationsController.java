@@ -3,6 +3,7 @@ package com.altenheim.kalender.controller.logicController;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,15 +40,22 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
     private void prepareSystemMessagesForEntrys() 
     {
         var start = LocalDateTime.now();
-        var end = start.plusMinutes(settings.getEntrySystemMessageIntervalInMinutes());
-        var entrys = administrateEntries.getEntrysWithStartInSpecificRange(start, end);
-        outputSystemMessageForEntryList("Termin beginnt jetzt", entrys);
-        
         var timeToAdd = settings.getnotificationTimeBeforeEntryInMinutes();
+        var end = start.plusMinutes(settings.getEntrySystemMessageIntervalInMinutes());
+        var entries = administrateEntries.getEntrysWithStartInSpecificRange(start, end.plusMinutes(timeToAdd));
+        var currentEntries = new ArrayList<Entry<?>>();
+        for (var entry : entries)
+            if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1)) && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1)))
+                currentEntries.add((Entry<?>) entry);
+        outputSystemMessageForEntryList("Termin beginnt jetzt", currentEntries);
+        
+        currentEntries.clear();
         start = start.plusMinutes(timeToAdd);
         end = end.plusMinutes(timeToAdd);
-        entrys = administrateEntries.getEntrysWithStartInSpecificRange(start, end);
-        outputSystemMessageForEntryList("Termin beginnt in "+(int)timeToAdd/60+" Minuten", entrys);   
+        for (var entry : entries)
+            if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1)) && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1)))
+                currentEntries.add((Entry<?>) entry);
+        outputSystemMessageForEntryList("Termin beginnt in "+(int)timeToAdd/60+" Minuten", currentEntries);   
     }
 
     private void outputSystemMessageForEntryList(String messageTitle, List<Entry<?>> entries) 
