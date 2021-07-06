@@ -58,11 +58,6 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
         }
     }
     
-    public void outputSystemMessage(String title, String message) 
-    {
-        trayIcon.displayMessage(title, message, MessageType.INFO);
-    }
-    
     public boolean initializeSystemTrayAccess() 
     {
         if (SystemTray.isSupported()) 
