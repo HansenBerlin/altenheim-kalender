@@ -70,7 +70,7 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
     {
         if (SystemTray.isSupported()) 
         {
-            Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Images/Penaut.ico"));
+            Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Penaut.ico"));
             
             var listener = new ActionListener() 
             {
@@ -102,6 +102,7 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
             }
         }
         return false;
+        
     }
     
 }
