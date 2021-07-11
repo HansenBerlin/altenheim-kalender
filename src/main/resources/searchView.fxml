@@ -20,58 +20,57 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.ToggleSwitch?>
 
-<GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+      <ColumnConstraints hgrow="SOMETIMES" />
       <ColumnConstraints hgrow="SOMETIMES" />
    </columnConstraints>
    <rowConstraints>
+      <RowConstraints fx:id="firstRow" maxHeight="80.0" minHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="50.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="150.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="100.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="430.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="100.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="430.0" minHeight="430.0" prefHeight="430.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="70.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Circle id="customCircleActive" fx:id="imgFirstStep" fill="#60db8b" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Circle id="customCircleActive" fx:id="imgFirstStep" fill="#60db8b" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets right="200.0" />
          </GridPane.margin>
       </Circle>
-      <Circle id="customCircleInactive" fx:id="imgSecondStep" fill="#f2f2f200" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Circle id="customCircleInactive" fx:id="imgSecondStep" fill="#f2f2f200" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
       </Circle>
-      <Circle id="customCircleInactive" fx:id="imgThirdStep" fill="#f0f0f000" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Circle id="customCircleInactive" fx:id="imgThirdStep" fill="#f0f0f000" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets left="200.0" />
          </GridPane.margin>
       </Circle>
-      <Text fx:id="txtHeaderStep" fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Deine Terminwünsche" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+      <Text fx:id="txtHeaderStep" fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Deine Terminwünsche" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
          <GridPane.margin>
-            <Insets bottom="20.0" top="40.0" />
+            <Insets bottom="20.0" top="30.0" />
          </GridPane.margin>
       </Text>
-      <Text fx:id="txtFirstStep" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Daten" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Text fx:id="txtFirstStep" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Daten" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets right="200.0" />
          </GridPane.margin>
       </Text>
-      <Text fx:id="txtSecondStep" strokeType="OUTSIDE" strokeWidth="0.0" text="Optionen" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Text fx:id="txtSecondStep" strokeType="OUTSIDE" strokeWidth="0.0" text="Optionen" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
       </Text>
-      <Text fx:id="txtThirdStep" strokeType="OUTSIDE" strokeWidth="0.0" text="Auswahl" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Text fx:id="txtThirdStep" strokeType="OUTSIDE" strokeWidth="0.0" text="Auswahl" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets left="200.0" />
          </GridPane.margin>
       </Text>
-      <VBox maxHeight="340.0" maxWidth="270.0" spacing="2.0" style="-fx-border-color: #f5f5f5; -fx-border-width: 1;" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="TOP">
+      <VBox maxHeight="340.0" maxWidth="270.0" spacing="2.0" style="-fx-border-color: #f5f5f5; -fx-border-width: 1;" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
          <children>
             <Text fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Übersicht">
                <font>
@@ -129,7 +128,7 @@
             <Insets right="20.0" />
          </padding>
       </VBox>
-      <HBox alignment="CENTER" spacing="40.0" GridPane.rowIndex="4">
+      <HBox alignment="CENTER" spacing="40.0" GridPane.rowIndex="3">
          <children>
             <Button fx:id="btnBack" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="ZURÜCK" />
             <Button fx:id="btnConfirm" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="WEITER" />
@@ -138,9 +137,9 @@
             <Insets top="30.0" />
          </GridPane.margin>
       </HBox>
-      <VBox fx:id="stepOneUserInput" alignment="TOP_CENTER" spacing="20.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+      <VBox fx:id="stepOneUserInput" alignment="TOP_CENTER" spacing="20.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
          <children>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
                <children>
                   <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -163,7 +162,7 @@
                   </HBox>
                </children>
             </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
                <children>
                   <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -212,7 +211,7 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
                <children>
                   <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -258,7 +257,7 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
                <children>
                   <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -308,7 +307,7 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
                <children>
                   <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -355,9 +354,9 @@
             </AnchorPane>
          </children>
       </VBox>
-      <VBox fx:id="stepTwoUserInput" alignment="TOP_CENTER" disable="true" spacing="20.0" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+      <VBox fx:id="stepTwoUserInput" alignment="TOP_CENTER" disable="true" spacing="20.0" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
          <children>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
                <children>
                   <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -380,7 +379,7 @@
                   </HBox>
                </children>
             </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
                <children>
                   <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -400,7 +399,7 @@
                   </HBox>
                </children>
             </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0" style=": ; : ;">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0" style=": ; : ;">
                <children>
                   <HBox alignment="CENTER_LEFT" prefWidth="510.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -448,7 +447,7 @@
                   </HBox>
                </children>
             </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
                <children>
                   <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -486,7 +485,7 @@
                   </HBox>
                </children>
             </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
                <children>
                   <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -509,9 +508,9 @@
             <Insets />
          </GridPane.margin>
       </VBox>
-      <VBox fx:id="stepThreeUserInput" alignment="TOP_CENTER" disable="true" spacing="20.0" visible="false" GridPane.rowIndex="3">
+      <VBox fx:id="stepThreeUserInput" alignment="TOP_CENTER" disable="true" spacing="20.0" visible="false" GridPane.rowIndex="2">
          <children>
-            <AnchorPane maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0" style="-fx-border-color: #6d25bf; -fx-border-width: 1;">
+            <AnchorPane maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0" style="-fx-border-color: #6d25bf; -fx-border-width: 1;">
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -552,6 +551,6 @@
       </VBox>
    </children>
    <padding>
-      <Insets left="30.0" top="30.0" />
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
    </padding>
 </GridPane>

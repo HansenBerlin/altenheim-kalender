@@ -6,6 +6,7 @@ import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -13,11 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
-
 import java.io.IOException;
 import java.util.List;
-
-import com.altenheim.kalender.controller.Factories.ComboBoxFactory;
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
@@ -25,6 +23,7 @@ import org.controlsfx.control.ToggleSwitch;
 
 public class SearchViewController extends ResponsiveController
 {
+    @FXML private RowConstraints firstRow;
     @FXML private Text txtHeaderStep, txtFirstStep, txtSecondStep, txtThirdStep;
     @FXML private TextField tfAppointmentName, tfDurationMinutes, tfDurationHours;
     @FXML private Button btnBack, btnConfirm;    
@@ -262,9 +261,20 @@ public class SearchViewController extends ResponsiveController
         SuggestionsModel.data.clear();
     }
 
-
-    public void changeContentPosition() 
-    {        
+    final void changeContentPosition(double width, double height) 
+    {          
+        Text[] headers = { txtFirstStep, txtSecondStep, txtThirdStep };
+        Circle[] circles = { imgFirstStep, imgSecondStep, imgThirdStep };
+        boolean isWindowSmall = false;
+        int rowHeight = 80;
+        if (height < 700)   
+        {
+            isWindowSmall = true; 
+            rowHeight = 30;
+        }           
+        firstRow.setPrefHeight(rowHeight);
+        firstRow.setMaxHeight(rowHeight);
+        animationController.growAndShrinkCircle(circles, headers, isWindowSmall);       
     }
 
     private TableView<SuggestionsModel> createTable()

@@ -5,8 +5,6 @@ import com.calendarfx.view.CalendarView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 
 import java.io.IOException;
 
@@ -56,7 +54,7 @@ public class PlannerViewController extends ResponsiveController
         childContainer.add(this.customCalendar, 0, 0, 1, 1);
     }
 
-    public void changeContentPosition() 
+    public void changeContentPosition(double width, double height) 
     {
     }    
 }

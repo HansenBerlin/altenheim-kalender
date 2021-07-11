@@ -10,10 +10,10 @@ import jfxtras.styles.jmetro.JMetro;
 
 public class InjectorFactory
 {    
-    private GuiUpdateController guiSetup;
     private IViewRootsModel allViews;
+    private GuiUpdateController guiSetup;
     private JMetro jMetroStyle;
-    private InitialSetupController initialSettingsLoader;    
+    private InitialSetupController initialSettingsLoader;   
 
     public GuiUpdateController getGuiController() { return guiSetup; }
     public IViewRootsModel getAllViews() { return allViews; }
