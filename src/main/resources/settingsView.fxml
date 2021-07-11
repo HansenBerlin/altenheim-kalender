@@ -25,7 +25,7 @@
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
-      <VBox alignment="TOP_CENTER" spacing="20.0">
+      <VBox alignment="CENTER" maxHeight="800.0" minWidth="350.0" prefWidth="350.0" spacing="15.0">
          <children>
             <HBox alignment="TOP_CENTER" spacing="20.0">
                <children>
@@ -69,16 +69,12 @@
                   </MenuButton>
                </children>
             </HBox>
-            <HBox alignment="TOP_CENTER" spacing="25.0">
+            <HBox alignment="TOP_CENTER" spacing="25.0" />
+            <Separator maxWidth="500.0" prefWidth="300.0" />
+            <HBox alignment="TOP_CENTER" spacing="30.0">
                <children>
-                  <Text fx:id="txtScrappingURL" strokeType="OUTSIDE" strokeWidth="0.0" text="scrappingURL" />
-               </children>
-            </HBox>
-            <Separator />
-            <HBox alignment="TOP_CENTER" spacing="20.0">
-               <children>
-                  <Button fx:id="btnImport" mnemonicParsing="false" text="Import" />
-                  <MenuButton fx:id="btnMenuImportColour" mnemonicParsing="false" text="Colour">
+                  <Button fx:id="btnImport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Import" />
+                  <MenuButton fx:id="btnMenuImportColour" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Colour">
                      <items>
                         <MenuItem mnemonicParsing="false" text="Farbe 1 " />
                         <MenuItem mnemonicParsing="false" text="Farbe 2" />
@@ -89,15 +85,16 @@
                   </MenuButton>
                </children>
             </HBox>
-            <HBox alignment="TOP_CENTER">
+            <HBox alignment="TOP_CENTER" spacing="30.0">
                <children>
-                  <Button fx:id="btnExport" mnemonicParsing="false" text="Export" />
+                  <Button fx:id="btnExport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Export" />
+                  <Button fx:id="btnGenerate" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Dummy" />
                </children>
             </HBox>
-            <Separator prefWidth="200.0" />
+            <Separator maxWidth="500.0" prefWidth="300.0" />
             <HBox alignment="TOP_CENTER">
                <children>
-                  <MenuButton fx:id="btnMenuCheckEvent" mnemonicParsing="false" text="erster Button Steinm.">
+                  <MenuButton fx:id="btnMenuCheckEvent" minWidth="230.0" mnemonicParsing="false" prefWidth="230.0" text="erster Button Steinm.">
                      <items>
                         <MenuItem mnemonicParsing="false" text="1 min. " />
                         <MenuItem mnemonicParsing="false" text="15 min." />
@@ -108,10 +105,10 @@
             </HBox>
             <HBox alignment="TOP_CENTER">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                  <VBox alignment="TOP_CENTER" spacing="20.0">
                      <children>
                         <Text fx:id="txtNotificationMin" strokeType="OUTSIDE" strokeWidth="0.0" text="Benachrichtigung vor dem Termin in Minuten" />
-                        <MenuButton fx:id="btnMenuNotificationMin" mnemonicParsing="false" text="Min.">
+                        <MenuButton fx:id="btnMenuNotificationMin" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Min.">
                           <items>
                             <MenuItem mnemonicParsing="false" text="5 min." />
                             <MenuItem mnemonicParsing="false" text="15 min." />
@@ -120,7 +117,7 @@
                           </items>
                         </MenuButton>
                         <Text fx:id="txtNotificationHour" strokeType="OUTSIDE" strokeWidth="0.0" text="Benachrichtigung vor dem Termin in Stunden" />
-                        <MenuButton fx:id="btnMenuNotificationHour" mnemonicParsing="false" text="Stunden">
+                        <MenuButton fx:id="btnMenuNotificationHour" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Stunden">
                            <items>
                               <MenuItem mnemonicParsing="false" text="1" />
                               <MenuItem mnemonicParsing="false" text="2" />
@@ -132,7 +129,7 @@
                   </VBox>
                </children>
             </HBox>
-            <Separator prefWidth="200.0" />
+            <Separator maxWidth="500.0" prefWidth="300.0" />
             <HBox alignment="TOP_CENTER" spacing="10.0">
                <children>
                   <VBox spacing="5.0">
@@ -163,12 +160,12 @@
                   </VBox>
                </children>
             </HBox>
-            <Separator prefWidth="200.0" />
+            <Separator maxWidth="500.0" prefWidth="300.0" />
             <CheckBox mnemonicParsing="false" text="Tool Tips" />
-            <Separator prefWidth="200.0" />
+            <Separator maxWidth="500.0" prefWidth="300.0" />
             <HBox alignment="TOP_CENTER">
                <children>
-                  <Button fx:id="btnSave" alignment="CENTER" mnemonicParsing="false" onAction="#saveSettings" style="-fx-background-color: ;" text="Speichern" />
+                  <Button fx:id="btnSave" alignment="CENTER" minWidth="300.0" mnemonicParsing="false" onAction="#saveSettings" prefWidth="300.0" style="-fx-background-color: ;" text="Speichern" />
                </children>
             </HBox>
          </children>

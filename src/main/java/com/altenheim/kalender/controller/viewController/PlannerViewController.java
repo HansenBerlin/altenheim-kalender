@@ -18,15 +18,17 @@ public class PlannerViewController extends ResponsiveController
     private IEntryFactory entryFactory;
     private IImportController importController;
     private IExportController exportController;
+    private IPopupViewController popupViewController;
 
-    public PlannerViewController(ICalendarEntriesModel allEntries, IEntryFactory entryFactory, 
-        IImportController importController, IExportController exportController, CalendarView custumCalendar)
+    public PlannerViewController(ICalendarEntriesModel allEntries, IEntryFactory entryFactory, IImportController importController, 
+        IExportController exportController, CalendarView custumCalendar, IPopupViewController popupViewController)
     {
         this.allEntries = allEntries;
         this.entryFactory = entryFactory;
         this.importController = importController;
         this.exportController = exportController;
         this.customCalendar = custumCalendar;
+        this.popupViewController = popupViewController;
     }
 
     @FXML
@@ -36,24 +38,11 @@ public class PlannerViewController extends ResponsiveController
         var stage = button.getScene().getWindow();
         if (button.equals(btnImport))
         {
-            var filePicker = new FileChooser();
-            var file = filePicker.showOpenDialog(stage);
-            if (file == null)
-                return;
-            var importedCalendar = importController.importFile(file.getAbsolutePath());
-            entryFactory.addCalendarToView(importedCalendar);
+            popupViewController.importDialog(importController, entryFactory, stage);
         }
         else
         {
-            var calendars = allEntries.getAllCalendars();
-            var directoryChooser = new DirectoryChooser();
-            var path = directoryChooser.showDialog(stage);
-            if (path == null)
-                return;
-            for (var calendar: calendars)
-            {
-                exportController.exportCalendarAsFile(calendar, path.getAbsolutePath());
-            }
+            popupViewController.exportDialog(exportController, allEntries, stage);
         }
     }
     
