@@ -2,6 +2,7 @@ package com.altenheim.kalender.controller.viewController;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
@@ -10,10 +11,13 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import com.altenheim.kalender.models.*;
+import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
+
 import java.io.IOException;
 import java.util.List;
+
+import com.altenheim.kalender.controller.Factories.ComboBoxFactory;
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
@@ -35,10 +39,10 @@ public class SearchViewController extends ResponsiveController
     @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleAutoSuggest, toggleAddAutomatically;  
 
     @FXML private Slider sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment;
-    @FXML private SplitMenuButton dropdownToDestinationOpeningOptions, dropdownInterval,dropdownStartAt, 
-        dropdownToDestinationTravelTimeOption, dropdownVehicle;        
     @FXML private Spinner<Integer> sliderSuggestionCount;  
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
+
+    private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening;
 
     private int userStep = 1;
     private ISmartSearchController smartSearch;
@@ -50,13 +54,13 @@ public class SearchViewController extends ResponsiveController
     private IGoogleAPIController api;
     private IIOController iOController;
     private IAnimationController animationController;
+    private IComboBoxFactory comboBoxFactory;
 
   
 
-    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory,
-                                List<ContactModel> contacts, IContactFactory contactFactory,
-                                List<MailTemplateModel> mailTemplates, SettingsModel settings,
-                                IGoogleAPIController api, IIOController iOController, IAnimationController animationController)
+    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<ContactModel> contacts, 
+        IContactFactory contactFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api, 
+        IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory)
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
@@ -67,6 +71,7 @@ public class SearchViewController extends ResponsiveController
         this.api = api;
         this.iOController = iOController;
         this.animationController = animationController;
+        this.comboBoxFactory = comboBoxFactory;
     }
 
     @FXML
@@ -77,8 +82,29 @@ public class SearchViewController extends ResponsiveController
         setupInitialContainerStates();
         setupToggleBindings();
         setupTextboxInputValidation();
-        setupSliderBindings();
+        createComboBoxes();
+        //setupSliderBindings();
+        
     }
+
+    private void createComboBoxes()
+    {
+        dropdownVehicle = comboBoxFactory.create(ComboBoxCreate.VEHICLES);
+        dropdownStartAtDest = comboBoxFactory.create(ComboBoxCreate.START);
+        dropdownEndAtDest = comboBoxFactory.create(ComboBoxCreate.DESTINATION);
+        dropdownDestinationOpening = comboBoxFactory.create(ComboBoxCreate.DESTINATION);
+        dropdownInterval = comboBoxFactory.create(ComboBoxCreate.RECCURENCEOPTIONS);
+
+        containerTravel.getChildren().addAll(dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest);  
+        containerOpeningHours.getChildren().add(dropdownDestinationOpening);
+        containerReccurrence.getChildren().add(dropdownInterval);
+
+        dropdownEndAtDest.getEditor().textProperty().bindBidirectional(dropdownDestinationOpening.getEditor().textProperty());
+
+
+    }
+
+    
 
     private void setupSliderBindings()
     {                
@@ -156,31 +182,6 @@ public class SearchViewController extends ResponsiveController
         };
     }
 
-    
-
-    
-
-    @FXML
-    private void toogleSwitchSelected(MouseEvent event)
-    {
-        //var toggle = (ToggleSwitch)event.getSource();
-        //boolean isConatinerShown = !toggle.selectedProperty().get();
-        //containerAppointmentRange.setVisible(isConatinerShown);
-        //toggle.setAlignment(Pos.CENTER);
-        //txtStreet.textProperty().bind(settings.getStreet());
-        //toggle.selectedProperty().bind(observable);
-        //containerAppointmentRange.visibleProperty().bind(toogleAppointmentRange.selectedProperty().not());
-
-
-    }
-
-    private void changeContainerAppearance()
-    {
-
-    }
-
-    
-
     @FXML
     private void updateUserStepView(ActionEvent event) 
     {
@@ -221,8 +222,17 @@ public class SearchViewController extends ResponsiveController
         boolean[] weekdays = { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),
                 tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(), tickSunday.isSelected() };
 
+        int suggestionsCount = 100;             
+        if (toggleRecurringDate.isDisabled() == false)
+            suggestionsCount = sliderRecurrences.valueProperty().intValue();
+        else if (toggleRecurringDate.isDisabled() && toggleAddAutomatically.isDisabled() == false)
+            suggestionsCount = 1;
+
+        int intervalDays = 1;
+         
+
         var suggestions = smartSearch.findPossibleTimeSlots(
-                userPrefs, duration, weekdays, openingHours, timeBefore, timeAfter, 10, 7);
+                userPrefs, duration, weekdays, openingHours, timeBefore, timeAfter, suggestionsCount, 7);
         for (var entry : suggestions)
         {
             SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime(), entry.getStartDate());

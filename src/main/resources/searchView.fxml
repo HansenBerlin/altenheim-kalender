@@ -6,10 +6,8 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -135,8 +133,6 @@
          <children>
             <Button fx:id="btnBack" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="ZURÜCK" />
             <Button fx:id="btnConfirm" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="WEITER" />
-            <Button minHeight="40.0" mnemonicParsing="false" onAction="#testUpdate" prefHeight="40.0" prefWidth="170.0" text="SPEICHERN" />
-            <Button minHeight="40.0" mnemonicParsing="false" onAction="#resetTest" prefHeight="40.0" prefWidth="170.0" text="LADEN" />
          </children>
          <GridPane.margin>
             <Insets top="30.0" />
@@ -372,42 +368,7 @@
                            <font>
                               <Font size="11.0" />
                            </font></ToggleSwitch>
-                        <HBox fx:id="containerTravel" alignment="CENTER_LEFT" prefWidth="440.0" visible="false">
-                           <children>
-                              <SplitMenuButton fx:id="dropdownVehicle" mnemonicParsing="false" prefWidth="140.0" text="Verkehrsmittel">
-                                <items>
-                                  <MenuItem mnemonicParsing="false" text="Fußgänger" />
-                                    <MenuItem mnemonicParsing="false" text="Fahrrad" />
-                                    <MenuItem mnemonicParsing="false" text="Öffis" />
-                                  <MenuItem mnemonicParsing="false" text="Auto" />
-                                </items>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </SplitMenuButton>
-                              <SplitMenuButton fx:id="dropdownStartAt" mnemonicParsing="false" prefWidth="140.0" text="Start">
-                                 <items>
-                                    <MenuItem mnemonicParsing="false" text="Home" />
-                                    <MenuItem mnemonicParsing="false" text="Späti" />
-                                    <MenuItem mnemonicParsing="false" text="Zahnarzt" />
-                                    <MenuItem mnemonicParsing="false" text="neuer Eintrag" />
-                                 </items>
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </SplitMenuButton>
-                              <SplitMenuButton fx:id="dropdownToDestinationTravelTimeOption" mnemonicParsing="false" prefWidth="140.0" text="Ziel">
-                                 <items>
-                                    <MenuItem mnemonicParsing="false" text="Home" />
-                                    <MenuItem mnemonicParsing="false" text="Späti" />
-                                    <MenuItem mnemonicParsing="false" text="Zahnarzt" />
-                                    <MenuItem mnemonicParsing="false" text="neuer Eintrag" />
-                                 </items>
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </SplitMenuButton>
-                           </children>
+                        <HBox fx:id="containerTravel" alignment="CENTER_LEFT" prefWidth="440.0" spacing="5.0">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
@@ -428,20 +389,6 @@
                               <Font size="11.0" />
                            </font></ToggleSwitch>
                         <HBox fx:id="containerOpeningHours" alignment="CENTER_LEFT" prefWidth="440.0" visible="false">
-                           <children>
-                              <SplitMenuButton fx:id="dropdownToDestinationOpeningOptions" mnemonicParsing="false" prefWidth="140.0" text="Ziel">
-                                 <items>
-                                    <MenuItem mnemonicParsing="false" text="auto: wie Fahrtzeit" />
-                                    <MenuItem mnemonicParsing="false" text="Home" />
-                                    <MenuItem mnemonicParsing="false" text="Späti" />
-                                    <MenuItem mnemonicParsing="false" text="Zahnarzt" />
-                                    <MenuItem mnemonicParsing="false" text="neuer Eintrag" />
-                                 </items>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </SplitMenuButton>
-                           </children>
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
@@ -512,19 +459,8 @@
                            <font>
                               <Font size="11.0" />
                            </font></ToggleSwitch>
-                        <HBox fx:id="containerReccurrence" alignment="CENTER_LEFT" prefWidth="440.0" visible="false">
+                        <HBox fx:id="containerReccurrence" alignment="CENTER_LEFT" prefWidth="440.0" spacing="10.0" visible="false">
                            <children>
-                              <SplitMenuButton fx:id="dropdownInterval" mnemonicParsing="false" prefWidth="140.0" text="Intervall">
-                                 <items>
-                                    <MenuItem mnemonicParsing="false" text="täglich" />
-                                    <MenuItem mnemonicParsing="false" text="wöchentlich" />
-                                    <MenuItem mnemonicParsing="false" text="monatlich" />
-                                    <MenuItem mnemonicParsing="false" text="jährlich" />
-                                 </items>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </SplitMenuButton>
                               <VBox alignment="CENTER" prefWidth="210.0">
                                  <children>
                                     <Label text="Wiederholungen">
@@ -535,7 +471,7 @@
                                     <Slider fx:id="sliderRecurrences" blockIncrement="1.0" majorTickUnit="1.0" minorTickCount="0" snapToTicks="true" />
                                  </children>
                                  <HBox.margin>
-                                    <Insets left="20.0" />
+                                    <Insets />
                                  </HBox.margin>
                               </VBox>
                            </children>

@@ -4,5 +4,5 @@ import javafx.scene.Node;
 
 public interface IAnimationController 
 {
-    public void growAndShrinkContainer(Node box, boolean isActivated);    
+    void growAndShrinkContainer(Node box, boolean isActivated);    
 }

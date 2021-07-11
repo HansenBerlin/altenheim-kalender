@@ -40,13 +40,15 @@ public class InjectorFactory
         IImportController importCt = new ImportController(settings);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt);
         IAnimationController animationController = new AnimationController();
+        IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
 
         var popupVCt = new PopupViewsController();
         var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, websiteCt, apiCt);
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(contacts, contactFactory, apiCt, ioCt);
         var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates);
-        var searchVCt = new SearchViewController(smartSearch, entryFactory, contacts, contactFactory, mailTemplates, settings, apiCt, ioCt, animationController);
+        var searchVCt = new SearchViewController(smartSearch, entryFactory, contacts, contactFactory, mailTemplates, settings, 
+            apiCt, ioCt, animationController, comboBoxFactory);
         var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);
