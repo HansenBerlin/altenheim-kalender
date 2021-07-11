@@ -100,8 +100,6 @@ public class SearchViewController extends ResponsiveController
         containerReccurrence.getChildren().add(dropdownInterval);
 
         dropdownEndAtDest.getEditor().textProperty().bindBidirectional(dropdownDestinationOpening.getEditor().textProperty());
-
-
     }
 
     
@@ -122,7 +120,6 @@ public class SearchViewController extends ResponsiveController
             hBox.setScaleX(0);
             hBox.setScaleY(0);            
         }
-
     }
 
     private void setupToggleBindings()
@@ -223,16 +220,18 @@ public class SearchViewController extends ResponsiveController
                 tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(), tickSunday.isSelected() };
 
         int suggestionsCount = 100;             
-        if (toggleRecurringDate.isDisabled() == false)
-            suggestionsCount = sliderRecurrences.valueProperty().intValue();
-        else if (toggleRecurringDate.isDisabled() && toggleAddAutomatically.isDisabled() == false)
-            suggestionsCount = 1;
-
         int intervalDays = 1;
+        if (toggleRecurringDate.isDisabled() == false)
+        {
+            suggestionsCount = sliderRecurrences.valueProperty().intValue();
+            intervalDays = sliderRecurrences.valueProperty().intValue();
+        }
+        else if (toggleRecurringDate.isDisabled() && toggleAddAutomatically.isDisabled() == false)
+            suggestionsCount = 1;        
          
 
-        var suggestions = smartSearch.findPossibleTimeSlots(
-                userPrefs, duration, weekdays, openingHours, timeBefore, timeAfter, suggestionsCount, 7);
+        var suggestions = smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, openingHours, 
+            timeBefore, timeAfter, suggestionsCount, intervalDays);
         for (var entry : suggestions)
         {
             SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime(), entry.getStartDate());
