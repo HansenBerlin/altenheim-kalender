@@ -23,17 +23,19 @@ public class SettingsViewController extends ResponsiveController
     private IGoogleAPIController googleApis;
 
     @FXML
-    private MenuButton btnMenuSpecialField, btnMenuCourse, btnMenuSemester, btnMenuImportColour;
+    private MenuButton btnMenuSpecialField, btnMenuCourse, btnMenuSemester, btnMenuImportColour,
+        btnMenuCheckEvent, btnMenuNotificationMin, btnMenuNotificationHour;
     @FXML
     private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
     @FXML
     private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
     @FXML
-    private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail;
+    private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
+        txtNotifocationMin, txtNotificationHour;
     @FXML
     private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
     @FXML
-    private CheckBox cBToolTips = new CheckBox ();
+    private CheckBox cBToolTips = new CheckBox();
 
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
                                   IExportController exportController, ICalendarEntriesModel allCalendars,
