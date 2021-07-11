@@ -35,7 +35,7 @@ public class SettingsViewController extends ResponsiveController
     @FXML
     private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
     @FXML
-    private CheckBox cBToolTips = new CheckBox ();
+    private CheckBox cBToolTips = new CheckBox();
 
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
                                   IExportController exportController, ICalendarEntriesModel allCalendars,

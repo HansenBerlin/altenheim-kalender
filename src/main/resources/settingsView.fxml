@@ -164,7 +164,7 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <CheckBox fx:id="checkBoxToolTips" mnemonicParsing="false" text="Tool Tips" />
+            <CheckBox mnemonicParsing="false" text="Tool Tips" />
             <Separator prefWidth="200.0" />
             <HBox alignment="TOP_CENTER">
                <children>
