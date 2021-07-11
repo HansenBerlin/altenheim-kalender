@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<<<<<<< HEAD
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
@@ -13,6 +14,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
+=======
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+>>>>>>> 14df37d70784c3eb63043f46ad2c71b56f01377e
 
 <GridPane alignment="CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
@@ -25,6 +32,7 @@
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
+<<<<<<< HEAD
       <VBox alignment="TOP_CENTER" spacing="20.0">
          <children>
             <HBox alignment="TOP_CENTER" spacing="20.0">
@@ -178,6 +186,15 @@
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
+=======
+      <VBox alignment="CENTER" minWidth="300.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <children>
+            <Button fx:id="btnExport" minWidth="200.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="200.0" text="Export Calendar to file" />
+            <Button fx:id="btnImport" minWidth="200.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="200.0" text="Import Calendar from file" />
+            <Button fx:id="btnCrawl" alignment="TOP_LEFT" minWidth="200.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="200.0" text="Import HWR Calendar" />
+            <Button fx:id="btnGenerate" alignment="TOP_LEFT" minWidth="200.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="200.0" text="Generate Calendar" />
+         </children>
+>>>>>>> 14df37d70784c3eb63043f46ad2c71b56f01377e
       </VBox>
    </children>
 </GridPane>
