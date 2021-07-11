@@ -1,30 +1,19 @@
 package com.altenheim.kalender.controller.viewController;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
-import javafx.util.converter.NumberStringConverter;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import com.altenheim.kalender.models.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
@@ -42,8 +31,9 @@ public class SearchViewController extends ResponsiveController
 
     @FXML private ToggleSwitch toggleDateRange, toggleTimeRange, toggleWeekdays;   
     @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays;
+    @FXML private HBox containerTravel, containerOpeningHours, containerMargin, containerReccurrence;
+    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleAutoSuggest, toggleAddAutomatically;  
 
-    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseMargin, toggleUseOpeningHours, toggleRecurringDate, toggleAutoSuggest;  
     @FXML private Slider sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment;
     @FXML private SplitMenuButton dropdownToDestinationOpeningOptions, dropdownInterval,dropdownStartAt, 
         dropdownToDestinationTravelTimeOption, dropdownVehicle;        
@@ -84,6 +74,7 @@ public class SearchViewController extends ResponsiveController
     {
         TableView<SuggestionsModel> tableSuggestions = createTable();
         stepThreeUserInput.getChildren().add(tableSuggestions);
+        setupInitialContainerStates();
         setupToggleBindings();
         setupTextboxInputValidation();
         setupSliderBindings();
@@ -95,19 +86,41 @@ public class SearchViewController extends ResponsiveController
         tfDurationHours.textProperty().bind(sliderDurationHours.valueProperty().asString());
     }
 
+    private void setupInitialContainerStates()
+    {
+        HBox[] containers = { containerDateRange, containerTimeRange, containerWeekdays, containerTravel, 
+            containerOpeningHours, containerMargin, containerReccurrence };
+
+        for (var hBox : containers) 
+        {
+            hBox.setScaleX(0);
+            hBox.setScaleY(0);            
+        }
+
+    }
+
     private void setupToggleBindings()
     {
-        ToggleSwitch[] togglesFirstView = { toggleDateRange, toggleTimeRange, toggleWeekdays };
-        HBox[] containersFirstView = { containerDateRange, containerTimeRange, containerWeekdays };
+        ToggleSwitch[] toggles = { toggleDateRange, toggleTimeRange, toggleWeekdays, toggleUseTravelDuration, 
+            toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate };
+        HBox[] containers = { containerDateRange, containerTimeRange, containerWeekdays, containerTravel, 
+            containerOpeningHours, containerMargin, containerReccurrence };
 
         int i = 0;
 
-        while (i < 3) 
+        while (i < toggles.length) 
         {
             final int j = i;
-            togglesFirstView[j].selectedProperty().addListener(((observable, oldValue, newValue) -> 
+            toggles[j].selectedProperty().addListener(((observable, oldValue, newValue) -> 
             {
-                animationController.growAndShrinkContainer(containersFirstView[j], oldValue);
+                Boolean valueToSet;
+                {
+                    if (j > 2 && j < 7)
+                        valueToSet = newValue;
+                    else
+                        valueToSet = oldValue;
+                }
+                animationController.growAndShrinkContainer(containers[j], valueToSet);
             }));
             i++;            
         }

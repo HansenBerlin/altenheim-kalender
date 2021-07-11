@@ -363,36 +363,89 @@
          <children>
             <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" spacing="22.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ToggleSwitch fx:id="toggleUseTravelDuration" prefHeight="20.0" prefWidth="210.0" text="Fahrtzeit einbeziehen" />
-                        <SplitMenuButton fx:id="dropdownVehicle" mnemonicParsing="false" text="Verkehrsmittel">
-                          <items>
-                            <MenuItem mnemonicParsing="false" text="Fußgänger" />
-                              <MenuItem mnemonicParsing="false" text="Fahrrad" />
-                              <MenuItem mnemonicParsing="false" text="Öffis" />
-                            <MenuItem mnemonicParsing="false" text="Auto" />
-                          </items>
+                        <ToggleSwitch fx:id="toggleUseTravelDuration" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="160.0" text="Fahrtzeit">
+                           <HBox.margin>
+                              <Insets right="30.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="11.0" />
+                           </font></ToggleSwitch>
+                        <HBox fx:id="containerTravel" alignment="CENTER_LEFT" prefWidth="440.0" visible="false">
+                           <children>
+                              <SplitMenuButton fx:id="dropdownVehicle" mnemonicParsing="false" prefWidth="140.0" text="Verkehrsmittel">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" text="Fußgänger" />
+                                    <MenuItem mnemonicParsing="false" text="Fahrrad" />
+                                    <MenuItem mnemonicParsing="false" text="Öffis" />
+                                  <MenuItem mnemonicParsing="false" text="Auto" />
+                                </items>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </SplitMenuButton>
+                              <SplitMenuButton fx:id="dropdownStartAt" mnemonicParsing="false" prefWidth="140.0" text="Start">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="Home" />
+                                    <MenuItem mnemonicParsing="false" text="Späti" />
+                                    <MenuItem mnemonicParsing="false" text="Zahnarzt" />
+                                    <MenuItem mnemonicParsing="false" text="neuer Eintrag" />
+                                 </items>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </SplitMenuButton>
+                              <SplitMenuButton fx:id="dropdownToDestinationTravelTimeOption" mnemonicParsing="false" prefWidth="140.0" text="Ziel">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="Home" />
+                                    <MenuItem mnemonicParsing="false" text="Späti" />
+                                    <MenuItem mnemonicParsing="false" text="Zahnarzt" />
+                                    <MenuItem mnemonicParsing="false" text="neuer Eintrag" />
+                                 </items>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </SplitMenuButton>
+                           </children>
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
-                        </SplitMenuButton>
-                        <SplitMenuButton fx:id="dropdownStartAt" mnemonicParsing="false" text="Start">
-                           <items>
-                              <MenuItem mnemonicParsing="false" text="Home" />
-                              <MenuItem mnemonicParsing="false" text="Späti" />
-                              <MenuItem mnemonicParsing="false" text="Zahnarzt" />
-                              <MenuItem mnemonicParsing="false" text="neuer Eintrag" />
-                           </items>
-                        </SplitMenuButton>
-                        <SplitMenuButton fx:id="dropdownToDestinationTravelTimeOption" mnemonicParsing="false" text="Ziel">
-                           <items>
-                              <MenuItem mnemonicParsing="false" text="Home" />
-                              <MenuItem mnemonicParsing="false" text="Späti" />
-                              <MenuItem mnemonicParsing="false" text="Zahnarzt" />
-                              <MenuItem mnemonicParsing="false" text="neuer Eintrag" />
-                           </items>
-                        </SplitMenuButton>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ToggleSwitch fx:id="toggleUseOpeningHours" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="190.0" text="Öffnungszeiten">
+                           <font>
+                              <Font size="11.0" />
+                           </font></ToggleSwitch>
+                        <HBox fx:id="containerOpeningHours" alignment="CENTER_LEFT" prefWidth="440.0" visible="false">
+                           <children>
+                              <SplitMenuButton fx:id="dropdownToDestinationOpeningOptions" mnemonicParsing="false" prefWidth="140.0" text="Ziel">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="auto: wie Fahrtzeit" />
+                                    <MenuItem mnemonicParsing="false" text="Home" />
+                                    <MenuItem mnemonicParsing="false" text="Späti" />
+                                    <MenuItem mnemonicParsing="false" text="Zahnarzt" />
+                                    <MenuItem mnemonicParsing="false" text="neuer Eintrag" />
+                                 </items>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </SplitMenuButton>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </HBox>
                      </children>
                      <padding>
                         <Insets left="20.0" />
@@ -402,27 +455,45 @@
             </AnchorPane>
             <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0" style=": ; : ;">
                <children>
-                  <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox alignment="CENTER_LEFT" prefWidth="510.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ToggleSwitch fx:id="toggleUseMargin" prefHeight="20.0" prefWidth="210.0" text="Freie Slots einplanen" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="vorher">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
+                        <ToggleSwitch fx:id="toggleUseMargin" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="190.0" text="Freie Zeit">
                            <HBox.margin>
-                              <Insets left="30.0" />
+                              <Insets />
                            </HBox.margin>
-                        </Text>
-                        <Slider fx:id="sliderMarginBeforeAppointment" max="60.0" maxWidth="120.0" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="hinterher">
                            <font>
-                              <Font size="14.0" />
-                           </font>
+                              <Font size="11.0" />
+                           </font></ToggleSwitch>
+                        <HBox fx:id="containerMargin" prefWidth="440.0" visible="false">
+                           <children>
+                              <VBox alignment="CENTER" prefWidth="240.0">
+                                 <children>
+                                    <Label alignment="CENTER" text="vorher">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </Label>
+                                    <Slider fx:id="sliderMarginBeforeAppointment" blockIncrement="1.0" majorTickUnit="1.0" max="60.0" minorTickCount="0" snapToTicks="true" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefWidth="240.0">
+                                 <children>
+                                    <Label text="hinterher">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </Label>
+                                    <Slider fx:id="sliderMarginAfterAppointment" blockIncrement="1.0" majorTickUnit="1.0" max="60.0" minorTickCount="0" snapToTicks="true" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
-                        </Text>
-                        <Slider fx:id="sliderMarginAfterAppointment" max="60.0" maxWidth="120.0" />
+                        </HBox>
                      </children>
                      <padding>
                         <Insets left="20.0" />
@@ -432,54 +503,46 @@
             </AnchorPane>
             <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ToggleSwitch fx:id="toggleUseOpeningHours" prefHeight="20.0" prefWidth="210.0" text="Öffnungszeiten einbeziehen" />
-                        <SplitMenuButton fx:id="dropdownToDestinationOpeningOptions" mnemonicParsing="false" text="Ziel">
-                           <items>
-                              <MenuItem mnemonicParsing="false" text="auto: wie Fahrtzeit" />
-                              <MenuItem mnemonicParsing="false" text="Home" />
-                              <MenuItem mnemonicParsing="false" text="Späti" />
-                              <MenuItem mnemonicParsing="false" text="Zahnarzt" />
-                              <MenuItem mnemonicParsing="false" text="neuer Eintrag" />
-                           </items>
+                        <ToggleSwitch fx:id="toggleRecurringDate" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="170.0" text="wiederkehrend">
                            <HBox.margin>
-                              <Insets left="34.0" />
+                              <Insets right="20.0" />
                            </HBox.margin>
-                        </SplitMenuButton>
-                     </children>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </HBox>
-               </children>
-            </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
-               <children>
-                  <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <ToggleSwitch fx:id="toggleRecurringDate" prefHeight="20.0" prefWidth="210.0" text="wiederkehrender Termin" />
-                        <SplitMenuButton fx:id="dropdownInterval" mnemonicParsing="false" text="Intervall">
-                           <items>
-                              <MenuItem mnemonicParsing="false" text="täglich" />
-                              <MenuItem mnemonicParsing="false" text="wöchentlich" />
-                              <MenuItem mnemonicParsing="false" text="monatlich" />
-                              <MenuItem mnemonicParsing="false" text="jährlich" />
-                              <MenuItem mnemonicParsing="false" text="eigene Angabe" />
-                           </items>
-                           <HBox.margin>
-                              <Insets left="34.0" />
-                           </HBox.margin>
-                        </SplitMenuButton>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wiederholungen">
                            <font>
-                              <Font size="14.0" />
-                           </font>
+                              <Font size="11.0" />
+                           </font></ToggleSwitch>
+                        <HBox fx:id="containerReccurrence" alignment="CENTER_LEFT" prefWidth="440.0" visible="false">
+                           <children>
+                              <SplitMenuButton fx:id="dropdownInterval" mnemonicParsing="false" prefWidth="140.0" text="Intervall">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="täglich" />
+                                    <MenuItem mnemonicParsing="false" text="wöchentlich" />
+                                    <MenuItem mnemonicParsing="false" text="monatlich" />
+                                    <MenuItem mnemonicParsing="false" text="jährlich" />
+                                 </items>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </SplitMenuButton>
+                              <VBox alignment="CENTER" prefWidth="210.0">
+                                 <children>
+                                    <Label text="Wiederholungen">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </Label>
+                                    <Slider fx:id="sliderRecurrences" blockIncrement="1.0" majorTickUnit="1.0" minorTickCount="0" snapToTicks="true" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
                            <HBox.margin>
-                              <Insets left="30.0" />
+                              <Insets left="20.0" />
                            </HBox.margin>
-                        </Text>
-                        <Slider fx:id="sliderRecurrences" maxWidth="120.0" />
+                        </HBox>
                      </children>
                      <padding>
                         <Insets left="20.0" />
@@ -489,18 +552,15 @@
             </AnchorPane>
             <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ToggleSwitch fx:id="toggleRecurringDate1" prefHeight="20.0" prefWidth="210.0" selected="true" text="alle Vorschläge anzeigen" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Anzahl festlegen">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
+                        <ToggleSwitch fx:id="toggleAddAutomatically" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="208.0" selected="true" text="Termine sofort eintragen">
                            <HBox.margin>
-                              <Insets left="30.0" />
+                              <Insets right="20.0" />
                            </HBox.margin>
-                        </Text>
-                        <Slider fx:id="sliderRecurrences1" maxWidth="120.0" />
+                           <font>
+                              <Font size="11.0" />
+                           </font></ToggleSwitch>
                      </children>
                      <padding>
                         <Insets left="20.0" />
