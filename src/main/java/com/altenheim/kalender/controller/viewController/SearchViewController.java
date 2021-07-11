@@ -1,24 +1,31 @@
 package com.altenheim.kalender.controller.viewController;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import javafx.util.converter.NumberStringConverter;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-
 import com.altenheim.kalender.models.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import com.altenheim.kalender.interfaces.IEntryFactory;
-import com.altenheim.kalender.interfaces.IContactFactory;
-import com.altenheim.kalender.interfaces.IGoogleAPIController;
-import com.altenheim.kalender.interfaces.IIOController;
-import com.altenheim.kalender.interfaces.ISmartSearchController;
+import java.util.Timer;
+import java.util.TimerTask;
+import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -26,20 +33,22 @@ import org.controlsfx.control.ToggleSwitch;
 public class SearchViewController extends ResponsiveController
 {
     @FXML private Text txtHeaderStep, txtFirstStep, txtSecondStep, txtThirdStep;
-    @FXML private TextField txtAppointmentName, txtDuration;
+    @FXML private TextField tfAppointmentName, tfDurationMinutes, tfDurationHours;
     @FXML private Button btnBack, btnConfirm;    
     @FXML private VBox stepOneUserInput, stepTwoUserInput, stepThreeUserInput;
     @FXML private DatePicker startDate, endDate;    
     @FXML private CheckBox tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday;  
-    @FXML private TimeField timeStart, timeEnd;    
-    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseMargin, toggleUseOpeningHours, toggleRecurringDate, 
-        toggleAutoSuggest, toogleAppointmentRange;  
-    @FXML private Slider sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment, sliderAppointmentDuration;
+    @FXML private TimeField timeStart, timeEnd; 
+
+    @FXML private ToggleSwitch toggleDateRange, toggleTimeRange, toggleWeekdays;   
+    @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays;
+
+    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseMargin, toggleUseOpeningHours, toggleRecurringDate, toggleAutoSuggest;  
+    @FXML private Slider sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment;
     @FXML private SplitMenuButton dropdownToDestinationOpeningOptions, dropdownInterval,dropdownStartAt, 
         dropdownToDestinationTravelTimeOption, dropdownVehicle;        
     @FXML private Spinner<Integer> sliderSuggestionCount;  
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
-    @FXML private HBox containerAppointmentRange;
 
     private int userStep = 1;
     private ISmartSearchController smartSearch;
@@ -50,13 +59,14 @@ public class SearchViewController extends ResponsiveController
     private SettingsModel settings;
     private IGoogleAPIController api;
     private IIOController iOController;
+    private IAnimationController animationController;
 
   
 
     public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory,
                                 List<ContactModel> contacts, IContactFactory contactFactory,
                                 List<MailTemplateModel> mailTemplates, SettingsModel settings,
-                                IGoogleAPIController api, IIOController iOController)
+                                IGoogleAPIController api, IIOController iOController, IAnimationController animationController)
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
@@ -66,6 +76,7 @@ public class SearchViewController extends ResponsiveController
         this.settings = settings;
         this.api = api;
         this.iOController = iOController;
+        this.animationController = animationController;
     }
 
     @FXML
@@ -73,14 +84,81 @@ public class SearchViewController extends ResponsiveController
     {
         TableView<SuggestionsModel> tableSuggestions = createTable();
         stepThreeUserInput.getChildren().add(tableSuggestions);
+        setupToggleBindings();
+        setupTextboxInputValidation();
+        setupSliderBindings();
     }
+
+    private void setupSliderBindings()
+    {                
+        tfDurationMinutes.textProperty().bind(sliderDurationMinutes.valueProperty().asString());
+        tfDurationHours.textProperty().bind(sliderDurationHours.valueProperty().asString());
+    }
+
+    private void setupToggleBindings()
+    {
+        ToggleSwitch[] togglesFirstView = { toggleDateRange, toggleTimeRange, toggleWeekdays };
+        HBox[] containersFirstView = { containerDateRange, containerTimeRange, containerWeekdays };
+
+        int i = 0;
+
+        while (i < 3) 
+        {
+            final int j = i;
+            togglesFirstView[j].selectedProperty().addListener(((observable, oldValue, newValue) -> 
+            {
+                animationController.growAndShrinkContainer(containersFirstView[j], oldValue);
+            }));
+            i++;            
+        }
+    }
+
+    private void setupTextboxInputValidation()
+    {
+        TextField[] textFieldsFirstView = { tfDurationMinutes, tfDurationHours };
+        Slider[] sliderFirstView = { sliderDurationMinutes, sliderDurationHours };
+
+        int i = 0;
+
+        while (i < 2) 
+        {
+            final int j = i;            
+
+            textFieldsFirstView[j].textProperty().addListener(new ChangeListener<String>() 
+            {
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) 
+                {
+                    if (!newValue.matches("\\d*"))
+                    {
+                        textFieldsFirstView[j].setText(newValue.replaceAll("[^\\d]", ""));                    
+                    }  
+                     else
+                    {
+                        double value = Double.parseDouble(textFieldsFirstView[j].getText());
+                        sliderFirstView[j].setValue(Double.valueOf(value));
+                    }               
+                }
+            });
+        i++;            
+        };
+    }
+
+    
+
+    
 
     @FXML
     private void toogleSwitchSelected(MouseEvent event)
     {
-        var toggle = (ToggleSwitch)event.getSource();
-        boolean isConatinerShown = toggle.selectedProperty().get();
-        containerAppointmentRange.setVisible(isConatinerShown);
+        //var toggle = (ToggleSwitch)event.getSource();
+        //boolean isConatinerShown = !toggle.selectedProperty().get();
+        //containerAppointmentRange.setVisible(isConatinerShown);
+        //toggle.setAlignment(Pos.CENTER);
+        //txtStreet.textProperty().bind(settings.getStreet());
+        //toggle.selectedProperty().bind(observable);
+        //containerAppointmentRange.visibleProperty().bind(toogleAppointmentRange.selectedProperty().not());
+
+
     }
 
     private void changeContainerAppearance()
@@ -123,7 +201,7 @@ public class SearchViewController extends ResponsiveController
     {
         var userPrefs = entryFactory.createUserEntry(startDate.getValue(),
                 endDate.getValue(), timeStart.getValue(), timeEnd.getValue());
-        int duration = (int)sliderAppointmentDuration.getValue();
+        int duration = (int)sliderDurationMinutes.getValue();
         var openingHours = entryFactory.createOpeningHoursWithLunchBreak();
         int timeBefore = (int)sliderMarginBeforeAppointment.getValue();
         int timeAfter = (int)sliderMarginAfterAppointment.getValue();
