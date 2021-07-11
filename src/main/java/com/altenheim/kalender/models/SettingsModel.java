@@ -4,6 +4,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.Serializable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 
 public class SettingsModel implements Serializable
@@ -15,6 +18,19 @@ public class SettingsModel implements Serializable
     private String hwrScrapedFile = "userFiles/crawledCalendarFiles/1415872094.ics";
     private String userDirectory = "userfiles/";
     private String decryptedPassword = "";
+    private String pathToSaveBackupFiles = null;
+    public Long scrapingIntervalInMillis = (long) 2000;
+    private String scrappingURL; 
+    private SimpleStringProperty street = new SimpleStringProperty();
+    private SimpleStringProperty houseNumber = new SimpleStringProperty();
+    private SimpleStringProperty zipCode = new SimpleStringProperty();
+    private SimpleStringProperty city = new SimpleStringProperty();
+    private SimpleStringProperty mail = new SimpleStringProperty();
+    private SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
+    private SimpleStringProperty course = new SimpleStringProperty("Kurs");  
+    private SimpleStringProperty semester = new SimpleStringProperty("Sem.");
+    private BooleanProperty toolTip = new SimpleBooleanProperty(false);
+
 
     private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
     public Long scrapingIntervalInMinutes = (long) 60000;
@@ -46,9 +62,45 @@ public class SettingsModel implements Serializable
         propertyChange.firePropertyChange("scrapingIntervalInMillis", scrapingIntervalInMinutes, interval);
         scrapingIntervalInMinutes = interval;
     }
+
+
+    public void setCustomPathToSavedFiles(String pathToSaveBackupFiles) {this.pathToSaveBackupFiles=pathToSaveBackupFiles;}
+    public String getCustomPathToSavedFiles() {return pathToSaveBackupFiles;}
+
+    public void setCalendarParser(String scrappingURL) {this.scrappingURL = scrappingURL;}
+    public String getCalendarParser() {return scrappingURL;}
+    
+    public void setStreet (String street) {this.street.set(street);}
+    public SimpleStringProperty getStreet() {return street;}
+    
+    public void setHouseNumber (String houseNumber) {this.houseNumber.set(houseNumber);}
+    public SimpleStringProperty getHouseNumber() {return houseNumber;}
+    
+    public void setZipCode (String zipCode) {this.zipCode.set(zipCode);}
+    public SimpleStringProperty getZipCOde() {return zipCode;}
+
+    public void setCity (String city) {this.city.set(city);}
+    public SimpleStringProperty getCity() {return city;}
+    
+    public void setMail(String mail) { this.mail.set(mail);}
+    public SimpleStringProperty getMail() {return mail;}
+
+    public void setSpecialField (String specialField) {this.specialField.set(specialField);}
+    public SimpleStringProperty getSpecialField() {return specialField;}
+
+    public void setCourse (String course) {this.course.set(course);}
+    public SimpleStringProperty getCourse() {return course;}
+
+    public void setSemester (String semester) {this.semester.set(semester);}
+    public SimpleStringProperty getSemester() {return semester;}
+
+    public void setToolTip(BooleanProperty toolTip) {this.toolTip = toolTip;}
+    public BooleanProperty getToolTip() {return toolTip;}
+
     public long getEntrySystemMessageIntervalInMinutes() { return entrySystemMessageIntervalInMinutes;}
     public long getnotificationTimeBeforeEntryInMinutes() { return notificationTimeBeforeEntryInMinutes;}
     public void setnotificationTimeBeforeEntryInMinutes(long notificationTimeBeforeEntryInMinutes) {
         this.notificationTimeBeforeEntryInMinutes = notificationTimeBeforeEntryInMinutes;
     }
+
 }
