@@ -2,11 +2,15 @@ package com.altenheim.kalender.controller.viewController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+
 import com.altenheim.kalender.models.*;
 import java.io.IOException;
 import java.util.List;
@@ -29,12 +33,13 @@ public class SearchViewController extends ResponsiveController
     @FXML private CheckBox tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday;  
     @FXML private TimeField timeStart, timeEnd;    
     @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseMargin, toggleUseOpeningHours, toggleRecurringDate, 
-        toggleAutoSuggest, toogleUseNextAppointment;  
+        toggleAutoSuggest, toogleAppointmentRange;  
     @FXML private Slider sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment, sliderAppointmentDuration;
     @FXML private SplitMenuButton dropdownToDestinationOpeningOptions, dropdownInterval,dropdownStartAt, 
         dropdownToDestinationTravelTimeOption, dropdownVehicle;        
     @FXML private Spinner<Integer> sliderSuggestionCount;  
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
+    @FXML private HBox containerAppointmentRange;
 
     private int userStep = 1;
     private ISmartSearchController smartSearch;
@@ -45,6 +50,8 @@ public class SearchViewController extends ResponsiveController
     private SettingsModel settings;
     private IGoogleAPIController api;
     private IIOController iOController;
+
+  
 
     public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory,
                                 List<ContactModel> contacts, IContactFactory contactFactory,
@@ -67,6 +74,21 @@ public class SearchViewController extends ResponsiveController
         TableView<SuggestionsModel> tableSuggestions = createTable();
         stepThreeUserInput.getChildren().add(tableSuggestions);
     }
+
+    @FXML
+    private void toogleSwitchSelected(MouseEvent event)
+    {
+        var toggle = (ToggleSwitch)event.getSource();
+        boolean isConatinerShown = toggle.selectedProperty().get();
+        containerAppointmentRange.setVisible(isConatinerShown);
+    }
+
+    private void changeContainerAppearance()
+    {
+
+    }
+
+    
 
     @FXML
     private void updateUserStepView(ActionEvent event) 
