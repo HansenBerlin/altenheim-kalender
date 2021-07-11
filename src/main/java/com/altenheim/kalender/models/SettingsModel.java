@@ -36,6 +36,9 @@ public class SettingsModel implements Serializable
     public Long scrapingIntervalInMinutes = (long) 60000;
     private String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
 
+    private long entrySystemMessageIntervalInMinutes = 1;
+    private long notificationTimeBeforeEntryInMinutes = 15;
+
     private boolean useAdvancedFeatures = false; // je nachdem ob der pw hash erfolgreich geladen wird an oder aus, wegesuche und ÖZ dann ausgrauen
 
     public void addPropertyChangeListener(PropertyChangeListener listener)
@@ -59,6 +62,7 @@ public class SettingsModel implements Serializable
         propertyChange.firePropertyChange("scrapingIntervalInMillis", scrapingIntervalInMinutes, interval);
         scrapingIntervalInMinutes = interval;
     }
+
 
     public void setCustomPathToSavedFiles(String pathToSaveBackupFiles) {this.pathToSaveBackupFiles=pathToSaveBackupFiles;}
     public String getCustomPathToSavedFiles() {return pathToSaveBackupFiles;}
@@ -92,4 +96,11 @@ public class SettingsModel implements Serializable
 
     public void setToolTip(BooleanProperty toolTip) {this.toolTip = toolTip;}
     public BooleanProperty getToolTip() {return toolTip;}
+
+    public long getEntrySystemMessageIntervalInMinutes() { return entrySystemMessageIntervalInMinutes;}
+    public long getnotificationTimeBeforeEntryInMinutes() { return notificationTimeBeforeEntryInMinutes;}
+    public void setnotificationTimeBeforeEntryInMinutes(long notificationTimeBeforeEntryInMinutes) {
+        this.notificationTimeBeforeEntryInMinutes = notificationTimeBeforeEntryInMinutes;
+    }
+
 }
