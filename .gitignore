@@ -1,7 +1,5 @@
 #/target/
-/wikiUploads/
-.wikiUploads/
-.wikiUploads
+
 .classpath
 .factorypath
 .project    
