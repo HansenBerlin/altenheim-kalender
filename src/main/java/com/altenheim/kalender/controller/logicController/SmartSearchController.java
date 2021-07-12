@@ -1,13 +1,18 @@
 package com.altenheim.kalender.controller.logicController;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
+import com.altenheim.kalender.models.SerializableEntry;
 import com.calendarfx.model.Entry;
 
 
@@ -40,7 +45,7 @@ public class SmartSearchController implements ISmartSearchController
 		Liste mit den Zeiträumen für mögliche Einträge
 	*/
 	public ArrayList<Entry<?>> findPossibleTimeSlots(Entry<?> input, int duration, boolean[] weekdays, 
-		ArrayList<ArrayList<Entry<?>>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys, int intervalDays){
+	HashMap<DayOfWeek, List<SerializableEntry>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys, int intervalDays){
 		
 		var output = new ArrayList<Entry<?>>(); 
 		var startTime = input.getStartTime();
@@ -63,7 +68,7 @@ public class SmartSearchController implements ISmartSearchController
 				continue;
 			}
 				
-			for (var day : openingHours.get(i%7))
+			for (var day : openingHours.get(DayOfWeek.of((i%7)+1)))
 			{
 				var entry = createEntry(date, startTime, endTime);
 				if (endTime.isBefore(day.getStartTime()) || startTime.isAfter(day.getEndTime()))
