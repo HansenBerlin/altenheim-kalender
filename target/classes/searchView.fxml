@@ -27,7 +27,7 @@
    </columnConstraints>
    <rowConstraints>
       <RowConstraints fx:id="firstRow" maxHeight="80.0" minHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="430.0" minHeight="430.0" prefHeight="430.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="70.0" vgrow="SOMETIMES" />
    </rowConstraints>
@@ -52,7 +52,7 @@
             <Font size="24.0" />
          </font>
          <GridPane.margin>
-            <Insets bottom="20.0" top="30.0" />
+            <Insets bottom="20.0" top="40.0" />
          </GridPane.margin>
       </Text>
       <Text fx:id="txtFirstStep" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Daten" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -132,6 +132,7 @@
          <children>
             <Button fx:id="btnBack" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="ZURÜCK" />
             <Button fx:id="btnConfirm" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="WEITER" />
+            <Button fx:id="btnNextSuggestion" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="NEUER VORSCHLAG" />
          </children>
          <GridPane.margin>
             <Insets top="30.0" />

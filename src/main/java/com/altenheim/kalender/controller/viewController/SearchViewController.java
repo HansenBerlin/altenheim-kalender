@@ -15,8 +15,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.interfaces.*;
+import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -26,7 +29,7 @@ public class SearchViewController extends ResponsiveController
     @FXML private RowConstraints firstRow;
     @FXML private Text txtHeaderStep, txtFirstStep, txtSecondStep, txtThirdStep;
     @FXML private TextField tfAppointmentName, tfDurationMinutes, tfDurationHours;
-    @FXML private Button btnBack, btnConfirm;    
+    @FXML private Button btnBack, btnConfirm, btnNextSuggestion;    
     @FXML private VBox stepOneUserInput, stepTwoUserInput, stepThreeUserInput;
     @FXML private DatePicker startDate, endDate;    
     @FXML private CheckBox tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday;  
@@ -43,23 +46,25 @@ public class SearchViewController extends ResponsiveController
 
     private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening;
 
-    private int userStep = 1;
     private ISmartSearchController smartSearch;
     private IEntryFactory entryFactory;
-    private List<ContactModel> contacts;
     private IContactFactory contactFactory;
-    private List<MailTemplateModel> mailTemplates;
-    private SettingsModel settings;
     private IGoogleAPIController api;
     private IIOController iOController;
     private IAnimationController animationController;
     private IComboBoxFactory comboBoxFactory;
+    private IDateSuggestionController dateSuggestionController;
+    private List<ContactModel> contacts;
+    private List<MailTemplateModel> mailTemplates;
+    private SettingsModel settings;
+    private ArrayList<Entry<?>> currentSuggestions;
+    private int userStep = 1;
 
   
 
     public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<ContactModel> contacts, 
         IContactFactory contactFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api, 
-        IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory)
+        IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory, IDateSuggestionController dateSuggestionController)
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
@@ -71,6 +76,7 @@ public class SearchViewController extends ResponsiveController
         this.iOController = iOController;
         this.animationController = animationController;
         this.comboBoxFactory = comboBoxFactory;
+        this.dateSuggestionController = dateSuggestionController;
     }
 
     @FXML
@@ -197,14 +203,31 @@ public class SearchViewController extends ResponsiveController
             incrementor = 1;
         }
         else if (button.equals(btnBack) && userStep == 1)        
-            return;           
+            return;  
+        else if (button.equals(btnNextSuggestion) && userStep == 3)
+        {
+            getNextSuggestion();
+            return;  
+        }       
         
         int currentIndex = userStep - 1;
         int requestedIndex = userStep - 1 + incrementor;
         changeViewState(allSteps[currentIndex], allSteps[requestedIndex], images[currentIndex], images[requestedIndex]); 
         userStep += incrementor; 
         txtHeaderStep.setText(headings[currentIndex]);
+    }
 
+    private int suggestions = 1;
+    private void getNextSuggestion()
+    {
+        var startDateInput = startDate.getValue();
+        var startTimeInput = timeStart.getValue();
+        var currentCheck = LocalDateTime.of(startDateInput, startTimeInput);
+        int duration = (int)sliderDurationMinutes.getValue();
+        var newTime = currentCheck.plusMinutes(suggestions * duration);
+        var entry = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, newTime, duration);
+        suggestions++;        
+        SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime(), entry.getStartDate());
     }
 
     private void startRequest()
@@ -217,9 +240,8 @@ public class SearchViewController extends ResponsiveController
         int timeAfter = (int)sliderMarginAfterAppointment.getValue();
         boolean[] weekdays = { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),
                 tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(), tickSunday.isSelected() };
-
         int suggestionsCount = 100;             
-        int intervalDays = 1;
+        int intervalDays = 0;
         if (toggleRecurringDate.isDisabled() == false)
         {
             suggestionsCount = sliderRecurrences.valueProperty().intValue();
@@ -229,13 +251,9 @@ public class SearchViewController extends ResponsiveController
             suggestionsCount = 1;        
          
 
-        var suggestions = smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, openingHours, 
+        currentSuggestions = smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, openingHours, 
             timeBefore, timeAfter, suggestionsCount, intervalDays);
-        for (var entry : suggestions)
-        {
-            SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime(), entry.getStartDate());
-            //System.out.println(entry.getStartTime() + " " + entry.getEndTime());
-        }
+        
     }
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC)
