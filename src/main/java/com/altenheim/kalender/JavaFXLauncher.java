@@ -33,6 +33,8 @@ public class JavaFXLauncher extends Application
         primaryStage.setScene(scene);            
         primaryStage.setTitle("Smart Planner HWR");
         primaryStage.setMaximized(true);
+        primaryStage.setMinHeight(700);
+        primaryStage.setMinWidth(800);
 
         var initialSettingsLoader = objectFactory.getInitialSettingsLoader();
         initialSettingsLoader.initializeSettings();

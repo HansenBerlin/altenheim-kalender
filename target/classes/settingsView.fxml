@@ -14,25 +14,27 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<GridPane alignment="CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" />
+      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="30.0" />
    </columnConstraints>
    <rowConstraints>
+      <RowConstraints vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
    </rowConstraints>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
-      <VBox alignment="TOP_CENTER" spacing="20.0">
+      <VBox fx:id="topContainer" alignment="TOP_CENTER" spacing="15.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <children>
             <HBox alignment="TOP_CENTER" spacing="20.0">
                <children>
                   <MenuButton fx:id="btnMenuSpecialField" mnemonicParsing="false" onAction="#selectionScrapper" text="Auswahl FB">
-                    <items>
-                      <MenuItem fx:id="selection_AuswahlFB_IP" mnemonicParsing="false" onAction="#selectionScrapper" text="IP" />
-                      <MenuItem fx:id="selection_AuswahlFB_Bank" mnemonicParsing="false" onAction="#selectionScrapper" text="Bank" />
+                     <items>
+                        <MenuItem fx:id="selection_AuswahlFB_IP" mnemonicParsing="false" onAction="#selectionScrapper" text="IP" />
+                        <MenuItem fx:id="selection_AuswahlFB_Bank" mnemonicParsing="false" onAction="#selectionScrapper" text="Bank" />
                         <MenuItem fx:id="selection_AuswahlFB_Bauwesen" mnemonicParsing="false" onAction="#selectionScrapper" text="Bauwesen" />
                         <MenuItem fx:id="selection_AuswahlFB_Elektrotechnik" mnemonicParsing="false" onAction="#selectionScrapper" text="Elektrotechnik" />
                         <MenuItem fx:id="selection_AuswahlFB_FM" mnemonicParsing="false" onAction="#selectionScrapper" text="FM" />
@@ -47,7 +49,7 @@
                         <MenuItem fx:id="selection_AuswahlFB_Tourismus" mnemonicParsing="false" onAction="#selectionScrapper" text="Tourismus" />
                         <MenuItem fx:id="selection_AuswahlFB_Versicherung" mnemonicParsing="false" onAction="#selectionScrapper" text="Versicherung" />
                         <MenuItem fx:id="selection_AuswahlFB_WI" mnemonicParsing="false" onAction="#selectionScrapper" text="WI" />
-                    </items>
+                     </items>
                   </MenuButton>
                   <MenuButton fx:id="btnMenuCourse" mnemonicParsing="false" onAction="#selectionScrapper" text="Kurs">
                      <items>
@@ -69,16 +71,12 @@
                   </MenuButton>
                </children>
             </HBox>
-            <HBox alignment="TOP_CENTER" spacing="25.0">
+            <HBox alignment="TOP_CENTER" spacing="25.0" />
+            <Separator maxWidth="350.0" />
+            <HBox alignment="TOP_CENTER" spacing="30.0">
                <children>
-                  <Text fx:id="txtScrappingURL" strokeType="OUTSIDE" strokeWidth="0.0" text="scrappingURL" />
-               </children>
-            </HBox>
-            <Separator />
-            <HBox alignment="TOP_CENTER" spacing="20.0">
-               <children>
-                  <Button fx:id="btnImport" mnemonicParsing="false" text="Import" />
-                  <MenuButton fx:id="btnMenuImportColour" mnemonicParsing="false" text="Colour">
+                  <Button fx:id="btnImport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Import" />
+                  <MenuButton fx:id="btnMenuImportColour" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Colour">
                      <items>
                         <MenuItem mnemonicParsing="false" text="Farbe 1 " />
                         <MenuItem mnemonicParsing="false" text="Farbe 2" />
@@ -89,14 +87,16 @@
                   </MenuButton>
                </children>
             </HBox>
-            <HBox alignment="TOP_CENTER">
+            <HBox alignment="TOP_CENTER" spacing="30.0">
                <children>
-                  <Button fx:id="btnExport" mnemonicParsing="false" text="Export" />
+                  <Button fx:id="btnExport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Export" />
+                  <Button fx:id="btnGenerate" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Dummy" />
                </children>
             </HBox>
-            <Separator prefWidth="200.0" />
+            <Separator maxWidth="350.0" />
             <HBox alignment="TOP_CENTER">
                <children>
+<<<<<<< HEAD
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                      <children>
                         <Text fx:id="txtNotificationMin" strokeType="OUTSIDE" strokeWidth="0.0" text="Benachrichtigung vor dem Termin in Minuten" />
@@ -107,9 +107,32 @@
                               <MenuItem fx:id="thirty" mnemonicParsing="false" text="30 min." />
                               <MenuItem fx:id="sixty" mnemonicParsing="false" text="60 min." />
                           </items>
+=======
+                  <MenuButton fx:id="btnMenuCheckEvent" minWidth="230.0" mnemonicParsing="false" prefWidth="230.0" text="erster Button Steinm.">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="1 min. " />
+                        <MenuItem mnemonicParsing="false" text="15 min." />
+                        <MenuItem mnemonicParsing="false" text="30 min. " />
+                     </items>
+                  </MenuButton>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER">
+               <children>
+                  <VBox alignment="TOP_CENTER" spacing="20.0">
+                     <children>
+                        <Text fx:id="txtNotificationMin" strokeType="OUTSIDE" strokeWidth="0.0" text="Benachrichtigung vor dem Termin in Minuten" />
+                        <MenuButton fx:id="btnMenuNotificationMin" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Min.">
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="5 min." />
+                              <MenuItem mnemonicParsing="false" text="15 min." />
+                              <MenuItem mnemonicParsing="false" text="30 min." />
+                              <MenuItem mnemonicParsing="false" text="60 min." />
+                           </items>
+>>>>>>> parent of 7afeec6 (Revert "Merge pull request #214 from HansenBerlin/issue-27-terminvorschlage-automatisierte-erinnerungen")
                         </MenuButton>
                         <Text fx:id="txtNotificationHour" strokeType="OUTSIDE" strokeWidth="0.0" text="Benachrichtigung vor dem Termin in Stunden" />
-                        <MenuButton fx:id="btnMenuNotificationHour" mnemonicParsing="false" text="Stunden">
+                        <MenuButton fx:id="btnMenuNotificationHour" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Stunden">
                            <items>
                               <MenuItem fx:id="one" mnemonicParsing="false" text="1" />
                               <MenuItem fx:id="two" mnemonicParsing="false" text="2" />
@@ -121,7 +144,17 @@
                   </VBox>
                </children>
             </HBox>
-            <Separator prefWidth="200.0" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </VBox>
+      <VBox fx:id="bottomContainer" alignment="TOP_CENTER" spacing="10.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+         <children>
+            <Separator maxWidth="350.0" />
             <HBox alignment="TOP_CENTER" spacing="10.0">
                <children>
                   <VBox spacing="5.0">
@@ -152,12 +185,12 @@
                   </VBox>
                </children>
             </HBox>
-            <Separator prefWidth="200.0" />
+            <Separator maxWidth="350.0" />
             <CheckBox mnemonicParsing="false" text="Tool Tips" />
-            <Separator prefWidth="200.0" />
+            <Separator maxWidth="350.0" />
             <HBox alignment="TOP_CENTER">
                <children>
-                  <Button fx:id="btnSave" alignment="CENTER" mnemonicParsing="false" onAction="#saveSettings" style="-fx-background-color: ;" text="Speichern" />
+                  <Button fx:id="btnSave" alignment="CENTER" minWidth="300.0" mnemonicParsing="false" onAction="#saveSettings" prefWidth="300.0" style="-fx-background-color: ;" text="Speichern" />
                </children>
             </HBox>
          </children>
