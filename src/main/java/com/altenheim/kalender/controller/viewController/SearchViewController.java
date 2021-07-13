@@ -14,8 +14,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.model.Entry;
@@ -56,7 +58,7 @@ public class SearchViewController extends ResponsiveController
     private List<ContactModel> contacts;
     private List<MailTemplateModel> mailTemplates;
     private SettingsModel settings;
-    private ArrayList<Entry<?>> currentSuggestions;
+    private ArrayList<SerializableEntry> currentSuggestions;
     private int userStep = 1;
 
   
@@ -234,7 +236,13 @@ public class SearchViewController extends ResponsiveController
         var userPrefs = entryFactory.createUserEntry(startDate.getValue(),
                 endDate.getValue(), timeStart.getValue(), timeEnd.getValue());
         int duration = (int)sliderDurationMinutes.getValue();
-        var openingHours = entryFactory.createOpeningHoursWithLunchBreak();
+        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
+        try {
+            openingHours = api.getOpeningHours(dropdownEndAtDest.getEditor().getText());
+        } catch (IOException | InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         int timeBefore = (int)sliderMarginBeforeAppointment.getValue();
         int timeAfter = (int)sliderMarginAfterAppointment.getValue();
         boolean[] weekdays = { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),

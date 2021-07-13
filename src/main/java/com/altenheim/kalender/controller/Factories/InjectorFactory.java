@@ -39,7 +39,6 @@ public class InjectorFactory
         IDateSuggestionController dateSuggestionController = new DateSuggestionController();
         IImportController importCt = new ImportController(settings);
         IContactFactory contactFactory = new ContactFactory(contacts);
-        IMailCreationController mailCreationCt = new MailCreationController(mailTemplates); 
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
         IExportController exportCt = new ExportController(settings, calendarEntriesModel);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt);
