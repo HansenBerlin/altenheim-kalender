@@ -9,12 +9,9 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
 import com.altenheim.kalender.models.SerializableEntry;
-import com.calendarfx.model.Entry;
-
 
 public class SmartSearchController implements ISmartSearchController 
 {
@@ -44,10 +41,10 @@ public class SmartSearchController implements ISmartSearchController
 	Die Methode gibt zurück:
 		Liste mit den Zeiträumen für mögliche Einträge
 	*/
-	public ArrayList<Entry<?>> findPossibleTimeSlots(Entry<?> input, int duration, boolean[] weekdays, 
+	public ArrayList<SerializableEntry> findPossibleTimeSlots(SerializableEntry input, int duration, boolean[] weekdays, 
 	HashMap<DayOfWeek, List<SerializableEntry>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys, int intervalDays){
 		
-		var output = new ArrayList<Entry<?>>(); 
+		var output = new ArrayList<SerializableEntry>(); 
 		var startTime = input.getStartTime();
 		var endTime = input.getEndTime();
 		var intervalNumber = 1;
@@ -94,10 +91,10 @@ public class SmartSearchController implements ISmartSearchController
 		return output;
 	}
 
-	public ArrayList<Entry<?>> findAvailableTimeSlot(Entry<?> input, int duration, int before, int after) {			
+	public ArrayList<SerializableEntry> findAvailableTimeSlot(SerializableEntry input, int duration, int before, int after) {			
 		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
 			input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values();		
-		var output = new ArrayList<Entry<?>>();
+		var output = new ArrayList<SerializableEntry>();
 		long start = input.getStartMillis() + before * 60000;
 		long end = input.getEndMillis() - after * 60000; 
 		long userStart = start;
@@ -126,9 +123,9 @@ public class SmartSearchController implements ISmartSearchController
 		return output;
 	}
 
-	private Entry<?> createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end)
+	private SerializableEntry createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end)
 	{
-		var entry = new Entry();				
+		var entry = new SerializableEntry();				
 		entry.changeStartTime(start);
 		entry.changeEndTime(end);
 		entry.changeStartDate(startAndEnd);
@@ -136,9 +133,9 @@ public class SmartSearchController implements ISmartSearchController
 		return entry;
 	}
 
-	private Entry<?> createEntryFromMillis(long start, long end)
+	private SerializableEntry createEntryFromMillis(long start, long end)
 	{
-		var entry = new Entry();
+		var entry = new SerializableEntry();
 		var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
 		var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());		
 		entry.changeStartTime(dateStart.toLocalTime());
@@ -148,13 +145,13 @@ public class SmartSearchController implements ISmartSearchController
 		return entry;
 	}
 
-	private void reduceListLenght(ArrayList<Entry<?>> list, int maxNumberOfEntrys) {
+	private void reduceListLenght(ArrayList<SerializableEntry> list, int maxNumberOfEntrys) {
 		while (list.size()>maxNumberOfEntrys) {
 			list.remove(list.size()-1);
 		}
 	}
 	
-	private boolean checkForDuplicates(ArrayList<Entry<?>> currentEntries)
+	private boolean checkForDuplicates(ArrayList<SerializableEntry> currentEntries)
 	{
 		if (currentEntries.size() < 2)
 			return false;
@@ -162,8 +159,8 @@ public class SmartSearchController implements ISmartSearchController
 		== currentEntries.get(currentEntries.size()-1).getStartMillis());
 	}	
 
-	public ArrayList<Entry<?>> findPossibleTimeSlots(Entry<?> input, int duration, boolean[] weekdays,
-													 ArrayList<ArrayList<Entry<?>>> openingHours,
+	public ArrayList<SerializableEntry> findPossibleTimeSlots(SerializableEntry input, int duration, boolean[] weekdays,
+													 ArrayList<ArrayList<SerializableEntry>> openingHours,
 													 int timeBefore, int timeAfter, int maxNumberOfReturnEntrys) {
 		System.out.println("Test");
 		return null;

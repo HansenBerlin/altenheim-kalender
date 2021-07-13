@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import com.altenheim.kalender.controller.logicController.SmartSearchController;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.models.SerializableEntry;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import org.junit.jupiter.api.Test;
@@ -181,9 +182,9 @@ public class SmartSearchControllerTest
         assertEquals(1, result.size());
     }
 
-    public HashMap<DayOfWeek, List<Entry<?>>> createIrregularOpeningHours()
+    public HashMap<DayOfWeek, List<SerializableEntry>> createIrregularOpeningHours()
     {
-        var openingHours = new HashMap<DayOfWeek, List<Entry<?>>>();
+        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
         var startTime = LocalTime.of(8, 0);
         var endTimeAlt = LocalTime.of(12, 0);
         var startTimeAlt = LocalTime.of(14, 0);
@@ -191,15 +192,15 @@ public class SmartSearchControllerTest
 
         for (var day : DayOfWeek.values()) 
         {
-            var entrys = new ArrayList<Entry<?>>();
+            var entrys = new ArrayList<SerializableEntry>();
             // Sonntags keine Einträge
             if (day.getValue() == 7)
                 continue;
             // 2 Einträge (also Mittagspause von 12-14h) an Dienstagen, Donnerstag und Samstag
             if (day.getValue() %2 == 0)
             {
-                var entryOne = new Entry();
-                var entryTwo = new Entry();
+                var entryOne = new SerializableEntry();
+                var entryTwo = new SerializableEntry();
                 entryOne.changeStartTime(startTime);
                 entryOne.changeEndTime(endTimeAlt);
                 entryTwo.changeStartTime(startTimeAlt);
@@ -210,7 +211,7 @@ public class SmartSearchControllerTest
             // Montag, Mittwoch und Freitag Öffnung von 8-20h
             else
             {
-                var entryOne = new Entry();
+                var entryOne = new SerializableEntry();
                 entryOne.changeStartTime(startTime);
                 entryOne.changeEndTime(endTime);               
                 entrys.add(entryOne);
@@ -220,9 +221,10 @@ public class SmartSearchControllerTest
         return openingHours;        
     }     
 
-    private Entry<?> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
+    private SerializableEntry createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
     {
-        var entryUser = new Entry("User Preference");
+        var entryUser = new SerializableEntry();
+        entryUser.setTitle("User Preference");
         var startDate = LocalDate.of(2021, 1, startDay);  
         var endDate = LocalDate.of(2021, 1, endDay);  
         entryUser.changeStartDate(startDate);
@@ -408,9 +410,10 @@ public class SmartSearchControllerTest
 
    ///////////////////////////////////////////////////////////////////////////
 
-    private Entry<?> createEntryDummy(int startTime, int EndTime, int startDay, int startMonth, int endDay, int endMonth)
+    private SerializableEntry createEntryDummy(int startTime, int EndTime, int startDay, int startMonth, int endDay, int endMonth)
     {
-        var entryUser = new Entry("User Preference");
+        var entryUser = new SerializableEntry();
+        entryUser.setTitle("User Preference");
         var startDate = LocalDate.of(2021, startMonth, startDay);  
         var endDate = LocalDate.of(2021, endMonth, endDay);  
         entryUser.changeStartDate(startDate);
@@ -420,20 +423,20 @@ public class SmartSearchControllerTest
         return entryUser;
     }
 
-    private  ArrayList<ArrayList<Entry<?>>> createOpeningHours() {
-        ArrayList<ArrayList<Entry<?>>> openingHours = new ArrayList<ArrayList<Entry<?>>>();
+    private  ArrayList<ArrayList<SerializableEntry>> createOpeningHours() {
+        ArrayList<ArrayList<SerializableEntry>> openingHours = new ArrayList<ArrayList<SerializableEntry>>();
         for (int i = 0; i < 7; i++) {
-            var day1 = new ArrayList<Entry<?>>();
+            var day1 = new ArrayList<SerializableEntry>();
             day1.add(createEntryDummy(10, 20, 1, 1));
             openingHours.add(day1);
         }
         return openingHours;
     }
 
-    private  ArrayList<ArrayList<Entry<?>>> createOpeningHoursWithLunchBreak() {
-        ArrayList<ArrayList<Entry<?>>> openingHours = new ArrayList<ArrayList<Entry<?>>>();
+    private  ArrayList<ArrayList<SerializableEntry>> createOpeningHoursWithLunchBreak() {
+        ArrayList<ArrayList<SerializableEntry>> openingHours = new ArrayList<ArrayList<SerializableEntry>>();
         for (int i = 0; i < 6; i++) {
-            var day1 = new ArrayList<Entry<?>>();
+            var day1 = new ArrayList<SerializableEntry>();
             if (i%2==0) {
                 day1.add(createEntryDummy(10, 13, 1, 1));
                 day1.add(createEntryDummy(16, 22, 1, 1));
@@ -443,7 +446,7 @@ public class SmartSearchControllerTest
             
             openingHours.add(day1);
         }
-        openingHours.add(new ArrayList<Entry<?>>());
+        openingHours.add(new ArrayList<SerializableEntry>());
         return openingHours;
     }
 }
