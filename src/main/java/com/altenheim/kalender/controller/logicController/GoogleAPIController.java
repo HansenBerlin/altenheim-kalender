@@ -37,7 +37,7 @@ public class GoogleAPIController implements IGoogleAPIController {
             var id = jsonParser.parseJsonForLocationId(jsonResponse);
             var jsonResponseDetail = makeHttpRequest(String.format(OPENINGHOURSQUERY, id, apiKey));
             return jsonParser.parseJsonForOpeningHours(jsonResponseDetail);
-            
+
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             // ungültige Ortsangabe
@@ -49,6 +49,7 @@ public class GoogleAPIController implements IGoogleAPIController {
     }
 
     public int[] searchForDestinationDistance(String startAt, String destination) {
+
         var security = new SecureAesController();
         var apiKey = security.decrypt(settings.getDecryptedPasswordHash(), "e]<J3Grct{~'HJv-",
                 SettingsModel.APICYPHERTEXT);
@@ -58,6 +59,52 @@ public class GoogleAPIController implements IGoogleAPIController {
         var end = destination.replaceAll(" ", "%20");
         try {
             var jsonBody = makeHttpRequest(String.format(FINDDESTINATIONSQUERY, start, end, apiKey));
+            var json = new JSONObject(jsonBody);
+            var elements = json.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
+            returnValues[0] = elements.getJSONObject("duration").getInt("value");
+            returnValues[1] = elements.getJSONObject("distance").getInt("value");
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            returnValues[0] = -1;
+            returnValues[1] = -1;
+        } finally {
+            apiKey = null;
+            security = null;
+        }
+        return returnValues;
+    }
+
+    public int[] searchForDestinationDistance(String origin, String destination, String travelMode) {
+        var security = new SecureAesController();
+        var apiKey = security.decrypt(settings.getDecryptedPasswordHash(), "e]<J3Grct{~'HJv-",
+                SettingsModel.APICYPHERTEXT);
+
+        int[] returnValues = new int[2];
+        var start = origin.replaceAll(" ", "%20");
+        var end = destination.replaceAll(" ", "%20");
+
+        String furtherAttributes = "&mode=";
+        switch (travelMode) {
+            case "Auto":
+                furtherAttributes += "driving";
+                break;
+            case "Öffis":
+                furtherAttributes += "transit";
+                break;
+            case "Fahrrad":
+                furtherAttributes += "bicycling";
+                break;
+            case "Fußgänger":
+                furtherAttributes += "walking";
+                break;
+            default:
+                furtherAttributes = "";
+                break;
+        }
+
+        try {
+            var jsonBody = makeHttpRequest(
+                    String.format(FINDDESTINATIONSQUERY, start, end, apiKey) + furtherAttributes);
             var json = new JSONObject(jsonBody);
             var elements = json.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
             returnValues[0] = elements.getJSONObject("duration").getInt("value");
