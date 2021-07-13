@@ -28,8 +28,9 @@ public class InjectorFactory
         var mailTemplates = new ArrayList<MailTemplateModel>();
         var contacts = new ArrayList<ContactModel>();
         var settings = new SettingsModel();
+        var jsonParser = new JsonParser();
 
-        IGoogleAPIController apiCt = new GoogleAPIController(settings);
+        IGoogleAPIController apiCt = new GoogleAPIController(settings, jsonParser);
         IMailCreationController mailCreationCt = new MailCreationController(mailTemplates); 
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
         IContactFactory contactFactory = new ContactFactory(contacts);
