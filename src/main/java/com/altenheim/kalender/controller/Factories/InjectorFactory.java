@@ -28,15 +28,17 @@ public class InjectorFactory
         var mailTemplates = new ArrayList<MailTemplateModel>();
         var contacts = new ArrayList<ContactModel>();
         var settings = new SettingsModel();
+        var jsonParser = new JsonParser();
 
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
         IAnimationController animationController = new AnimationController();
         IPopupViewController popupViewController = new PopupViewsController();
+        IGoogleAPIController apiCt = new GoogleAPIController(settings, jsonParser);
+        IMailCreationController mailCreationCt = new MailCreationController(mailTemplates);       
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
         IDateSuggestionController dateSuggestionController = new DateSuggestionController();
         IImportController importCt = new ImportController(settings);
         IContactFactory contactFactory = new ContactFactory(contacts);
-        IGoogleAPIController apiCt = new GoogleAPIController(settings);
         IMailCreationController mailCreationCt = new MailCreationController(mailTemplates); 
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
         IExportController exportCt = new ExportController(settings, calendarEntriesModel);
