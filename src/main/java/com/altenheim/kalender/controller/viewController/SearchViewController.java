@@ -239,6 +239,7 @@ public class SearchViewController extends ResponsiveController
         int timeAfter = (int)sliderMarginAfterAppointment.getValue();
         boolean[] weekdays = { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),
                 tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(), tickSunday.isSelected() };
+
         int suggestionsCount = 100;             
         int intervalDays = 0;
         if (toggleRecurringDate.isDisabled() == false)
@@ -247,12 +248,11 @@ public class SearchViewController extends ResponsiveController
             intervalDays = sliderRecurrences.valueProperty().intValue();
         }
         else if (toggleRecurringDate.isDisabled() && toggleAddAutomatically.isDisabled() == false)
-            suggestionsCount = 1;        
-         
+            suggestionsCount = 1; 
 
         currentSuggestions = smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, openingHours, 
             timeBefore, timeAfter, suggestionsCount, intervalDays);
-        
+
     }
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC)

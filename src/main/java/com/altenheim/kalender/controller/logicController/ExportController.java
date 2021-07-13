@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.util.GregorianCalendar;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.IExportController;
+import com.altenheim.kalender.models.SerializableEntry;
 import com.altenheim.kalender.models.SettingsModel;
-import com.calendarfx.model.Entry;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.DateTime;
@@ -40,7 +40,7 @@ public class ExportController implements IExportController
         for(int i = 0; i < entries.size(); i++)
         {
             var entry = entries.get(i);
-            iCalCalendar.getComponents().add(createIcalEntryFromCalFXEntry(entry));
+            iCalCalendar.getComponents().add(createIcalEntryFromCalFXEntry((SerializableEntry) entry));
         }
         var outputter = new CalendarOutputter();
         outputter.output(iCalCalendar, fout);
@@ -66,7 +66,7 @@ public class ExportController implements IExportController
         return iCalCalendar;
     }
 
-    private VEvent createIcalEntryFromCalFXEntry(Entry<?> entry)
+    private VEvent createIcalEntryFromCalFXEntry(SerializableEntry entry)
     {
         var startTime = GregorianCalendar.from(entry.getStartAsZonedDateTime()).getTime();
         var endTime = GregorianCalendar.from(entry.getEndAsZonedDateTime()).getTime();
@@ -80,7 +80,7 @@ public class ExportController implements IExportController
         return event;
     }
 
-    public void exportEntryAsFile(Entry<?> ent) throws ValidationException, IOException
+    public void exportEntryAsFile(SerializableEntry ent) throws ValidationException, IOException
     {
         var iCalCalendar = initICalCalendar();
         iCalCalendar.getComponents().add(createIcalEntryFromCalFXEntry(ent));

@@ -24,14 +24,14 @@ public class CalendarEntriesModel implements ICalendarEntriesModel {
         return calendars;
     }
 
-    public List<Entry<?>> getSpecificRange(LocalDate startDate, LocalDate endDate) {
+    public List<SerializableEntry> getSpecificRange(LocalDate startDate, LocalDate endDate) {
         var calendar = calendars.get(0);
         var result = calendar.findEntries(startDate, endDate, ZoneId.systemDefault());
         var allEntries = result.values();
-        var returnValue = new ArrayList<Entry<?>>();
+        var returnValue = new ArrayList<SerializableEntry>();
         for (var entries : allEntries) {
             for (var entry : entries) {
-                returnValue.add((Entry<?>) entry);
+                returnValue.add((SerializableEntry) entry);
             }
         }
         return returnValue;
@@ -45,8 +45,8 @@ public class CalendarEntriesModel implements ICalendarEntriesModel {
         return calendars.get(index);
     }
 
-    public List<Entry<?>> getEntrysWithStartInSpecificRange(LocalDateTime start, LocalDateTime end) {
-        var returnValue = new ArrayList<Entry<?>>();
+    public List<SerializableEntry> getEntrysWithStartInSpecificRange(LocalDateTime start, LocalDateTime end) {
+        var returnValue = new ArrayList<SerializableEntry>();
         var allEntries = new ArrayList<List<Entry<?>>>();
         for (Calendar calendar : calendars) {
             allEntries.addAll(calendar.findEntries(start.toLocalDate(), end.toLocalDate(), ZoneId.systemDefault()).values());
@@ -54,7 +54,7 @@ public class CalendarEntriesModel implements ICalendarEntriesModel {
         for (var entries : allEntries)
             for (var entry : entries)
                 if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1)) && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1)))
-                    returnValue.add((Entry<?>) entry);
+                    returnValue.add((SerializableEntry) entry);
         return returnValue;
     }
 }
