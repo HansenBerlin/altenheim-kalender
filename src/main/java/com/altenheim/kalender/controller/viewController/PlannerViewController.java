@@ -5,6 +5,8 @@ import com.calendarfx.view.CalendarView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 import java.io.IOException;
 
@@ -16,17 +18,15 @@ public class PlannerViewController extends ResponsiveController
     private IEntryFactory entryFactory;
     private IImportController importController;
     private IExportController exportController;
-    private IPopupViewController popupViewController;
 
-    public PlannerViewController(ICalendarEntriesModel allEntries, IEntryFactory entryFactory, IImportController importController, 
-        IExportController exportController, CalendarView custumCalendar, IPopupViewController popupViewController)
+    public PlannerViewController(ICalendarEntriesModel allEntries, IEntryFactory entryFactory, 
+        IImportController importController, IExportController exportController, CalendarView custumCalendar)
     {
         this.allEntries = allEntries;
         this.entryFactory = entryFactory;
         this.importController = importController;
         this.exportController = exportController;
         this.customCalendar = custumCalendar;
-        this.popupViewController = popupViewController;
     }
 
     @FXML
@@ -36,11 +36,24 @@ public class PlannerViewController extends ResponsiveController
         var stage = button.getScene().getWindow();
         if (button.equals(btnImport))
         {
-            popupViewController.importDialog(importController, entryFactory, stage);
+            var filePicker = new FileChooser();
+            var file = filePicker.showOpenDialog(stage);
+            if (file == null)
+                return;
+            var importedCalendar = importController.importFile(file.getAbsolutePath());
+            entryFactory.addCalendarToView(importedCalendar);
         }
         else
         {
-            popupViewController.exportDialog(exportController, allEntries, stage);
+            var calendars = allEntries.getAllCalendars();
+            var directoryChooser = new DirectoryChooser();
+            var path = directoryChooser.showDialog(stage);
+            if (path == null)
+                return;
+            for (var calendar: calendars)
+            {
+                exportController.exportCalendarAsFile(calendar, path.getAbsolutePath());
+            }
         }
     }
     
@@ -54,7 +67,7 @@ public class PlannerViewController extends ResponsiveController
         childContainer.add(this.customCalendar, 0, 0, 1, 1);
     }
 
-    public void changeContentPosition(double width, double height) 
+    public void changeContentPosition() 
     {
     }    
 }

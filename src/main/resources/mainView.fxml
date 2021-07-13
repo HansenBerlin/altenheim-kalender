@@ -18,29 +18,25 @@
       <ColumnConstraints hgrow="SOMETIMES" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints fx:id="topRow" maxHeight="100.0" minHeight="50.0" prefHeight="100.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Button fx:id="btnLogo" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="70.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="100.0" prefWidth="240.0" style="-fx-font-size: 20;" text="SMART PLANNER" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Button fx:id="btnLogo" alignment="CENTER" contentDisplay="CENTER" minWidth="70.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="100.0" prefWidth="240.0" style="-fx-font-size: 20;" text="SMART PLANNER" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <HBox fx:id="topButtonRow" alignment="TOP_CENTER" minHeight="50.0" prefHeight="100.0" GridPane.columnIndex="1">
+      <HBox fx:id="topButtonRow" prefHeight="100.0" GridPane.columnIndex="1">
          <children>
-            <VBox alignment="CENTER">
-               <children>
-                  <Text fx:id="txtBreadcrumb" cache="true" cacheHint="SPEED" fill="#2c2c2c" strokeType="OUTSIDE" strokeWidth="0.0" text="&gt; Terminübersicht">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Text>
-               </children>
+            <Text fx:id="txtBreadcrumb" cache="true" cacheHint="SPEED" fill="#2c2c2c" strokeType="OUTSIDE" strokeWidth="0.0" text="&gt; Terminübersicht">
+               <font>
+                  <Font size="14.0" />
+               </font>
                <HBox.margin>
-                  <Insets left="20.0" />
+                  <Insets left="20.0" top="40.0" />
                </HBox.margin>
-            </VBox>
+            </Text>
             <HBox alignment="CENTER_RIGHT" spacing="15.0" HBox.hgrow="ALWAYS">
                <children>
                   <Button fx:id="btnAddAppointment" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
@@ -54,7 +50,7 @@
             </HBox>
          </children>
       </HBox>
-      <VBox fx:id="vboxLeftPane" cache="true" cacheHint="SPEED" maxWidth="240.0" minWidth="70.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+      <VBox fx:id="vboxLeftPane" cache="true" cacheHint="SPEED" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <children>
             <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
                <children>

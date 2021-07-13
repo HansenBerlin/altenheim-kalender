@@ -6,7 +6,8 @@ import javafx.scene.layout.GridPane;
 public abstract class ResponsiveController 
 {
     protected GridPane childContainer;
-    abstract void changeContentPosition(double width, double height);    
+
+    abstract void changeContentPosition();  
 
     protected void setChildContainer(GridPane childContainer)
     {

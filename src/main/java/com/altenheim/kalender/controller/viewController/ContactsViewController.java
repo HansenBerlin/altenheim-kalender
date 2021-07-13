@@ -22,7 +22,7 @@ public class ContactsViewController extends ResponsiveController
         this.api = api;
     }
 
-    public void changeContentPosition(double width, double height) 
+    public void changeContentPosition() 
     {
         
     }    

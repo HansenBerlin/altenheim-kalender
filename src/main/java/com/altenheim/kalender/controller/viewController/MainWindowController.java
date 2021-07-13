@@ -1,6 +1,5 @@
 package com.altenheim.kalender.controller.viewController;
 
-import com.altenheim.kalender.interfaces.IAnimationController;
 import com.altenheim.kalender.interfaces.IViewRootsModel;
 import com.altenheim.kalender.resourceClasses.StylePresets;
 import java.io.FileNotFoundException;
@@ -19,7 +18,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -28,15 +26,13 @@ import jfxtras.styles.jmetro.Style;
 
 public class MainWindowController extends ResponsiveController
 {
-    private IViewRootsModel allViewsInformation;
-    private IAnimationController animationController;    
     private Stage stage;
+    private IViewRootsModel allViewsInformation;
     private GuiUpdateController guiSetup;
     private Map<String, Pair<Button, Pane>> allButtonsWithBackgrounds;
     private boolean initilizationDone;
     private int currentView = 0;
     private int currentMenuWidth = 240;
-    private int topMenuHeight = 100;
     private Button currentlyActive;
     private boolean darkModeActive = false;
     private Background currentSecondaryColor;
@@ -47,7 +43,6 @@ public class MainWindowController extends ResponsiveController
     @FXML private GridPane rootContainer, childContainer, topMenu;
     @FXML private AnchorPane viewsRoot;
     @FXML private ColumnConstraints columnLeftMenu;
-    @FXML private RowConstraints topRow;
     @FXML private Text txtVersion, txtBreadcrumb;
     @FXML private VBox vboxLeftPane;   
     @FXML private HBox topButtonRow;
@@ -58,7 +53,6 @@ public class MainWindowController extends ResponsiveController
         this.stage = stage;
         this.allViewsInformation = allViewsInformation;
         this.guiSetup = guiSetup;  
-        this.animationController = new AnimationController();
     }
 
 
@@ -182,8 +176,8 @@ public class MainWindowController extends ResponsiveController
     {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
         {
-            changeContentPosition(stage.getWidth(), stage.getHeight());  
-            updateWindowSize();                       
+            changeContentPosition();  
+            updateWindowSize();            
         };
         stage.widthProperty().addListener(stageSizeListener);
         stage.heightProperty().addListener(stageSizeListener);         
@@ -191,22 +185,18 @@ public class MainWindowController extends ResponsiveController
 
     private void updateWindowSize()
     {
-        double width = stage.getWidth() - currentMenuWidth;
-        double height = stage.getHeight() - topMenuHeight; 
-     
-        viewsRoot.setMinSize(width, height);
-        topButtonRow.setMinWidth(width);
-        allViewsInformation.getAllViews()[currentView].setMinSize(width, height);
-        allViewsInformation.getAllViews()[currentView].setPrefSize(width, height);
-        allViewsInformation.getAllViews()[currentView].setMaxSize(width, height);
-
-        allViewsInformation.getAllViewControllers()[currentView].changeContentPosition(width, height);
+        double setWidth = stage.getWidth() - currentMenuWidth;
+        double setHeight = stage.getHeight();          
+        viewsRoot.setMinSize(setWidth, setHeight);
+        topButtonRow.setMinWidth(setWidth);
+        allViewsInformation.getAllViews()[currentView].setMinSize(setWidth, setHeight);
+        allViewsInformation.getAllViewControllers()[currentView].changeContentPosition();
     }
 
 
-    final void changeContentPosition(double width, double height) 
+    final void changeContentPosition() 
     {
-        if (width < 1000)
+        if (stage.getWidth() < 1000)
         {
             currentMenuWidth = 70;
             for (String buttonName : allButtonsWithBackgrounds.keySet())             
@@ -221,17 +211,10 @@ public class MainWindowController extends ResponsiveController
                 allButtonsWithBackgrounds.get(buttonName).getKey().setText(buttonName);             
             btnLogo.setText("SMARTPLANNER");  
             txtVersion.setText("Version 0.1.2; HWR Gruppe C"); 
-        }  
-        if (height < 800) 
-            topMenuHeight = 50;        
-        else      
-            topMenuHeight = 100;              
+        }      
 
         columnLeftMenu.setMinWidth(currentMenuWidth);
         columnLeftMenu.setPrefWidth(currentMenuWidth);
-        columnLeftMenu.setMaxWidth(currentMenuWidth);         
-        topRow.setMinHeight(topMenuHeight);
-        topRow.setMaxHeight(topMenuHeight);
-        topRow.setPrefHeight(topMenuHeight);
+        columnLeftMenu.setMaxWidth(currentMenuWidth);        
     }   
 }

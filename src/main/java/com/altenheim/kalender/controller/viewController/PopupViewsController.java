@@ -1,18 +1,14 @@
 package com.altenheim.kalender.controller.viewController;
 
-import com.altenheim.kalender.interfaces.*;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
 import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.Style;
 
-public class PopupViewsController implements IPopupViewController
+public class PopupViewsController
 {
     public boolean isRevalidationWanted()
     {
@@ -82,35 +78,5 @@ public class PopupViewsController implements IPopupViewController
         dialog.showAndWait();
 
         return password.getText();
-    }
-
-    public void importDialog(IImportController importController, IEntryFactory entryFactory, Window stage)
-    {        
-        var filePicker = new FileChooser();
-        var file = filePicker.showOpenDialog(stage);
-        if (file == null)
-            return;
-        var importedCalendar = importController.importFile(file.getAbsolutePath());
-        entryFactory.addCalendarToView(importedCalendar);      
-    }
-
-    public void exportDialog(IExportController exportController, ICalendarEntriesModel allEntries, Window stage)
-    {
-        var calendars = allEntries.getAllCalendars();
-        var directoryChooser = new DirectoryChooser();
-        var path = directoryChooser.showDialog(stage);
-        if (path == null)
-            return;
-        for (var calendar: calendars)
-        {
-            try 
-            {
-                exportController.exportCalendarAsFile(calendar, path.getAbsolutePath());                
-            } 
-            catch (Exception e) 
-            {
-                e.printStackTrace();
-            }
-        }
     }
 }

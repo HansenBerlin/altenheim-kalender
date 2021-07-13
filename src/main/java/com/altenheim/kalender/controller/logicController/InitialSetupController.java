@@ -1,18 +1,22 @@
 package com.altenheim.kalender.controller.logicController;
 
-
-import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.controller.logicController.SecureAesController;
+import com.altenheim.kalender.controller.viewController.PopupViewsController;
+import com.altenheim.kalender.interfaces.IIOController;
+import com.altenheim.kalender.interfaces.ISystemNotificationsController;
+import com.altenheim.kalender.interfaces.IWebsiteScraperController;
 import com.altenheim.kalender.models.SettingsModel;
+
 
 public class InitialSetupController
 {
     private SettingsModel settings;
     private IIOController ioController;
-    private IPopupViewController popup;
+    private PopupViewsController popup;
     private IWebsiteScraperController websiteScraper;
     private ISystemNotificationsController systemNotifications;
 
-    public InitialSetupController(SettingsModel settings, IIOController ioController, IPopupViewController popup,
+    public InitialSetupController(SettingsModel settings, IIOController ioController, PopupViewsController popup,
                                   IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications)
     {
         this.settings = settings;

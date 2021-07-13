@@ -31,6 +31,7 @@ public class SettingsModel implements Serializable
     private SimpleStringProperty semester = new SimpleStringProperty("Sem.");
     private BooleanProperty toolTip = new SimpleBooleanProperty(false);
 
+
     private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
     public Long scrapingIntervalInMinutes = (long) 60000;
     private String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";

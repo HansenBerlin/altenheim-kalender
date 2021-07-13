@@ -5,9 +5,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -20,34 +21,35 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.ToggleSwitch?>
 
-<GridPane alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
       <ColumnConstraints hgrow="SOMETIMES" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints fx:id="firstRow" maxHeight="80.0" minHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="430.0" minHeight="430.0" prefHeight="430.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="70.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="150.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="100.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="430.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="100.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Circle id="customCircleActive" fx:id="imgFirstStep" fill="#60db8b" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Circle id="customCircleActive" fx:id="imgFirstStep" fill="#60db8b" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets right="200.0" />
          </GridPane.margin>
       </Circle>
-      <Circle id="customCircleInactive" fx:id="imgSecondStep" fill="#f2f2f200" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Circle id="customCircleInactive" fx:id="imgSecondStep" fill="#f2f2f200" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
       </Circle>
-      <Circle id="customCircleInactive" fx:id="imgThirdStep" fill="#f0f0f000" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Circle id="customCircleInactive" fx:id="imgThirdStep" fill="#f0f0f000" radius="40.0" stroke="#c8c8d2" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets left="200.0" />
          </GridPane.margin>
       </Circle>
-      <Text fx:id="txtHeaderStep" fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Deine Terminwünsche" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Text fx:id="txtHeaderStep" fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Basisinformationen" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
@@ -55,22 +57,22 @@
             <Insets bottom="20.0" top="40.0" />
          </GridPane.margin>
       </Text>
-      <Text fx:id="txtFirstStep" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Daten" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Text fx:id="txtFirstStep" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Daten" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets right="200.0" />
          </GridPane.margin>
       </Text>
-      <Text fx:id="txtSecondStep" strokeType="OUTSIDE" strokeWidth="0.0" text="Optionen" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Text fx:id="txtSecondStep" strokeType="OUTSIDE" strokeWidth="0.0" text="Optionen" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
       </Text>
-      <Text fx:id="txtThirdStep" strokeType="OUTSIDE" strokeWidth="0.0" text="Auswahl" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Text fx:id="txtThirdStep" strokeType="OUTSIDE" strokeWidth="0.0" text="Auswahl" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets left="200.0" />
          </GridPane.margin>
       </Text>
-      <VBox maxHeight="340.0" maxWidth="270.0" spacing="2.0" style="-fx-border-color: #f5f5f5; -fx-border-width: 1;" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+      <VBox maxHeight="340.0" maxWidth="270.0" spacing="2.0" style="-fx-border-color: #f5f5f5; -fx-border-width: 1;" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="TOP">
          <children>
             <Text fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Übersicht">
                <font>
@@ -128,271 +130,195 @@
             <Insets right="20.0" />
          </padding>
       </VBox>
-      <HBox alignment="CENTER" spacing="40.0" GridPane.rowIndex="3">
+      <HBox alignment="CENTER" spacing="40.0" GridPane.rowIndex="4">
          <children>
             <Button fx:id="btnBack" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="ZURÜCK" />
             <Button fx:id="btnConfirm" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="WEITER" />
-            <Button fx:id="btnNextSuggestion" minHeight="40.0" mnemonicParsing="false" onAction="#updateUserStepView" prefHeight="40.0" prefWidth="170.0" text="NEUER VORSCHLAG" />
+            <Button minHeight="40.0" mnemonicParsing="false" onAction="#testUpdate" prefHeight="40.0" prefWidth="170.0" text="SPEICHERN" />
+            <Button minHeight="40.0" mnemonicParsing="false" onAction="#resetTest" prefHeight="40.0" prefWidth="170.0" text="LADEN" />
          </children>
          <GridPane.margin>
             <Insets top="30.0" />
          </GridPane.margin>
       </HBox>
-      <VBox fx:id="stepOneUserInput" alignment="TOP_CENTER" spacing="20.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+      <VBox fx:id="stepOneUserInput" alignment="TOP_CENTER" spacing="20.0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
          <children>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
                <children>
                   <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label minWidth="130.0" text="Terminname">
-                           <HBox.margin>
-                              <Insets bottom="5.0" top="5.0" />
-                           </HBox.margin>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Terminname">
                            <font>
                               <Font size="14.0" />
-                           </font></Label>
-                        <TextField fx:id="tfAppointmentName" prefHeight="30.0" prefWidth="510.0">
+                           </font>
                            <HBox.margin>
-                              <Insets left="20.0" />
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <TextField fx:id="txtAppointmentName" prefHeight="26.0" prefWidth="288.0">
+                           <HBox.margin>
+                              <Insets left="80.0" />
                            </HBox.margin>
                         </TextField>
                      </children>
                      <padding>
-                        <Insets left="20.0" right="20.0" />
+                        <Insets left="20.0" />
                      </padding>
                   </HBox>
                </children>
             </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
                <children>
-                  <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox alignment="CENTER_LEFT">
-                           <children>
-                              <Label minWidth="130.0" text="Terminlänge">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </HBox.margin>
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <VBox alignment="CENTER" prefWidth="265.0">
-                                 <children>
-                                    <Slider fx:id="sliderDurationMinutes" blockIncrement="1.0" majorTickUnit="1.0" max="60.0" minWidth="100.0" minorTickCount="0" prefHeight="30.0" prefWidth="200.0" snapToTicks="true" />
-                                    <TextField fx:id="tfDurationMinutes" alignment="CENTER" maxWidth="100.0" prefHeight="20.0" prefWidth="100.0" promptText="MIN">
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </TextField>
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets left="20.0" />
-                                 </HBox.margin>
-                              </VBox>
-                              <VBox alignment="CENTER" prefWidth="265.0">
-                                 <children>
-                                    <Slider fx:id="sliderDurationHours" blockIncrement="1.0" majorTickUnit="1.0" max="24.0" minWidth="100.0" minorTickCount="0" prefHeight="30.0" prefWidth="200.0" snapToTicks="true" />
-                                    <TextField fx:id="tfDurationHours" alignment="CENTER" maxWidth="100.0" prefHeight="20.0" prefWidth="100.0" promptText="STD">
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </TextField>
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets left="20.0" />
-                                 </HBox.margin>
-                              </VBox>
-                           </children>
-                        </HBox>
-                     </children>
-                     <padding>
-                        <Insets left="20.0" right="20.0" />
-                     </padding>
-                  </VBox>
-               </children>
-            </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
-               <children>
-                  <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Label minWidth="130.0" text="Suchzeitraum (Datum)">
+                        <ToggleSwitch fx:id="toogleUseNextAppointment" text="Nächstmöglicher Termin">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </ToggleSwitch>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="zwischen">
                            <font>
                               <Font size="14.0" />
                            </font>
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <HBox alignment="CENTER_LEFT">
-                           <children>
-                              <ToggleSwitch fx:id="toggleDateRange" graphicTextGap="0.0" minWidth="130.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="130.0" selected="true" text="nächstmöglich">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                                 <font>
-                                    <Font size="11.0" />
-                                 </font>
-                              </ToggleSwitch>
-                              <HBox fx:id="containerDateRange" alignment="CENTER_LEFT" prefWidth="510.0" visible="false">
-                                 <children>
-                                    <Label text="zwischen dem " />
-                                    <DatePicker fx:id="startDate" />
-                                    <Label text="und">
-                                       <HBox.margin>
-                                          <Insets left="10.0" right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <DatePicker fx:id="endDate" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets left="20.0" />
-                                 </HBox.margin>
-                              </HBox>
-                           </children>
-                        </HBox>
-                     </children>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </VBox>
-               </children>
-            </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
-               <children>
-                  <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Label text="Suchzeitraum (Uhrzeit)">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <HBox alignment="CENTER_LEFT">
-                           <children>
-                              <ToggleSwitch fx:id="toggleTimeRange" graphicTextGap="0.0" minWidth="80.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="80.0" selected="true" text="egal">
-                                 <HBox.margin>
-                                    <Insets right="50.0" />
-                                 </HBox.margin>
-                                 <font>
-                                    <Font size="11.0" />
-                                 </font>
-                              </ToggleSwitch>
-                              <HBox fx:id="containerTimeRange" alignment="CENTER_LEFT" prefWidth="510.0" visible="false">
-                                 <children>
-                                    <Label text="zwischen" />
-                                    <TimeField fx:id="timeStart" maxHeight="20.0" nodeOrientation="LEFT_TO_RIGHT">
-                                       <HBox.margin>
-                                          <Insets left="10.0" />
-                                       </HBox.margin>
-                                    </TimeField>
-                                    <Label text="und">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <TimeField fx:id="timeEnd" maxHeight="20.0" nodeOrientation="LEFT_TO_RIGHT" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets left="20.0" right="20.0" />
-                                 </padding>
-                              </HBox>
-                           </children>
-                        </HBox>
-                     </children>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </VBox>
-               </children>
-            </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
-               <children>
-                  <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Label minWidth="130.0" text="Wochentag">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <DatePicker fx:id="startDate" maxWidth="100.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="und">
                            <font>
                               <Font size="14.0" />
                            </font>
-                        </Label>
-                        <HBox alignment="CENTER_LEFT">
-                           <children>
-                              <ToggleSwitch fx:id="toggleWeekdays" graphicTextGap="0.0" minWidth="80.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="80.0" selected="true" text="egal">
-                                 <HBox.margin>
-                                    <Insets right="50.0" />
-                                 </HBox.margin>
-                                 <font>
-                                    <Font size="11.0" />
-                                 </font>
-                              </ToggleSwitch>
-                              <HBox fx:id="containerWeekdays" alignment="CENTER_LEFT" prefWidth="510.0" spacing="12.0" visible="false">
-                                 <children>
-                                    <CheckBox fx:id="tickMonday" mnemonicParsing="false" text="Mo" />
-                                    <CheckBox fx:id="tickTuesday" mnemonicParsing="false" text="Di" />
-                                    <CheckBox fx:id="tickWednesday" mnemonicParsing="false" text="Mi" />
-                                    <CheckBox fx:id="tickThursday" mnemonicParsing="false" text="Do" />
-                                    <CheckBox fx:id="tickFriday" mnemonicParsing="false" text="Fr" />
-                                    <CheckBox fx:id="tickSaturday" mnemonicParsing="false" text="Sa" />
-                                    <CheckBox fx:id="tickSunday" mnemonicParsing="false" text="So" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets left="20.0" right="20.0" />
-                                 </HBox.margin>
-                              </HBox>
-                           </children>
-                        </HBox>
+                           <HBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <DatePicker fx:id="endDate" maxWidth="100.0" />
                      </children>
                      <padding>
                         <Insets left="20.0" />
                      </padding>
-                  </VBox>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Termindauer: ">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Slider fx:id="sliderAppointmentDuration" blockIncrement="15.0" majorTickUnit="60.0" max="240.0" minWidth="100.0" minorTickCount="15" prefHeight="49.0" prefWidth="299.0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                           <HBox.margin>
+                              <Insets left="60.0" right="20.0" />
+                           </HBox.margin></Slider>
+                        <TextField fx:id="txtDuration" prefHeight="26.0" prefWidth="144.0" promptText="manuelle Eingabe" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="12.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bevorzugte Wochentage">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="4.0" />
+                           </HBox.margin>
+                        </Text>
+                        <CheckBox fx:id="tickMonday" mnemonicParsing="false" text="Mo" />
+                        <CheckBox fx:id="tickTuesday" mnemonicParsing="false" text="Di" />
+                        <CheckBox fx:id="tickWednesday" mnemonicParsing="false" text="Mi" />
+                        <CheckBox fx:id="tickThursday" mnemonicParsing="false" text="Do" />
+                        <CheckBox fx:id="tickFriday" mnemonicParsing="false" text="Fr" />
+                        <CheckBox fx:id="tickSaturday" mnemonicParsing="false" text="Sa" />
+                        <CheckBox fx:id="tickSunday" mnemonicParsing="false" text="So" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Terminzeit zwischen">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <TimeField fx:id="timeStart" maxHeight="20.0" nodeOrientation="LEFT_TO_RIGHT">
+                           <HBox.margin>
+                              <Insets left="28.0" />
+                           </HBox.margin></TimeField>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="und">
+                           <font>
+                              <Font name="DejaVu Sans ExtraLight" size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </HBox.margin>
+                        </Text>
+                        <TimeField fx:id="timeEnd" maxHeight="20.0" nodeOrientation="LEFT_TO_RIGHT" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
                </children>
             </AnchorPane>
          </children>
       </VBox>
-      <VBox fx:id="stepTwoUserInput" alignment="TOP_CENTER" disable="true" spacing="20.0" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+      <VBox fx:id="stepTwoUserInput" alignment="TOP_CENTER" disable="true" spacing="20.0" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
          <children>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox alignment="CENTER_LEFT" spacing="22.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ToggleSwitch fx:id="toggleUseTravelDuration" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="160.0" text="Fahrtzeit">
-                           <HBox.margin>
-                              <Insets right="30.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font size="11.0" />
-                           </font></ToggleSwitch>
-                        <HBox fx:id="containerTravel" alignment="CENTER_LEFT" prefWidth="440.0" spacing="5.0">
+                        <ToggleSwitch fx:id="toggleUseTravelDuration" prefHeight="20.0" prefWidth="210.0" text="Fahrtzeit einbeziehen" />
+                        <SplitMenuButton fx:id="dropdownVehicle" mnemonicParsing="false" text="Verkehrsmittel">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Fußgänger" />
+                              <MenuItem mnemonicParsing="false" text="Fahrrad" />
+                              <MenuItem mnemonicParsing="false" text="Öffis" />
+                            <MenuItem mnemonicParsing="false" text="Auto" />
+                          </items>
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
-                        </HBox>
-                     </children>
-                     <padding>
-                        <Insets left="20.0" right="20.0" />
-                     </padding>
-                  </HBox>
-               </children>
-            </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
-               <children>
-                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <ToggleSwitch fx:id="toggleUseOpeningHours" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="190.0" text="Öffnungszeiten">
-                           <font>
-                              <Font size="11.0" />
-                           </font></ToggleSwitch>
-                        <HBox fx:id="containerOpeningHours" alignment="CENTER_LEFT" prefWidth="440.0" visible="false">
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
-                        </HBox>
+                        </SplitMenuButton>
+                        <SplitMenuButton fx:id="dropdownStartAt" mnemonicParsing="false" text="Start">
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="Home" />
+                              <MenuItem mnemonicParsing="false" text="Späti" />
+                              <MenuItem mnemonicParsing="false" text="Zahnarzt" />
+                              <MenuItem mnemonicParsing="false" text="neuer Eintrag" />
+                           </items>
+                        </SplitMenuButton>
+                        <SplitMenuButton fx:id="dropdownToDestinationTravelTimeOption" mnemonicParsing="false" text="Ziel">
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="Home" />
+                              <MenuItem mnemonicParsing="false" text="Späti" />
+                              <MenuItem mnemonicParsing="false" text="Zahnarzt" />
+                              <MenuItem mnemonicParsing="false" text="neuer Eintrag" />
+                           </items>
+                        </SplitMenuButton>
                      </children>
                      <padding>
                         <Insets left="20.0" />
@@ -400,47 +326,29 @@
                   </HBox>
                </children>
             </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0" style=": ; : ;">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0" style=": ; : ;">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefWidth="510.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ToggleSwitch fx:id="toggleUseMargin" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="190.0" text="Freie Zeit">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
+                        <ToggleSwitch fx:id="toggleUseMargin" prefHeight="20.0" prefWidth="210.0" text="Freie Slots einplanen" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="vorher">
                            <font>
-                              <Font size="11.0" />
-                           </font></ToggleSwitch>
-                        <HBox fx:id="containerMargin" prefWidth="440.0" visible="false">
-                           <children>
-                              <VBox alignment="CENTER" prefWidth="240.0">
-                                 <children>
-                                    <Label alignment="CENTER" text="vorher">
-                                       <font>
-                                          <Font size="11.0" />
-                                       </font>
-                                    </Label>
-                                    <Slider fx:id="sliderMarginBeforeAppointment" blockIncrement="1.0" majorTickUnit="1.0" max="60.0" minorTickCount="0" snapToTicks="true" />
-                                 </children>
-                              </VBox>
-                              <VBox alignment="CENTER" prefWidth="240.0">
-                                 <children>
-                                    <Label text="hinterher">
-                                       <font>
-                                          <Font size="11.0" />
-                                       </font>
-                                    </Label>
-                                    <Slider fx:id="sliderMarginAfterAppointment" blockIncrement="1.0" majorTickUnit="1.0" max="60.0" minorTickCount="0" snapToTicks="true" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets left="20.0" />
-                                 </HBox.margin>
-                              </VBox>
-                           </children>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Slider fx:id="sliderMarginBeforeAppointment" max="60.0" maxWidth="120.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="hinterher">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
-                        </HBox>
+                        </Text>
+                        <Slider fx:id="sliderMarginAfterAppointment" max="60.0" maxWidth="120.0" />
                      </children>
                      <padding>
                         <Insets left="20.0" />
@@ -448,37 +356,23 @@
                   </HBox>
                </children>
             </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ToggleSwitch fx:id="toggleRecurringDate" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="170.0" text="wiederkehrend">
+                        <ToggleSwitch fx:id="toggleUseOpeningHours" prefHeight="20.0" prefWidth="210.0" text="Öffnungszeiten einbeziehen" />
+                        <SplitMenuButton fx:id="dropdownToDestinationOpeningOptions" mnemonicParsing="false" text="Ziel">
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="auto: wie Fahrtzeit" />
+                              <MenuItem mnemonicParsing="false" text="Home" />
+                              <MenuItem mnemonicParsing="false" text="Späti" />
+                              <MenuItem mnemonicParsing="false" text="Zahnarzt" />
+                              <MenuItem mnemonicParsing="false" text="neuer Eintrag" />
+                           </items>
                            <HBox.margin>
-                              <Insets right="20.0" />
+                              <Insets left="34.0" />
                            </HBox.margin>
-                           <font>
-                              <Font size="11.0" />
-                           </font></ToggleSwitch>
-                        <HBox fx:id="containerReccurrence" alignment="CENTER_LEFT" prefWidth="440.0" spacing="10.0" visible="false">
-                           <children>
-                              <VBox alignment="CENTER" prefWidth="210.0">
-                                 <children>
-                                    <Label text="Wiederholungen">
-                                       <font>
-                                          <Font size="11.0" />
-                                       </font>
-                                    </Label>
-                                    <Slider fx:id="sliderRecurrences" blockIncrement="1.0" majorTickUnit="1.0" minorTickCount="0" snapToTicks="true" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </VBox>
-                           </children>
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
-                        </HBox>
+                        </SplitMenuButton>
                      </children>
                      <padding>
                         <Insets left="20.0" />
@@ -486,17 +380,53 @@
                   </HBox>
                </children>
             </AnchorPane>
-            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ToggleSwitch fx:id="toggleAddAutomatically" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="208.0" selected="true" text="Termine sofort eintragen">
+                        <ToggleSwitch fx:id="toggleRecurringDate" prefHeight="20.0" prefWidth="210.0" text="wiederkehrender Termin" />
+                        <SplitMenuButton fx:id="dropdownInterval" mnemonicParsing="false" text="Intervall">
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="täglich" />
+                              <MenuItem mnemonicParsing="false" text="wöchentlich" />
+                              <MenuItem mnemonicParsing="false" text="monatlich" />
+                              <MenuItem mnemonicParsing="false" text="jährlich" />
+                              <MenuItem mnemonicParsing="false" text="eigene Angabe" />
+                           </items>
                            <HBox.margin>
-                              <Insets right="20.0" />
+                              <Insets left="34.0" />
                            </HBox.margin>
+                        </SplitMenuButton>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wiederholungen">
                            <font>
-                              <Font size="11.0" />
-                           </font></ToggleSwitch>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Slider fx:id="sliderRecurrences" maxWidth="120.0" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ToggleSwitch fx:id="toggleRecurringDate1" prefHeight="20.0" prefWidth="210.0" selected="true" text="alle Vorschläge anzeigen" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Anzahl festlegen">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Slider fx:id="sliderRecurrences1" maxWidth="120.0" />
                      </children>
                      <padding>
                         <Insets left="20.0" />
@@ -509,9 +439,9 @@
             <Insets />
          </GridPane.margin>
       </VBox>
-      <VBox fx:id="stepThreeUserInput" alignment="TOP_CENTER" disable="true" spacing="20.0" visible="false" GridPane.rowIndex="2">
+      <VBox fx:id="stepThreeUserInput" alignment="TOP_CENTER" disable="true" spacing="20.0" visible="false" GridPane.rowIndex="3">
          <children>
-            <AnchorPane maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0" style="-fx-border-color: #6d25bf; -fx-border-width: 1;">
+            <AnchorPane maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="400.0" prefHeight="70.0" prefWidth="700.0" style="-fx-border-color: #6d25bf; -fx-border-width: 1;">
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -552,6 +482,6 @@
       </VBox>
    </children>
    <padding>
-      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+      <Insets left="30.0" top="30.0" />
    </padding>
 </GridPane>
