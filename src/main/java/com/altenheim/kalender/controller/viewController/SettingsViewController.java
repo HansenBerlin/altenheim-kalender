@@ -24,7 +24,7 @@ public class SettingsViewController extends ResponsiveController
 
     @FXML
     private MenuButton btnMenuSpecialField, btnMenuCourse, btnMenuSemester, btnMenuImportColour,
-        btnMenuCheckEvent, btnMenuNotificationMin, btnMenuNotificationHour;
+        btnMenuNotificationMin, btnMenuNotificationHour;
     @FXML
     private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
     @FXML
@@ -95,6 +95,7 @@ public class SettingsViewController extends ResponsiveController
         //kann später entfernt werden
         txtScrappingURL.setText(settings.getCalendarParser());
         cBToolTips.setTooltip(cBToolTips.getTooltip());
+
     }
     public void changeContentPosition() {}
 
@@ -115,6 +116,8 @@ public class SettingsViewController extends ResponsiveController
         btnMenuSemester.setText(item.getText());
      }
     }
+
+    
     
     @FXML
     private void initialize ()
