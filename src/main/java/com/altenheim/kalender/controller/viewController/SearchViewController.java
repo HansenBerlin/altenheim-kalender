@@ -108,13 +108,13 @@ public class SearchViewController extends ResponsiveController
         boolean[] weekdays = { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),
                 tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(), tickSunday.isSelected() };
 
-        var suggestions = smartSearch.findPossibleTimeSlots(
-                userPrefs, duration, weekdays, openingHours, timeBefore, timeAfter, 10, 7);
-        for (var entry : suggestions)
-        {
-            SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime(), entry.getStartDate());
+    //   var suggestions = smartSearch.findPossibleTimeSlots(
+    //           userPrefs, duration, weekdays, openingHours, timeBefore, timeAfter, 10, 7);
+    //   for (var entry : suggestions)
+    //   {
+    //       SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime(), entry.getStartDate());
             //System.out.println(entry.getStartTime() + " " + entry.getEndTime());
-        }
+    //    }
     }
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC)

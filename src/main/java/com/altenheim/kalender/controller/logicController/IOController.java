@@ -7,6 +7,7 @@ import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.MailTemplateModel;
+import com.altenheim.kalender.models.SerializableEntry;
 import com.altenheim.kalender.models.SettingsModel;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,8 +18,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-
-import com.calendarfx.model.Entry;
 import net.fortuna.ical4j.data.*;
 import net.fortuna.ical4j.validate.ValidationException;
 
@@ -157,9 +156,9 @@ public class IOController implements IIOController
     }  
 
 
-    private Entry<String> createCalendarFXEntryFromMillis(long start, long end)
+    private SerializableEntry createCalendarFXEntryFromMillis(long start, long end)
 	{
-		var entry = new Entry<String>();
+		var entry = new SerializableEntry();
 		var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
 		var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());		
 		entry.changeStartTime(dateStart.toLocalTime());

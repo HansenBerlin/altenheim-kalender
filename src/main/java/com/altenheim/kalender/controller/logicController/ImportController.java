@@ -6,8 +6,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.models.SerializableEntry;
 import com.altenheim.kalender.models.SettingsModel;
-import com.calendarfx.model.Entry;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
@@ -71,9 +71,9 @@ public class ImportController implements IImportController
         return fxCalendar;
     }
 
-    private Entry<String> createCalendarFXEntryFromMillis(long start, long end)
+    private SerializableEntry createCalendarFXEntryFromMillis(long start, long end)
     {
-        var entry = new Entry<String>();
+        var entry = new SerializableEntry();
         var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
         var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());
         entry.changeStartTime(dateStart.toLocalTime());
