@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.controller.viewController;
+package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.IAnimationController;
 import javafx.animation.ScaleTransition;

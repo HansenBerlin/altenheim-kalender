@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.interfaces;
+package com.altenheim.kalender.interfaces;
 
 import javafx.scene.Node;
 import javafx.scene.shape.Circle;

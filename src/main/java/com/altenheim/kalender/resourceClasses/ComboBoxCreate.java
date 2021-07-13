@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.resourceClasses;
+package com.altenheim.kalender.resourceClasses;
 
 public enum ComboBoxCreate 
 {
