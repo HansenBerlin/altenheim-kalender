@@ -30,6 +30,8 @@ public class SettingsModel implements Serializable
     private SimpleStringProperty course = new SimpleStringProperty("Kurs");  
     private SimpleStringProperty semester = new SimpleStringProperty("Sem.");
     private BooleanProperty toolTip = new SimpleBooleanProperty(false);
+    private int MenuNotificationMin;
+    private int MenuNotificationHour;
 
 
     private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
@@ -45,6 +47,8 @@ public class SettingsModel implements Serializable
     {
         propertyChange.addPropertyChangeListener(listener);
     }
+
+
 
     public void setPathToIcsExportedFile(String path) { icsExportedFile = path; }
     public String getPathToIcsExportedFile() { return icsExportedFile; }
@@ -97,10 +101,16 @@ public class SettingsModel implements Serializable
     public void setToolTip(BooleanProperty toolTip) {this.toolTip = toolTip;}
     public BooleanProperty getToolTip() {return toolTip;}
 
-    public long getEntrySystemMessageIntervalInMinutes() { return entrySystemMessageIntervalInMinutes;}
-    public long getnotificationTimeBeforeEntryInMinutes() { return notificationTimeBeforeEntryInMinutes;}
+    public long getEntrySystemMessageIntervalInMinutes() {return entrySystemMessageIntervalInMinutes;}
+    public long getnotificationTimeBeforeEntryInMinutes() {return notificationTimeBeforeEntryInMinutes;}
     public void setnotificationTimeBeforeEntryInMinutes(long notificationTimeBeforeEntryInMinutes) {
-        this.notificationTimeBeforeEntryInMinutes = notificationTimeBeforeEntryInMinutes;
-    }
+        this.notificationTimeBeforeEntryInMinutes = notificationTimeBeforeEntryInMinutes;}
+
+    public void setMenuNotificationHour(int menuNotificationHour) {this.MenuNotificationHour = menuNotificationHour;}
+    public int getMenuNotificationHour() {return MenuNotificationHour;}
+
+    public void setMenuNotificationMin(int menuNotificationMin) {this.MenuNotificationMin = menuNotificationMin;}
+    public int getMenuNotificationMin() {return MenuNotificationMin;}
+    
 
 }
