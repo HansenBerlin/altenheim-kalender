@@ -2,7 +2,6 @@ package com.altenheim.kalender.controller.viewController;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
@@ -216,7 +215,7 @@ public class SearchViewController extends ResponsiveController
         userStep += incrementor; 
         txtHeaderStep.setText(headings[currentIndex]);
     }
-
+    
     private int suggestions = 1;
     private void getNextSuggestion()
     {
