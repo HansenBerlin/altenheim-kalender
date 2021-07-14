@@ -4,6 +4,7 @@ import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 
+import javafx.beans.property.SimpleLongProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -28,11 +29,8 @@ public class SettingsViewController extends ResponsiveController
     private IGoogleAPIController googleApis;
     private IComboBoxFactory comboBoxFactory;
     private IPopupViewController popupViewController;
-    private ComboBox<Integer> comboBoxNotificationHour, comboBoxNotificationMin;
-    
+    private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse, comboBoxSelectionSemester;    
 
-    @FXML
-    private MenuButton btnMenuSpecialField, btnMenuCourse, btnMenuSemester, btnMenuImportColour;
     @FXML
     private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
     @FXML
@@ -45,7 +43,9 @@ public class SettingsViewController extends ResponsiveController
     @FXML 
     private CheckBox cBToolTips = new CheckBox();
     @FXML 
-    private VBox topContainer, bottomContainer, containerComboBoxNotificationHour, containerComboBoxNotificationMin;
+    private VBox topContainer, bottomContainer, containerComboBoxNotificationMin;
+    @FXML
+    private HBox containerComboBoxSelectorScrapping;
 
 
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
@@ -71,23 +71,25 @@ public class SettingsViewController extends ResponsiveController
         txtZipCode.textProperty().bind(settings.getZipCOde());
         txtCity.textProperty().bind(settings.getCity());
         txtMail.textProperty().bind(settings.getMail());
-        btnMenuSpecialField.idProperty().bind(settings.getSpecialField());
-        btnMenuCourse.idProperty().bind(settings.getCourse());
-        btnMenuSemester.idProperty().bind(settings.getSemester());
         cBToolTips.selectedProperty().bindBidirectional(settings.getToolTip());
         createComboBoxes();
     }
 
     private void createComboBoxes()
     {
-        comboBoxNotificationHour = comboBoxFactory.createComboBoxInteger(ComboBoxCreate.MENUNOTIFICATIONHOUR);
-        comboBoxNotificationMin = comboBoxFactory.createComboBoxInteger(ComboBoxCreate.MENUNOTIFICATIONMIN);
-
-        containerComboBoxNotificationHour.getChildren().add(comboBoxNotificationHour);  
+        comboBoxNotificationMin = comboBoxFactory.create(ComboBoxCreate.MENUNOTIFICATIONMIN);
+        comboBoxSelectionSpecialField = comboBoxFactory.create(ComboBoxCreate.SELECTIONSPECIALFIELD);
+        comboBoxSelectionCourse = comboBoxFactory.create(ComboBoxCreate.SELECTIONCOURSE);
+        comboBoxSelectionSemester = comboBoxFactory.create(ComboBoxCreate.SELECTIONSEMESTER);
+ 
         containerComboBoxNotificationMin.getChildren().add(comboBoxNotificationMin);
+        containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSpecialField);
+        containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionCourse);
+        containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSemester);
 
-        //comboBoxNotificationHour.getEditor().getText().bindBidirectional(settings.getMenuNotificationHour());
-        //comboBoxNotificationMin.getEditor().getText().bindBidirectional(settings.getMenuNotificationMin());
+        comboBoxNotificationMin.promptTextProperty().bind(settings.getnotificationTimeBeforeEntryInMinutes2());
+
+        
 
     }  
     
@@ -120,39 +122,17 @@ public class SettingsViewController extends ResponsiveController
         settings.setZipCode(txtZipCode.getText());
         settings.setCity(txtCity.getText());
         settings.setMail(txtMail.getText());
-        String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%c/kurs%s", 
-            btnMenuSpecialField.getText(), btnMenuSemester.getText().charAt(5), btnMenuCourse.getText().replaceFirst("keine Kurse", ""));
-        settings.setCalendarParser(resultURL);
-        settings.setSpecialField(btnMenuSpecialField.getText());
-        settings.setCourse(btnMenuCourse.getText());
-        settings.setSemester(btnMenuSemester.getText());
-        //kann später entfernt werden
+        System.out.println(comboBoxSelectionSpecialField.getEditor().get().toString());
+        System.out.println(comboBoxSelectionSemester.getEditor().getText().toString());
+        System.out.println(comboBoxSelectionCourse.getEditor().getText().toString());
+        // String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%c/kurs%s", 
+        //     comboBoxSelectionSpecialField.getEditor().getText(),  comboBoxSelectionSemester.getEditor().getText(), comboBoxSelectionCourse.getEditor().getText().replaceFirst("keine Kurse", ""));
+        // settings.setCalendarParser(resultURL);
         cBToolTips.setTooltip(cBToolTips.getTooltip());
 
-    }
-    public void changeContentPosition() {}
 
-    @FXML 
-    void selectionScrapper(ActionEvent event)
-    {
-        var item = (MenuItem)event.getSource();
-        if (item.getId().contains("selection_AuswahlFB_")) 
-        {
-            btnMenuSpecialField.setText(item.getText());
-        } 
-        else if (item.getId().contains("selection_AuswahlKurs_"))
-        {
-            btnMenuCourse.setText(item.getText());
-        } 
-        else if (item.getId().contains("selection_AuswahlSemester_"))
-        {
-            btnMenuSemester.setText(item.getText());
-        }
     }
-
-    
-    
-    
+    public void changeContentPosition() {} 
     
     public void changeContentPosition(double width, double height) 
     {
@@ -166,6 +146,4 @@ public class SettingsViewController extends ResponsiveController
         childContainer.getChildren().remove(bottomContainer);
         childContainer.add(bottomContainer, col, row, 1, 1);
     }
-
-
 }
