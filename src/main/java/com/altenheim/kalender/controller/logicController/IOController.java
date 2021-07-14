@@ -27,11 +27,11 @@ public class IOController implements IIOController
     private ICalendarEntriesModel allEntries;
     private List<ContactModel> allContacts;
     protected SettingsModel settings;
-    private List<MailTemplateModel> mailTemplates;
+    private MailTemplateModel mailTemplates;
     private String hashedPassword;
 
     public IOController(IEntryFactory administrateEntries, List<ContactModel> allContacts, 
-        SettingsModel settings, List<MailTemplateModel> mailTemplates, ICalendarEntriesModel allEntries)
+        SettingsModel settings, MailTemplateModel mailTemplates, ICalendarEntriesModel allEntries)
     {
         this.allEntries = allEntries;
         this.allContacts = allContacts;

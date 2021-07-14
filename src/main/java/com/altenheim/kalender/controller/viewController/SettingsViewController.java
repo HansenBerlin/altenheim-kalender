@@ -45,7 +45,7 @@ public class SettingsViewController extends ResponsiveController
     @FXML 
     private CheckBox cBToolTips = new CheckBox();
     @FXML 
-    private VBox topContainer, bottomContainer, containerComboBoxNotificationHour, containerComboBoxNotificationMin;
+    private VBox topContainer, bottomContainer;
 
 
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
@@ -75,21 +75,8 @@ public class SettingsViewController extends ResponsiveController
         btnMenuCourse.idProperty().bind(settings.getCourse());
         btnMenuSemester.idProperty().bind(settings.getSemester());
         cBToolTips.selectedProperty().bindBidirectional(settings.getToolTip());
-        createComboBoxes();
     }
 
-    private void createComboBoxes()
-    {
-        comboBoxNotificationHour = comboBoxFactory.createComboBoxInteger(ComboBoxCreate.MENUNOTIFICATIONHOUR);
-        comboBoxNotificationMin = comboBoxFactory.createComboBoxInteger(ComboBoxCreate.MENUNOTIFICATIONMIN);
-
-        containerComboBoxNotificationHour.getChildren().add(comboBoxNotificationHour);  
-        containerComboBoxNotificationMin.getChildren().add(comboBoxNotificationMin);
-
-        //comboBoxNotificationHour.getEditor().getText().bindBidirectional(settings.getMenuNotificationHour());
-        //comboBoxNotificationMin.getEditor().getText().bindBidirectional(settings.getMenuNotificationMin());
-
-    }  
     
     @FXML
     void buttonClicked(ActionEvent event) throws IOException, InterruptedException 

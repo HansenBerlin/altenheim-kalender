@@ -2,7 +2,6 @@ package com.altenheim.kalender.controller.viewController;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
@@ -55,7 +54,7 @@ public class SearchViewController extends ResponsiveController
     private IComboBoxFactory comboBoxFactory;
     private IDateSuggestionController dateSuggestionController;
     private List<ContactModel> contacts;
-    private List<MailTemplateModel> mailTemplates;
+    private MailTemplateModel mailTemplates;
     private SettingsModel settings;
     private ArrayList<Entry<?>> currentSuggestions;
     private int userStep = 1;
@@ -63,7 +62,7 @@ public class SearchViewController extends ResponsiveController
   
 
     public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<ContactModel> contacts, 
-        IContactFactory contactFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api, 
+        IContactFactory contactFactory, MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api, 
         IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory, IDateSuggestionController dateSuggestionController)
     {
         this.smartSearch = smartSearch;

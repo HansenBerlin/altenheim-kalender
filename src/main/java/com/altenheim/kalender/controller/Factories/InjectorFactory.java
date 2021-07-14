@@ -25,11 +25,11 @@ public class InjectorFactory
     {     
         jMetroStyle = new JMetro();   
         var customCalendarView = new CalendarView();
-        var mailTemplates = new ArrayList<MailTemplateModel>();
+        var mailTemplates = new MailTemplateModel();
         var contacts = new ArrayList<ContactModel>();
         var settings = new SettingsModel();
 
-        IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
+        IComboBoxFactory comboBoxFactory = new ComboBoxFactory(mailTemplates);
         IAnimationController animationController = new AnimationController();
         IPopupViewController popupViewController = new PopupViewsController();
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
@@ -48,7 +48,7 @@ public class InjectorFactory
         var contactsVCt = new ContactsViewController(contacts, contactFactory, apiCt, ioCt);
         var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView, popupViewController);
         var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, websiteCt, popupViewController, comboBoxFactory);
-        var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates);
+        var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates, comboBoxFactory);
         var searchVCt = new SearchViewController(smartSearch, entryFactory, contacts, contactFactory, mailTemplates, settings, 
             apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
