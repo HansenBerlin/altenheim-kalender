@@ -16,6 +16,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class SettingsViewController extends ResponsiveController
@@ -37,7 +38,7 @@ public class SettingsViewController extends ResponsiveController
     private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
     @FXML
     private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
-        txtNotifocationMin, txtNotificationHour;
+        txtNotifocationMin, txtNotificationHour, txtError;
     @FXML 
     private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
     @FXML 
@@ -122,12 +123,16 @@ public class SettingsViewController extends ResponsiveController
         settings.setZipCode(txtZipCode.getText());
         settings.setCity(txtCity.getText());
         settings.setMail(txtMail.getText());
-        System.out.println(comboBoxSelectionSpecialField.getValue().toString());
-        System.out.println(comboBoxSelectionSemester.getValue().toString());
-        System.out.println(comboBoxSelectionCourse.getValue().toString());
-        String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%s/kurs%s", 
-            comboBoxSelectionSpecialField.getValue().toString(),  comboBoxSelectionSemester.getValue().toString(), comboBoxSelectionCourse.getValue().toString().replaceFirst("keine Kurse", ""));
-        settings.setCalendarParser(resultURL);
+        if (comboBoxSelectionSpecialField.getValue() == null || comboBoxSelectionCourse.getValue() == null || comboBoxSelectionSemester.getValue() == null) {
+            txtError.setText("Nicht alle HWR Komponenten ausgewählt!");
+            txtError.setVisible(true);
+            txtError.setFill(Color.RED);
+        } else {
+            txtError.setVisible(false);
+            String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%s/kurs%s", 
+            comboBoxSelectionSpecialField.getValue(), comboBoxSelectionSemester.getValue(), comboBoxSelectionCourse.getValue().replaceFirst("keine Kurse", ""));
+        settings.setCalendarParser(resultURL);    
+        }
         cBToolTips.setTooltip(cBToolTips.getTooltip());
 
 
