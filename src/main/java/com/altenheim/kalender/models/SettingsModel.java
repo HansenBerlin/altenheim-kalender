@@ -21,15 +21,17 @@ public class SettingsModel implements Serializable
     private String pathToSaveBackupFiles = null;
     public Long scrapingIntervalInMillis = (long) 2000;
     private String scrappingURL; 
-    private SimpleStringProperty street = new SimpleStringProperty();
-    private SimpleStringProperty houseNumber = new SimpleStringProperty();
-    private SimpleStringProperty zipCode = new SimpleStringProperty();
-    private SimpleStringProperty city = new SimpleStringProperty();
-    private SimpleStringProperty mail = new SimpleStringProperty();
-    private SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
-    private SimpleStringProperty course = new SimpleStringProperty("Kurs");  
-    private SimpleStringProperty semester = new SimpleStringProperty("Sem.");
-    private BooleanProperty toolTip = new SimpleBooleanProperty(false);
+    private transient SimpleStringProperty street = new SimpleStringProperty();
+    private transient SimpleStringProperty houseNumber = new SimpleStringProperty();
+    private transient SimpleStringProperty zipCode = new SimpleStringProperty();
+    private transient SimpleStringProperty city = new SimpleStringProperty();
+    private transient SimpleStringProperty mail = new SimpleStringProperty();
+    private transient SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
+    private transient SimpleStringProperty course = new SimpleStringProperty("Kurs");  
+    private transient SimpleStringProperty semester = new SimpleStringProperty("Sem.");
+    private transient SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
+        
+    
 
     private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
     public Long scrapingIntervalInMinutes = (long) 60000;
@@ -93,13 +95,12 @@ public class SettingsModel implements Serializable
     public void setSemester (String semester) {this.semester.set(semester);}
     public SimpleStringProperty getSemester() {return semester;}
 
-    public void setToolTip(BooleanProperty toolTip) {this.toolTip = toolTip;}
-    public BooleanProperty getToolTip() {return toolTip;}
+    public void setToolTip(SimpleBooleanProperty toolTip) {this.toolTip = toolTip;}
+    public SimpleBooleanProperty getToolTip() {return toolTip;}
 
     public long getEntrySystemMessageIntervalInMinutes() { return entrySystemMessageIntervalInMinutes;}
     public long getnotificationTimeBeforeEntryInMinutes() { return notificationTimeBeforeEntryInMinutes;}
     public void setnotificationTimeBeforeEntryInMinutes(long notificationTimeBeforeEntryInMinutes) {
         this.notificationTimeBeforeEntryInMinutes = notificationTimeBeforeEntryInMinutes;
     }
-
 }

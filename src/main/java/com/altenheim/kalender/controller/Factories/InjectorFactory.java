@@ -28,6 +28,9 @@ public class InjectorFactory
         var mailTemplates = new ArrayList<MailTemplateModel>();
         var contacts = new ArrayList<ContactModel>();
         var settings = new SettingsModel();
+        var loadedSettings = IOController.restoreSettings();
+        //if(loadedSettings != null)
+        //    settings = loadedSettings;        
         var jsonParser = new JsonParser();
 
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
@@ -48,7 +51,7 @@ public class InjectorFactory
         var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(contacts, contactFactory, apiCt, ioCt);
         var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView, popupViewController);
-        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, websiteCt, popupViewController);
+        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, websiteCt, popupViewController, ioCt);
         var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates);
         var searchVCt = new SearchViewController(smartSearch, entryFactory, contacts, contactFactory, mailTemplates, settings, 
             apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController);

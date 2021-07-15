@@ -65,7 +65,6 @@ public class IOController implements IIOController
         }
     }
 
-
     public void loadCalendarsFromFile() throws IOException, ParserException
     {
     }
@@ -75,7 +74,7 @@ public class IOController implements IIOController
     {
         var path = settings.getPathToHwrScrapedFile();
         if (path == null)
-            path = "contactFiles/contacts.file";
+            path = "userFiles/contacts.file";
         var writeToFile = new FileOutputStream(path);
         var convert = new ObjectOutputStream(writeToFile);
         convert.writeObject(allContacts);
@@ -87,7 +86,7 @@ public class IOController implements IIOController
     {
         var path = settings.getPathToIcsExportedFile();
         if (path == null)
-            path = "contactFiles/contacts.file";
+            path = "userFiles/contacts.file";
         var loadFile = new FileInputStream(path);
         var inputStream = new ObjectInputStream(loadFile);
         var loadedContacts = (List<ContactModel>)inputStream.readObject();
@@ -134,27 +133,28 @@ public class IOController implements IIOController
 
     public void writeSettings(SettingsModel settings)
     {
+        var path = settings.getPathToUserDirectory() + "settings";
+        try
+        {
+            var writeToFile = new FileOutputStream(path);
+            var convert = new ObjectOutputStream(writeToFile);
+            convert.writeObject(settings);
+            convert.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
-
-
-    public SettingsModel restoreSettings()
-    {
-        return null;
-    }
-
 
     public void writeMailTemplates(MailTemplateModel templates)
     {
     }
 
-
-
-
     public MailTemplateModel restoreMailTemplates()
     {
         return null;
-    }  
-
+    } 
 
     private SerializableEntry createCalendarFXEntryFromMillis(long start, long end)
 	{
@@ -168,6 +168,23 @@ public class IOController implements IIOController
 		return entry;
 	} 
 
-    
-
+    public static SettingsModel restoreSettings()
+    {      
+        var file = new File("userFiles/settings");
+        if(!file.exists())
+            return null;  
+        try
+        {
+            var loadFile = new FileInputStream("userFiles/settings");
+            var inputStream = new ObjectInputStream(loadFile);
+            var settings = (SettingsModel)inputStream.readObject();
+            inputStream.close();
+            return settings;
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

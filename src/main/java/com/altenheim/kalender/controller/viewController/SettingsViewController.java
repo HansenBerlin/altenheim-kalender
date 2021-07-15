@@ -1,5 +1,6 @@
 package com.altenheim.kalender.controller.viewController;
 
+import com.altenheim.kalender.controller.logicController.IOController;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
 import javafx.event.ActionEvent;
@@ -23,6 +24,7 @@ public class SettingsViewController extends ResponsiveController
     private IEntryFactory calendarFactory;
     private IGoogleAPIController googleApis;
     private IPopupViewController popupViewController;
+    private IIOController iOController;
 
     @FXML private MenuButton btnMenuSpecialField, btnMenuCourse, btnMenuSemester, btnMenuImportColour,
         btnMenuCheckEvent, btnMenuNotificationMin, btnMenuNotificationHour;
@@ -36,7 +38,7 @@ public class SettingsViewController extends ResponsiveController
 
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
                                   IExportController exportController, ICalendarEntriesModel allCalendars,
-                                  IWebsiteScraperController websiteScraper, IPopupViewController popupViewController)
+                                  IWebsiteScraperController websiteScraper, IPopupViewController popupViewController, IIOController iOController)
     {
         this.settings = settings;
         this.importController = importController;
@@ -45,6 +47,7 @@ public class SettingsViewController extends ResponsiveController
         this.websiteScraper = websiteScraper;
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
+        this.iOController = iOController;
     }
 
     @FXML
@@ -98,6 +101,7 @@ public class SettingsViewController extends ResponsiveController
         settings.setSemester(btnMenuSemester.getText());
         //kann später entfernt werden
         cBToolTips.setTooltip(cBToolTips.getTooltip());
+        iOController.writeSettings(settings);        
     }    
 
     @FXML 
