@@ -25,7 +25,7 @@ public class MailTemplateViewController extends ResponsiveController
         this.mailTemplates = mailTemplates;
     }
     
-    public void changeContentPosition() 
+    public void changeContentPosition(double width, double height) 
     {
         
     }    

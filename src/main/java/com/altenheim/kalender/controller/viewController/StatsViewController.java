@@ -15,7 +15,7 @@ public class StatsViewController extends ResponsiveController
         this.allEntries = allEntries;
     }
 
-    public void changeContentPosition() 
+    public void changeContentPosition(double width, double height) 
     {
         
     }    

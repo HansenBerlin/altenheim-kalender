@@ -7,10 +7,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
+import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
+import java.util.HashMap;
 import com.altenheim.kalender.models.SerializableEntry;
 
 public class SmartSearchController implements ISmartSearchController 
@@ -91,10 +94,13 @@ public class SmartSearchController implements ISmartSearchController
 		return output;
 	}
 
+
+
 	public ArrayList<SerializableEntry> findAvailableTimeSlot(SerializableEntry input, int duration, int before, int after) {			
 		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
 			input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values();		
 		var output = new ArrayList<SerializableEntry>();
+
 		long start = input.getStartMillis() + before * 60000;
 		long end = input.getEndMillis() - after * 60000; 
 		long userStart = start;
