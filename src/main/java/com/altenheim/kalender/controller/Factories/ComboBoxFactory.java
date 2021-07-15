@@ -3,6 +3,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.altenheim.kalender.interfaces.IComboBoxFactory;
 import com.altenheim.kalender.models.MailTemplateModel;
@@ -13,26 +14,26 @@ import javafx.scene.control.ComboBox;
 
 public class ComboBoxFactory implements IComboBoxFactory
 {
-    private MailTemplateModel mailTemplateModel;
-    public ComboBoxFactory (MailTemplateModel mailTemplateModel) {
-        this.mailTemplateModel = mailTemplateModel;
+    
+    public ComboBoxFactory () {
+        
         vehicles.addAll("zu Fuß", "Fahrrad", "Öffis", "Auto");
         destinations.addAll("Stern Center, Potsdam, Deutschland", "Casablanca, Rigaer Straße, Berlin, Deutschland", "Hauptbahnhof Berlin");
         recurrenceOptions.addAll("täglich", "wöchentlich", "monatlich", "halbjährlich", "jährlich");
-        for (var entry : mailTemplateModel.getTemplates().entrySet()) {
-            mailTemplateselectorTemplate.add(entry.getKey());
-        }
+        
+        mailTemplateSelectorTemplate.add("test");
+        
         content.add(vehicles);
         content.add(destinations);
         content.add(destinations);
         content.add(recurrenceOptions);
-        content.add(mailTemplateselectorTemplate);
+        content.add(mailTemplateSelectorTemplate);
     }  
 
     private ObservableList<String> vehicles = FXCollections.observableArrayList();
     private ObservableList<String> destinations = FXCollections.observableArrayList();
     private ObservableList<String> recurrenceOptions = FXCollections.observableArrayList();
-    private ObservableList<String> mailTemplateselectorTemplate = FXCollections.observableArrayList();
+    private ObservableList<String> mailTemplateSelectorTemplate = FXCollections.observableArrayList(); //getter und dann ändern im Mail ViewController
     private List<ObservableList<String>> content = new ArrayList<ObservableList<String>>();
     private String[] headers = {"Verkehrsmittel", "Start", "Ziel", "Intervall", "Auswahl Templates"};
 
@@ -46,5 +47,15 @@ public class ComboBoxFactory implements IComboBoxFactory
         if (typeOrdinal == 2 || typeOrdinal == 3)        
             comboBox.setEditable(true);        
         return comboBox;
-    }   
+    } 
+    
+    public void updateMailTemplates(Map<String, String> templates) {
+        
+        content.remove(content.indexOf(mailTemplateSelectorTemplate));        
+        mailTemplateSelectorTemplate.clear();
+        for (Entry<String, String> entry : templates.entrySet()) {
+            mailTemplateSelectorTemplate.add(entry.getKey());
+        }
+        content.add(mailTemplateSelectorTemplate);
+    }
 }

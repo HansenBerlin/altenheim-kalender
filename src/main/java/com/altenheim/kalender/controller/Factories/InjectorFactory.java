@@ -25,11 +25,11 @@ public class InjectorFactory
     {     
         jMetroStyle = new JMetro();   
         var customCalendarView = new CalendarView();
-        var mailTemplates = new MailTemplateModel();
         var contacts = new ArrayList<ContactModel>();
         var settings = new SettingsModel();
 
-        IComboBoxFactory comboBoxFactory = new ComboBoxFactory(mailTemplates);
+        IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
+        var mailTemplates = new MailTemplateModel();
         IAnimationController animationController = new AnimationController();
         IPopupViewController popupViewController = new PopupViewsController();
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
