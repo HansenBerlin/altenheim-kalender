@@ -42,7 +42,7 @@ public class SettingsViewController extends ResponsiveController
     @FXML 
     private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
     @FXML 
-    private CheckBox cBToolTips = new CheckBox();
+    private CheckBox cBToolTips;
     @FXML 
     private VBox topContainer, bottomContainer, containerComboBoxNotificationMin;
     @FXML

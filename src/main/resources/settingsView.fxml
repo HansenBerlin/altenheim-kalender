@@ -108,7 +108,7 @@
                </children>
             </HBox>
             <Separator />
-            <CheckBox mnemonicParsing="false" text="Tool Tips" />
+            <CheckBox fx:id="cBToolTips" mnemonicParsing="false" text="Tool Tips" />
             <Separator />
             <Text fx:id="txtError" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" />
             <HBox alignment="TOP_CENTER">
