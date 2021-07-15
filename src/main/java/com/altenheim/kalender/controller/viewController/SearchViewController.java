@@ -15,7 +15,9 @@ import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import java.io.IOException;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -218,36 +220,53 @@ public class SearchViewController extends ResponsiveController
         txtHeaderStep.setText(headings[currentIndex]);
     }
     
-    private int suggestions = 1;
+    private int suggestions = 1;    
+    private LocalDateTime timeToStartSearch;
+    private SerializableEntry currentSuggestion;
     private void getNextSuggestion()
     {
-        var startDateInput = startDate.getValue();
-        var startTimeInput = timeStart.getValue();
-        var currentCheck = LocalDateTime.of(startDateInput, startTimeInput);
+        //var currentCheck = LocalDateTime.of(startDateUpdated, startTimeUpdated);
         int duration = (int)sliderDurationMinutes.getValue();
-        var newTime = currentCheck.plusMinutes(suggestions * duration);
-        var entry = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, newTime, duration);
-        suggestions++;        
-        SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime(), entry.getStartDate());
+        //var newTime = currentCheck.plusMinutes(duration);
+        currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
+        var nextTimeToCheck = setNextSuggestion(currentSuggestion);
+        SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), currentSuggestion.getStartDate());
+        suggestions++;  
+    }
+
+    private LocalDateTime setNextSuggestion(SerializableEntry entry)
+    {
+        var startDateNew = startDate.getValue();
+        var startTimeNew = timeStart.getValue();
+        if (entry.getEndDate().isAfter(currentSuggestion.getStartDate()))
+            startDateNew = entry.getEndDate();
+        else
+            startTimeNew = entry.getEndTime();
+        var currentCheck = LocalDateTime.of(startDateNew, startTimeNew);
+        //int duration = (int)sliderDurationMinutes.getValue();
+        return currentCheck;
     }
 
     private void startRequest()
-    {
+    {       
+        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
+        int[] travelTime = { 0, 0 };
         var userPrefs = entryFactory.createUserEntry(startDate.getValue(),
                 endDate.getValue(), timeStart.getValue(), timeEnd.getValue());
         int duration = (int)sliderDurationMinutes.getValue();
-        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
-        try {
-            openingHours = api.getOpeningHours(dropdownEndAtDest.getEditor().getText());
-        } catch (IOException | InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        //var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
+        var origin = dropdownStartAtDest.getEditor().getText();
+        var destination = dropdownEndAtDest.getEditor().getText();
+        if (isInputStringEmpty(destination) == false)
+            openingHours = api.getOpeningHours(destination);
+        if (isInputStringEmpty(origin) == false)
+            travelTime = api.searchForDestinationDistance(origin, destination, getApiStringFromInput());
+        travelTime = updateTravelTimeToMinutes(travelTime);        
         int timeBefore = (int)sliderMarginBeforeAppointment.getValue();
         int timeAfter = (int)sliderMarginAfterAppointment.getValue();
+        var updatedTimes = compareTimes(timeBefore, timeAfter, travelTime[0], travelTime[1]);
         boolean[] weekdays = { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),
                 tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(), tickSunday.isSelected() };
-
         int suggestionsCount = 100;             
         int intervalDays = 0;
         if (toggleRecurringDate.isDisabled() == false)
@@ -259,8 +278,53 @@ public class SearchViewController extends ResponsiveController
             suggestionsCount = 1; 
 
         currentSuggestions = smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, openingHours, 
-            timeBefore, timeAfter, suggestionsCount, intervalDays);
+            updatedTimes[0], updatedTimes[1], suggestionsCount, intervalDays);
+        
+        timeToStartSearch = LocalDateTime.of(startDate.getValue(), timeStart.getValue());
+    }
 
+    private boolean isInputStringEmpty(String content)
+    {
+        if (content == null || content.isEmpty())
+            return true;
+        else
+            return false;
+    }
+
+    private int[] updateTravelTimeToMinutes(int[] travelTime)
+    {
+        if (travelTime[0] != 0)
+            travelTime[0] = travelTime[0]/60;
+        if (travelTime[1] != 0)
+            travelTime[1] = travelTime[1]/60;
+        return travelTime;        
+    }
+
+    private int[] compareTimes(int timeBefore, int timeAfter, int travelTimeStart, int travelTimeEnd)
+    {
+        int[] updatedTimes = new int[2];
+        if (timeBefore > travelTimeStart)
+            updatedTimes[0] = timeBefore;
+        else
+            updatedTimes[0] = travelTimeStart;
+        if (timeAfter > travelTimeEnd)
+            updatedTimes[1] = timeAfter;
+        else
+            updatedTimes[1] = travelTimeEnd;
+        return updatedTimes;
+    }
+
+    private String getApiStringFromInput()
+    {
+        String input = switch(dropdownVehicle.getEditor().getText()) 
+        {
+            case "Fußgänger" -> "walking";
+            case "Fahrrad" -> "bicycling";
+            case "Öffis" -> "transit";
+            case "Auto" -> "driving";
+            default -> ""; 
+        };
+        return input;
     }
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC)
