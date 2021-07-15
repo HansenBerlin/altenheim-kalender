@@ -122,12 +122,12 @@ public class SettingsViewController extends ResponsiveController
         settings.setZipCode(txtZipCode.getText());
         settings.setCity(txtCity.getText());
         settings.setMail(txtMail.getText());
-        System.out.println(comboBoxSelectionSpecialField.getEditor().get().toString());
-        System.out.println(comboBoxSelectionSemester.getEditor().getText().toString());
-        System.out.println(comboBoxSelectionCourse.getEditor().getText().toString());
-        // String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%c/kurs%s", 
-        //     comboBoxSelectionSpecialField.getEditor().getText(),  comboBoxSelectionSemester.getEditor().getText(), comboBoxSelectionCourse.getEditor().getText().replaceFirst("keine Kurse", ""));
-        // settings.setCalendarParser(resultURL);
+        System.out.println(comboBoxSelectionSpecialField.getValue().toString());
+        System.out.println(comboBoxSelectionSemester.getValue().toString());
+        System.out.println(comboBoxSelectionCourse.getValue().toString());
+        String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%s/kurs%s", 
+            comboBoxSelectionSpecialField.getValue().toString(),  comboBoxSelectionSemester.getValue().toString(), comboBoxSelectionCourse.getValue().toString().replaceFirst("keine Kurse", ""));
+        settings.setCalendarParser(resultURL);
         cBToolTips.setTooltip(cBToolTips.getTooltip());
 
 
