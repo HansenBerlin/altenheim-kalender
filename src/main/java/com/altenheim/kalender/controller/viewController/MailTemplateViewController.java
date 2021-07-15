@@ -2,9 +2,6 @@ package com.altenheim.kalender.controller.viewController;
 
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JOptionPane;
-
 import com.altenheim.kalender.interfaces.IComboBoxFactory;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.interfaces.IMailCreationController;

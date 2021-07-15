@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import com.altenheim.kalender.interfaces.IComboBoxFactory;
-import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
