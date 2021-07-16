@@ -15,6 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
+import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.view.CalendarView;
 
 
@@ -81,6 +82,9 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
                 }
             }            
         }
+        
+        calendar.setStyle(Style.STYLE6);
+
         addCalendarToView(calendar);
     }
 

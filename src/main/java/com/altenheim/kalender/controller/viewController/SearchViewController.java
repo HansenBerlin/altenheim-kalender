@@ -229,23 +229,11 @@ public class SearchViewController extends ResponsiveController
         int duration = (int)sliderDurationMinutes.getValue();
         //var newTime = currentCheck.plusMinutes(duration);
         currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
-        var nextTimeToCheck = setNextSuggestion(currentSuggestion);
+        timeToStartSearch = currentSuggestion.getEndAsLocalDateTime();
         SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), currentSuggestion.getStartDate());
         suggestions++;  
     }
-
-    private LocalDateTime setNextSuggestion(SerializableEntry entry)
-    {
-        var startDateNew = startDate.getValue();
-        var startTimeNew = timeStart.getValue();
-        if (entry.getEndDate().isAfter(currentSuggestion.getStartDate()))
-            startDateNew = entry.getEndDate();
-        else
-            startTimeNew = entry.getEndTime();
-        var currentCheck = LocalDateTime.of(startDateNew, startTimeNew);
-        //int duration = (int)sliderDurationMinutes.getValue();
-        return currentCheck;
-    }
+    
 
     private void startRequest()
     {       

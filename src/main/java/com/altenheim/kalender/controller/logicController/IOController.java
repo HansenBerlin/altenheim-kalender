@@ -147,6 +147,26 @@ public class IOController implements IIOController
         }
     }
 
+    public static SettingsModel restoreSettings()
+    {      
+        var file = new File("userFiles/settings");
+        if(!file.exists())
+            return null;  
+        try
+        {
+            var loadFile = new FileInputStream("userFiles/settings");
+            var inputStream = new ObjectInputStream(loadFile);
+            var settings = (SettingsModel)inputStream.readObject();
+            inputStream.close();
+            return settings;
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void writeMailTemplates(MailTemplateModel templates)
     {
     }
@@ -168,23 +188,5 @@ public class IOController implements IIOController
 		return entry;
 	} 
 
-    public static SettingsModel restoreSettings()
-    {      
-        var file = new File("userFiles/settings");
-        if(!file.exists())
-            return null;  
-        try
-        {
-            var loadFile = new FileInputStream("userFiles/settings");
-            var inputStream = new ObjectInputStream(loadFile);
-            var settings = (SettingsModel)inputStream.readObject();
-            inputStream.close();
-            return settings;
-        }
-        catch (IOException | ClassNotFoundException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    
 }

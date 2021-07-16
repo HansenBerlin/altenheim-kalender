@@ -13,8 +13,7 @@ public class InjectorFactory
     private IViewRootsModel allViews;
     private GuiUpdateController guiSetup;
     private JMetro jMetroStyle;
-    private InitialSetupController initialSettingsLoader;   
-
+    private InitialSetupController initialSettingsLoader;  
     public GuiUpdateController getGuiController() { return guiSetup; }
     public IViewRootsModel getAllViews() { return allViews; }
     public JMetro getJMetroSetup() { return jMetroStyle; }
@@ -24,13 +23,14 @@ public class InjectorFactory
     public void createServices() throws Exception 
     {     
         jMetroStyle = new JMetro();   
-        var customCalendarView = new CalendarView();
+        //var customCalendarView = new CalendarView();
+        var customCalendarView = new CustomViewOverride();
         var mailTemplates = new ArrayList<MailTemplateModel>();
         var contacts = new ArrayList<ContactModel>();
         var settings = new SettingsModel();
         var loadedSettings = IOController.restoreSettings();
-        //if(loadedSettings != null)
-        //    settings = loadedSettings;        
+        if(loadedSettings != null)
+            settings = loadedSettings;        
         var jsonParser = new JsonParser();
 
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();

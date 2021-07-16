@@ -6,6 +6,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
 public class SerSimpleBoolean extends BooleanProperty implements Serializable
+
 {
 
     public SerSimpleBoolean(boolean b) {

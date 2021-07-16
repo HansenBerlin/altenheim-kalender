@@ -146,10 +146,10 @@
                <children>
                   <VBox spacing="5.0">
                      <children>
-                        <TextField fx:id="txtFStreet" alignment="CENTER" promptText="Straße" />
+                        <TextField fx:id="txtTFStreet" alignment="CENTER" promptText="Straße" />
                         <TextField fx:id="txtFHouseNumber" alignment="CENTER" promptText="Hausnummer" />
                         <TextField fx:id="txtFZipCode" alignment="CENTER" promptText="Plz" />
-                        <TextField fx:id="txtFCity" alignment="CENTER" promptText="Stadt" />
+                        <TextField fx:id="txtTFCity" alignment="CENTER" promptText="Stadt" />
                         <TextField fx:id="txtFMail" alignment="CENTER" promptText="E-Mail Adresse" />
                      </children>
                      <opaqueInsets>
@@ -173,7 +173,7 @@
                </children>
             </HBox>
             <Separator maxWidth="350.0" />
-            <CheckBox mnemonicParsing="false" text="Tool Tips" />
+            <CheckBox fx:id="cBToolTips" mnemonicParsing="false" text="Tool Tips" />
             <Separator maxWidth="350.0" />
             <HBox alignment="TOP_CENTER">
                <children>
