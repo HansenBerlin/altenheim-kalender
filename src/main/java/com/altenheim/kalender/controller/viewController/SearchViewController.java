@@ -241,9 +241,9 @@ public class SearchViewController extends ResponsiveController
         //var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
         var origin = dropdownStartAtDest.getEditor().getText();
         var destination = dropdownEndAtDest.getEditor().getText();
-        if (isInputStringEmpty(destination) == false)
+        if (destination.isEmpty() == false)
             openingHours = api.getOpeningHours(destination);
-        if (isInputStringEmpty(origin) == false)
+        if (origin.isEmpty() == false)
             travelTime = api.searchForDestinationDistance(origin, destination, getApiStringFromInput());
         travelTime = updateTravelTimeToMinutes(travelTime);        
         int timeBefore = (int)sliderMarginBeforeAppointment.getValue();
@@ -265,15 +265,7 @@ public class SearchViewController extends ResponsiveController
             updatedTimes[0], updatedTimes[1], suggestionsCount, intervalDays);
         
         timeToStartSearch = LocalDateTime.of(startDate.getValue(), timeStart.getValue());
-    }
-
-    private boolean isInputStringEmpty(String content)
-    {
-        if (content == null || content.isEmpty())
-            return true;
-        else
-            return false;
-    }
+    }   
 
     private int[] updateTravelTimeToMinutes(int[] travelTime)
     {
