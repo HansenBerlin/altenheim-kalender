@@ -2,10 +2,10 @@ package com.altenheim.kalender.controller.viewController;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -15,8 +15,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.model.Entry;
@@ -48,28 +52,23 @@ public class SearchViewController extends ResponsiveController
 
     private ISmartSearchController smartSearch;
     private IEntryFactory entryFactory;
-    private IContactFactory contactFactory;
     private IGoogleAPIController api;
     private IIOController iOController;
     private IAnimationController animationController;
     private IComboBoxFactory comboBoxFactory;
     private IDateSuggestionController dateSuggestionController;
-    private List<ContactModel> contacts;
-    private List<MailTemplateModel> mailTemplates;
+    private MailTemplateModel mailTemplates;
     private SettingsModel settings;
-    private ArrayList<Entry<?>> currentSuggestions;
+    private ArrayList<SerializableEntry> currentSuggestions;
     private int userStep = 1;
 
   
 
-    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<ContactModel> contacts, 
-        IContactFactory contactFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api, 
+    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api,
         IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory, IDateSuggestionController dateSuggestionController)
     {
         this.smartSearch = smartSearch;
-        this.entryFactory = entryFactory;
-        this.contacts = contacts;
-        this.contactFactory = contactFactory;
+        this.entryFactory = entryFactory;        
         this.mailTemplates = mailTemplates;
         this.settings = settings;
         this.api = api;
@@ -216,28 +215,40 @@ public class SearchViewController extends ResponsiveController
         userStep += incrementor; 
         txtHeaderStep.setText(headings[currentIndex]);
     }
-
-    private int suggestions = 1;
+    
+    private int suggestions = 1;    
+    private LocalDateTime timeToStartSearch;
+    private SerializableEntry currentSuggestion;
     private void getNextSuggestion()
     {
-        var startDateInput = startDate.getValue();
-        var startTimeInput = timeStart.getValue();
-        var currentCheck = LocalDateTime.of(startDateInput, startTimeInput);
+        //var currentCheck = LocalDateTime.of(startDateUpdated, startTimeUpdated);
         int duration = (int)sliderDurationMinutes.getValue();
-        var newTime = currentCheck.plusMinutes(suggestions * duration);
-        var entry = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, newTime, duration);
-        suggestions++;        
-        SuggestionsModel.addToList(entry.getStartTime(), entry.getEndTime(), entry.getStartDate());
+        //var newTime = currentCheck.plusMinutes(duration);
+        currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
+        timeToStartSearch = currentSuggestion.getEndAsLocalDateTime();
+        SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), currentSuggestion.getStartDate());
+        suggestions++;  
     }
+    
 
     private void startRequest()
-    {
+    {       
+        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
+        int[] travelTime = { 0, 0 };
         var userPrefs = entryFactory.createUserEntry(startDate.getValue(),
                 endDate.getValue(), timeStart.getValue(), timeEnd.getValue());
         int duration = (int)sliderDurationMinutes.getValue();
-        var openingHours = entryFactory.createOpeningHoursWithLunchBreak();
+        //var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
+        var origin = dropdownStartAtDest.getEditor().getText();
+        var destination = dropdownEndAtDest.getEditor().getText();
+        if (destination.isEmpty() == false)
+            openingHours = api.getOpeningHours(destination);
+        if (origin.isEmpty() == false)
+            travelTime = api.searchForDestinationDistance(origin, destination, getApiStringFromInput());
+        travelTime = updateTravelTimeToMinutes(travelTime);        
         int timeBefore = (int)sliderMarginBeforeAppointment.getValue();
         int timeAfter = (int)sliderMarginAfterAppointment.getValue();
+        var updatedTimes = compareTimes(timeBefore, timeAfter, travelTime[0], travelTime[1]);
         boolean[] weekdays = { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),
                 tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(), tickSunday.isSelected() };
         int suggestionsCount = 100;             
@@ -248,12 +259,48 @@ public class SearchViewController extends ResponsiveController
             intervalDays = sliderRecurrences.valueProperty().intValue();
         }
         else if (toggleRecurringDate.isDisabled() && toggleAddAutomatically.isDisabled() == false)
-            suggestionsCount = 1;        
-         
+            suggestionsCount = 1; 
 
         currentSuggestions = smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, openingHours, 
-            timeBefore, timeAfter, suggestionsCount, intervalDays);
+            updatedTimes[0], updatedTimes[1], suggestionsCount, intervalDays);
         
+        timeToStartSearch = LocalDateTime.of(startDate.getValue(), timeStart.getValue());
+    }   
+
+    private int[] updateTravelTimeToMinutes(int[] travelTime)
+    {
+        if (travelTime[0] != 0)
+            travelTime[0] = travelTime[0]/60;
+        if (travelTime[1] != 0)
+            travelTime[1] = travelTime[1]/60;
+        return travelTime;        
+    }
+
+    private int[] compareTimes(int timeBefore, int timeAfter, int travelTimeStart, int travelTimeEnd)
+    {
+        int[] updatedTimes = new int[2];
+        if (timeBefore > travelTimeStart)
+            updatedTimes[0] = timeBefore;
+        else
+            updatedTimes[0] = travelTimeStart;
+        if (timeAfter > travelTimeEnd)
+            updatedTimes[1] = timeAfter;
+        else
+            updatedTimes[1] = travelTimeEnd;
+        return updatedTimes;
+    }
+
+    private String getApiStringFromInput()
+    {
+        String input = switch(dropdownVehicle.getEditor().getText()) 
+        {
+            case "Fußgänger" -> "walking";
+            case "Fahrrad" -> "bicycling";
+            case "Öffis" -> "transit";
+            case "Auto" -> "driving";
+            default -> ""; 
+        };
+        return input;
     }
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC)
@@ -269,8 +316,8 @@ public class SearchViewController extends ResponsiveController
     @FXML
     private void testUpdate(ActionEvent event) throws IOException, ClassNotFoundException
     {
-        entryFactory.createRandomContactsList(100);
-        iOController.saveContactsToFile();     
+        //entryFactory.createRandomContactsList(100);
+        //iOController.saveContactsToFile();     
     }
 
     @FXML

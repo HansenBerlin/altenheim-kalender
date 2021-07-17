@@ -1,56 +1,55 @@
 package com.altenheim.kalender.controller.Factories;
 
+import java.io.File;
 import java.util.ArrayList;
+import jfxtras.styles.jmetro.JMetro;
 import com.altenheim.kalender.controller.logicController.*;
 import com.altenheim.kalender.controller.viewController.*;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.*;
-import com.calendarfx.view.CalendarView;
-import jfxtras.styles.jmetro.JMetro;
 
 public class InjectorFactory
 {    
     private IViewRootsModel allViews;
     private GuiUpdateController guiSetup;
     private JMetro jMetroStyle;
-    private InitialSetupController initialSettingsLoader;   
-
+    private InitialSetupController initialSettingsLoader;  
     public GuiUpdateController getGuiController() { return guiSetup; }
     public IViewRootsModel getAllViews() { return allViews; }
     public JMetro getJMetroSetup() { return jMetroStyle; }
     public InitialSetupController getInitialSettingsLoader() { return initialSettingsLoader; }
 
-
     public void createServices() throws Exception 
     {     
         jMetroStyle = new JMetro();   
-        var customCalendarView = new CalendarView();
-        var mailTemplates = new ArrayList<MailTemplateModel>();
-        var contacts = new ArrayList<ContactModel>();
+        var jsonParser = new JsonParser();
+        var customCalendarView = new CustomViewOverride();
         var settings = new SettingsModel();
+        var mailTemplates = new MailTemplateModel();
+        var settingsFile = new File("userFiles/settingsTest.file");    
+        if (settingsFile.exists())        
+            settings.readSimpleProperties();
 
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
         IAnimationController animationController = new AnimationController();
         IPopupViewController popupViewController = new PopupViewsController();
+        IGoogleAPIController apiCt = new GoogleAPIController(settings, jsonParser);
+        IMailCreationController mailCreationCt = new MailCreationController(mailTemplates);       
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
         IDateSuggestionController dateSuggestionController = new DateSuggestionController();
         IImportController importCt = new ImportController(settings);
-        IContactFactory contactFactory = new ContactFactory(contacts);
-        IGoogleAPIController apiCt = new GoogleAPIController(settings);
-        IMailCreationController mailCreationCt = new MailCreationController(mailTemplates); 
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
         IExportController exportCt = new ExportController(settings, calendarEntriesModel);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt);
-        IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, contacts);
-        IIOController ioCt = new IOController(entryFactory, contacts, settings, mailTemplates, calendarEntriesModel);
+        IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView);
+        IIOController ioCt = new IOController(entryFactory, settings, mailTemplates, calendarEntriesModel);
 
-        var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
-        var contactsVCt = new ContactsViewController(contacts, contactFactory, apiCt, ioCt);
+        var statsVCt = new StatsViewController(calendarEntriesModel);
+        var contactsVCt = new ContactsViewController(apiCt, ioCt);
         var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView, popupViewController);
-        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, websiteCt, popupViewController, comboBoxFactory);
-        var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates);
-        var searchVCt = new SearchViewController(smartSearch, entryFactory, contacts, contactFactory, mailTemplates, settings, 
-            apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController);
+        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, popupViewController, ioCt);
+        var mailVCt = new MailTemplateViewController(ioCt, settings, mailTemplates, mailCreationCt, mailTemplates, comboBoxFactory);
+        var searchVCt = new SearchViewController(smartSearch, entryFactory, mailTemplates, settings, apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews);

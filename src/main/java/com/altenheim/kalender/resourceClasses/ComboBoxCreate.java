@@ -1,4 +1,4 @@
-﻿package com.altenheim.kalender.resourceClasses;
+package com.altenheim.kalender.resourceClasses;
 
 public enum ComboBoxCreate 
 {
@@ -10,4 +10,5 @@ public enum ComboBoxCreate
     SELECTIONSPECIALFIELD,
     SELECTIONCOURSE,
     SELECTIONSEMESTER    
+    MAILTEMPLATESELECTORTEMPLATE
 }

@@ -6,6 +6,14 @@ import java.util.Map;
 
 public class MailTemplateModel implements Serializable
 {
+    Map<String, String> templates = new HashMap<String, String>();
+
+    public MailTemplateModel()
+    {
+        templates.put("templateOne" , getTemplateOne());
+        templates.put("templateTwo" , getTemplateTwo());
+    }
+    
     public String getTemplateOne()
     {
         return "Sehr geehrter Typ von nebenan,\nich hätte gerne einen Termin am " +
@@ -26,5 +34,11 @@ public class MailTemplateModel implements Serializable
         tryMailTemplate.put(TestName, TestValue);
         tryMailTemplate.get(TestName);                  // Rückgabe wäre der Wert
 
+    
+    public void addTemplate (String key, String value) {templates.put(key, value);}
+    public void removeTemplate (String key) {templates.remove(key);}
+    public Map<String, String> getTemplates (){return templates;}
+    public void setTemplates (Map<String, String> map){
+        this.templates = map;
     }
 }

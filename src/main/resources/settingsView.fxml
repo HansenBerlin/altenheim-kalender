@@ -81,11 +81,11 @@
                <children>
                   <VBox spacing="5.0">
                      <children>
-                        <TextField fx:id="txtFStreet" alignment="CENTER" promptText="Straße" />
-                        <TextField fx:id="txtFHouseNumber" alignment="CENTER" promptText="Hausnummer" />
-                        <TextField fx:id="txtFZipCode" alignment="CENTER" promptText="Plz" />
-                        <TextField fx:id="txtFCity" alignment="CENTER" promptText="Stadt" />
-                        <TextField fx:id="txtFMail" alignment="CENTER" promptText="E-Mail Adresse" />
+                        <TextField fx:id="txtTFStreet" alignment="CENTER" promptText="Straße" />
+                        <TextField fx:id="txtTFHouseNumber" alignment="CENTER" promptText="Hausnummer" />
+                        <TextField fx:id="txtTFZipCode" alignment="CENTER" promptText="Plz" />
+                        <TextField fx:id="txtTFCity" alignment="CENTER" promptText="Stadt" />
+                        <TextField fx:id="txtTFMail" alignment="CENTER" promptText="E-Mail Adresse" />
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -111,6 +111,7 @@
             <CheckBox fx:id="cBToolTips" mnemonicParsing="false" text="Tool Tips" />
             <Separator />
             <Text fx:id="txtError" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" />
+
             <HBox alignment="TOP_CENTER">
                <children>
                   <Button fx:id="btnSave" alignment="CENTER" minWidth="300.0" mnemonicParsing="false" onAction="#saveSettings" prefWidth="300.0" style="-fx-background-color: ;" text="Speichern" />

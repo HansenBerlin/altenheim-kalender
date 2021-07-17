@@ -25,7 +25,10 @@ public class InitialSetupController
     public void initializeSettings()
     {
         ioController.createUserPath();
-        //ioCt.loadCalendarsFromFile();
+        //var loadedSettings = ioController.restoreSettings();
+        //if (loadedSettings != null)
+        //    settings = loadedSettings;
+        //ioController.loadCalendarsFromFile();
         settings.addPropertyChangeListener(new ChangeListener());
         //websiteCt.startScraperTask();
         websiteScraper.scrapeCalendar();

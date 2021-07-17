@@ -3,6 +3,7 @@ package com.altenheim.kalender.controller.Factories;
 import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
+import com.altenheim.kalender.models.SerializableEntry;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -14,17 +15,17 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
+import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.view.CalendarView;
 
 
-public class EntryFactory extends ContactFactory implements IEntryFactory
+public class EntryFactory implements IEntryFactory
 {    
     private ICalendarEntriesModel allCalendars;
     private CalendarView calendarView;
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarView calendarView, List<ContactModel> contacts)
+    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarView calendarView)
     {
-        super(contacts);
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
     }    
@@ -34,15 +35,15 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
         return allCalendars;
     }
 
-    public HashMap<String, List<Entry<?>>> createEntryListForEachCalendar() 
+    public HashMap<String, List<SerializableEntry>> createEntryListForEachCalendar() 
 	{			
 		var result = allCalendars.getAllCalendars();		
-		var output = new HashMap<String, List<Entry<?>>>();
+		var output = new HashMap<String, List<SerializableEntry>>();
         var zoneId = ZoneId.systemDefault();
 
 		for (var calendar : result) 		
 		{	
-            var tempList = new ArrayList<Entry<?>>();
+            var tempList = new ArrayList<SerializableEntry>();
             var firstEntry = LocalDate.ofInstant(calendar.getEarliestTimeUsed(), zoneId);
             var lastEntry = LocalDate.ofInstant(calendar.getLatestTimeUsed(), zoneId);
             var entries = calendar.findEntries(firstEntry, lastEntry, zoneId);
@@ -50,7 +51,7 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
 			for (var entry : entries.values())
 			{		
                 for (var singleEntry : entry)
-                    tempList.add(singleEntry);					
+                    tempList.add((SerializableEntry) singleEntry);					
 			}	
             output.put(calendar.getName(), tempList);	
 		}			
@@ -80,6 +81,9 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
                 }
             }            
         }
+        
+        calendar.setStyle(Style.STYLE6);
+
         addCalendarToView(calendar);
     }
 
@@ -91,12 +95,12 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
         calendarView.getCalendarSources().addAll(calendarSource);
     }
 
-    private Entry<String> createRandomEntry(int day, int month, int startT, int endT)
+    private SerializableEntry createRandomEntry(int day, int month, int startT, int endT)
     {
         var startAndEndDate = LocalDate.of(2021, month, day);
         var startTime = LocalTime.of(startT, 0);
         var endTime = LocalTime.of(endT, 0);
-        var entry = new Entry<String>();
+        var entry = new SerializableEntry();
         entry.changeStartDate(startAndEndDate);
         entry.changeEndDate(startAndEndDate);
         entry.changeStartTime(startTime);
@@ -104,9 +108,9 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
         return entry;
     }
 
-    public Entry<String> createUserEntry (LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd)
+    public SerializableEntry createUserEntry (LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd)
     {
-        var entry = new Entry<String>();
+        var entry = new SerializableEntry();
         entry.changeStartTime(timeStart);
         entry.changeStartDate(dateStart);
         entry.changeEndTime(timeEnd);
@@ -114,10 +118,10 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
         return entry;
     }
 
-    public ArrayList<ArrayList<Entry<?>>> createOpeningHoursWithLunchBreak() {
-        ArrayList<ArrayList<Entry<?>>> openingHours = new ArrayList<ArrayList<Entry<?>>>();
+    public ArrayList<ArrayList<SerializableEntry>> createOpeningHoursWithLunchBreak() {
+        ArrayList<ArrayList<SerializableEntry>> openingHours = new ArrayList<ArrayList<SerializableEntry>>();
         for (int i = 0; i < 6; i++) {
-            var day1 = new ArrayList<Entry<?>>();
+            var day1 = new ArrayList<SerializableEntry>();
             if (i%2==0) {
                 day1.add(createEntryDummy(10, 13, 1, 1));
                 day1.add(createEntryDummy(16, 22, 1, 1));
@@ -127,14 +131,15 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
 
             openingHours.add(day1);
         }
-        openingHours.add(new ArrayList<Entry<?>>());
+        openingHours.add(new ArrayList<SerializableEntry>());
         return openingHours;
     }
 
 
-    private Entry<?> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
+    private SerializableEntry createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
     {
-        var entryUser = new Entry("User Preference");
+        var entryUser = new SerializableEntry();
+        entryUser.setTitle("User Preference");
         var startDate = LocalDate.of(2021, 1, startDay);
         var endDate = LocalDate.of(2021, 1, endDay);
         entryUser.changeStartDate(startDate);

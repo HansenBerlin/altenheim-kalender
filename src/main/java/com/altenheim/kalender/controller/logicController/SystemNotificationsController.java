@@ -10,8 +10,8 @@ import java.util.TimerTask;
 import java.awt.TrayIcon.MessageType;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISystemNotificationsController;
+import com.altenheim.kalender.models.SerializableEntry;
 import com.altenheim.kalender.models.SettingsModel;
-import com.calendarfx.model.Entry;
 
 public class SystemNotificationsController extends TimerTask implements ISystemNotificationsController  
 {
@@ -29,7 +29,7 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
     public void startNotificationTask()
     {
         var timer = new Timer();
-        timer.schedule(this, 0, settings.getEntrySystemMessageIntervalInMinutes()*60000);
+        timer.schedule(this, 0, settings.entrySystemMessageIntervalInMinutes*60000);
     }
 
     public void run()
@@ -37,16 +37,16 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
         prepareSystemMessagesForEntrys();
     }    
     
-    private void prepareSystemMessagesForEntrys() 
+    private void prepareSystemMessagesForEntrys()   
     {
         var start = LocalDateTime.now();
-        var timeToAdd = settings.getnotificationTimeBeforeEntryInMinutes();
-        var end = start.plusMinutes(settings.getEntrySystemMessageIntervalInMinutes());
+        var timeToAdd = settings.notificationTimeBeforeEntryInMinutes;
+        var end = start.plusMinutes(settings.entrySystemMessageIntervalInMinutes);
         var entries = administrateEntries.getEntrysWithStartInSpecificRange(start, end.plusMinutes(timeToAdd));
-        var currentEntries = new ArrayList<Entry<?>>();
+        var currentEntries = new ArrayList<SerializableEntry>();
         for (var entry : entries)
             if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1)) && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1)))
-                currentEntries.add((Entry<?>) entry);
+                currentEntries.add((SerializableEntry) entry);
         outputSystemMessageForEntryList("Termin beginnt jetzt", currentEntries);
         
         currentEntries.clear();
@@ -54,13 +54,13 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
         end = end.plusMinutes(timeToAdd);
         for (var entry : entries)
             if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1)) && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1)))
-                currentEntries.add((Entry<?>) entry);
+                currentEntries.add((SerializableEntry) entry);
         outputSystemMessageForEntryList("Termin beginnt in "+(int)timeToAdd/60+" Minuten", currentEntries);   
     }
 
-    private void outputSystemMessageForEntryList(String messageTitle, List<Entry<?>> entries) 
+    private void outputSystemMessageForEntryList(String messageTitle, List<SerializableEntry> entries) 
     {
-        for (Entry<?> entry : entries) 
+        for (SerializableEntry entry : entries) 
         {
             trayIcon.displayMessage(messageTitle, entry.getTitle(), MessageType.INFO);
         }

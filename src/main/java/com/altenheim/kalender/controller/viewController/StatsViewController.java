@@ -6,12 +6,10 @@ import com.altenheim.kalender.models.ContactModel;
 
 public class StatsViewController extends ResponsiveController
 {    
-    private List<ContactModel> contacts;
     private ICalendarEntriesModel allEntries;
 
-    public StatsViewController(List<ContactModel> contacts, ICalendarEntriesModel allEntries)
+    public StatsViewController(ICalendarEntriesModel allEntries)
     {
-        this.contacts = contacts;
         this.allEntries = allEntries;
     }
 

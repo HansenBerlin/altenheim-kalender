@@ -1,7 +1,9 @@
-﻿package com.altenheim.kalender.controller.Factories;
+package com.altenheim.kalender.controller.Factories;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import com.altenheim.kalender.interfaces.IComboBoxFactory;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.collections.FXCollections;
@@ -9,9 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 
 public class ComboBoxFactory implements IComboBoxFactory
-{
-    
-
+{  
     private ObservableList<String> vehicles = FXCollections.observableArrayList();
     private ObservableList<String> destinations = FXCollections.observableArrayList();
     private ObservableList<String> recurrenceOptions = FXCollections.observableArrayList();
@@ -33,6 +33,7 @@ public class ComboBoxFactory implements IComboBoxFactory
             "Informatik", "Maschinenbau", "PPM", "Spedition", "Steuern", "Tourismus", "Versicherung", "WI");
         selectionCourse.addAll("A", "B", "C", "keine Kurse");
         selectionSemester.addAll("Sem. 1","Sem. 2", "Sem. 3", "Sem. 4", "Sem. 5", "Sem. 6");
+        mailTemplateSelectorTemplate.add("test");        
         content.add(vehicles);
         content.add(destinations);
         content.add(destinations);
@@ -40,8 +41,17 @@ public class ComboBoxFactory implements IComboBoxFactory
         content.add(notificationMin);
         content.add(selectionSpecialField);
         content.add(selectionCourse);
-        content.add(selectionSemester);
+        content.add(selectionSemester);    
+        content.add(mailTemplateSelectorTemplate);
     }
+    
+
+    private ObservableList<String> vehicles = FXCollections.observableArrayList();
+    private ObservableList<String> destinations = FXCollections.observableArrayList();
+    private ObservableList<String> recurrenceOptions = FXCollections.observableArrayList();
+    private ObservableList<String> mailTemplateSelectorTemplate = FXCollections.observableArrayList(); //getter und dann ändern im Mail ViewController
+    private List<ObservableList<String>> content = new ArrayList<ObservableList<String>>();
+    private String[] headers = {"Verkehrsmittel", "Start", "Ziel", "Intervall", "Auswahl Templates"};
 
     public ComboBox<String> create(ComboBoxCreate type)
     {
@@ -54,4 +64,15 @@ public class ComboBoxFactory implements IComboBoxFactory
             comboBox.setEditable(true);        
         return comboBox;
     }   
+    
+    
+    public void updateMailTemplates(Map<String, String> templates) {
+        
+        content.remove(content.indexOf(mailTemplateSelectorTemplate));        
+        mailTemplateSelectorTemplate.clear();
+        for (Entry<String, String> entry : templates.entrySet()) {
+            mailTemplateSelectorTemplate.add(entry.getKey());
+        }
+        content.add(mailTemplateSelectorTemplate);
+    }
 }
