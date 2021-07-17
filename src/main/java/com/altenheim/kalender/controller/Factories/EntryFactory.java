@@ -19,14 +19,13 @@ import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.view.CalendarView;
 
 
-public class EntryFactory extends ContactFactory implements IEntryFactory
+public class EntryFactory implements IEntryFactory
 {    
     private ICalendarEntriesModel allCalendars;
     private CalendarView calendarView;
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarView calendarView, List<ContactModel> contacts)
+    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarView calendarView)
     {
-        super(contacts);
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
     }    

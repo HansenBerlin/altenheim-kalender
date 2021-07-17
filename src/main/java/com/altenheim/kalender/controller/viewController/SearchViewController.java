@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -51,13 +52,11 @@ public class SearchViewController extends ResponsiveController
 
     private ISmartSearchController smartSearch;
     private IEntryFactory entryFactory;
-    private IContactFactory contactFactory;
     private IGoogleAPIController api;
     private IIOController iOController;
     private IAnimationController animationController;
     private IComboBoxFactory comboBoxFactory;
     private IDateSuggestionController dateSuggestionController;
-    private List<ContactModel> contacts;
     private List<MailTemplateModel> mailTemplates;
     private SettingsModel settings;
     private ArrayList<SerializableEntry> currentSuggestions;
@@ -65,14 +64,11 @@ public class SearchViewController extends ResponsiveController
 
   
 
-    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<ContactModel> contacts, 
-        IContactFactory contactFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api, 
+    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api, 
         IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory, IDateSuggestionController dateSuggestionController)
     {
         this.smartSearch = smartSearch;
-        this.entryFactory = entryFactory;
-        this.contacts = contacts;
-        this.contactFactory = contactFactory;
+        this.entryFactory = entryFactory;        
         this.mailTemplates = mailTemplates;
         this.settings = settings;
         this.api = api;
@@ -328,8 +324,8 @@ public class SearchViewController extends ResponsiveController
     @FXML
     private void testUpdate(ActionEvent event) throws IOException, ClassNotFoundException
     {
-        entryFactory.createRandomContactsList(100);
-        iOController.saveContactsToFile();     
+        //entryFactory.createRandomContactsList(100);
+        //iOController.saveContactsToFile();     
     }
 
     @FXML

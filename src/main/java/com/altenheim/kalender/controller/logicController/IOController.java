@@ -24,16 +24,13 @@ import net.fortuna.ical4j.validate.ValidationException;
 public class IOController implements IIOController
 {
     private ICalendarEntriesModel allEntries;
-    private List<ContactModel> allContacts;
     protected SettingsModel settings;
     private List<MailTemplateModel> mailTemplates;
     private String hashedPassword;
 
-    public IOController(IEntryFactory administrateEntries, List<ContactModel> allContacts, 
-        SettingsModel settings, List<MailTemplateModel> mailTemplates, ICalendarEntriesModel allEntries)
+    public IOController(IEntryFactory administrateEntries, SettingsModel settings, List<MailTemplateModel> mailTemplates, ICalendarEntriesModel allEntries)
     {
         this.allEntries = allEntries;
-        this.allContacts = allContacts;
         this.settings = settings;
         this.mailTemplates = mailTemplates;
     }
@@ -77,7 +74,7 @@ public class IOController implements IIOController
             path = "userFiles/contacts.file";
         var writeToFile = new FileOutputStream(path);
         var convert = new ObjectOutputStream(writeToFile);
-        convert.writeObject(allContacts);
+        //convert.writeObject(allContacts);
         convert.close();
     }
 
@@ -90,7 +87,7 @@ public class IOController implements IIOController
         var loadFile = new FileInputStream(path);
         var inputStream = new ObjectInputStream(loadFile);
         var loadedContacts = (List<ContactModel>)inputStream.readObject();
-        allContacts.addAll(loadedContacts);
+        //allContacts.addAll(loadedContacts);
         inputStream.close();
     }
 

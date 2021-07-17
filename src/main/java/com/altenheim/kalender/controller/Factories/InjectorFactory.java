@@ -25,7 +25,6 @@ public class InjectorFactory
         var jsonParser = new JsonParser();
         var customCalendarView = new CustomViewOverride();
         var mailTemplates = new ArrayList<MailTemplateModel>();
-        var contacts = new ArrayList<ContactModel>();        
         var settings = new SettingsModel();
         var settingsFile = new File("userFiles/settingsTest.file");    
         if (settingsFile.exists())        
@@ -39,19 +38,18 @@ public class InjectorFactory
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
         IDateSuggestionController dateSuggestionController = new DateSuggestionController();
         IImportController importCt = new ImportController(settings);
-        IContactFactory contactFactory = new ContactFactory(contacts);
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
         IExportController exportCt = new ExportController(settings, calendarEntriesModel);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt);
-        IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, contacts);
-        IIOController ioCt = new IOController(entryFactory, contacts, settings, mailTemplates, calendarEntriesModel);
+        IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView);
+        IIOController ioCt = new IOController(entryFactory, settings, mailTemplates, calendarEntriesModel);
 
-        var statsVCt = new StatsViewController(contacts, calendarEntriesModel);
-        var contactsVCt = new ContactsViewController(contacts, contactFactory, apiCt, ioCt);
+        var statsVCt = new StatsViewController(calendarEntriesModel);
+        var contactsVCt = new ContactsViewController(apiCt, ioCt);
         var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView, popupViewController);
         var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, popupViewController, ioCt);
-        var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, contacts, mailTemplates);
-        var searchVCt = new SearchViewController(smartSearch, entryFactory, contacts, contactFactory, mailTemplates, settings, 
+        var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, mailTemplates);
+        var searchVCt = new SearchViewController(smartSearch, entryFactory, mailTemplates, settings, 
             apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);
