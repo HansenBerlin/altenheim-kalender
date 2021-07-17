@@ -3,11 +3,18 @@ package com.altenheim.kalender.models;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
-
 
 public class SettingsModel implements Serializable
 {
@@ -19,35 +26,28 @@ public class SettingsModel implements Serializable
     private String userDirectory = "userfiles/";
     private String decryptedPassword = "";
     private String pathToSaveBackupFiles = null;
-    public Long scrapingIntervalInMillis = (long) 2000;
-    private String scrappingURL; 
-    private SimpleStringProperty street = new SimpleStringProperty();
-    private SimpleStringProperty houseNumber = new SimpleStringProperty();
-    private SimpleStringProperty zipCode = new SimpleStringProperty();
-    private SimpleStringProperty city = new SimpleStringProperty();
-    private SimpleStringProperty mail = new SimpleStringProperty();
-    private SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
-    private SimpleStringProperty course = new SimpleStringProperty("Kurs");  
-    private SimpleStringProperty semester = new SimpleStringProperty("Sem.");
-    private BooleanProperty toolTip = new SimpleBooleanProperty(false);
-    private int MenuNotificationMin;
-    private int MenuNotificationHour;
+    private String scrappingURL = "";
 
-    private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
-    public Long scrapingIntervalInMinutes = (long) 60000;
-    private String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
-
-    private long entrySystemMessageIntervalInMinutes = 1;
-    private long notificationTimeBeforeEntryInMinutes = 15;
-
+    public SimpleStringProperty street = new SimpleStringProperty();
+    public SimpleStringProperty houseNumber = new SimpleStringProperty();
+    public SimpleStringProperty zipCode = new SimpleStringProperty();
+    public SimpleStringProperty city = new SimpleStringProperty();
+    public SimpleStringProperty mail = new SimpleStringProperty();
+    public SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
+    public SimpleStringProperty course = new SimpleStringProperty("Kurs");  
+    public SimpleStringProperty semester = new SimpleStringProperty("Sem.");
+    public SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
+    public PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);    
+    public String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
+    public long entrySystemMessageIntervalInMinutes = 1;
+    public long notificationTimeBeforeEntryInMinutes = 15;
+    private Long scrapingIntervalInMinutes = (long) 60000;
     private boolean useAdvancedFeatures = false; // je nachdem ob der pw hash erfolgreich geladen wird an oder aus, wegesuche und ÖZ dann ausgrauen
 
-    public void addPropertyChangeListener(PropertyChangeListener listener)
-    {
-        propertyChange.addPropertyChangeListener(listener);
-    }
-
-
+    private SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
+    private SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
+    public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
+    public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer; }
 
     public void setPathToIcsExportedFile(String path) { icsExportedFile = path; }
     public String getPathToIcsExportedFile() { return icsExportedFile; }
@@ -57,59 +57,68 @@ public class SettingsModel implements Serializable
     public String getDecryptedPasswordHash() { return decryptedPassword; }
     public void setDecryptedPasswordHash(String decryptedHash) { decryptedPassword = decryptedHash; }
     public void setAdvancedFeaturesFlag(boolean useAdvancedFeatures) { this.useAdvancedFeatures = useAdvancedFeatures; }
-
     public String getUrl() { return url; }
-    public long getScrapingInterval() { return scrapingIntervalInMinutes; }
+    public long getScrapingInterval() { return scrapingIntervalInMinutes; }    
+    public void setCustomPathToSavedFiles(String pathToSaveBackupFiles) {this.pathToSaveBackupFiles=pathToSaveBackupFiles;}
+    public void setCalendarParser(String scrappingURL) {this.scrappingURL = scrappingURL;}    
+    public String getCustomPathToSavedFiles() {return pathToSaveBackupFiles;}
+    public String getCalendarParser() {return scrappingURL;}    
+    
     public void setScrapingInterval(long interval)
     {
-        propertyChange.firePropertyChange("scrapingIntervalInMillis", scrapingIntervalInMinutes, interval);
+        propertyChange.firePropertyChange("scrapingIntervalInMinutes", scrapingIntervalInMinutes, interval);
         scrapingIntervalInMinutes = interval;
     }
+    public void addPropertyChangeListener(PropertyChangeListener listener)
+    {
+        propertyChange.addPropertyChangeListener(listener);
+    }
 
+    public void writeSimpleProperties()
+    {        
+        String path = "userFiles/settingsTest.file";        
+        try 
+        {
+            var writeToFile = new FileOutputStream(path);
+            var streamOut = new ObjectOutputStream(writeToFile);
 
-    public void setCustomPathToSavedFiles(String pathToSaveBackupFiles) {this.pathToSaveBackupFiles=pathToSaveBackupFiles;}
-    public String getCustomPathToSavedFiles() {return pathToSaveBackupFiles;}
+            for (var simpleStringProperty : settingsInputFieldsContainer) 
+            {
+                streamOut.writeUTF(simpleStringProperty.getValueSafe());                
+            }
+            for (var simpleStringProperty : settingsDropdownTitlesContainer) 
+            {
+                streamOut.writeUTF(simpleStringProperty.getValueSafe());                
+            }
+            streamOut.close();
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
 
-    public void setCalendarParser(String scrappingURL) {this.scrappingURL = scrappingURL;}
-    public String getCalendarParser() {return scrappingURL;}
-    
-    public void setStreet (String street) {this.street.set(street);}
-    public SimpleStringProperty getStreet() {return street;}
-    
-    public void setHouseNumber (String houseNumber) {this.houseNumber.set(houseNumber);}
-    public SimpleStringProperty getHouseNumber() {return houseNumber;}
-    
-    public void setZipCode (String zipCode) {this.zipCode.set(zipCode);}
-    public SimpleStringProperty getZipCOde() {return zipCode;}
-
-    public void setCity (String city) {this.city.set(city);}
-    public SimpleStringProperty getCity() {return city;}
-    
-    public void setMail(String mail) { this.mail.set(mail);}
-    public SimpleStringProperty getMail() {return mail;}
-
-    public void setSpecialField (String specialField) {this.specialField.set(specialField);}
-    public SimpleStringProperty getSpecialField() {return specialField;}
-
-    public void setCourse (String course) {this.course.set(course);}
-    public SimpleStringProperty getCourse() {return course;}
-
-    public void setSemester (String semester) {this.semester.set(semester);}
-    public SimpleStringProperty getSemester() {return semester;}
-
-    public void setToolTip(BooleanProperty toolTip) {this.toolTip = toolTip;}
-    public BooleanProperty getToolTip() {return toolTip;}
-
-    public long getEntrySystemMessageIntervalInMinutes() {return entrySystemMessageIntervalInMinutes;}
-    public long getnotificationTimeBeforeEntryInMinutes() {return notificationTimeBeforeEntryInMinutes;}
-    public void setnotificationTimeBeforeEntryInMinutes(long notificationTimeBeforeEntryInMinutes) {
-        this.notificationTimeBeforeEntryInMinutes = notificationTimeBeforeEntryInMinutes;}
-
-    public void setMenuNotificationHour(int menuNotificationHour) {this.MenuNotificationHour = menuNotificationHour;}
-    public int getMenuNotificationHour() {return MenuNotificationHour;}
-
-    public void setMenuNotificationMin(int menuNotificationMin) {this.MenuNotificationMin = menuNotificationMin;}
-    public int getMenuNotificationMin() {return MenuNotificationMin;}
-    
-
+    public void readSimpleProperties()
+    {
+        try 
+        {
+            String path = "userFiles/settingsTest.file";
+            var loadFile = new FileInputStream(path);
+            var inputStream = new ObjectInputStream(loadFile);
+            
+            for (var simpleStringProperty : settingsInputFieldsContainer) 
+            {
+                simpleStringProperty.set(inputStream.readUTF());                
+            }
+            for (var simpleStringProperty : settingsDropdownTitlesContainer) 
+            {
+                simpleStringProperty.set(inputStream.readUTF());                
+            }
+            inputStream.close();
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    } 
 }

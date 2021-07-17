@@ -5,7 +5,6 @@ import java.util.Map;
 import com.altenheim.kalender.interfaces.IComboBoxFactory;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.interfaces.IMailCreationController;
-import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.models.SettingsModel;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
@@ -24,40 +23,32 @@ public class MailTemplateViewController extends ResponsiveController
     private IIOController ioController;
     private SettingsModel settings;
     private IMailCreationController mailController;
-    private List<ContactModel> contacts;
     private MailTemplateModel mailTemplatesModel;
     private IComboBoxFactory comboBoxFactory;
     private ComboBox<String> comboBoxTemplates;
-    @FXML
-    private Button btnMailTemplateDate, btnMailTemplateTime, btnMailTemplateNewTemplate, btnMailTemplaterRemoveTemplate, btnMailTemplateSave, btnTemplateLoad;
-    @FXML
-    private HBox containerComboBoxSelectorTemplate;
-    @FXML
-    private TextArea mailTemplatetxtArea;
-    @FXML
-    private TextField txtFieldNameTemplate;
-    @FXML
-    private Text txtError;
-    @FXML
+    @FXML private Button btnMailTemplateDate, btnMailTemplateTime, btnMailTemplateNewTemplate, 
+        btnMailTemplaterRemoveTemplate, btnMailTemplateSave, btnTemplateLoad;
+    @FXML private HBox containerComboBoxSelectorTemplate;
+    @FXML private TextArea mailTemplatetxtArea;
+    @FXML private TextField txtFieldNameTemplate;
+    @FXML private Text txtError;
 
+    @FXML
     private void initialize()
     {
-        mailTemplatesModel.initialize();    
         comboBoxTemplates = comboBoxFactory.create(ComboBoxCreate.MAILTEMPLATESELECTORTEMPLATE);
         containerComboBoxSelectorTemplate.getChildren().add(comboBoxTemplates);
         comboBoxFactory.updateMailTemplates(mailTemplates);
     }
 
-    public MailTemplateViewController(IIOController ioController, SettingsModel settings, 
-        IMailCreationController mailController, List<ContactModel> contacts, MailTemplateModel mailTemplatesModel, IComboBoxFactory comboBoxFactory)
+    public MailTemplateViewController(IIOController ioController, SettingsModel settings, MailTemplateModel mailTemplateModel,
+        IMailCreationController mailController, MailTemplateModel mailTemplatesModel, IComboBoxFactory comboBoxFactory)
     {
         this.ioController = ioController;
         this.settings = settings;
         this.mailController = mailController;
-        this.contacts = contacts;
-        this.mailTemplatesModel = mailTemplatesModel;
         this.comboBoxFactory = comboBoxFactory;
-        this.mailTemplates = mailTemplatesModel.getTemplates();
+        this.mailTemplatesModel = mailTemplateModel;
     }
     
     public void changeContentPosition(double width, double height) 

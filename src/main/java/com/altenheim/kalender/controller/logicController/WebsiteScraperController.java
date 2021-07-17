@@ -38,8 +38,9 @@ public class WebsiteScraperController implements  IWebsiteScraperController//ext
 
     public void scrapeCalendar()
     {
+        /*
         if (isDownloadIcsSuccessful())
-            importHwrIcsFileToCalendar();
+            importHwrIcsFileToCalendar();*/
     }
 
     private void importHwrIcsFileToCalendar()  {

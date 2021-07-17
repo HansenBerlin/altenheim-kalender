@@ -1,6 +1,5 @@
 package com.altenheim.kalender.interfaces;
 
-import java.io.IOException;
 import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.List;

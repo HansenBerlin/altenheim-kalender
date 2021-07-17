@@ -8,7 +8,8 @@ public class MailTemplateModel implements Serializable
 {
     Map<String, String> templates = new HashMap<String, String>();
 
-    public void initialize (){
+    public MailTemplateModel()
+    {
         templates.put("templateOne" , getTemplateOne());
         templates.put("templateTwo" , getTemplateTwo());
     }
@@ -31,7 +32,4 @@ public class MailTemplateModel implements Serializable
     public void setTemplates (Map<String, String> map){
         this.templates = map;
     }
-
-
-
 }

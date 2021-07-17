@@ -24,18 +24,16 @@ import net.fortuna.ical4j.validate.ValidationException;
 public class IOController implements IIOController
 {
     private ICalendarEntriesModel allEntries;
-    private List<ContactModel> allContacts;
     protected SettingsModel settings;
     private MailTemplateModel mailTemplates;
     private String hashedPassword;
 
-    public IOController(IEntryFactory administrateEntries, List<ContactModel> allContacts, 
-        SettingsModel settings, MailTemplateModel mailTemplates, ICalendarEntriesModel allEntries)
+    public IOController(IEntryFactory administrateEntries, SettingsModel settings, MailTemplateModel mailTemplates, ICalendarEntriesModel allEntries)
     {
         this.allEntries = allEntries;
-        this.allContacts = allContacts;
         this.settings = settings;
         this.mailTemplates = mailTemplates;
+        this.allEntries = allEntries;
     }
 
 
@@ -65,7 +63,6 @@ public class IOController implements IIOController
         }
     }
 
-
     public void loadCalendarsFromFile() throws IOException, ParserException
     {
     }
@@ -75,10 +72,10 @@ public class IOController implements IIOController
     {
         var path = settings.getPathToHwrScrapedFile();
         if (path == null)
-            path = "contactFiles/contacts.file";
+            path = "userFiles/contacts.file";
         var writeToFile = new FileOutputStream(path);
         var convert = new ObjectOutputStream(writeToFile);
-        convert.writeObject(allContacts);
+        //convert.writeObject(allContacts);
         convert.close();
     }
 
@@ -87,11 +84,11 @@ public class IOController implements IIOController
     {
         var path = settings.getPathToIcsExportedFile();
         if (path == null)
-            path = "contactFiles/contacts.file";
+            path = "userFiles/contacts.file";
         var loadFile = new FileInputStream(path);
         var inputStream = new ObjectInputStream(loadFile);
         var loadedContacts = (List<ContactModel>)inputStream.readObject();
-        allContacts.addAll(loadedContacts);
+        //allContacts.addAll(loadedContacts);
         inputStream.close();
     }
 
@@ -134,27 +131,48 @@ public class IOController implements IIOController
 
     public void writeSettings(SettingsModel settings)
     {
+        var path = settings.getPathToUserDirectory() + "settings";
+        try
+        {
+            var writeToFile = new FileOutputStream(path);
+            var convert = new ObjectOutputStream(writeToFile);
+            convert.writeObject(settings);
+            convert.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
-
-    public SettingsModel restoreSettings()
-    {
-        return null;
+    public static SettingsModel restoreSettings()
+    {      
+        var file = new File("userFiles/settings");
+        if(!file.exists())
+            return null;  
+        try
+        {
+            var loadFile = new FileInputStream("userFiles/settings");
+            var inputStream = new ObjectInputStream(loadFile);
+            var settings = (SettingsModel)inputStream.readObject();
+            inputStream.close();
+            return settings;
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
-
 
     public void writeMailTemplates(MailTemplateModel templates)
     {
     }
 
-
-
-
     public MailTemplateModel restoreMailTemplates()
     {
         return null;
-    }  
-
+    } 
 
     private SerializableEntry createCalendarFXEntryFromMillis(long start, long end)
 	{
@@ -169,5 +187,4 @@ public class IOController implements IIOController
 	} 
 
     
-
 }

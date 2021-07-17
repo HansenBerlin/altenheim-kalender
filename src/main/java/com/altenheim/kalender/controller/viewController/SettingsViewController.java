@@ -23,13 +23,11 @@ public class SettingsViewController extends ResponsiveController
     private IImportController importController;
     private IExportController exportController;
     private ICalendarEntriesModel allCalendars;
-    private IWebsiteScraperController websiteScraper;
     private IEntryFactory calendarFactory;
-    private IGoogleAPIController googleApis;
-    private IComboBoxFactory comboBoxFactory;
     private IPopupViewController popupViewController;
-    private ComboBox<Integer> comboBoxNotificationHour, comboBoxNotificationMin;
-    
+    private IIOController iOController;
+    private IComboBoxFactory comboBoxFactory;
+    private ComboBox<Integer> comboBoxNotificationHour, comboBoxNotificationMin;    
 
     @FXML
     private MenuButton btnMenuSpecialField, btnMenuCourse, btnMenuSemester, btnMenuImportColour;
@@ -40,42 +38,40 @@ public class SettingsViewController extends ResponsiveController
     @FXML
     private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
         txtNotifocationMin, txtNotificationHour;
-    @FXML 
-    private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
-    @FXML 
-    private CheckBox cBToolTips = new CheckBox();
-    @FXML 
-    private VBox topContainer, bottomContainer;
-
+    @FXML private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
+    @FXML private CheckBox cBToolTips;
+    @FXML private VBox topContainer, bottomContainer;
 
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
                                   IExportController exportController, ICalendarEntriesModel allCalendars,
-                                  IWebsiteScraperController websiteScraper, IPopupViewController popupViewController, IComboBoxFactory comboBoxFactory)
+                                  IPopupViewController popupViewController, IIOController iOController)
     {
         this.settings = settings;
         this.importController = importController;
         this.exportController = exportController;
         this.allCalendars = allCalendars;
-        this.websiteScraper = websiteScraper;
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
+        this.iOController = iOController;
         this.comboBoxFactory = comboBoxFactory;
-
     }
 
     @FXML
     private void initialize ()
-    {
-        txtStreet.textProperty().bind(settings.getStreet());
-        txtHouseNumber.textProperty().bind(settings.getHouseNumber());
-        txtZipCode.textProperty().bind(settings.getZipCOde());
-        txtCity.textProperty().bind(settings.getCity());
-        txtMail.textProperty().bind(settings.getMail());
-        btnMenuSpecialField.idProperty().bind(settings.getSpecialField());
-        btnMenuCourse.idProperty().bind(settings.getCourse());
-        btnMenuSemester.idProperty().bind(settings.getSemester());
-        cBToolTips.selectedProperty().bindBidirectional(settings.getToolTip());
-    }
+    {   
+
+        Text[] stringPropertiesCollectionText = { txtStreet, txtHouseNumber, txtZipCode, txtCity, txtMail };
+        TextField[] stringPropertiesCollectionTextField = { txtTFStreet, txtTFHouseNumber, txtTFZipCode, txtTFCity, txtTFMail };
+
+        for (int i = 0; i < stringPropertiesCollectionTextField.length; i++) 
+        {
+            stringPropertiesCollectionTextField[i].textProperty().bindBidirectional(settings.getSettingsInputFieldsContainer()[i]);   
+            stringPropertiesCollectionText[i].textProperty().bindBidirectional(settings.getSettingsInputFieldsContainer()[i]); 
+        }
+        btnMenuSpecialField.textProperty().bindBidirectional(settings.specialField);
+        btnMenuCourse.textProperty().bindBidirectional(settings.course);
+        btnMenuSemester.textProperty().bindBidirectional(settings.semester); 
+    }     
 
     
     @FXML
@@ -96,28 +92,22 @@ public class SettingsViewController extends ResponsiveController
         else if (button.equals(btnGenerate))
         {
             calendarFactory.createRandomCalendarList();
+
         }
     }
 
     @FXML
     void saveSettings(ActionEvent event) 
     {
-        settings.setStreet(txtStreet.getText());
-        settings.setHouseNumber(txtHouseNumber.getText());
-        settings.setZipCode(txtZipCode.getText());
-        settings.setCity(txtCity.getText());
-        settings.setMail(txtMail.getText());
+        settings.writeSimpleProperties();
+
+
+        /*
         String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%c/kurs%s", 
             btnMenuSpecialField.getText(), btnMenuSemester.getText().charAt(5), btnMenuCourse.getText().replaceFirst("keine Kurse", ""));
-        settings.setCalendarParser(resultURL);
-        settings.setSpecialField(btnMenuSpecialField.getText());
-        settings.setCourse(btnMenuCourse.getText());
-        settings.setSemester(btnMenuSemester.getText());
-        //kann später entfernt werden
-        cBToolTips.setTooltip(cBToolTips.getTooltip());
+               */
+    }    
 
-    }
-    public void changeContentPosition() {}
 
     @FXML 
     void selectionScrapper(ActionEvent event)

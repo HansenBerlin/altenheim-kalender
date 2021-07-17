@@ -14,6 +14,8 @@ import com.altenheim.kalender.interfaces.ISmartSearchController;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import java.util.HashMap;
+import java.util.LinkedList;
+
 import com.altenheim.kalender.models.SerializableEntry;
 
 public class SmartSearchController implements ISmartSearchController 
@@ -68,23 +70,39 @@ public class SmartSearchController implements ISmartSearchController
 				continue;
 			}
 				
-			for (var day : openingHours.get(DayOfWeek.of((i%7)+1)))
+			if (openingHours.get(DayOfWeek.of((i%7)+1)) == null)
 			{
 				var entry = createEntry(date, startTime, endTime);
-				if (endTime.isBefore(day.getStartTime()) || startTime.isAfter(day.getEndTime()))
-					continue;
-				if (startTime.isBefore(day.getStartTime()))
-					entry.changeStartTime(day.getStartTime());
-				if (endTime.isAfter(day.getEndTime()))
-					entry.changeEndTime(day.getEndTime());
 				output.addAll(findAvailableTimeSlot(entry, duration, timeBefore, timeAfter));
-	
+
 				if (intervalDays >0 && intervalNumber >= output.size()) {
 					reduceListLenght(output, intervalNumber);
 					date = date.plusDays(intervalDays);
 					intervalNumber++;
 					inInterval = false;
 					i = -1;
+				}				
+			}
+			else
+			{
+				for (var day : openingHours.get(DayOfWeek.of((i%7)+1)))
+				{				
+					var entry = createEntry(date, startTime, endTime);
+					if (endTime.isBefore(day.getStartTime()) || startTime.isAfter(day.getEndTime()))
+						continue;
+					if (startTime.isBefore(day.getStartTime()))
+						entry.changeStartTime(day.getStartTime());
+					if (endTime.isAfter(day.getEndTime()))
+						entry.changeEndTime(day.getEndTime());
+					output.addAll(findAvailableTimeSlot(entry, duration, timeBefore, timeAfter));
+				
+					if (intervalDays >0 && intervalNumber >= output.size()) {
+						reduceListLenght(output, intervalNumber);
+						date = date.plusDays(intervalDays);
+						intervalNumber++;
+						inInterval = false;
+						i = -1;
+					}
 				}
 			}			
 		}
@@ -93,12 +111,14 @@ public class SmartSearchController implements ISmartSearchController
 		
 		return output;
 	}
-
-
+	
 
 	public ArrayList<SerializableEntry> findAvailableTimeSlot(SerializableEntry input, int duration, int before, int after) {			
-		var result = administrateEntries.getSpecificCalendarByIndex(0).findEntries(
-			input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values();		
+		var result = new LinkedList<List<Entry<?>>>();   
+        for (var calendar : administrateEntries.getAllCalendars()) {
+            result.addAll(calendar.findEntries(
+                input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values());
+        }		
 		var output = new ArrayList<SerializableEntry>();
 
 		long start = input.getStartMillis() + before * 60000;
