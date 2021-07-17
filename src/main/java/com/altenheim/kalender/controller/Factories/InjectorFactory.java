@@ -24,14 +24,13 @@ public class InjectorFactory
         jMetroStyle = new JMetro();   
         var jsonParser = new JsonParser();
         var customCalendarView = new CustomViewOverride();
-        var mailTemplates = new ArrayList<MailTemplateModel>();
         var settings = new SettingsModel();
+        var mailTemplates = new MailTemplateModel();
         var settingsFile = new File("userFiles/settingsTest.file");    
         if (settingsFile.exists())        
             settings.readSimpleProperties();
 
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
-        var mailTemplates = new MailTemplateModel();
         IAnimationController animationController = new AnimationController();
         IPopupViewController popupViewController = new PopupViewsController();
         IGoogleAPIController apiCt = new GoogleAPIController(settings, jsonParser);
@@ -49,9 +48,8 @@ public class InjectorFactory
         var contactsVCt = new ContactsViewController(apiCt, ioCt);
         var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView, popupViewController);
         var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, popupViewController, ioCt);
-        var mailVCt = new MailTemplateViewController(ioCt, settings, mailCreationCt, mailTemplates);
-        var searchVCt = new SearchViewController(smartSearch, entryFactory, mailTemplates, settings, 
-            apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController);
+        var mailVCt = new MailTemplateViewController(ioCt, settings, mailTemplates, mailCreationCt, mailTemplates, comboBoxFactory);
+        var searchVCt = new SearchViewController(smartSearch, entryFactory, mailTemplates, settings, apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews);

@@ -28,11 +28,12 @@ public class IOController implements IIOController
     private MailTemplateModel mailTemplates;
     private String hashedPassword;
 
-    public IOController(IEntryFactory administrateEntries, SettingsModel settings, List<MailTemplateModel> mailTemplates, ICalendarEntriesModel allEntries)
+    public IOController(IEntryFactory administrateEntries, SettingsModel settings, MailTemplateModel mailTemplates, ICalendarEntriesModel allEntries)
     {
         this.allEntries = allEntries;
         this.settings = settings;
         this.mailTemplates = mailTemplates;
+        this.allEntries = allEntries;
     }
 
 

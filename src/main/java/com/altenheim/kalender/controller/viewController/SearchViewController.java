@@ -57,14 +57,14 @@ public class SearchViewController extends ResponsiveController
     private IAnimationController animationController;
     private IComboBoxFactory comboBoxFactory;
     private IDateSuggestionController dateSuggestionController;
-    private List<MailTemplateModel> mailTemplates;
+    private MailTemplateModel mailTemplates;
     private SettingsModel settings;
     private ArrayList<SerializableEntry> currentSuggestions;
     private int userStep = 1;
 
   
 
-    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api,
+    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api,
         IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory, IDateSuggestionController dateSuggestionController)
     {
         this.smartSearch = smartSearch;
