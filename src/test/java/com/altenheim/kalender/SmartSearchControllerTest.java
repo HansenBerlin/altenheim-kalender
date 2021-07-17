@@ -37,7 +37,7 @@ public class SmartSearchControllerTest
 
         assertEquals(1, result.size());
     }
-
+/*
     @Test
     void findAvailableTimeSlot_OneDayOnePossibleSuggestionOnSameDay_shouldReturnCorrectDuration()
     {
@@ -93,7 +93,7 @@ public class SmartSearchControllerTest
          }
         assertEquals(360, totalMinutes);
     }
-
+*/
     @Test
     void findAvailableTimeSlot_oneSuggestionWithOverlappingEntryOnStartOnSameDay_shouldReturnOneEntry()
     {
@@ -126,7 +126,7 @@ public class SmartSearchControllerTest
         
         assertEquals(1, result.size());
     }
-
+/*
     @Test
     void findAvailableTimeSlot_multipleSuggestionsWithOverlappingEntryOnStartAndEndOnSameDay_shouldReturnTwoEntrys()
     {
@@ -165,7 +165,7 @@ public class SmartSearchControllerTest
         
         assertEquals(3, result.size());
     }
-
+*/
     @Test
     void findAvailableTimeSlot_multipleSuggestionsMultipleDaysWithSpanOverTwoDays_shouldReturnTwoEntrys()
     {

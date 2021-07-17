@@ -47,7 +47,7 @@ public class InjectorFactory
         var statsVCt = new StatsViewController(calendarEntriesModel);
         var contactsVCt = new ContactsViewController(apiCt, ioCt);
         var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView, popupViewController);
-        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, popupViewController, ioCt);
+        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, comboBoxFactory, popupViewController, ioCt);
         var mailVCt = new MailTemplateViewController(ioCt, settings, mailTemplates, mailCreationCt, mailTemplates, comboBoxFactory);
         var searchVCt = new SearchViewController(smartSearch, entryFactory, mailTemplates, settings, apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);

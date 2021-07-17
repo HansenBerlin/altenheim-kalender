@@ -13,8 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.LongPropertyBase;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableFloatValue;
+import javafx.beans.value.ObservableLongValue;
+import javafx.beans.value.ObservableNumberValue;
 
 public class SettingsModel implements Serializable
 {
@@ -26,6 +33,7 @@ public class SettingsModel implements Serializable
     private String userDirectory = "userfiles/";
     private String decryptedPassword = "";
     private String pathToSaveBackupFiles = null;
+
     private String scrappingURL = "";
 
     public SimpleStringProperty street = new SimpleStringProperty();
@@ -97,6 +105,7 @@ public class SettingsModel implements Serializable
             e.printStackTrace();
         }
     }
+
 
     public void readSimpleProperties()
     {

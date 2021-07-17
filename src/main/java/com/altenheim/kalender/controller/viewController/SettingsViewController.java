@@ -4,6 +4,7 @@ import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 
+import javafx.beans.property.SimpleLongProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,6 +16,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class SettingsViewController extends ResponsiveController
@@ -27,23 +29,19 @@ public class SettingsViewController extends ResponsiveController
     private IPopupViewController popupViewController;
     private IIOController iOController;
     private IComboBoxFactory comboBoxFactory;
-    private ComboBox<Integer> comboBoxNotificationHour, comboBoxNotificationMin;    
+    private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse, comboBoxSelectionSemester;    
 
-    @FXML
-    private MenuButton btnMenuSpecialField, btnMenuCourse, btnMenuSemester, btnMenuImportColour;
-    @FXML
-    private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
-    @FXML
-    private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
-    @FXML
-    private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
-        txtNotifocationMin, txtNotificationHour;
+    @FXML private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
+    @FXML private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
+    @FXML private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
+        txtNotifocationMin, txtNotificationHour, txtError;   
+    @FXML private HBox containerComboBoxSelectorScrapping;
     @FXML private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
     @FXML private CheckBox cBToolTips;
-    @FXML private VBox topContainer, bottomContainer;
+    @FXML private VBox topContainer, bottomContainer, containerComboBoxNotificationMin;
 
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
-                                  IExportController exportController, ICalendarEntriesModel allCalendars,
+                                  IExportController exportController, ICalendarEntriesModel allCalendars, IComboBoxFactory comboBoxFactory,
                                   IPopupViewController popupViewController, IIOController iOController)
     {
         this.settings = settings;
@@ -58,8 +56,13 @@ public class SettingsViewController extends ResponsiveController
 
     @FXML
     private void initialize ()
-    {   
-
+    {        
+        createComboBoxes();
+        bindInputFieldsToSerializable();        
+    }
+    
+    private void bindInputFieldsToSerializable()
+    {
         Text[] stringPropertiesCollectionText = { txtStreet, txtHouseNumber, txtZipCode, txtCity, txtMail };
         TextField[] stringPropertiesCollectionTextField = { txtTFStreet, txtTFHouseNumber, txtTFZipCode, txtTFCity, txtTFMail };
 
@@ -68,11 +71,25 @@ public class SettingsViewController extends ResponsiveController
             stringPropertiesCollectionTextField[i].textProperty().bindBidirectional(settings.getSettingsInputFieldsContainer()[i]);   
             stringPropertiesCollectionText[i].textProperty().bindBidirectional(settings.getSettingsInputFieldsContainer()[i]); 
         }
-        btnMenuSpecialField.textProperty().bindBidirectional(settings.specialField);
-        btnMenuCourse.textProperty().bindBidirectional(settings.course);
-        btnMenuSemester.textProperty().bindBidirectional(settings.semester); 
-    }     
+        //btn.textProperty().bindBidirectional(settings.specialField);
+        //btnMenuCourse.textProperty().bindBidirectional(settings.course);
+        //btnMenuSemester.textProperty().bindBidirectional(settings.semester); 
+    }
 
+    private void createComboBoxes()
+    {
+        comboBoxNotificationMin = comboBoxFactory.create(ComboBoxCreate.MENUNOTIFICATIONMIN);
+        comboBoxSelectionSpecialField = comboBoxFactory.create(ComboBoxCreate.SELECTIONSPECIALFIELD);
+        comboBoxSelectionCourse = comboBoxFactory.create(ComboBoxCreate.SELECTIONCOURSE);
+        comboBoxSelectionSemester = comboBoxFactory.create(ComboBoxCreate.SELECTIONSEMESTER);
+ 
+        containerComboBoxNotificationMin.getChildren().add(comboBoxNotificationMin);
+        containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSpecialField);
+        containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionCourse);
+        containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSemester);
+
+        //comboBoxNotificationMin.promptTextProperty().bind(settings.getnotificationTimeBeforeEntryInMinutes2());
+    }  
     
     @FXML
     void buttonClicked(ActionEvent event) throws IOException, InterruptedException 
@@ -99,6 +116,17 @@ public class SettingsViewController extends ResponsiveController
     @FXML
     void saveSettings(ActionEvent event) 
     {
+        if (comboBoxSelectionSpecialField.getValue() == null || comboBoxSelectionCourse.getValue() == null || comboBoxSelectionSemester.getValue() == null) {
+            txtError.setText("Nicht alle HWR Komponenten ausgewählt!");
+            txtError.setVisible(true);
+            txtError.setFill(Color.RED);
+        } else {
+            txtError.setVisible(false);
+            String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%s/kurs%s", 
+            comboBoxSelectionSpecialField.getValue(), comboBoxSelectionSemester.getValue(), comboBoxSelectionCourse.getValue().replaceFirst("keine Kurse", ""));
+        settings.setCalendarParser(resultURL);    
+        }
+        cBToolTips.setTooltip(cBToolTips.getTooltip());
         settings.writeSimpleProperties();
 
 
@@ -106,30 +134,7 @@ public class SettingsViewController extends ResponsiveController
         String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%c/kurs%s", 
             btnMenuSpecialField.getText(), btnMenuSemester.getText().charAt(5), btnMenuCourse.getText().replaceFirst("keine Kurse", ""));
                */
-    }    
-
-
-    @FXML 
-    void selectionScrapper(ActionEvent event)
-    {
-        var item = (MenuItem)event.getSource();
-        if (item.getId().contains("selection_AuswahlFB_")) 
-        {
-            btnMenuSpecialField.setText(item.getText());
-        } 
-        else if (item.getId().contains("selection_AuswahlKurs_"))
-        {
-            btnMenuCourse.setText(item.getText());
-        } 
-        else if (item.getId().contains("selection_AuswahlSemester_"))
-        {
-            btnMenuSemester.setText(item.getText());
-        }
-    }
-
-    
-    
-    
+    }  
     
     public void changeContentPosition(double width, double height) 
     {
@@ -143,6 +148,4 @@ public class SettingsViewController extends ResponsiveController
         childContainer.getChildren().remove(bottomContainer);
         childContainer.add(bottomContainer, col, row, 1, 1);
     }
-
-
 }
