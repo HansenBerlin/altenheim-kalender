@@ -2,14 +2,18 @@ package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
+import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import java.io.IOException;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -22,12 +26,17 @@ public class SettingsViewController extends ResponsiveController
     private IEntryFactory calendarFactory;
     private IPopupViewController popupViewController;
     private IIOController iOController;
+    private IComboBoxFactory comboBoxFactory;
+    private ComboBox<Integer> comboBoxNotificationHour, comboBoxNotificationMin;    
 
-    @FXML private MenuButton btnMenuSpecialField, btnMenuCourse, btnMenuSemester, btnMenuImportColour,
-        btnMenuCheckEvent, btnMenuNotificationMin, btnMenuNotificationHour;
-    @FXML private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate, btnCreateDummy;
-    @FXML private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
-    @FXML private Text txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
+    @FXML
+    private MenuButton btnMenuSpecialField, btnMenuCourse, btnMenuSemester, btnMenuImportColour;
+    @FXML
+    private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
+    @FXML
+    private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
+    @FXML
+    private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
         txtNotifocationMin, txtNotificationHour;
     @FXML private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
     @FXML private CheckBox cBToolTips;
@@ -44,6 +53,7 @@ public class SettingsViewController extends ResponsiveController
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
         this.iOController = iOController;
+        this.comboBoxFactory = comboBoxFactory;
     }
 
     @FXML
@@ -62,6 +72,7 @@ public class SettingsViewController extends ResponsiveController
         btnMenuCourse.textProperty().bindBidirectional(settings.course);
         btnMenuSemester.textProperty().bindBidirectional(settings.semester); 
     }     
+
     
     @FXML
     void buttonClicked(ActionEvent event) throws IOException, InterruptedException 
@@ -97,6 +108,7 @@ public class SettingsViewController extends ResponsiveController
                */
     }    
 
+
     @FXML 
     void selectionScrapper(ActionEvent event)
     {
@@ -114,6 +126,8 @@ public class SettingsViewController extends ResponsiveController
             btnMenuSemester.setText(item.getText());
         }
     }
+
+    
     
     
     
@@ -129,4 +143,6 @@ public class SettingsViewController extends ResponsiveController
         childContainer.getChildren().remove(bottomContainer);
         childContainer.add(bottomContainer, col, row, 1, 1);
     }
+
+
 }

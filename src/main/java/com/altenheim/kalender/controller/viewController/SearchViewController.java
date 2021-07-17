@@ -64,7 +64,7 @@ public class SearchViewController extends ResponsiveController
 
   
 
-    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api, 
+    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api,
         IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory, IDateSuggestionController dateSuggestionController)
     {
         this.smartSearch = smartSearch;

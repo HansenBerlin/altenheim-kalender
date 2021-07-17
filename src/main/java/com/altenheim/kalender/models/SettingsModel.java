@@ -37,22 +37,18 @@ public class SettingsModel implements Serializable
     public SimpleStringProperty course = new SimpleStringProperty("Kurs");  
     public SimpleStringProperty semester = new SimpleStringProperty("Sem.");
     public SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
-    public PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
-
-    private SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
-    private SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
-
+    public PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);    
     public String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
     public long entrySystemMessageIntervalInMinutes = 1;
     public long notificationTimeBeforeEntryInMinutes = 15;
     private Long scrapingIntervalInMinutes = (long) 60000;
-
-
     private boolean useAdvancedFeatures = false; // je nachdem ob der pw hash erfolgreich geladen wird an oder aus, wegesuche und ÖZ dann ausgrauen
 
-
+    private SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
+    private SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
     public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
     public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer; }
+
     public void setPathToIcsExportedFile(String path) { icsExportedFile = path; }
     public String getPathToIcsExportedFile() { return icsExportedFile; }
     public String getPathToHwrScrapedFile() { return hwrScrapedFile; }
