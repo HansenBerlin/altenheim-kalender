@@ -2,14 +2,18 @@ package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
+import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import java.io.IOException;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -22,21 +26,31 @@ public class SettingsViewController extends ResponsiveController
     private IWebsiteScraperController websiteScraper;
     private IEntryFactory calendarFactory;
     private IGoogleAPIController googleApis;
+    private IComboBoxFactory comboBoxFactory;
     private IPopupViewController popupViewController;
+    private ComboBox<Integer> comboBoxNotificationHour, comboBoxNotificationMin;
+    
 
-    @FXML private MenuButton btnMenuSpecialField, btnMenuCourse, btnMenuSemester, btnMenuImportColour,
-        btnMenuCheckEvent, btnMenuNotificationMin, btnMenuNotificationHour;
-    @FXML private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate, btnCreateDummy;
-    @FXML private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
-    @FXML private Text txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
+    @FXML
+    private MenuButton btnMenuSpecialField, btnMenuCourse, btnMenuSemester, btnMenuImportColour;
+    @FXML
+    private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
+    @FXML
+    private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
+    @FXML
+    private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
         txtNotifocationMin, txtNotificationHour;
-    @FXML private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
-    @FXML private CheckBox cBToolTips = new CheckBox();
-    @FXML private VBox topContainer, bottomContainer;
+    @FXML 
+    private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
+    @FXML 
+    private CheckBox cBToolTips = new CheckBox();
+    @FXML 
+    private VBox topContainer, bottomContainer;
+
 
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
                                   IExportController exportController, ICalendarEntriesModel allCalendars,
-                                  IWebsiteScraperController websiteScraper, IPopupViewController popupViewController)
+                                  IWebsiteScraperController websiteScraper, IPopupViewController popupViewController, IComboBoxFactory comboBoxFactory)
     {
         this.settings = settings;
         this.importController = importController;
@@ -45,6 +59,8 @@ public class SettingsViewController extends ResponsiveController
         this.websiteScraper = websiteScraper;
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
+        this.comboBoxFactory = comboBoxFactory;
+
     }
 
     @FXML
@@ -59,7 +75,8 @@ public class SettingsViewController extends ResponsiveController
         btnMenuCourse.idProperty().bind(settings.getCourse());
         btnMenuSemester.idProperty().bind(settings.getSemester());
         cBToolTips.selectedProperty().bindBidirectional(settings.getToolTip());
-    }  
+    }
+
     
     @FXML
     void buttonClicked(ActionEvent event) throws IOException, InterruptedException 
@@ -98,7 +115,9 @@ public class SettingsViewController extends ResponsiveController
         settings.setSemester(btnMenuSemester.getText());
         //kann später entfernt werden
         cBToolTips.setTooltip(cBToolTips.getTooltip());
-    }    
+
+    }
+    public void changeContentPosition() {}
 
     @FXML 
     void selectionScrapper(ActionEvent event)
@@ -117,6 +136,8 @@ public class SettingsViewController extends ResponsiveController
             btnMenuSemester.setText(item.getText());
         }
     }
+
+    
     
     
     
@@ -132,4 +153,6 @@ public class SettingsViewController extends ResponsiveController
         childContainer.getChildren().remove(bottomContainer);
         childContainer.add(bottomContainer, col, row, 1, 1);
     }
+
+
 }

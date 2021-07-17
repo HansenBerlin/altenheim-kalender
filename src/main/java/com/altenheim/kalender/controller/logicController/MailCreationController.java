@@ -12,9 +12,9 @@ import java.io.UnsupportedEncodingException;
 
 public class MailCreationController implements IMailCreationController
 {    
-    List<MailTemplateModel> mailTemplates;
+    private MailTemplateModel mailTemplates;
 
-    public MailCreationController(List<MailTemplateModel> mailTemplates)
+    public MailCreationController(MailTemplateModel mailTemplates)
     {
         this.mailTemplates = mailTemplates;
     }

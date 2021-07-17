@@ -56,7 +56,7 @@ public class SearchViewController extends ResponsiveController
     private IComboBoxFactory comboBoxFactory;
     private IDateSuggestionController dateSuggestionController;
     private List<ContactModel> contacts;
-    private List<MailTemplateModel> mailTemplates;
+    private MailTemplateModel mailTemplates;
     private SettingsModel settings;
     private ArrayList<SerializableEntry> currentSuggestions;
     private int userStep = 1;
@@ -64,7 +64,7 @@ public class SearchViewController extends ResponsiveController
   
 
     public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, List<ContactModel> contacts, 
-        IContactFactory contactFactory, List<MailTemplateModel> mailTemplates, SettingsModel settings, IGoogleAPIController api, 
+        IContactFactory contactFactory, MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api, 
         IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory, IDateSuggestionController dateSuggestionController)
     {
         this.smartSearch = smartSearch;
