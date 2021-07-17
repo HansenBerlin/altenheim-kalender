@@ -25,7 +25,7 @@ public class IOController implements IIOController
 {
     private ICalendarEntriesModel allEntries;
     protected SettingsModel settings;
-    private List<MailTemplateModel> mailTemplates;
+    private MailTemplateModel mailTemplates;
     private String hashedPassword;
 
     public IOController(IEntryFactory administrateEntries, SettingsModel settings, List<MailTemplateModel> mailTemplates, ICalendarEntriesModel allEntries)

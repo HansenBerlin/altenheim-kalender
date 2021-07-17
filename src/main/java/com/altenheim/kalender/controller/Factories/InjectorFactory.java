@@ -31,6 +31,7 @@ public class InjectorFactory
             settings.readSimpleProperties();
 
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
+        var mailTemplates = new MailTemplateModel();
         IAnimationController animationController = new AnimationController();
         IPopupViewController popupViewController = new PopupViewsController();
         IGoogleAPIController apiCt = new GoogleAPIController(settings, jsonParser);
