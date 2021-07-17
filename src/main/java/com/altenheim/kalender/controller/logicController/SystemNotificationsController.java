@@ -29,7 +29,7 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
     public void startNotificationTask()
     {
         var timer = new Timer();
-        timer.schedule(this, 0, settings.getEntrySystemMessageIntervalInMinutes()*60000);
+        timer.schedule(this, 0, settings.entrySystemMessageIntervalInMinutes*60000);
     }
 
     public void run()
@@ -37,11 +37,11 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
         prepareSystemMessagesForEntrys();
     }    
     
-    private void prepareSystemMessagesForEntrys() 
+    private void prepareSystemMessagesForEntrys()   
     {
         var start = LocalDateTime.now();
-        var timeToAdd = settings.getnotificationTimeBeforeEntryInMinutes();
-        var end = start.plusMinutes(settings.getEntrySystemMessageIntervalInMinutes());
+        var timeToAdd = settings.notificationTimeBeforeEntryInMinutes;
+        var end = start.plusMinutes(settings.entrySystemMessageIntervalInMinutes);
         var entries = administrateEntries.getEntrysWithStartInSpecificRange(start, end.plusMinutes(timeToAdd));
         var currentEntries = new ArrayList<SerializableEntry>();
         for (var entry : entries)
