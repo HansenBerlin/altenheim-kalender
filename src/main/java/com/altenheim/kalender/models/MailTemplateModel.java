@@ -32,7 +32,8 @@ public class MailTemplateModel implements Serializable
         String TestValue = "Halle hier steht ihr Text";
         String TestName = "Gewählter Name";             //Müssen eindeutig sein
         tryMailTemplate.put(TestName, TestValue);
-        tryMailTemplate.get(TestName);                  // Rückgabe wäre der Wert
+        tryMailTemplate.get(TestName);     // Rückgabe wäre der Wert
+    }             
 
     
     public void addTemplate (String key, String value) {templates.put(key, value);}

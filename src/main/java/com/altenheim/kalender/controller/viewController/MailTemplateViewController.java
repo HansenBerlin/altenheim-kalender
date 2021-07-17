@@ -35,10 +35,10 @@ public class MailTemplateViewController extends ResponsiveController
 
     @FXML
     private void initialize()
-    {
+    {/*
         comboBoxTemplates = comboBoxFactory.create(ComboBoxCreate.MAILTEMPLATESELECTORTEMPLATE);
         containerComboBoxSelectorTemplate.getChildren().add(comboBoxTemplates);
-        comboBoxFactory.updateMailTemplates(mailTemplates);
+        comboBoxFactory.updateMailTemplates(mailTemplates);*/
     }
 
     public MailTemplateViewController(IIOController ioController, SettingsModel settings, MailTemplateModel mailTemplateModel,

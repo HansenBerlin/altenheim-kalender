@@ -27,34 +27,21 @@ public class SettingsViewController extends ResponsiveController
     private ICalendarEntriesModel allCalendars;
     private IEntryFactory calendarFactory;
     private IPopupViewController popupViewController;
-    private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse, comboBoxSelectionSemester;    
     private IIOController iOController;
     private IComboBoxFactory comboBoxFactory;
-    private ComboBox<Integer> comboBoxNotificationHour, comboBoxNotificationMin;    
+    private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse, comboBoxSelectionSemester;    
 
-    @FXML
-    private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
-    @FXML
-    private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
-    @FXML
-    private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
-        txtNotifocationMin, txtNotificationHour, txtError;
-    @FXML 
-    private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
-    @FXML 
-    private CheckBox cBToolTips;
-    @FXML 
-    private VBox topContainer, bottomContainer, containerComboBoxNotificationMin;
-    @FXML
-    private HBox containerComboBoxSelectorScrapping;
-
-        txtNotifocationMin, txtNotificationHour;
+    @FXML private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
+    @FXML private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
+    @FXML private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
+        txtNotifocationMin, txtNotificationHour, txtError;   
+    @FXML private HBox containerComboBoxSelectorScrapping;
     @FXML private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
     @FXML private CheckBox cBToolTips;
-    @FXML private VBox topContainer, bottomContainer;
+    @FXML private VBox topContainer, bottomContainer, containerComboBoxNotificationMin;
 
     public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
-                                  IExportController exportController, ICalendarEntriesModel allCalendars,
+                                  IExportController exportController, ICalendarEntriesModel allCalendars, IComboBoxFactory comboBoxFactory,
                                   IPopupViewController popupViewController, IIOController iOController)
     {
         this.settings = settings;
@@ -84,9 +71,9 @@ public class SettingsViewController extends ResponsiveController
             stringPropertiesCollectionTextField[i].textProperty().bindBidirectional(settings.getSettingsInputFieldsContainer()[i]);   
             stringPropertiesCollectionText[i].textProperty().bindBidirectional(settings.getSettingsInputFieldsContainer()[i]); 
         }
-        btnMenuSpecialField.textProperty().bindBidirectional(settings.specialField);
-        btnMenuCourse.textProperty().bindBidirectional(settings.course);
-        btnMenuSemester.textProperty().bindBidirectional(settings.semester); 
+        //btn.textProperty().bindBidirectional(settings.specialField);
+        //btnMenuCourse.textProperty().bindBidirectional(settings.course);
+        //btnMenuSemester.textProperty().bindBidirectional(settings.semester); 
     }
 
     private void createComboBoxes()
@@ -101,7 +88,7 @@ public class SettingsViewController extends ResponsiveController
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionCourse);
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSemester);
 
-        comboBoxNotificationMin.promptTextProperty().bind(settings.getnotificationTimeBeforeEntryInMinutes2());
+        //comboBoxNotificationMin.promptTextProperty().bind(settings.getnotificationTimeBeforeEntryInMinutes2());
     }  
     
     @FXML
