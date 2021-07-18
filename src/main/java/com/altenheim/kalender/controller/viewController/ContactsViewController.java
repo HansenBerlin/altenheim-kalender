@@ -1,5 +1,6 @@
 package com.altenheim.kalender.controller.viewController;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.altenheim.kalender.interfaces.IContactFactory;
@@ -44,6 +45,11 @@ public class ContactsViewController extends ResponsiveController
         var newContact = new ContactModel(txtFieldFirstName.getText(), txtFieldSurName.getText(), txtFieldMail.getText(), 
             txtFieldStreet.getText(), txtFieldCity.getText(), txtFieldPostalCode.getText(), txtFieldPhone.getText());
         ContactModel.data.add(newContact);
+        try {
+            ioController.saveContactsToFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
 

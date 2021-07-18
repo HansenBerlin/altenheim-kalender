@@ -26,9 +26,11 @@ public class InjectorFactory
         var customCalendarView = new CustomViewOverride();
         var settings = new SettingsModel();
         var mailTemplates = new MailTemplateModel();
+        var contacts = new ContactModel();
         var settingsFile = new File("userFiles/settingsTest.file");    
         if (settingsFile.exists())        
             settings.readSimpleProperties();
+        
 
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
         IAnimationController animationController = new AnimationController();
@@ -42,7 +44,7 @@ public class InjectorFactory
         IExportController exportCt = new ExportController(settings, calendarEntriesModel);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt);
         IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView);
-        IIOController ioCt = new IOController(entryFactory, settings, mailTemplates, calendarEntriesModel);
+        IIOController ioCt = new IOController(entryFactory, settings, mailTemplates, calendarEntriesModel, contacts);
 
         var statsVCt = new StatsViewController(calendarEntriesModel);
         var contactsVCt = new ContactsViewController(apiCt, ioCt);

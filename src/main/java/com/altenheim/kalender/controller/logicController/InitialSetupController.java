@@ -1,6 +1,8 @@
 package com.altenheim.kalender.controller.logicController;
 
 
+import java.io.IOException;
+
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
 
@@ -29,6 +31,14 @@ public class InitialSetupController
         //if (loadedSettings != null)
         //    settings = loadedSettings;
         //ioController.loadCalendarsFromFile();
+        try 
+        {
+            ioController.loadContactsFromFile();
+        } 
+        catch (ClassNotFoundException | IOException e) 
+        {
+            e.printStackTrace();
+        } 
         settings.addPropertyChangeListener(new ChangeListener());
         //websiteCt.startScraperTask();
         websiteScraper.scrapeCalendar();

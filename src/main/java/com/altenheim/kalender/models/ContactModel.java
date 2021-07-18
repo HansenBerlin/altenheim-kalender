@@ -1,6 +1,8 @@
 package com.altenheim.kalender.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -17,11 +19,29 @@ public class ContactModel implements Serializable
     private String city;
     private String postalCode;
     private String mail;
-    private SimpleStringProperty phone = new SimpleStringProperty();
+    private String phone;
     private String fullName;
     private String address;
     
     public int getContactId() { return iD; }
+    public String getFullName() { return fullName; }
+    public String getAddress() { return address; }
+    public String getMail() { return mail; }
+    public String getPhone() { return phone; }
+
+    public List<ContactModel> getDataToSerialize() 
+    { 
+        var listFromObservable = new ArrayList<ContactModel>();
+        for (var contactModel : data) 
+        {
+            listFromObservable.add(contactModel);            
+        }
+        return listFromObservable; 
+    }    
+
+    public ContactModel()
+    {        
+    }
 
     public ContactModel(String firstName, String surName, String mail, String streetAndNumber, String city, String postalCode, String phone)
     {
@@ -33,15 +53,18 @@ public class ContactModel implements Serializable
         this.city = city;
         this.postalCode = postalCode;
         this.mail = mail;
-        this.phone.set(phone);
+        this.phone = phone;
         fullName = "%s %s".formatted(firstName, surName);
         address = "%s, %s %s".formatted(streetAndNumber, postalCode, city);
     }
 
-    public String getFullName() { return fullName; }
-    public String getAddress() { return address; }
-    public String getMail() { return mail; }
-    public String getPhone() { return phone.get(); }
+    public void rebuildObservablaListFromSerializedData(List<ContactModel> serialized) 
+    { 
+        for (var contactModel : serialized) 
+        {
+            ContactModel.data.add(contactModel);
+        }
+    }    
 
     final static public void addToList(String firstName, String surName, String mail, String streetAndNumber, String city, String postalCode, String phone)
     {

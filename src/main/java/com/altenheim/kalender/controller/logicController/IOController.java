@@ -10,6 +10,7 @@ import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.models.SerializableEntry;
 import com.altenheim.kalender.models.SettingsModel;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -26,14 +27,17 @@ public class IOController implements IIOController
     private ICalendarEntriesModel allEntries;
     protected SettingsModel settings;
     private MailTemplateModel mailTemplates;
+    private ContactModel contacts;
     private String hashedPassword;
 
-    public IOController(IEntryFactory administrateEntries, SettingsModel settings, MailTemplateModel mailTemplates, ICalendarEntriesModel allEntries)
+    public IOController(IEntryFactory administrateEntries, SettingsModel settings, MailTemplateModel mailTemplates, 
+        ICalendarEntriesModel allEntries, ContactModel contacts)
     {
         this.allEntries = allEntries;
         this.settings = settings;
         this.mailTemplates = mailTemplates;
         this.allEntries = allEntries;
+        this.contacts = contacts;
     }
 
 
@@ -68,28 +72,43 @@ public class IOController implements IIOController
     }
 
 
-    public void saveContactsToFile() throws IOException
+    public void saveContactsToFile()
     {
-        var path = settings.getPathToHwrScrapedFile();
-        if (path == null)
-            path = "userFiles/contacts.file";
-        var writeToFile = new FileOutputStream(path);
-        var convert = new ObjectOutputStream(writeToFile);
-        //convert.writeObject(allContacts);
-        convert.close();
+        var path = settings.getPathToUserDirectory() + "/contacts/contacts.file";        
+        try 
+        {
+            var writeToFile = new FileOutputStream(path);
+            var convert = new ObjectOutputStream(writeToFile);
+            convert.writeObject(contacts.getDataToSerialize());
+            convert.close();
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+        }
     }
 
 
-    public void loadContactsFromFile() throws IOException, ClassNotFoundException
+    public void loadContactsFromFile()
     {
-        var path = settings.getPathToIcsExportedFile();
-        if (path == null)
-            path = "userFiles/contacts.file";
-        var loadFile = new FileInputStream(path);
-        var inputStream = new ObjectInputStream(loadFile);
-        var loadedContacts = (List<ContactModel>)inputStream.readObject();
-        //allContacts.addAll(loadedContacts);
-        inputStream.close();
+        //var path = settings.getPathToUserDirectory() + "/contacts/contacts.file";   
+        var file = new File(settings.getPathToUserDirectory() + "/contacts/contacts.file"); 
+        if (file.exists() == false)
+            return;  
+
+        try 
+        {
+            var loadFile = new FileInputStream(file);
+            var inputStream = new ObjectInputStream(loadFile);
+            var loadedContacts = (List<ContactModel>)inputStream.readObject();
+            contacts.rebuildObservablaListFromSerializedData(loadedContacts);
+            inputStream.close();            
+        } 
+        catch (ClassNotFoundException | IOException e) 
+        {
+            e.printStackTrace();
+        }
+        
     }
 
     public void saveHashedPassword(String passwordHash)
