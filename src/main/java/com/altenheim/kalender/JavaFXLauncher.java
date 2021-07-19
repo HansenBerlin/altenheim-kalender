@@ -1,12 +1,7 @@
 package com.altenheim.kalender;
 
 import com.altenheim.kalender.controller.Factories.InjectorFactory;
-import com.altenheim.kalender.controller.logicController.ChangeListener;
 import com.altenheim.kalender.controller.viewController.MainWindowController;
-import com.altenheim.kalender.resourceClasses.StylePresets;
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.Calendar.Style;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,7 +17,7 @@ public class JavaFXLauncher extends Application
         objectFactory.createServices();
         var guiSetup = objectFactory.getGuiController();
         guiSetup.init();
-        var mainController = new MainWindowController(primaryStage, objectFactory.getAllViews(), guiSetup);
+        var mainController = new MainWindowController(primaryStage, objectFactory.getAllViews(), guiSetup, objectFactory.getCustomCalendarView());
 
         var loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/mainView.fxml"));     
@@ -31,9 +26,6 @@ public class JavaFXLauncher extends Application
         Parent root = loader.load();        
         var scene = new Scene(root);
         var jMetroStyle = objectFactory.getJMetroSetup();
-        //String css = this.getClass().getResource("/calendar.css").toExternalForm(); 
-        //String css = this.getClass().getResource("/calendarDark.css").toExternalForm(); 
-        //scene.getStylesheets().add(0, css);
         jMetroStyle.setScene(scene);
         guiSetup.setupColorMode();
         

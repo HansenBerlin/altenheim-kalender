@@ -5,23 +5,11 @@ import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.LongPropertyBase;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableFloatValue;
-import javafx.beans.value.ObservableLongValue;
-import javafx.beans.value.ObservableNumberValue;
 
 public class SettingsModel implements Serializable
 {
@@ -51,6 +39,7 @@ public class SettingsModel implements Serializable
     public long notificationTimeBeforeEntryInMinutes = 15;
     private Long scrapingIntervalInMinutes = (long) 60000;
     private boolean useAdvancedFeatures = false; // je nachdem ob der pw hash erfolgreich geladen wird an oder aus, wegesuche und ÖZ dann ausgrauen
+    public String cssMode = "Light" ;
 
     private SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
     private SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
