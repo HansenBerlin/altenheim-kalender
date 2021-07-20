@@ -1,8 +1,8 @@
 package com.altenheim.kalender.controller.Factories;
 
 import com.altenheim.kalender.interfaces.IEntryFactory;
+import com.altenheim.kalender.controller.viewController.CustomViewOverride;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
-import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.SerializableEntry;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,17 +14,14 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarSource;
-import com.calendarfx.model.Entry;
 import com.calendarfx.model.Calendar.Style;
-import com.calendarfx.view.CalendarView;
-
 
 public class EntryFactory implements IEntryFactory
 {    
     private ICalendarEntriesModel allCalendars;
-    private CalendarView calendarView;
+    private CustomViewOverride calendarView;
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarView calendarView)
+    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView)
     {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
@@ -148,8 +145,6 @@ public class EntryFactory implements IEntryFactory
         entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
         return entryUser;
     }
-
-
 
     private int rG(int startInclusive, int endInclusive)
     {

@@ -4,9 +4,13 @@ import com.calendarfx.view.CalendarView;
 
 public class CustomViewOverride extends CalendarView
 {
-    public CustomViewOverride()
+    public CustomViewOverride(String cssPath)
     {
-        getStylesheets().add(getClass().getResource("/calendarLight.css").toExternalForm());
-        //getStylesheets().add(getClass().getResource("/calendarDark.css").toExternalForm());
+        getStylesheets().add(cssPath);      
+    }
+
+    public void updateCss(String oldPath, String newPath) {
+        getStylesheets().remove(oldPath);
+        getStylesheets().add(newPath); 
     }
 }

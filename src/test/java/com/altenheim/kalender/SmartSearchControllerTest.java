@@ -18,9 +18,6 @@ import java.util.List;
 
 public class SmartSearchControllerTest 
 {
-
-
-
     @Test
     void findAvailableTimeSlot_oneDayOnePossibleSuggestionOnSameDay_shouldReturnOneEntry()
     {
@@ -37,7 +34,7 @@ public class SmartSearchControllerTest
 
         assertEquals(1, result.size());
     }
-/*
+
     @Test
     void findAvailableTimeSlot_OneDayOnePossibleSuggestionOnSameDay_shouldReturnCorrectDuration()
     {
@@ -48,7 +45,9 @@ public class SmartSearchControllerTest
         var calendarMockEntries = new Calendar();
 
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar);
-        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+        var list = new ArrayList<Calendar>();
+        list.add(calendarMockEntries);
+        when(allEntriesMock.getAllCalendars()).thenReturn(list);
         var controller = new SmartSearchController(allEntriesMock);
         var result = controller.findAvailableTimeSlot(entryUser, 60, 0, 0);
 
@@ -66,7 +65,9 @@ public class SmartSearchControllerTest
         var calendarMockEntries = new Calendar();
 
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar);
-        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+        var list = new ArrayList<Calendar>();
+        list.add(calendarMockEntries);
+        when(allEntriesMock.getAllCalendars()).thenReturn(list);
         var controller = new SmartSearchController(allEntriesMock);
         var result = controller.findAvailableTimeSlot(entryUser, 60, 0, 0);
 
@@ -83,7 +84,9 @@ public class SmartSearchControllerTest
         var allEntriesMock = mock(ICalendarEntriesModel.class);
         var calendarMockEntries = new Calendar();
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar);
-        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+        var list = new ArrayList<Calendar>();
+        list.add(calendarMockEntries);
+        when(allEntriesMock.getAllCalendars()).thenReturn(list);
         var controller = new SmartSearchController(allEntriesMock);
         var result = controller.findAvailableTimeSlot(entryUser, 60, 0, 0);
 
@@ -93,7 +96,7 @@ public class SmartSearchControllerTest
          }
         assertEquals(360, totalMinutes);
     }
-*/
+
     @Test
     void findAvailableTimeSlot_oneSuggestionWithOverlappingEntryOnStartOnSameDay_shouldReturnOneEntry()
     {
@@ -126,7 +129,7 @@ public class SmartSearchControllerTest
         
         assertEquals(1, result.size());
     }
-/*
+
     @Test
     void findAvailableTimeSlot_multipleSuggestionsWithOverlappingEntryOnStartAndEndOnSameDay_shouldReturnTwoEntrys()
     {
@@ -138,7 +141,9 @@ public class SmartSearchControllerTest
         var calendarMockEntries = new Calendar();
 
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar);
-        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+        var list = new ArrayList<Calendar>();
+        list.add(calendarMockEntries);
+        when(allEntriesMock.getAllCalendars()).thenReturn(list);
         var controller = new SmartSearchController(allEntriesMock);
         var result = controller.findAvailableTimeSlot(entryUser, 60, 0, 0);
         
@@ -159,13 +164,15 @@ public class SmartSearchControllerTest
         var calendarMockEntries = new Calendar();
 
         calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar, entryThreeCalendar, entryFourCalendar);
-        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+        var list = new ArrayList<Calendar>();
+        list.add(calendarMockEntries);
+        when(allEntriesMock.getAllCalendars()).thenReturn(list);
         var controller = new SmartSearchController(allEntriesMock);
         var result = controller.findAvailableTimeSlot(entryUser, 60, 0, 0);
         
         assertEquals(3, result.size());
     }
-*/
+
     @Test
     void findAvailableTimeSlot_multipleSuggestionsMultipleDaysWithSpanOverTwoDays_shouldReturnTwoEntrys()
     {
@@ -238,175 +245,179 @@ public class SmartSearchControllerTest
 
  
 
-//    @Test
-//    void findAvailableTimeSlot_Return(){
-//
-//        var input = new Entry();
-//        input = createEntryDummy(10, 19, 7, 6, 20, 6);
-//        boolean[] weekdays = {true, true, false, false, true, true, true};
-//        ArrayList<ArrayList<Entry<?>>> openingHours2 = createOpeningHoursWithLunchBreak();
-//        var entryOneCalendar = createEntryDummy(10, 19, 7, 6, 8, 6);
-//        var allEntriesMock = mock(ICalendarEntriesModel.class);
-//        var calendarMockEntries = new Calendar();
-//        calendarMockEntries.addEntries(entryOneCalendar);
-//        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
-//
-//        var controller2 = new SmartSearchController(allEntriesMock);
-//        var result2 = controller2.findPossibleTimeSlots(input, 60, weekdays, openingHours2, 30, 30, 9,0);
-//
-//        assertEquals(9, result2.size()); 
-//        // 10-13, 16-22 geöffnet an Montagen, Mittwoch, Freitag, Sonntag zu, sonst 10-22
-//        // möglich:
-//        // Fr 2*, Sa 1*
-//        // Mo 2*, Di 1*, Fr. 2*, Sa 1*
-//        
-//    }
-//
-//   
-//
-//    @Test
-//    void findAvailableTimeSlot_Return_etwasKomplexer(){
-//
-//        var input = new Entry();
-//        input = createEntryDummy(10, 20, 1, 11, 30, 11);
-//        boolean[] weekdays = {true, false, false, false, false, false, false};    
-//        ArrayList<ArrayList<Entry<?>>> openingHours2 = createOpeningHoursWithLunchBreak(); 
-//        var entryOneCalendar = createEntryDummy(10, 22, 1, 11, 1, 11);
-//        var entryTwoCalendar = createEntryDummy(10, 14, 8, 11, 8, 11);
-//        var allEntriesMock = mock(ICalendarEntriesModel.class);
-//        var calendarMockEntries = new Calendar();
-//        calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar);
-//        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
-//
-//        var controller2 = new SmartSearchController(allEntriesMock);
-//        var result2 = controller2.findPossibleTimeSlots(input, 60, weekdays, openingHours2, 20, 20, 7,0);
-//
-//        //assertEquals(7, result.size());     // failt, deshalb hier erstmal auskommentiert  
-//        assertEquals(7, result2.size());
-//        // möglich:
-//        // 1.11: keiner
-//        // 8.11: einer
-//        // danach (15., 22, 29, je 2) 
-//        // --7
-//    }
-//
-//
-//    @Test
-//    void findAvailableTimeSlot_Return_userEntryGenauInÖZUndLängeAuchDurchBlockerUnAnreiseSollteNichtsZurückkommen()
-//    {        
-//        var input = new Entry();
-//        input = createEntryDummy(10, 20, 1, 11, 1, 11);
-//        boolean[] weekdays = {true, false, false, false, false, false, false}; 
-//        ArrayList<ArrayList<Entry<?>>> openingHours2 = createOpeningHours(); 
-//        var entryOneCalendar = createEntryDummy(8, 10, 1, 11, 1, 11);        
-//        var allEntriesMock = mock(ICalendarEntriesModel.class);
-//        var calendarMockEntries = new Calendar();
-//        calendarMockEntries.addEntries(entryOneCalendar);
-//        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
-//
-//        var controller2 = new SmartSearchController(allEntriesMock);
-//        var result2 = controller2.findPossibleTimeSlots(input, 600, weekdays, openingHours2, 60, 60, 0,0);
-//        
-//        assertEquals(0, result2.size()); 
-//    }
-//
-//    @Test
-//    void findAvailableTimeSlot_Return_TBD()
-//    {        
-//        var input = new Entry();
-//        input = createEntryDummy(10, 20, 1, 11, 1, 11);
-//        boolean[] weekdays = {true, false, false, false, false, false, false};    
-//        ArrayList<ArrayList<Entry<?>>> openingHours = createOpeningHours(); 
-//        ArrayList<ArrayList<Entry<?>>> openingHours2 = createOpeningHours(); 
-//        var entryOneCalendar = createEntryDummy(8, 11, 1, 11, 1, 11);        
-//        var allEntriesMock = mock(ICalendarEntriesModel.class);
-//        var calendarMockEntries = new Calendar();
-//        calendarMockEntries.addEntries(entryOneCalendar);
-//        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
-//
-//        var controller2 = new SmartSearchController(allEntriesMock);
-//        var result2 = controller2.findPossibleTimeSlots(input, 60, weekdays, openingHours2, 60, 60, 1, 0);
-//        
-//        assertEquals(1, result2.size()); 
-//        // möglich:
-//        // Mo: 1* von 11-19
-//    
-//    }
-//
-//    @Test
-//    void findAvailableTimeSlot_Return_hhh()
-//    {        
-//        var input = new Entry();
-//        input = createEntryDummy(16, 20, 1, 11, 8, 11);
-//        boolean[] weekdays = {false, true, false, true, false, true, false}; 
-//        ArrayList<ArrayList<Entry<?>>> openingHours2 = createOpeningHours(); 
-//        var entryOneCalendar = createEntryDummy(15, 19, 2, 11, 2, 11);        
-//        var allEntriesMock = mock(ICalendarEntriesModel.class);
-//        var calendarMockEntries = new Calendar();
-//        calendarMockEntries.addEntries(entryOneCalendar);
-//        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
-//
-//        
-//
-//        var controller2 = new SmartSearchController(allEntriesMock);
-//        var result2 = controller2.findPossibleTimeSlots(input, 30, weekdays, openingHours2, 30, 30, 2, 0);
-//        
-//        assertEquals(2, result2.size()); 
-//
-//        // möglich: 2 Termine
-//    }
-//
-//    @Test
-//    void findAvailableTimeSlot_withIntervall_ReturnSixEntrys(){
-//        var input = new Entry();
-//        input = createEntryDummy(16, 20, 1, 11, 8, 11);
-//        boolean[] weekdays = {true, true, true, true, true, true, true}; 
-//        ArrayList<ArrayList<Entry<?>>> openingHours2 = createOpeningHours(); 
-//               
-//        var allEntriesMock = mock(ICalendarEntriesModel.class);
-//        var calendarMockEntries = new Calendar();
-//       
-//        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
-//
-//        var controller2 = new SmartSearchController(allEntriesMock);
-//        var result2 = controller2.findPossibleTimeSlots(input, 30, weekdays, openingHours2, 30, 30, 6, 10);
-//        var day = LocalDate.of(2021, 11, 1);
-//        for (Entry<?> entry : result2) {
-//            assertEquals(entry.getStartDate(), day);
-//            day = day.plusDays(10);
-//        }
-//        assertEquals(6, result2.size()); 
-//
-//        // möglich: 6 Termine mit 10 Tagen Abstand
-//    }
-//
-//    @Test
-//    void findAvailableTimeSlot_withIntervall_ReturnThreeEntrys(){
-//        var input = new Entry();
-//        input = createEntryDummy(16, 20, 1, 11, 8, 11);
-//        boolean[] weekdays = {true, false, true, false, true, false, true}; 
-//        ArrayList<ArrayList<Entry<?>>> openingHours2 = createOpeningHours(); 
-//               
-//        var allEntriesMock = mock(ICalendarEntriesModel.class);
-//        var calendarMockEntries = new Calendar();
-//       
-//        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
-//
-//        var controller2 = new SmartSearchController(allEntriesMock);
-//        var result2 = controller2.findPossibleTimeSlots(input, 30, weekdays, openingHours2, 30, 30, 3, 1);
-//        var day = LocalDate.of(2021, 11, 1);
-//        
-//        assertEquals(result2.get(0).getStartDate(), day);
-//        day = day.plusDays(2);
-//        assertEquals(result2.get(1).getStartDate(), day);
-//        day = day.plusDays(2);
-//        assertEquals(result2.get(2).getStartDate(), day);
-//        day = day.plusDays(2);
-//        
-//        assertEquals(3, result2.size()); 
-//
-//        // möglich: 3 Termine 
-//    }
+    @Test
+    void findAvailableTimeSlot_Return(){
+
+        var input = new SerializableEntry();
+        input = createEntryDummy(10, 19, 7, 6, 20, 6);
+        boolean[] weekdays = {true, true, false, false, true, true, true};
+        var openingHours2 = createOpeningHoursWithLunchBreak();
+        var entryOneCalendar = createEntryDummy(10, 19, 7, 6, 8, 6);
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var calendarMockEntries = new Calendar();
+        calendarMockEntries.addEntries(entryOneCalendar);
+        var list = new ArrayList<Calendar>();
+        list.add(calendarMockEntries);
+        when(allEntriesMock.getAllCalendars()).thenReturn(list);
+
+        var controller2 = new SmartSearchController(allEntriesMock);
+        var result2 = controller2.findPossibleTimeSlots(input, 60, weekdays, openingHours2, 30, 30, 9,0);
+
+        assertEquals(9, result2.size()); 
+        // 10-13, 16-22 geöffnet an Montagen, Mittwoch, Freitag, Sonntag zu, sonst 10-22
+        // möglich:
+        // Fr 2*, Sa 1*
+        // Mo 2*, Di 1*, Fr. 2*, Sa 1*
+        
+    }
+
+   
+
+    @Test
+    void findAvailableTimeSlot_Return_etwasKomplexer(){
+
+        var input = new SerializableEntry();
+        input = createEntryDummy(10, 20, 1, 11, 30, 11);
+        boolean[] weekdays = {true, false, false, false, false, false, false};    
+        var openingHours2 = createOpeningHoursWithLunchBreak(); 
+        var entryOneCalendar = createEntryDummy(10, 22, 1, 11, 1, 11);
+        var entryTwoCalendar = createEntryDummy(10, 14, 8, 11, 8, 11);
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var calendarMockEntries = new Calendar();
+        calendarMockEntries.addEntries(entryOneCalendar, entryTwoCalendar);
+        var list = new ArrayList<Calendar>();
+        list.add(calendarMockEntries);
+        when(allEntriesMock.getAllCalendars()).thenReturn(list);
+
+        var controller2 = new SmartSearchController(allEntriesMock);
+        var result2 = controller2.findPossibleTimeSlots(input, 60, weekdays, openingHours2, 20, 20, 7,0);
+ 
+        assertEquals(7, result2.size());
+        // möglich:
+        // 1.11: keiner
+        // 8.11: einer
+        // danach (15., 22, 29, je 2) 
+        // --7
+    }
+
+
+    @Test
+    void findAvailableTimeSlot_Return_userEntryGenauInÖZUndLängeAuchDurchBlockerUnAnreiseSollteNichtsZurückkommen()
+    {        
+        var input = new SerializableEntry();
+        input = createEntryDummy(10, 20, 1, 11, 1, 11);
+        boolean[] weekdays = {true, false, false, false, false, false, false}; 
+        var openingHours2 = createOpeningHours(); 
+        var entryOneCalendar = createEntryDummy(8, 10, 1, 11, 1, 11);        
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var calendarMockEntries = new Calendar();
+        calendarMockEntries.addEntries(entryOneCalendar);
+        var list = new ArrayList<Calendar>();
+        list.add(calendarMockEntries);
+        when(allEntriesMock.getAllCalendars()).thenReturn(list);
+
+        var controller2 = new SmartSearchController(allEntriesMock);
+        var result2 = controller2.findPossibleTimeSlots(input, 600, weekdays, openingHours2, 60, 60, 0,0);
+        
+        assertEquals(0, result2.size()); 
+    }
+
+    @Test
+    void findAvailableTimeSlot_Return_TBD()
+    {        
+        var input = new SerializableEntry();
+        input = createEntryDummy(10, 20, 1, 11, 1, 11);
+        boolean[] weekdays = {true, false, false, false, false, false, false};
+        var openingHours2 = createOpeningHours(); 
+        var entryOneCalendar = createEntryDummy(8, 11, 1, 11, 1, 11);        
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var calendarMockEntries = new Calendar();
+        calendarMockEntries.addEntries(entryOneCalendar);
+        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+
+        var controller2 = new SmartSearchController(allEntriesMock);
+        var result2 = controller2.findPossibleTimeSlots(input, 60, weekdays, openingHours2, 60, 60, 1, 0);
+        
+        assertEquals(1, result2.size()); 
+        // möglich:
+        // Mo: 1* von 11-19
+    
+    }
+
+    @Test
+    void findAvailableTimeSlot_Return_hhh()
+    {        
+        var input = new SerializableEntry();
+        input = createEntryDummy(16, 20, 1, 11, 8, 11);
+        boolean[] weekdays = {false, true, false, true, false, true, false}; 
+        var openingHours2 = createOpeningHours(); 
+        var entryOneCalendar = createEntryDummy(15, 19, 2, 11, 2, 11);        
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var calendarMockEntries = new Calendar();
+        calendarMockEntries.addEntries(entryOneCalendar);
+        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+
+        
+
+        var controller2 = new SmartSearchController(allEntriesMock);
+        var result2 = controller2.findPossibleTimeSlots(input, 30, weekdays, openingHours2, 30, 30, 2, 0);
+        
+        assertEquals(2, result2.size()); 
+
+        // möglich: 2 Termine
+    }
+
+    @Test
+    void findAvailableTimeSlot_withIntervall_ReturnSixEntrys(){
+        var input = new SerializableEntry();
+        input = createEntryDummy(16, 20, 1, 11, 8, 11);
+        boolean[] weekdays = {true, true, true, true, true, true, true}; 
+        var openingHours2 = createOpeningHours(); 
+               
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var calendarMockEntries = new Calendar();
+       
+        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+
+        var controller2 = new SmartSearchController(allEntriesMock);
+        var result2 = controller2.findPossibleTimeSlots(input, 30, weekdays, openingHours2, 30, 30, 6, 10);
+        var day = LocalDate.of(2021, 11, 1);
+        for (Entry<?> entry : result2) {
+            assertEquals(entry.getStartDate(), day);
+            day = day.plusDays(10);
+        }
+        assertEquals(6, result2.size()); 
+
+        // möglich: 6 Termine mit 10 Tagen Abstand
+    }
+
+    @Test
+    void findAvailableTimeSlot_withIntervall_ReturnThreeEntrys(){
+        var input = new SerializableEntry();
+        input = createEntryDummy(16, 20, 1, 11, 8, 11);
+        boolean[] weekdays = {true, false, true, false, true, false, true}; 
+        var openingHours2 = createOpeningHours(); 
+               
+        var allEntriesMock = mock(ICalendarEntriesModel.class);
+        var calendarMockEntries = new Calendar();
+       
+        when(allEntriesMock.getSpecificCalendarByIndex(0)).thenReturn(calendarMockEntries);
+
+        var controller2 = new SmartSearchController(allEntriesMock);
+        var result2 = controller2.findPossibleTimeSlots(input, 30, weekdays, openingHours2, 30, 30, 3, 1);
+        var day = LocalDate.of(2021, 11, 1);
+        
+        assertEquals(result2.get(0).getStartDate(), day);
+        day = day.plusDays(2);
+        assertEquals(result2.get(1).getStartDate(), day);
+        day = day.plusDays(2);
+        assertEquals(result2.get(2).getStartDate(), day);
+        day = day.plusDays(2);
+        
+        assertEquals(3, result2.size()); 
+
+        // möglich: 3 Termine 
+    }
 
    ///////////////////////////////////////////////////////////////////////////
 
@@ -423,18 +434,18 @@ public class SmartSearchControllerTest
         return entryUser;
     }
 
-    private  ArrayList<ArrayList<SerializableEntry>> createOpeningHours() {
-        ArrayList<ArrayList<SerializableEntry>> openingHours = new ArrayList<ArrayList<SerializableEntry>>();
-        for (int i = 0; i < 7; i++) {
+    private  HashMap<DayOfWeek, List<SerializableEntry>> createOpeningHours() {
+        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
+        for (int i = 1; i <= 7; i++) {
             var day1 = new ArrayList<SerializableEntry>();
             day1.add(createEntryDummy(10, 20, 1, 1));
-            openingHours.add(day1);
+            openingHours.put(DayOfWeek.of(i), day1);
         }
         return openingHours;
     }
 
-    private  ArrayList<ArrayList<SerializableEntry>> createOpeningHoursWithLunchBreak() {
-        ArrayList<ArrayList<SerializableEntry>> openingHours = new ArrayList<ArrayList<SerializableEntry>>();
+    private  HashMap<DayOfWeek, List<SerializableEntry>> createOpeningHoursWithLunchBreak() {
+        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
         for (int i = 0; i < 6; i++) {
             var day1 = new ArrayList<SerializableEntry>();
             if (i%2==0) {
@@ -444,9 +455,9 @@ public class SmartSearchControllerTest
                 day1.add(createEntryDummy(10, 22, 1, 1));
             }
             
-            openingHours.add(day1);
+            openingHours.put(DayOfWeek.of(i+1), day1);
         }
-        openingHours.add(new ArrayList<SerializableEntry>());
+        openingHours.put(DayOfWeek.of(7), new ArrayList<SerializableEntry>());
         return openingHours;
     }
 }

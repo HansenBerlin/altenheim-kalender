@@ -1,19 +1,21 @@
 package com.altenheim.kalender.controller.Factories;
 
 import java.io.File;
-import java.util.ArrayList;
 import jfxtras.styles.jmetro.JMetro;
 import com.altenheim.kalender.controller.logicController.*;
 import com.altenheim.kalender.controller.viewController.*;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.*;
+import com.altenheim.kalender.resourceClasses.StylePresets;
 
 public class InjectorFactory
 {    
     private IViewRootsModel allViews;
     private GuiUpdateController guiSetup;
     private JMetro jMetroStyle;
-    private InitialSetupController initialSettingsLoader;  
+    private InitialSetupController initialSettingsLoader;
+    private CustomViewOverride customCalendarView;
+    public  CustomViewOverride getCustomCalendarView() { return customCalendarView; }
     public GuiUpdateController getGuiController() { return guiSetup; }
     public IViewRootsModel getAllViews() { return allViews; }
     public JMetro getJMetroSetup() { return jMetroStyle; }
@@ -23,13 +25,24 @@ public class InjectorFactory
     {     
         jMetroStyle = new JMetro();   
         var jsonParser = new JsonParser();
-        var customCalendarView = new CustomViewOverride();
+        
         var settings = new SettingsModel();
         var mailTemplates = new MailTemplateModel();
         var contacts = new ContactModel();
         var settingsFile = new File("userFiles/settingsTest.file");    
         if (settingsFile.exists())        
             settings.readSimpleProperties();
+        switch (settings.cssMode) {
+            case "Light":
+                customCalendarView = new CustomViewOverride(StylePresets.LIGHT_CALENDAR_CSS_FILE);
+                break;
+            case "Dark":
+                customCalendarView = new CustomViewOverride(StylePresets.DARK_CALENDAR_CSS_FILE);
+                break;
+            default:
+                customCalendarView = new CustomViewOverride(StylePresets.LIGHT_CALENDAR_CSS_FILE);
+                break;
+        }
         
 
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
