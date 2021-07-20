@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import com.altenheim.kalender.interfaces.IComboBoxFactory;
+import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,15 +21,15 @@ public class ComboBoxFactory implements IComboBoxFactory
     private ObservableList<String> selectionCourse = FXCollections.observableArrayList();
     private ObservableList<String> selectionSemester = FXCollections.observableArrayList();
     private ObservableList<String> mailTemplateSelectorTemplate = FXCollections.observableArrayList(); //getter und dann ändern im Mail ViewController
-
-
     private List<ObservableList<String>> content = new ArrayList<ObservableList<String>>();
     private String[] headers = {"Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs", "Semester"};
+
+    public void addToDestinations(String address) { destinations.add(address); }
 
     public ComboBoxFactory()
     {
         vehicles.addAll("zu Fuß", "Fahrrad", "Öffis", "Auto");
-        destinations.addAll("Stern Center, Potsdam, Deutschland", "Casablanca, Rigaer Straße, Berlin, Deutschland", "Hauptbahnhof Berlin");
+        destinations = ContactModel.destinations;
         recurrenceOptions.addAll("täglich", "wöchentlich", "monatlich", "halbjährlich", "jährlich");
         notificationMin.addAll("5", "15", "30", "60");
         selectionSpecialField.addAll("IP", "Bank", "Bauwesen", "DL", "Elektrotechnik", "FM", "Handel", "IBA", "Immobilien", "Industrie", 

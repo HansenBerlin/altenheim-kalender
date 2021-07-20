@@ -1,16 +1,16 @@
 package com.altenheim.kalender.models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import java.util.ArrayList;
+import javafx.collections.FXCollections;
 
 public class ContactModel implements Serializable
 {
-    final static public ObservableList<ContactModel> data = FXCollections.observableArrayList();    
+    final static public ObservableList<ContactModel> data = FXCollections.observableArrayList();   
+    public static ObservableList<String> destinations = FXCollections.observableArrayList();
+ 
     private static int globalId = 1;
     private int iD;
     private String firstName;
@@ -56,6 +56,7 @@ public class ContactModel implements Serializable
         this.phone = phone;
         fullName = "%s %s".formatted(firstName, surName);
         address = "%s, %s %s".formatted(streetAndNumber, postalCode, city);
+        destinations.add(address);
     }
 
     public void rebuildObservablaListFromSerializedData(List<ContactModel> serialized) 

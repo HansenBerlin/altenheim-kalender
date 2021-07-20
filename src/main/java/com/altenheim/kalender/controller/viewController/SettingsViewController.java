@@ -70,10 +70,7 @@ public class SettingsViewController extends ResponsiveController
         {
             stringPropertiesCollectionTextField[i].textProperty().bindBidirectional(settings.getSettingsInputFieldsContainer()[i]);   
             stringPropertiesCollectionText[i].textProperty().bindBidirectional(settings.getSettingsInputFieldsContainer()[i]); 
-        }
-        //btn.textProperty().bindBidirectional(settings.specialField);
-        //btnMenuCourse.textProperty().bindBidirectional(settings.course);
-        //btnMenuSemester.textProperty().bindBidirectional(settings.semester); 
+        }        
     }
 
     private void createComboBoxes()
@@ -87,6 +84,10 @@ public class SettingsViewController extends ResponsiveController
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSpecialField);
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionCourse);
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSemester);
+        /*
+        comboBoxNotificationMin.textProperty().bindBidirectional(settings.specialField);
+        btnMenuCourse.textProperty().bindBidirectional(settings.course);
+        btnMenuSemester.textProperty().bindBidirectional(settings.semester); */
 
         //comboBoxNotificationMin.promptTextProperty().bind(settings.getnotificationTimeBeforeEntryInMinutes2());
     }  
@@ -109,7 +110,6 @@ public class SettingsViewController extends ResponsiveController
         else if (button.equals(btnGenerate))
         {
             calendarFactory.createRandomCalendarList();
-
         }
     }
 

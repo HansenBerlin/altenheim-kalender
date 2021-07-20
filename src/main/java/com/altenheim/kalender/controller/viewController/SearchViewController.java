@@ -88,6 +88,7 @@ public class SearchViewController extends ResponsiveController
         setupTextboxInputValidation();
         createComboBoxes();
         //setupSliderBindings();
+        btnNextSuggestion.setVisible(false);
         
     }
 
@@ -190,12 +191,13 @@ public class SearchViewController extends ResponsiveController
         Circle[] images = { imgFirstStep, imgSecondStep, imgThirdStep };
         VBox[] allSteps = { stepOneUserInput, stepTwoUserInput, stepThreeUserInput }; 
         int incrementor = -1;
-        var button = (Button)event.getSource();
+        var button = (Button)event.getSource();               
 
         if (button.equals(btnConfirm))
         {
             if (userStep == 3)
-            {
+            {                
+                btnNextSuggestion.setVisible(true);
                 startRequest();
                 return;
             }
@@ -213,7 +215,19 @@ public class SearchViewController extends ResponsiveController
         int requestedIndex = userStep - 1 + incrementor;
         changeViewState(allSteps[currentIndex], allSteps[requestedIndex], images[currentIndex], images[requestedIndex]); 
         userStep += incrementor; 
-        txtHeaderStep.setText(headings[currentIndex]);
+        txtHeaderStep.setText(headings[currentIndex]); 
+        if (userStep == 3)
+        {        
+            btnConfirm.setText("ANFRAGE STARTEN"); 
+            //btnNextSuggestion.setVisible(true);
+            //btnConfirm.setVisible(false);           
+        }
+        else
+        {
+            btnNextSuggestion.setVisible(false);
+            btnConfirm.setVisible(true);
+            btnConfirm.setText("WEITER");
+        }
     }
     
     private int suggestions = 1;    
@@ -225,7 +239,7 @@ public class SearchViewController extends ResponsiveController
         int duration = (int)sliderDurationMinutes.getValue();
         //var newTime = currentCheck.plusMinutes(duration);
         currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
-        timeToStartSearch = currentSuggestion.getEndAsLocalDateTime();
+        timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().plusDays(sliderRecurrences.valueProperty().intValue());
         SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), currentSuggestion.getStartDate());
         suggestions++;  
     }
