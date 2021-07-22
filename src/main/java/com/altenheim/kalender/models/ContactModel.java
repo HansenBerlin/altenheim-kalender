@@ -64,6 +64,7 @@ public class ContactModel implements Serializable
         for (var contactModel : serialized) 
         {
             ContactModel.data.add(contactModel);
+            ContactModel.destinations.add(contactModel.address);
         }
     }    
 

@@ -55,7 +55,7 @@ public class ComboBoxFactory implements IComboBoxFactory
         comboBox.setPrefWidth(140);
         comboBox.setPromptText(headers[typeOrdinal]);
         comboBox.setItems(content.get(typeOrdinal));
-        if (typeOrdinal == 2 || typeOrdinal == 3)        
+        if (typeOrdinal == 1 || typeOrdinal == 2)        
             comboBox.setEditable(true);        
         return comboBox;
     }  

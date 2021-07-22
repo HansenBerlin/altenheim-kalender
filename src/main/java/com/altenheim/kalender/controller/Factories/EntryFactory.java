@@ -19,13 +19,21 @@ import com.calendarfx.model.Calendar.Style;
 public class EntryFactory implements IEntryFactory
 {    
     private ICalendarEntriesModel allCalendars;
+    private static ICalendarEntriesModel allCalendarsStatic;
     private CustomViewOverride calendarView;
 
     public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView)
     {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
-    }    
+        EntryFactory.allCalendarsStatic = allCalendars;
+    }  
+    
+    public EntryFactory(ICalendarEntriesModel allCalendars)
+    {
+        this.allCalendars = allCalendars;
+
+    }
 
     public ICalendarEntriesModel getEntriesModel()
     {
@@ -149,5 +157,15 @@ public class EntryFactory implements IEntryFactory
     private int rG(int startInclusive, int endInclusive)
     {
         return ThreadLocalRandom.current().nextInt(startInclusive, endInclusive + 1);
-    }    
+    }      
+    
+    public static void createNewUserEntry (LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd)
+    {
+        var entry = new SerializableEntry();
+        entry.changeStartTime(timeStart);
+        entry.changeStartDate(dateStart);
+        entry.changeEndTime(timeEnd);
+        entry.changeEndDate(dateEnd);
+        EntryFactory.allCalendarsStatic.getAllCalendars().get(0).addEntries(entry);
+    }
 }

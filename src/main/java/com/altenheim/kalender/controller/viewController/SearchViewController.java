@@ -19,6 +19,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,20 +34,18 @@ public class SearchViewController extends ResponsiveController
     @FXML private RowConstraints firstRow;
     @FXML private Text txtHeaderStep, txtFirstStep, txtSecondStep, txtThirdStep;
     @FXML private TextField tfAppointmentName, tfDurationMinutes, tfDurationHours;
-    @FXML private Button btnBack, btnConfirm, btnNextSuggestion;    
+    @FXML private Button btnBack, btnConfirm, btnReset;    
     @FXML private VBox stepOneUserInput, stepTwoUserInput, stepThreeUserInput;
     @FXML private DatePicker startDate, endDate;    
     @FXML private CheckBox tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday;  
     @FXML private TimeField timeStart, timeEnd; 
-
     @FXML private ToggleSwitch toggleDateRange, toggleTimeRange, toggleWeekdays;   
     @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays;
     @FXML private HBox containerTravel, containerOpeningHours, containerMargin, containerReccurrence;
-    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleAutoSuggest, toggleAddAutomatically;  
-
+    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleAddAutomatically; 
     @FXML private Slider sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment;
-    @FXML private Spinner<Integer> sliderSuggestionCount;  
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
+    @FXML private Text infoName, infoDuration, infoBetweenDate, infoBetweenTime, infoWeekdays, infoTravelTime, infoTimeBefore, infoTimeAfter, infoReccurrences, infoInterval;   
 
     private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening;
 
@@ -88,7 +87,7 @@ public class SearchViewController extends ResponsiveController
         setupTextboxInputValidation();
         createComboBoxes();
         //setupSliderBindings();
-        btnNextSuggestion.setVisible(false);
+        btnReset.setVisible(false);
         
     }
 
@@ -195,91 +194,176 @@ public class SearchViewController extends ResponsiveController
 
         if (button.equals(btnConfirm))
         {
-            if (userStep == 3)
+            btnReset.setVisible(true);
+            if (userStep == 2)
             {                
-                btnNextSuggestion.setVisible(true);
                 startRequest();
+                iterateThroughSuggestions(); 
+                btnConfirm.setText("NÄCHSTER TAG"); 
+            }   
+            if (userStep == 3)
+            {
+                if (recurrences > 0)
+                    iterateThroughSuggestions();  
                 return;
-            }
+            }         
             incrementor = 1;
         }
-        else if (button.equals(btnBack) && userStep == 1)        
-            return;  
-        else if (button.equals(btnNextSuggestion) && userStep == 3)
+        else if (button.equals(btnBack))
         {
-            getNextSuggestion();
-            return;  
-        }       
+            if (userStep == 1)             
+                return;
+            if (userStep == 2)
+                btnReset.setVisible(false);
+        }         
+        
+        btnConfirm.setText("WEITER");
         
         int currentIndex = userStep - 1;
         int requestedIndex = userStep - 1 + incrementor;
         changeViewState(allSteps[currentIndex], allSteps[requestedIndex], images[currentIndex], images[requestedIndex]); 
         userStep += incrementor; 
-        txtHeaderStep.setText(headings[currentIndex]); 
-        if (userStep == 3)
-        {        
-            btnConfirm.setText("ANFRAGE STARTEN"); 
-            //btnNextSuggestion.setVisible(true);
-            //btnConfirm.setVisible(false);           
-        }
-        else
-        {
-            btnNextSuggestion.setVisible(false);
-            btnConfirm.setVisible(true);
-            btnConfirm.setText("WEITER");
-        }
+        txtHeaderStep.setText(headings[currentIndex]);         
     }
     
-    private int suggestions = 1;    
+    
+    public static int recurrences = 1;    
     private LocalDateTime timeToStartSearch;
     private SerializableEntry currentSuggestion;
-    private void getNextSuggestion()
+
+    private void iterateThroughSuggestions()
     {
-        //var currentCheck = LocalDateTime.of(startDateUpdated, startTimeUpdated);
         int duration = (int)sliderDurationMinutes.getValue();
-        //var newTime = currentCheck.plusMinutes(duration);
+        SuggestionsModel.data.clear();
+
+        for (int i = 0; i < currentSuggestions.size(); i++) 
+        {
+            currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
+            
+            if (timeToStartSearch.getDayOfYear() < currentSuggestion.getEndDate().getDayOfYear())
+            {
+                if (calculateInterval() != 0)
+                    timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().plusDays(1);
+                else
+                    timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().plusDays(calculateInterval());
+                break;
+            } 
+            SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), currentSuggestion.getStartDate(), new Button("EINTRAGEN"));
+            timeToStartSearch = currentSuggestion.getEndAsLocalDateTime();          
+        }
+        
+    }   
+    
+    private void clearFields()
+    {
+
+    }
+
+    private void addSuggestionsForNextReccurenceDayToList(int duration)
+    {
         currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
-        timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().plusDays(sliderRecurrences.valueProperty().intValue());
-        SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), currentSuggestion.getStartDate());
-        suggestions++;  
+        timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().plusDays(calculateInterval());
+        SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), currentSuggestion.getStartDate(), new Button("EINTRAGEN"));
     }
     
 
     private void startRequest()
-    {       
-        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
-        int[] travelTime = { 0, 0 };
-        var userPrefs = entryFactory.createUserEntry(startDate.getValue(),
-                endDate.getValue(), timeStart.getValue(), timeEnd.getValue());
-        int duration = (int)sliderDurationMinutes.getValue();
-        //var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
-        var origin = dropdownStartAtDest.getEditor().getText();
-        var destination = dropdownEndAtDest.getEditor().getText();
-        if (destination.isEmpty() == false)
-            openingHours = api.getOpeningHours(destination);
-        if (origin.isEmpty() == false)
-            travelTime = api.searchForDestinationDistance(origin, destination, getApiStringFromInput());
-        travelTime = updateTravelTimeToMinutes(travelTime);        
+    {               
+        var validatedDates = validateDateInput();
+        var startDateInput = validatedDates[0];
+        var endDateDateInput = validatedDates[1];
+        var validatedTimes = validateTimeInput();
+        var startTimeInput = validatedTimes[0];
+        var endTimeInput = validatedTimes[1];        
+        var userPrefs = entryFactory.createUserEntry(startDateInput, endDateDateInput, startTimeInput, endTimeInput);
+        int duration = validateDuration();
+        var travelTime = validateTravelTime();
+        var openingHours = validateOpeningHours(); 
         int timeBefore = (int)sliderMarginBeforeAppointment.getValue();
         int timeAfter = (int)sliderMarginAfterAppointment.getValue();
         var updatedTimes = compareTimes(timeBefore, timeAfter, travelTime[0], travelTime[1]);
-        boolean[] weekdays = { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),
-                tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(), tickSunday.isSelected() };
-        int suggestionsCount = 100;             
-        int intervalDays = 0;
-        if (toggleRecurringDate.isDisabled() == false)
-        {
-            suggestionsCount = sliderRecurrences.valueProperty().intValue();
-            intervalDays = sliderRecurrences.valueProperty().intValue();
-        }
-        else if (toggleRecurringDate.isDisabled() && toggleAddAutomatically.isDisabled() == false)
-            suggestionsCount = 1; 
-
+        var weekdays = validateWeekdays();        
+        int intervalDays = calculateInterval();        
+        var suggestionsCount = validateSuggestionsCount();         
+        
         currentSuggestions = smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, openingHours, 
             updatedTimes[0], updatedTimes[1], suggestionsCount, intervalDays);
         
-        timeToStartSearch = LocalDateTime.of(startDate.getValue(), timeStart.getValue());
+        recurrences = validateReccurrences();  
+        timeToStartSearch = currentSuggestions.get(0).getStartAsLocalDateTime();  
+        //timeToStartSearch = LocalDateTime.of(startDateInput, validateStartSearchTime(startTimeInput));
+    }     
+
+    private int validateDuration()
+    {
+        int duration = (int)sliderDurationMinutes.getValue() + (int)sliderDurationHours.getValue()*60;
+        if (duration < 5)
+            duration = 5;
+        return duration;
+    }
+
+    private LocalDate[] validateDateInput()
+    {
+        var startDateInput = startDate.getValue(); 
+        var endDateDateInput = endDate.getValue(); 
+
+        if (startDateInput == null || toggleDateRange.isSelected())
+            startDateInput = LocalDate.now();
+        if (endDateDateInput == null || toggleDateRange.isSelected())
+            endDateDateInput = LocalDate.now().plusDays(365);
+        return new LocalDate[] { startDateInput, endDateDateInput };         
+    }
+
+    private LocalTime[] validateTimeInput()
+    {        
+        var startTimeInput = timeStart.getValue();
+        var endTimeInput = timeEnd.getValue();
+        
+        if (toggleTimeRange.isSelected())
+        {
+            startTimeInput = LocalTime.of(0, 0, 0);
+            endTimeInput = LocalTime.of(23, 59, 59);
+        }  
+        return new LocalTime[] { startTimeInput, endTimeInput };
+    }
+
+    private boolean[] validateWeekdays()
+    {
+        if (toggleWeekdays.isSelected() == false)
+        {
+            return new boolean[] { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(), 
+                tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(), tickSunday.isSelected() };
+        }            
+        else
+            return new boolean[] { true, true, true, true, true, true, true };
     }   
+    
+    private int[] validateTravelTime()
+    {
+        var origin = dropdownStartAtDest.getEditor().getText();
+        var destination = dropdownEndAtDest.getEditor().getText();
+        int[] travelTime = { 0, 0 };
+
+        if (toggleUseTravelDuration.isSelected() && origin.isEmpty() == false && destination.isEmpty() == false)
+        { 
+            var response = api.searchForDestinationDistance(origin, destination, getApiStringFromInput());
+            travelTime = updateTravelTimeToMinutes(response);  
+        }
+        return travelTime;
+    }
+
+    private String getApiStringFromInput()
+    {
+        String input = switch(dropdownVehicle.getEditor().getText()) 
+        {
+            case "Fußgänger" -> "walking";
+            case "Fahrrad" -> "bicycling";
+            case "Öffis" -> "transit";
+            case "Auto" -> "driving";
+            default -> ""; 
+        };
+        return input;
+    }
 
     private int[] updateTravelTimeToMinutes(int[] travelTime)
     {
@@ -288,6 +372,17 @@ public class SearchViewController extends ResponsiveController
         if (travelTime[1] != 0)
             travelTime[1] = travelTime[1]/60;
         return travelTime;        
+    }
+
+    private HashMap<DayOfWeek, List<SerializableEntry>> validateOpeningHours()
+    {
+        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
+        var destination = dropdownEndAtDest.getEditor().getText();
+
+        if (toggleUseOpeningHours.isSelected() && destination.isEmpty() == false)                  
+            openingHours = api.getOpeningHours(destination);
+        
+        return openingHours;
     }
 
     private int[] compareTimes(int timeBefore, int timeAfter, int travelTimeStart, int travelTimeEnd)
@@ -304,17 +399,43 @@ public class SearchViewController extends ResponsiveController
         return updatedTimes;
     }
 
-    private String getApiStringFromInput()
+    private int calculateInterval()
     {
-        String input = switch(dropdownVehicle.getEditor().getText()) 
+        int input = switch(dropdownInterval.getEditor().getText()) 
         {
-            case "Fußgänger" -> "walking";
-            case "Fahrrad" -> "bicycling";
-            case "Öffis" -> "transit";
-            case "Auto" -> "driving";
-            default -> ""; 
+            case "täglich" -> 1;
+            case "wöchentlich" -> 7;
+            case "monatlich" -> 30;
+            case "halbjährlich" -> 182;
+            case "jährlich" -> 365;
+            default -> 0; 
         };
         return input;
+    }
+
+    private int validateSuggestionsCount()
+    {
+        if (toggleRecurringDate.isSelected() == false && toggleAddAutomatically.isSelected())
+            return 1; 
+        else
+            return 1000;   
+    }
+
+    private int validateReccurrences()
+    {
+        if (toggleRecurringDate.isSelected())        
+            return sliderRecurrences.valueProperty().intValue();
+        else 
+            return 1;
+    }
+
+    private LocalTime validateStartSearchTime(LocalTime startTimeInput)
+    {
+        var currentTime = LocalDateTime.now().toLocalTime();
+        if (startTimeInput.isBefore(currentTime))
+            return currentTime;
+        else
+            return startTimeInput;
     }
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC)
@@ -361,18 +482,22 @@ public class SearchViewController extends ResponsiveController
         TableColumn<SuggestionsModel, String> startTimeColumn = new TableColumn<>("Startzeit");
         TableColumn<SuggestionsModel, String> endTimeColumn = new TableColumn<>("Endzeit");
         TableColumn<SuggestionsModel, String> dateColumn = new TableColumn<>("Datum");
+        TableColumn<SuggestionsModel, String> button = new TableColumn<>("eintragen");
         TableView<SuggestionsModel> table = new TableView<SuggestionsModel>(SuggestionsModel.data);
 
         startTimeColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("startTime"));
         endTimeColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("endTime"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("day"));
+        button.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("button"));
 
         startTimeColumn.setPrefWidth(200);
         endTimeColumn.setPrefWidth(200);
         dateColumn.setPrefWidth(200);
+        button.setPrefWidth(200);
         table.getColumns().add(startTimeColumn);
         table.getColumns().add(endTimeColumn);
         table.getColumns().add(dateColumn);
+        table.getColumns().add(button);
 
         return table;
     }
