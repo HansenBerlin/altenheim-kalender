@@ -96,9 +96,18 @@ public class EntryFactory implements IEntryFactory
     public void addCalendarToView(Calendar calendar)
     {
         allCalendars.addCalendar(calendar);
+        boolean inCalendarsSources = false;
         var calendarSource = new CalendarSource("Saved Calendars");
+        for (var calSource : calendarView.getCalendarSources()) {
+            if (calSource.getName().equals("Saved Calendars")){
+                calendarSource = calSource;
+                inCalendarsSources = true;
+                break;
+            }
+        }
         calendarSource.getCalendars().addAll(calendar);
-        calendarView.getCalendarSources().addAll(calendarSource);
+        if (!inCalendarsSources) 
+            calendarView.getCalendarSources().addAll(calendarSource);
     }
 
     private SerializableEntry createRandomEntry(int day, int month, int startT, int endT)
