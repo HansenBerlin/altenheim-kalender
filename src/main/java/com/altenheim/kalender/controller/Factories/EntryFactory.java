@@ -5,6 +5,7 @@ import com.altenheim.kalender.controller.viewController.CustomViewOverride;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.models.SerializableEntry;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -168,5 +169,45 @@ public class EntryFactory implements IEntryFactory
         entry.changeEndDate(dateEnd);
         entry.setTitle(title);
         EntryFactory.allCalendarsStatic.getAllCalendars().get(0).addEntries(entry);
+    }
+
+    public static void createNewUserEntryIncludingTravelTimes (LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel)
+    {
+        if (timeTravel > 0)
+        {
+            var startAt = LocalDateTime.of(dateStart, timeStart);
+            startAt = startAt.minusMinutes(timeTravel);
+            var endAt = LocalDateTime.of(dateStart, timeStart);
+
+            var entry = new SerializableEntry();
+            entry.changeStartTime(startAt.toLocalTime());
+            entry.changeStartDate(startAt.toLocalDate());
+            entry.changeEndTime(endAt.toLocalTime());
+            entry.changeEndDate(endAt.toLocalDate());            
+            entry.setTitle("Anfahrtzeit für " + title);
+            EntryFactory.allCalendarsStatic.getAllCalendars().get(0).addEntries(entry);  
+        }
+        if (timeTravel > 0)
+        {
+            var startAt = LocalDateTime.of(dateEnd, timeEnd);
+            var endAt = LocalDateTime.of(dateEnd, timeEnd);
+            endAt = endAt.plusMinutes(timeTravel);
+            var entry = new SerializableEntry();
+
+            entry.changeStartTime(startAt.toLocalTime());
+            entry.changeStartDate(startAt.toLocalDate());
+            entry.changeEndTime(endAt.toLocalTime());
+            entry.changeEndDate(endAt.toLocalDate()); 
+            entry.setTitle("Anfahrtzeit für " + title);
+            EntryFactory.allCalendarsStatic.getAllCalendars().get(0).addEntries(entry);  
+        }
+        
+        var entry = new SerializableEntry();
+        entry.changeStartTime(timeStart);
+        entry.changeStartDate(dateStart);
+        entry.changeEndTime(timeEnd);
+        entry.changeEndDate(dateEnd);
+        entry.setTitle(title);
+        EntryFactory.allCalendarsStatic.getAllCalendars().get(0).addEntries(entry);          
     }
 }

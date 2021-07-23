@@ -14,7 +14,7 @@ import jfxtras.styles.jmetro.Style;
 
 public class PopupViewsController implements IPopupViewController
 {
-    public static void showEntryAddedDialog(String date, String start, String end, String title)
+    public static void showEntryAddedDialog(String date, String dateEnd, String start, String end, String title)
     {
         var alert = new Alert(Alert.AlertType.INFORMATION);
         var jmetro = new JMetro(Style.LIGHT);

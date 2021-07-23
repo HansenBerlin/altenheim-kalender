@@ -199,7 +199,8 @@ public class SearchViewController extends ResponsiveController
         {
             btnReset.setVisible(true);
             if (userStep == 2)
-            {                
+            {               
+                SuggestionsModel.data.clear(); 
                 startRequest();
                 iterateThroughSuggestions(); 
                 btnConfirm.setText("NÄCHSTER TAG"); 
@@ -232,7 +233,9 @@ public class SearchViewController extends ResponsiveController
     
     
     private int recurrences = 1;   
-    private int interval = 0; 
+    private int timeBeforeGlobal = 0;
+    private int timeAfterGlobal = 0;
+    private int travelTimeTo = 0;
     private LocalDateTime timeToStartSearch;
     private SerializableEntry currentSuggestion;
 
@@ -243,55 +246,71 @@ public class SearchViewController extends ResponsiveController
             automaticEntryCreation();
             return;
         }
+        else
+        {
+            SuggestionsModel.toggleTravelTime = toggleUseTravelDuration.isSelected();
+            SuggestionsModel.travelTime = travelTimeTo;
+        }
 
-        int duration = (int)sliderDurationMinutes.getValue();
+        int duration = (int)sliderDurationMinutes.getValue() + timeAfterGlobal;
         SuggestionsModel.data.clear();
 
         for (int i = 0; i < currentSuggestions.size(); i++) 
         {
-            currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);            
+            currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
+            if (currentSuggestion == null)
+                return;        
             
             if (timeToStartSearch.getDayOfYear() < currentSuggestion.getEndDate().getDayOfYear())
             {
                 checkIntervalAdditionForSuggestions();                
                 break;
             } 
+            SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
+                currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), new Button("EINTRAGEN"), tfAppointmentName.getText());
             timeToStartSearch = currentSuggestion.getEndAsLocalDateTime();          
-            SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), 
-                currentSuggestion.getStartDate(), new Button("EINTRAGEN"), tfAppointmentName.getText());
         }        
     } 
     
     private void automaticEntryCreation()
     {
-        int duration = (int)sliderDurationMinutes.getValue();
+        int duration = (int)sliderDurationMinutes.getValue() + timeAfterGlobal;
 
-        for (int i = 0; i < currentSuggestions.size(); i++) 
+        while (recurrences > 0) 
         {
+            recurrences--;
             currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
+            if (currentSuggestion == null)
+                return;
             
-            EntryFactory.createNewUserEntry(currentSuggestion.getStartDate(), currentSuggestion.getStartDate(),
-                currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), tfAppointmentName.getText()); 
-
+            createEntryIncludingTravelTimes(currentSuggestion);                
+            SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
+                currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), dummyButton, tfAppointmentName.getText());            
             checkIntervalAdditionForSuggestions();
-            
-            SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), 
-                currentSuggestion.getStartDate(), dummyButton, tfAppointmentName.getText());
-
-            if (recurrences < 1);
-            {
-                return;         
-
-            }
         } 
+    }
+
+    private void createEntryIncludingTravelTimes(SerializableEntry currentSuggestion)
+    {
+        int traveltime = 0;
+        if (toggleUseTravelDuration.isSelected())
+        {
+            traveltime = travelTimeTo;
+        }
+        EntryFactory.createNewUserEntryIncludingTravelTimes(currentSuggestion.getStartDate(), 
+            currentSuggestion.getEndDate(), currentSuggestion.getStartTime(), 
+            currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), tfAppointmentName.getText(),
+            traveltime);
     }
 
     private void checkIntervalAdditionForSuggestions()
     {
-        if (calculateInterval() == 0)
-            timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().plusDays(1);
+        var resetStartTime = validateTimeInput()[0].plusMinutes(timeBeforeGlobal);
+        currentSuggestion.changeStartTime(resetStartTime);
+        if (calculateInterval() == 0)  
+            timeToStartSearch = currentSuggestion.getStartAsLocalDateTime().plusDays(1);        
         else
-            timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().plusDays(calculateInterval());
+            timeToStartSearch = currentSuggestion.getStartAsLocalDateTime().plusDays(calculateInterval());
     }
     
     private void clearFields()
@@ -313,11 +332,11 @@ public class SearchViewController extends ResponsiveController
         var endTimeInput = validatedTimes[1];        
         var userPrefs = entryFactory.createUserEntry(startDateInput, endDateDateInput, startTimeInput, endTimeInput);
         int duration = validateDuration();
-        var travelTime = validateTravelTime();
+        int travelTime = validateTravelTime();
         var openingHours = validateOpeningHours(); 
         int timeBefore = (int)sliderMarginBeforeAppointment.getValue();
         int timeAfter = (int)sliderMarginAfterAppointment.getValue();
-        var updatedTimes = compareTimes(timeBefore, timeAfter, travelTime[0], travelTime[1]);
+        var updatedTimes = compareTimes(timeBefore, timeAfter, travelTime);
         var weekdays = validateWeekdays();        
         int intervalDays = calculateInterval();        
         var suggestionsCount = validateSuggestionsCount();         
@@ -326,8 +345,11 @@ public class SearchViewController extends ResponsiveController
             updatedTimes[0], updatedTimes[1], suggestionsCount, intervalDays);
         
         recurrences = validateReccurrences();  
-        interval = intervalDays;
-        timeToStartSearch = currentSuggestions.get(0).getStartAsLocalDateTime();  
+        //interval = intervalDays;
+        timeBeforeGlobal = updatedTimes[0];
+        timeAfterGlobal = updatedTimes[1];
+        timeToStartSearch = currentSuggestions.get(0).getStartAsLocalDateTime(); 
+        travelTimeTo = travelTime;
     }     
 
     private int validateDuration()
@@ -374,16 +396,16 @@ public class SearchViewController extends ResponsiveController
             return new boolean[] { true, true, true, true, true, true, true };
     }   
     
-    private int[] validateTravelTime()
+    private int validateTravelTime()
     {
         var origin = dropdownStartAtDest.getSelectionModel().getSelectedItem();
         var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
-        int[] travelTime = { 0, 0 };
+        int travelTime = 0;
 
         if (toggleUseTravelDuration.isSelected() && origin.isEmpty() == false && destination.isEmpty() == false)
         { 
             var response = api.searchForDestinationDistance(origin, destination, getApiStringFromInput());
-            travelTime = updateTravelTimeToMinutes(response);  
+            travelTime = updateTravelTimeToMinutes(response[0]);  
         }
         return travelTime;
     }
@@ -405,12 +427,10 @@ public class SearchViewController extends ResponsiveController
         return returnValue;
     }
 
-    private int[] updateTravelTimeToMinutes(int[] travelTime)
+    private int updateTravelTimeToMinutes(int travelTime)
     {
-        if (travelTime[0] != 0)
-            travelTime[0] = travelTime[0]/60;
-        if (travelTime[1] != 0)
-            travelTime[1] = travelTime[1]/60;
+        if (travelTime != 0)
+            travelTime = travelTime/60;        
         return travelTime;        
     }
 
@@ -425,17 +445,17 @@ public class SearchViewController extends ResponsiveController
         return openingHours;
     }
 
-    private int[] compareTimes(int timeBefore, int timeAfter, int travelTimeStart, int travelTimeEnd)
+    private int[] compareTimes(int timeBefore, int timeAfter, int travelTime)
     {
         int[] updatedTimes = new int[2];
-        if (timeBefore > travelTimeStart)
+        if (timeBefore > travelTime)
             updatedTimes[0] = timeBefore;
         else
-            updatedTimes[0] = travelTimeStart;
-        if (timeAfter > travelTimeEnd)
+            updatedTimes[0] = travelTime;
+        if (timeAfter > travelTime)
             updatedTimes[1] = timeAfter;
         else
-            updatedTimes[1] = travelTimeEnd;
+            updatedTimes[1] = travelTime;
         return updatedTimes;
     }
 
@@ -524,22 +544,26 @@ public class SearchViewController extends ResponsiveController
     {
         TableColumn<SuggestionsModel, String> startTimeColumn = new TableColumn<>("Startzeit");
         TableColumn<SuggestionsModel, String> endTimeColumn = new TableColumn<>("Endzeit");
-        TableColumn<SuggestionsModel, String> dateColumn = new TableColumn<>("Datum");
+        TableColumn<SuggestionsModel, String> dateColumnStart = new TableColumn<>("Startdatum");
+        TableColumn<SuggestionsModel, String> dateColumnEnd = new TableColumn<>("Enddatum");
         TableColumn<SuggestionsModel, String> button = new TableColumn<>("eintragen");
         TableView<SuggestionsModel> table = new TableView<SuggestionsModel>(SuggestionsModel.data);
 
         startTimeColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("startTime"));
         endTimeColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("endTime"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("day"));
+        dateColumnStart.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("dayStart"));
+        dateColumnEnd.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("dayEnd"));
         button.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("button"));
-
-        startTimeColumn.setPrefWidth(200);
-        endTimeColumn.setPrefWidth(200);
-        dateColumn.setPrefWidth(200);
-        button.setPrefWidth(200);
+        
+        startTimeColumn.setPrefWidth(150);
+        endTimeColumn.setPrefWidth(150);
+        dateColumnStart.setPrefWidth(150);
+        dateColumnEnd.setPrefWidth(150);
+        button.setPrefWidth(150);
         table.getColumns().add(startTimeColumn);
         table.getColumns().add(endTimeColumn);
-        table.getColumns().add(dateColumn);
+        table.getColumns().add(dateColumnStart);
+        table.getColumns().add(dateColumnEnd);
         table.getColumns().add(button);
 
         return table;
