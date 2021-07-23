@@ -75,6 +75,7 @@ public class SearchViewController extends ResponsiveController
         dummyButton.setVisible(false);
     }
 
+
     @FXML
     private void initialize()
     {
@@ -86,8 +87,8 @@ public class SearchViewController extends ResponsiveController
         createComboBoxes();
         //setupSliderBindings();
         btnReset.setVisible(false);
-        
     }
+
 
     private void createComboBoxes()
     {
@@ -96,14 +97,11 @@ public class SearchViewController extends ResponsiveController
         dropdownEndAtDest = comboBoxFactory.create(ComboBoxCreate.DESTINATION);
         dropdownDestinationOpening = comboBoxFactory.create(ComboBoxCreate.DESTINATION);
         dropdownInterval = comboBoxFactory.create(ComboBoxCreate.RECCURENCEOPTIONS);
-
         containerTravel.getChildren().addAll(dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest);  
         containerOpeningHours.getChildren().add(dropdownDestinationOpening);
         containerReccurrence.getChildren().add(dropdownInterval);
-
         dropdownEndAtDest.getEditor().textProperty().bindBidirectional(dropdownDestinationOpening.getEditor().textProperty());
     }
-
     
 
     private void setupSliderBindings()
@@ -111,6 +109,7 @@ public class SearchViewController extends ResponsiveController
         tfDurationMinutes.textProperty().bind(sliderDurationMinutes.valueProperty().asString());
         tfDurationHours.textProperty().bind(sliderDurationHours.valueProperty().asString());
     }
+
 
     private void setupInitialContainerStates()
     {
@@ -123,6 +122,7 @@ public class SearchViewController extends ResponsiveController
             hBox.setScaleY(0);            
         }
     }
+
 
     private void setupToggleBindings()
     {
@@ -150,6 +150,7 @@ public class SearchViewController extends ResponsiveController
             i++;            
         }
     }
+
 
     private void setupTextboxInputValidation()
     {
@@ -180,6 +181,7 @@ public class SearchViewController extends ResponsiveController
         i++;            
         };
     }
+
 
     @FXML
     private void updateUserStepView(ActionEvent event) 
@@ -255,7 +257,7 @@ public class SearchViewController extends ResponsiveController
         int duration = (int)sliderDurationMinutes.getValue() + timeAfterGlobal;
         SuggestionsModel.data.clear();
 
-        for (int i = 0; i < currentSuggestions.size(); i++) 
+        for (int i = 0; i < currentSuggestions.size(); i++)
         {
             currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
             if (currentSuggestion == null)

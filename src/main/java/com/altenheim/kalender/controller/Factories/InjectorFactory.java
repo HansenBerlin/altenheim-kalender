@@ -29,6 +29,7 @@ public class InjectorFactory
         var settings = new SettingsModel();
         var mailTemplates = new MailTemplateModel();
         var contacts = new ContactModel();
+
         var settingsFile = new File("userFiles/settingsTest.file");    
         if (settingsFile.exists())        
             settings.readSimpleProperties();
@@ -42,8 +43,7 @@ public class InjectorFactory
             default:
                 customCalendarView = new CustomViewOverride(StylePresets.LIGHT_CALENDAR_CSS_FILE);
                 break;
-        }
-        
+        }        
 
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
         IAnimationController animationController = new AnimationController();

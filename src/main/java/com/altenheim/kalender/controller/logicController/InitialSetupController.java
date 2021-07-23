@@ -45,8 +45,7 @@ public class InitialSetupController
         //entryFactory.createRandomCalendarList();
         if (systemNotifications.initializeSystemTrayAccess()) {
             systemNotifications.startNotificationTask();
-        }
-    
+        }    
     }
 
     public void initialValidationCheck()

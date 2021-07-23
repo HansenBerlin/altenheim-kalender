@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import com.altenheim.kalender.controller.Factories.EntryFactory;
 import com.altenheim.kalender.controller.viewController.PopupViewsController;
-import com.altenheim.kalender.controller.viewController.SearchViewController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
