@@ -33,7 +33,7 @@
                <children>
                   <Button fx:id="btnMailTemplateNewTemplate" mnemonicParsing="false" onAction="#createNewTemplate" text="Neues Template" />
                   <Button fx:id="btnMailTemplaterRemoveTemplate" mnemonicParsing="false" onAction="#removeTemplate" text="Template Löschen" />
-                  <Button fx:id="btnMailTemplateSave" mnemonicParsing="false" onAction="#SaveMailTemplate" text="Speichern" />
+                  <Button fx:id="btnMailTemplateSave" mnemonicParsing="false" onAction="#saveMailTemplate" text="Speichern" />
                </children></HBox>
          </children>
       </VBox>
