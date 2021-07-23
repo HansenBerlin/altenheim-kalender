@@ -14,6 +14,18 @@ import jfxtras.styles.jmetro.Style;
 
 public class PopupViewsController implements IPopupViewController
 {
+    public static void showEntryAddedDialog(String date, String start, String end, String title)
+    {
+        var alert = new Alert(Alert.AlertType.INFORMATION);
+        var jmetro = new JMetro(Style.LIGHT);
+        jmetro.setScene(alert.getDialogPane().getScene());
+        alert.setTitle("Kalendereintrag " + title + " erstellt");
+        alert.setHeaderText(null);
+        alert.setContentText(String.format("Ein Termin am %s von %s bis %s wurde im " +
+            "aktuell gewählten Kalender erstellt", date, start, end));
+        alert.showAndWait();
+    }
+
     public boolean isRevalidationWanted()
     {
         var alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -40,7 +52,7 @@ public class PopupViewsController implements IPopupViewController
         alert.setContentText("Passwortvalidierung erfolgreich. Viel Spaß bei " +
                 "der Nutzung der erweiterten Funktionen des Smart Planners!");
         alert.showAndWait();
-    }
+    }    
 
     public void showCancelDialog()
     {

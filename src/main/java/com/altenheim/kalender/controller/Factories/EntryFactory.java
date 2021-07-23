@@ -159,13 +159,14 @@ public class EntryFactory implements IEntryFactory
         return ThreadLocalRandom.current().nextInt(startInclusive, endInclusive + 1);
     }      
     
-    public static void createNewUserEntry (LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd)
+    public static void createNewUserEntry (LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd, String title)
     {
         var entry = new SerializableEntry();
         entry.changeStartTime(timeStart);
         entry.changeStartDate(dateStart);
         entry.changeEndTime(timeEnd);
         entry.changeEndDate(dateEnd);
+        entry.setTitle(title);
         EntryFactory.allCalendarsStatic.getAllCalendars().get(0).addEntries(entry);
     }
 }

@@ -5,7 +5,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -19,12 +18,11 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import com.altenheim.kalender.controller.Factories.EntryFactory;
 import com.altenheim.kalender.interfaces.*;
-import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -60,8 +58,7 @@ public class SearchViewController extends ResponsiveController
     private SettingsModel settings;
     private ArrayList<SerializableEntry> currentSuggestions;
     private int userStep = 1;
-
-  
+    private Button dummyButton = new Button();  
 
     public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory, MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api,
         IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory, IDateSuggestionController dateSuggestionController)
@@ -75,6 +72,7 @@ public class SearchViewController extends ResponsiveController
         this.animationController = animationController;
         this.comboBoxFactory = comboBoxFactory;
         this.dateSuggestionController = dateSuggestionController;
+        dummyButton.setVisible(false);
     }
 
     @FXML
@@ -189,9 +187,14 @@ public class SearchViewController extends ResponsiveController
         String[] headings = {"Basisinformationen" , "Optionale Informationen", "Vorschlagsauswahl" };
         Circle[] images = { imgFirstStep, imgSecondStep, imgThirdStep };
         VBox[] allSteps = { stepOneUserInput, stepTwoUserInput, stepThreeUserInput }; 
-        int incrementor = -1;
-        var button = (Button)event.getSource();               
-
+        int incrementor = 0;
+        var button = (Button)event.getSource();
+        
+        if (button.equals(btnReset))
+        {
+            clearFields();
+            return;
+        }
         if (button.equals(btnConfirm))
         {
             btnReset.setVisible(true);
@@ -202,9 +205,8 @@ public class SearchViewController extends ResponsiveController
                 btnConfirm.setText("NÄCHSTER TAG"); 
             }   
             if (userStep == 3)
-            {
-                if (recurrences > 0)
-                    iterateThroughSuggestions();  
+            {                
+                iterateThroughSuggestions();  
                 return;
             }         
             incrementor = 1;
@@ -215,9 +217,11 @@ public class SearchViewController extends ResponsiveController
                 return;
             if (userStep == 2)
                 btnReset.setVisible(false);
+            if (userStep == 3)
+                btnConfirm.setText("WEITER");
+            incrementor = -1;
         }         
         
-        btnConfirm.setText("WEITER");
         
         int currentIndex = userStep - 1;
         int requestedIndex = userStep - 1 + incrementor;
@@ -227,45 +231,77 @@ public class SearchViewController extends ResponsiveController
     }
     
     
-    public static int recurrences = 1;    
+    private int recurrences = 1;   
+    private int interval = 0; 
     private LocalDateTime timeToStartSearch;
     private SerializableEntry currentSuggestion;
 
     private void iterateThroughSuggestions()
     {
+        if (toggleAddAutomatically.isSelected())
+        {
+            automaticEntryCreation();
+            return;
+        }
+
         int duration = (int)sliderDurationMinutes.getValue();
         SuggestionsModel.data.clear();
 
         for (int i = 0; i < currentSuggestions.size(); i++) 
         {
-            currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
+            currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);            
             
             if (timeToStartSearch.getDayOfYear() < currentSuggestion.getEndDate().getDayOfYear())
             {
-                if (calculateInterval() != 0)
-                    timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().plusDays(1);
-                else
-                    timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().plusDays(calculateInterval());
+                checkIntervalAdditionForSuggestions();                
                 break;
             } 
-            SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), currentSuggestion.getStartDate(), new Button("EINTRAGEN"));
             timeToStartSearch = currentSuggestion.getEndAsLocalDateTime();          
-        }
-        
-    }   
+            SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), 
+                currentSuggestion.getStartDate(), new Button("EINTRAGEN"), tfAppointmentName.getText());
+        }        
+    } 
+    
+    private void automaticEntryCreation()
+    {
+        int duration = (int)sliderDurationMinutes.getValue();
+
+        for (int i = 0; i < currentSuggestions.size(); i++) 
+        {
+            currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
+            
+            EntryFactory.createNewUserEntry(currentSuggestion.getStartDate(), currentSuggestion.getStartDate(),
+                currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), tfAppointmentName.getText()); 
+
+            checkIntervalAdditionForSuggestions();
+            
+            SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), 
+                currentSuggestion.getStartDate(), dummyButton, tfAppointmentName.getText());
+
+            if (recurrences < 1);
+            {
+                return;         
+
+            }
+        } 
+    }
+
+    private void checkIntervalAdditionForSuggestions()
+    {
+        if (calculateInterval() == 0)
+            timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().plusDays(1);
+        else
+            timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().plusDays(calculateInterval());
+    }
     
     private void clearFields()
     {
-
+        currentSuggestion = null;
+        currentSuggestions = null;
+        timeToStartSearch = null;
+        SuggestionsModel.data.clear();
+        recurrences = 1;
     }
-
-    private void addSuggestionsForNextReccurenceDayToList(int duration)
-    {
-        currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
-        timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().plusDays(calculateInterval());
-        SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime(), currentSuggestion.getStartDate(), new Button("EINTRAGEN"));
-    }
-    
 
     private void startRequest()
     {               
@@ -290,8 +326,8 @@ public class SearchViewController extends ResponsiveController
             updatedTimes[0], updatedTimes[1], suggestionsCount, intervalDays);
         
         recurrences = validateReccurrences();  
+        interval = intervalDays;
         timeToStartSearch = currentSuggestions.get(0).getStartAsLocalDateTime();  
-        //timeToStartSearch = LocalDateTime.of(startDateInput, validateStartSearchTime(startTimeInput));
     }     
 
     private int validateDuration()
@@ -340,8 +376,8 @@ public class SearchViewController extends ResponsiveController
     
     private int[] validateTravelTime()
     {
-        var origin = dropdownStartAtDest.getEditor().getText();
-        var destination = dropdownEndAtDest.getEditor().getText();
+        var origin = dropdownStartAtDest.getSelectionModel().getSelectedItem();
+        var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
         int[] travelTime = { 0, 0 };
 
         if (toggleUseTravelDuration.isSelected() && origin.isEmpty() == false && destination.isEmpty() == false)
@@ -354,7 +390,11 @@ public class SearchViewController extends ResponsiveController
 
     private String getApiStringFromInput()
     {
-        String input = switch(dropdownVehicle.getEditor().getText()) 
+        String input = dropdownVehicle.getSelectionModel().getSelectedItem();
+        if (input == null)
+            return "";
+
+        String returnValue = switch(dropdownVehicle.getSelectionModel().getSelectedItem()) 
         {
             case "Fußgänger" -> "walking";
             case "Fahrrad" -> "bicycling";
@@ -362,7 +402,7 @@ public class SearchViewController extends ResponsiveController
             case "Auto" -> "driving";
             default -> ""; 
         };
-        return input;
+        return returnValue;
     }
 
     private int[] updateTravelTimeToMinutes(int[] travelTime)
@@ -377,7 +417,7 @@ public class SearchViewController extends ResponsiveController
     private HashMap<DayOfWeek, List<SerializableEntry>> validateOpeningHours()
     {
         var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
-        var destination = dropdownEndAtDest.getEditor().getText();
+        var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
 
         if (toggleUseOpeningHours.isSelected() && destination.isEmpty() == false)                  
             openingHours = api.getOpeningHours(destination);
@@ -401,7 +441,10 @@ public class SearchViewController extends ResponsiveController
 
     private int calculateInterval()
     {
-        int input = switch(dropdownInterval.getEditor().getText()) 
+        var userInput = dropdownInterval.getSelectionModel().getSelectedItem();
+        if (userInput == null)
+            return 0; 
+        int returnValue = switch(userInput)
         {
             case "täglich" -> 1;
             case "wöchentlich" -> 7;
@@ -410,7 +453,7 @@ public class SearchViewController extends ResponsiveController
             case "jährlich" -> 365;
             default -> 0; 
         };
-        return input;
+        return returnValue;
     }
 
     private int validateSuggestionsCount()
