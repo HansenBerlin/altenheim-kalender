@@ -87,6 +87,8 @@ public class SettingsModel implements Serializable
             {
                 streamOut.writeUTF(simpleStringProperty.getValueSafe());                
             }
+            streamOut.writeLong(scrapingIntervalInMinutes);
+            streamOut.writeLong(notificationTimeBeforeEntryInMinutes);
             streamOut.close();
         } 
         catch (Exception e) 
@@ -94,7 +96,7 @@ public class SettingsModel implements Serializable
             e.printStackTrace();
         }
     }
- 
+
 
     public void readSimpleProperties()
     {
@@ -112,6 +114,8 @@ public class SettingsModel implements Serializable
             {
                 simpleStringProperty.set(inputStream.readUTF());                
             }
+            scrapingIntervalInMinutes.valueOf(inputStream.readLong());
+            notificationTimeBeforeEntryInMinutes= inputStream.readLong();
             inputStream.close();
         } 
         catch (Exception e) 

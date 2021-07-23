@@ -84,12 +84,11 @@ public class SettingsViewController extends ResponsiveController
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSpecialField);
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionCourse);
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSemester);
-        /*
-        comboBoxNotificationMin.textProperty().bindBidirectional(settings.specialField);
-        btnMenuCourse.textProperty().bindBidirectional(settings.course);
-        btnMenuSemester.textProperty().bindBidirectional(settings.semester); */
-
-        //comboBoxNotificationMin.promptTextProperty().bind(settings.getnotificationTimeBeforeEntryInMinutes2());
+        
+        comboBoxNotificationMin.getSelectionModel().select(String.valueOf(settings.notificationTimeBeforeEntryInMinutes));
+        comboBoxSelectionSpecialField.getSelectionModel().select(settings.specialField.getValue());
+        comboBoxSelectionSemester.getSelectionModel().select(settings.semester.getValue());
+        comboBoxSelectionCourse.getSelectionModel().select(settings.course.getValue());
     }  
     
     @FXML
@@ -124,16 +123,14 @@ public class SettingsViewController extends ResponsiveController
             txtError.setVisible(false);
             String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%s/kurs%s", 
             comboBoxSelectionSpecialField.getValue(), comboBoxSelectionSemester.getValue(), comboBoxSelectionCourse.getValue().replaceFirst("keine Kurse", ""));
-        settings.setCalendarParser(resultURL);    
+            settings.specialField.set(comboBoxSelectionSpecialField.getValue());
+            settings.course.set(comboBoxSelectionCourse.getValue());
+            settings.semester.set(comboBoxSelectionSemester.getValue());
+            settings.setCalendarParser(resultURL);    
         }
         cBToolTips.setTooltip(cBToolTips.getTooltip());
+        settings.notificationTimeBeforeEntryInMinutes = (long) Long.valueOf(comboBoxNotificationMin.getValue());
         settings.writeSimpleProperties();
-
-
-        /*
-        String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%c/kurs%s", 
-            btnMenuSpecialField.getText(), btnMenuSemester.getText().charAt(5), btnMenuCourse.getText().replaceFirst("keine Kurse", ""));
-               */
     }  
     
     public void changeContentPosition(double width, double height) 
