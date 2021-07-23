@@ -94,7 +94,7 @@ public class SettingsModel implements Serializable
             e.printStackTrace();
         }
     }
-
+ 
 
     public void readSimpleProperties()
     {
