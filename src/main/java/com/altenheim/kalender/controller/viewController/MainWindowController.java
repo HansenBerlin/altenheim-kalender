@@ -80,15 +80,18 @@ public class MainWindowController extends ResponsiveController
     private void changeScene(MouseEvent event) throws IOException 
     {
         var button = (Button)event.getSource();
-        int userChoice = Integer.parseInt(button.getAccessibleText()); 
-        updateViewOnButtonClicked(button);        
-        allViewsInformation.getAllViews()[userChoice].setDisable(false);
-        allViewsInformation.getAllViews()[userChoice].setVisible(true);  
-        allViewsInformation.getAllViews()[currentView].setDisable(true);
-        allViewsInformation.getAllViews()[currentView].setVisible(false);
-        currentView = userChoice;
-        currentlyActive = button;
-        updateWindowSize();
+        if (button != currentlyActive) {
+            int userChoice = Integer.parseInt(button.getAccessibleText()); 
+            updateViewOnButtonClicked(button);        
+            allViewsInformation.getAllViews()[userChoice].setDisable(false);
+            allViewsInformation.getAllViews()[userChoice].setVisible(true);  
+            allViewsInformation.getAllViews()[currentView].setDisable(true);
+            allViewsInformation.getAllViews()[currentView].setVisible(false);
+            currentView = userChoice;
+            currentlyActive = button;
+            updateWindowSize();
+        }
+        
     }    
    
     
