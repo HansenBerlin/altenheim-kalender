@@ -46,42 +46,30 @@ public class SmartSearchController implements ISmartSearchController
 	Die Methode gibt zurück:
 		Liste mit den Zeiträumen für mögliche Einträge
 	*/
-	public ArrayList<SerializableEntry> findPossibleTimeSlots(SerializableEntry input, int duration, boolean[] weekdays, 
-	HashMap<DayOfWeek, List<SerializableEntry>> openingHours, int timeBefore, int timeAfter, int maxNumberOfReturnEntrys, int intervalDays){
+	public ArrayList<SerializableEntry> findPossibleTimeSlots(SerializableEntry input, int duration, boolean[] allowedWeekdays, 
+		HashMap<DayOfWeek, List<SerializableEntry>> openingHours, int timeBefore, int timeAfter, int intervalDays){
 		
 		var output = new ArrayList<SerializableEntry>(); 
 		var startTime = input.getStartTime();
 		var endTime = input.getEndTime();
-		var intervalNumber = 1;
 		var date = input.getStartDate();
-		var inInterval = true;
 
-		var i = -1;
-		while (output.size()<maxNumberOfReturnEntrys) {
-			i++;
+		int i = -1;
+		while (date.isBefore(input.getEndDate()) && output.size() < 1000) {
+			i++;	
 			
-			date = date.plusDays(i);
-			if (intervalDays==0 && inInterval)
-				date = input.getStartDate().plusDays(i);
-			
-			
-			if(!weekdays[date.getDayOfWeek().getValue()-1]){
-				inInterval = true;
-				continue;
-			}
+			int index = date.getDayOfWeek().getValue()-1;
+			if(allowedWeekdays[index] == false)	
+			{
+				date = date.plusDays(1);
+				continue;			
+			}		
 				
 			if (openingHours.get(DayOfWeek.of((i%7)+1)) == null)
 			{
 				var entry = createEntry(date, startTime, endTime);
 				output.addAll(findAvailableTimeSlot(entry, duration, timeBefore, timeAfter));
-
-				if (intervalDays >0 && intervalNumber >= output.size()) {
-					reduceListLenght(output, intervalNumber);
-					date = date.plusDays(intervalDays);
-					intervalNumber++;
-					inInterval = false;
-					i = -1;
-				}				
+				date = date.plusDays(intervalDays);							
 			}
 			else
 			{
@@ -95,20 +83,10 @@ public class SmartSearchController implements ISmartSearchController
 					if (endTime.isAfter(day.getEndTime()))
 						entry.changeEndTime(day.getEndTime());
 					output.addAll(findAvailableTimeSlot(entry, duration, timeBefore, timeAfter));
-				
-					if (intervalDays >0 && intervalNumber >= output.size()) {
-						reduceListLenght(output, intervalNumber);
-						date = date.plusDays(intervalDays);
-						intervalNumber++;
-						inInterval = false;
-						i = -1;
-					}
+					date = date.plusDays(intervalDays);					
 				}
 			}			
-		}
-		if (output.size()>=maxNumberOfReturnEntrys) 
-			reduceListLenght(output, maxNumberOfReturnEntrys);
-		
+		}			
 		return output;
 	}
 	
@@ -183,12 +161,5 @@ public class SmartSearchController implements ISmartSearchController
 			return false;
 		return (currentEntries.get(currentEntries.size()-2).getStartMillis() 
 		== currentEntries.get(currentEntries.size()-1).getStartMillis());
-	}	
-
-	public ArrayList<SerializableEntry> findPossibleTimeSlots(SerializableEntry input, int duration, boolean[] weekdays,
-													 ArrayList<ArrayList<SerializableEntry>> openingHours,
-													 int timeBefore, int timeAfter, int maxNumberOfReturnEntrys) {
-		System.out.println("Test");
-		return null;
 	}
 }

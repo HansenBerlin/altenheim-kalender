@@ -171,7 +171,7 @@ public class SearchViewController extends ResponsiveController
                     {
                         textFieldsFirstView[j].setText(newValue.replaceAll("[^\\d]", ""));                    
                     }  
-                     else
+                    else
                     {
                         double value = Double.parseDouble(textFieldsFirstView[j].getText());
                         sliderFirstView[j].setValue(Double.valueOf(value));
@@ -257,38 +257,47 @@ public class SearchViewController extends ResponsiveController
         int duration = (int)sliderDurationMinutes.getValue() + timeAfterGlobal;
         SuggestionsModel.data.clear();
 
-        for (int i = 0; i < currentSuggestions.size(); i++)
+        for (int i = 0; i < 20; i++)         
         {
             currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
+            
             if (currentSuggestion == null)
                 return;        
             
-            if (timeToStartSearch.getDayOfYear() < currentSuggestion.getEndDate().getDayOfYear())
-            {
-                checkIntervalAdditionForSuggestions();                
-                break;
-            } 
+            timeToStartSearch = currentSuggestion.getEndAsLocalDateTime(); 
             SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
                 currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), new Button("EINTRAGEN"), tfAppointmentName.getText());
-            timeToStartSearch = currentSuggestion.getEndAsLocalDateTime();          
-        }        
+        } 
     } 
     
     private void automaticEntryCreation()
     {
         int duration = (int)sliderDurationMinutes.getValue() + timeAfterGlobal;
-
+        int interval = calculateInterval();
+        if (interval == 0)
+            interval = 1;
+        LocalDateTime tempDate = timeToStartSearch.minusMinutes(1);
+        LocalTime startAt = timeToStartSearch.toLocalTime();
         while (recurrences > 0) 
         {
-            recurrences--;
             currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
             if (currentSuggestion == null)
                 return;
             
-            createEntryIncludingTravelTimes(currentSuggestion);                
-            SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
-                currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), dummyButton, tfAppointmentName.getText());            
-            checkIntervalAdditionForSuggestions();
+            timeToStartSearch = currentSuggestion.getEndAsLocalDateTime(); 
+
+            if (currentSuggestion.getStartAsLocalDateTime().isAfter(tempDate))
+            {
+                createEntryIncludingTravelTimes(currentSuggestion);                
+                SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
+                    currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), dummyButton, tfAppointmentName.getText());
+                timeToStartSearch = LocalDateTime.of(timeToStartSearch.toLocalDate(), startAt);
+                tempDate = timeToStartSearch.plusDays(interval);
+                recurrences--;
+            }
+
+                       
+            //checkIntervalAdditionForSuggestions();
         } 
     }
 
@@ -341,16 +350,17 @@ public class SearchViewController extends ResponsiveController
         var updatedTimes = compareTimes(timeBefore, timeAfter, travelTime);
         var weekdays = validateWeekdays();        
         int intervalDays = calculateInterval();        
-        var suggestionsCount = validateSuggestionsCount();         
+        //var suggestionsCount = validateSuggestionsCount();         
         
-        currentSuggestions = smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, openingHours, 
-            updatedTimes[0], updatedTimes[1], suggestionsCount, intervalDays);
+        currentSuggestions = smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, 
+            openingHours, updatedTimes[0], updatedTimes[1], intervalDays);
         
         recurrences = validateReccurrences();  
         //interval = intervalDays;
         timeBeforeGlobal = updatedTimes[0];
         timeAfterGlobal = updatedTimes[1];
-        timeToStartSearch = currentSuggestions.get(0).getStartAsLocalDateTime(); 
+        //timeToStartSearch = currentSuggestions.get(0).getStartAsLocalDateTime(); 
+        timeToStartSearch = LocalDateTime.of(startDateInput, startTimeInput); 
         travelTimeTo = travelTime;
     }     
 
@@ -370,7 +380,7 @@ public class SearchViewController extends ResponsiveController
         if (startDateInput == null || toggleDateRange.isSelected())
             startDateInput = LocalDate.now();
         if (endDateDateInput == null || toggleDateRange.isSelected())
-            endDateDateInput = LocalDate.now().plusDays(365);
+            endDateDateInput = LocalDate.now().plusDays(1500);
         return new LocalDate[] { startDateInput, endDateDateInput };         
     }
 

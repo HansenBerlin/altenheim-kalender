@@ -9,6 +9,9 @@ public class DateSuggestionController implements IDateSuggestionController
 {
     public SerializableEntry getDateSuggestionFromEntryList(ArrayList<SerializableEntry> input, LocalDateTime startSearchDateTimeInput, int dateLenght) 
     {
+        if (input.isEmpty())
+            return null;
+            
         var startSearchDateTime  = LocalDateTime.of(startSearchDateTimeInput.toLocalDate(), startSearchDateTimeInput.toLocalTime());
         
         if (input.get(input.size()-1).getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes((long) dateLenght + 1))) 
