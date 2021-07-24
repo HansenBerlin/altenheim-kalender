@@ -135,14 +135,6 @@ public class SettingsViewController extends ResponsiveController
     
     public void changeContentPosition(double width, double height) 
     {
-        int row = 1;
-        int col = 0;
-        if (height < 950)
-        {            
-            row = 0;
-            col = 1;
-        }       
-        childContainer.getChildren().remove(bottomContainer);
-        childContainer.add(bottomContainer, col, row, 1, 1);
+        
     }
 }
