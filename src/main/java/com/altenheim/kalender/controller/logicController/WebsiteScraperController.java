@@ -49,8 +49,7 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
         var ics = Paths.get(settings.getPathToHwrScrapedFile());
         var pathOfIcs = ics.toAbsolutePath().toString();
         var calHWR = icsImport.importFile(pathOfIcs);
-        System.out.println(calHWR.findEntries(LocalDate.of(2020, 1, 1), LocalDate.of(2025, 1, 1), ZoneId.systemDefault()).values());
-        
+       
         entryFactory.addHWRCalendarToView(calHWR);
         
     }
