@@ -3,10 +3,12 @@ package com.altenheim.kalender;
 import com.altenheim.kalender.controller.Factories.InjectorFactory;
 import com.altenheim.kalender.controller.viewController.MainWindowController;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class JavaFXLauncher extends Application
 {
@@ -41,6 +43,14 @@ public class JavaFXLauncher extends Application
 
         mainController.switchCssMode();
         
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                System.out.println("Stage is closing");
+                System.exit(0);
+            }
+        });
+
+
         primaryStage.show();  
     }
 
