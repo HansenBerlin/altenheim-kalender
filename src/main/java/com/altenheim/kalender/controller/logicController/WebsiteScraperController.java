@@ -1,6 +1,5 @@
 package com.altenheim.kalender.controller.logicController;
 
-import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.IImportController;
 import com.altenheim.kalender.interfaces.IWebsiteScraperController;
@@ -10,7 +9,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.Timer;
+import java.time.ZoneId;
 import java.util.TimerTask;
 
 
@@ -26,10 +27,6 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
         this.icsImport = icsImport;
         this.entryFactory = entryFactory;
     }
-    /* Wirft im Build Fehler weil eine Methode nicht aufgerufen werden kann, die
-       hier irgendwo in der Vererbungshierarchie steht, deshalb wie unten erstmal
-       einmalig manueller Aufruf
-*/
     public void startScraperTask()
     {
         var timer = new Timer();
@@ -52,6 +49,7 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
         var ics = Paths.get(settings.getPathToHwrScrapedFile());
         var pathOfIcs = ics.toAbsolutePath().toString();
         var calHWR = icsImport.importFile(pathOfIcs);
+        System.out.println(calHWR.findEntries(LocalDate.of(2020, 1, 1), LocalDate.of(2025, 1, 1), ZoneId.systemDefault()).values());
         
         entryFactory.addHWRCalendarToView(calHWR);
         
