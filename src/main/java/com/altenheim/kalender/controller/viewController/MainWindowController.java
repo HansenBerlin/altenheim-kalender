@@ -2,6 +2,7 @@ package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.IAnimationController;
 import com.altenheim.kalender.interfaces.IViewRootsModel;
+import com.altenheim.kalender.models.SettingsModel;
 import com.altenheim.kalender.resourceClasses.StylePresets;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,8 +40,8 @@ public class MainWindowController extends ResponsiveController
     private int currentMenuWidth = 240;
     private int topMenuHeight = 100;
     private Button currentlyActive;
-    private boolean darkModeActive = false;
     private Background currentSecondaryColor;
+    private SettingsModel settings;
 
     @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, menuBtnPaneMail, menuBtnPaneContacts, menuBtnPaneStats;
     @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnStats, menuBtnMail;     
@@ -54,13 +55,14 @@ public class MainWindowController extends ResponsiveController
     @FXML private HBox topButtonRow;
 
 
-    public MainWindowController(Stage stage, IViewRootsModel allViewsInformation, GuiUpdateController guiSetup, CustomViewOverride customCalendar)
+    public MainWindowController(Stage stage, IViewRootsModel allViewsInformation, GuiUpdateController guiSetup, CustomViewOverride customCalendar, SettingsModel settings)
     {
         this.stage = stage;
         this.allViewsInformation = allViewsInformation;
         this.guiSetup = guiSetup;  
         this.animationController = new AnimationController();
         this.customCalendar = customCalendar;
+        this.settings = settings;
     }
 
 
@@ -98,12 +100,20 @@ public class MainWindowController extends ResponsiveController
     @FXML
     private void switchMode(ActionEvent event) 
     {
-        if (darkModeActive)
+        switchCssMode();
+        if (event != null)
+            updateViewOnButtonClicked(currentlyActive);   
+    }
+    
+    public void switchCssMode() {
+        if (settings.cssMode.equals("Light"))
         {
             setColorsForDarkAndLightMode(Style.DARK, StylePresets.DARK_MENU_BACKGROUND, StylePresets.DARK_MAIN_BACKGROUND,
                     StylePresets.DARK_PRIMARY, StylePresets.DARK_SECONDARY, StylePresets.DARK_SECONDARY_CSS,
                     StylePresets.DARK_APPLICATION_CSS_FILE, StylePresets.LIGHT_CALENDAR_CSS_FILE, StylePresets.DARK_CALENDAR_CSS_FILE);
             currentSecondaryColor = StylePresets.DARK_SECONDARY;
+            settings.cssMode = "Dark";
+            settings.writeSimpleProperties();
         }
         else
         {
@@ -111,12 +121,11 @@ public class MainWindowController extends ResponsiveController
                     StylePresets.LIGHT_PRIMARY, StylePresets.LIGHT_SECONDARY, StylePresets.LIGHT_SECONDARY_CSS,
                     StylePresets.LIGHT_APPLICATION_CSS_FILE, StylePresets.DARK_CALENDAR_CSS_FILE, StylePresets.LIGHT_CALENDAR_CSS_FILE);
             currentSecondaryColor = StylePresets.LIGHT_SECONDARY;
+            settings.cssMode = "Light";
+            settings.writeSimpleProperties();
         }
-        if (event != null)
-            updateViewOnButtonClicked(currentlyActive);
-
-        darkModeActive ^= true;
-    } 
+        
+    }
 
 
     private void setColorsForDarkAndLightMode(Style style, Background menu, Background background, 
@@ -156,7 +165,7 @@ public class MainWindowController extends ResponsiveController
 
 
 
-    private void updateViewOnButtonClicked(Button pressed)
+    public void updateViewOnButtonClicked(Button pressed)
     {   
         for (String buttonName : allButtonsWithBackgrounds.keySet())
         {

@@ -17,8 +17,8 @@ public class JavaFXLauncher extends Application
         objectFactory.createServices();
         var guiSetup = objectFactory.getGuiController();
         guiSetup.init();
-        var mainController = new MainWindowController(primaryStage, objectFactory.getAllViews(), guiSetup, objectFactory.getCustomCalendarView());
-
+        var mainController = new MainWindowController(primaryStage, objectFactory.getAllViews(), guiSetup, objectFactory.getCustomCalendarView(), objectFactory.getSettingsModel());
+        
         var loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/mainView.fxml"));     
         loader.setController(mainController);        
@@ -39,6 +39,8 @@ public class JavaFXLauncher extends Application
         initialSettingsLoader.initializeSettings();
         initialSettingsLoader.initialValidationCheck();
 
+        mainController.switchCssMode();
+        
         primaryStage.show();  
     }
 

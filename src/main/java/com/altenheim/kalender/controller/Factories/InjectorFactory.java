@@ -15,35 +15,28 @@ public class InjectorFactory
     private JMetro jMetroStyle;
     private InitialSetupController initialSettingsLoader;
     private CustomViewOverride customCalendarView;
+    private SettingsModel settings;
     public  CustomViewOverride getCustomCalendarView() { return customCalendarView; }
     public GuiUpdateController getGuiController() { return guiSetup; }
     public IViewRootsModel getAllViews() { return allViews; }
     public JMetro getJMetroSetup() { return jMetroStyle; }
     public InitialSetupController getInitialSettingsLoader() { return initialSettingsLoader; }
+    public SettingsModel getSettingsModel() {return settings; }
 
     public void createServices() throws Exception 
     {     
         jMetroStyle = new JMetro();   
         var jsonParser = new JsonParser();
         
-        var settings = new SettingsModel();
+        settings = new SettingsModel();
         var mailTemplates = new MailTemplateModel();
         var contacts = new ContactModel();
 
         var settingsFile = new File("userFiles/settingsTest.file");    
         if (settingsFile.exists())        
             settings.readSimpleProperties();
-        switch (settings.cssMode) {
-            case "Light":
-                customCalendarView = new CustomViewOverride(StylePresets.LIGHT_CALENDAR_CSS_FILE);
-                break;
-            case "Dark":
-                customCalendarView = new CustomViewOverride(StylePresets.DARK_CALENDAR_CSS_FILE);
-                break;
-            default:
-                customCalendarView = new CustomViewOverride(StylePresets.LIGHT_CALENDAR_CSS_FILE);
-                break;
-        }        
+        customCalendarView =new CustomViewOverride(settings.cssMode);
+                
 
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
         IAnimationController animationController = new AnimationController();
