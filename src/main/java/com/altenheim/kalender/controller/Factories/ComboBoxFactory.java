@@ -20,9 +20,9 @@ public class ComboBoxFactory implements IComboBoxFactory
     private ObservableList<String> selectionSpecialField = FXCollections.observableArrayList();
     private ObservableList<String> selectionCourse = FXCollections.observableArrayList();
     private ObservableList<String> selectionSemester = FXCollections.observableArrayList();
-    private ObservableList<String> mailTemplateSelectorTemplate = FXCollections.observableArrayList(); //getter und dann ändern im Mail ViewController
-    private List<ObservableList<String>> content = new ArrayList<ObservableList<String>>();
-    private String[] headers = {"Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs", "Semester"};
+    public ObservableList<String> mailTemplateSelectorTemplate = FXCollections.observableArrayList(); //getter und dann ändern im Mail ViewController
+    public List<ObservableList<String>> content = new ArrayList<ObservableList<String>>();
+    private String[] headers = {"Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs", "Semester", "MailTemplate"};
 
     public void addToDestinations(String address) { destinations.add(address); }
 
@@ -60,13 +60,7 @@ public class ComboBoxFactory implements IComboBoxFactory
         return comboBox;
     }  
     
-    public void updateMailTemplates(Map<String, String> templates) {
-        
-        content.remove(content.indexOf(mailTemplateSelectorTemplate));        
-        mailTemplateSelectorTemplate.clear();
-        for (Entry<String, String> entry : templates.entrySet()) {
-            mailTemplateSelectorTemplate.add(entry.getKey());
-        }
-        content.add(mailTemplateSelectorTemplate);
-    }
+    public ObservableList<String> getMailTemplateSelectorTemplate() {return mailTemplateSelectorTemplate;}
+    public List<ObservableList<String>> getContent() {return content;}
+
 }

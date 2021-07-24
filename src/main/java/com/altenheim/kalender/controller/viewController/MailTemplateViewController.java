@@ -8,8 +8,11 @@ import com.altenheim.kalender.interfaces.IMailCreationController;
 import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.models.SettingsModel;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
+import com.calendarfx.model.Entry;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
@@ -35,10 +38,10 @@ public class MailTemplateViewController extends ResponsiveController
 
     @FXML
     private void initialize()
-    {/*
+    {
         comboBoxTemplates = comboBoxFactory.create(ComboBoxCreate.MAILTEMPLATESELECTORTEMPLATE);
         containerComboBoxSelectorTemplate.getChildren().add(comboBoxTemplates);
-        comboBoxFactory.updateMailTemplates(mailTemplates);*/
+        updateComboBoxTemplates();
     }
 
     public MailTemplateViewController(IIOController ioController, SettingsModel settings, MailTemplateModel mailTemplateModel,
@@ -56,15 +59,15 @@ public class MailTemplateViewController extends ResponsiveController
         
     }
 
-    private Map<String, String> mailTemplates;
+    
     @FXML
     void removeTemplate(ActionEvent event) 
     {
         var templateName = comboBoxTemplates.getValue();
         
-        if (mailTemplates.get(templateName)!=null) {
-            mailTemplates.remove(templateName);
-            comboBoxFactory.updateMailTemplates(mailTemplates);
+        if (mailTemplatesModel.getTemplates().get(templateName)!=null) {
+            mailTemplatesModel.getTemplates().remove(templateName);
+            updateComboBoxTemplates();
             updateTextArea("");
             txtFieldNameTemplate.setText("");
         }
@@ -73,7 +76,7 @@ public class MailTemplateViewController extends ResponsiveController
     private String templateKey;
     @FXML
     void saveMailTemplate(ActionEvent event) {
-        comboBoxFactory.updateMailTemplates(mailTemplates);
+        updateComboBoxTemplates();
         var templateName = txtFieldNameTemplate.getText();
         var templateValue = mailTemplatetxtArea.getText();
         if (templateName.isBlank()) {
@@ -85,14 +88,14 @@ public class MailTemplateViewController extends ResponsiveController
         }else {
             txtError.setVisible(false);
             if (templateKey == null || templateKey.isBlank()) {
-                mailTemplates.put(templateName, templateValue);
+                mailTemplatesModel.getTemplates().put(templateName, templateValue);
             }else if(!templateKey.equals(templateName)){
-                mailTemplates.remove(templateKey);
-                mailTemplates.put(templateName, templateValue);
+                mailTemplatesModel.getTemplates().remove(templateKey);
+                mailTemplatesModel.getTemplates().put(templateName, templateValue);
             } else {
-                mailTemplates.replace(templateName, templateValue);
+                mailTemplatesModel.getTemplates().replace(templateName, templateValue);
             }
-            comboBoxFactory.updateMailTemplates(mailTemplates);
+            updateComboBoxTemplates();
             comboBoxTemplates.setValue(templateName);
         }
     }
@@ -123,33 +126,44 @@ public class MailTemplateViewController extends ResponsiveController
 
     @FXML
     void insertDateMailTemplate(ActionEvent event) {
-        var position = mailTemplatetxtArea.getCaretPosition();
-        var text = mailTemplatetxtArea.getText();
-        mailTemplatetxtArea.setText(text.substring(0, position)+"[Datum] "+text.substring(position, text.length()));
-        if (txtError.getText().contains("Datum fehlt im Template.")) {
-            txtError.setVisible(false);
-        }
+        insertSomethingInMailTemplateTxtArea("Datum");
     }
 
     @FXML
     void insertTimeMailTemplate(ActionEvent event) {
+        insertSomethingInMailTemplateTxtArea("Uhrzeit");
+    }
+    
+    private void insertSomethingInMailTemplateTxtArea(String txt) {
         var position = mailTemplatetxtArea.getCaretPosition();
         var text = mailTemplatetxtArea.getText();
-        mailTemplatetxtArea.setText(text.substring(0, position)+"[Uhrzeit] "+text.substring(position, text.length()));
-        if (txtError.getText().contains("Uhrzeit fehlt im Template.")) {
-            txtError.setVisible(false);
-        }
+        if (txtError.getText().contains(txt+"fehlt im Template.")) txtError.setVisible(false);
+        txt = "["+txt+"] ";
+        mailTemplatetxtArea.setText(text.substring(0, position)+txt+text.substring(position, text.length()));
+        mailTemplatetxtArea.requestFocus();
+        mailTemplatetxtArea.positionCaret(position+txt.length());
     }
 
     @FXML
     void loadTemplate(ActionEvent event) {
         var value = comboBoxTemplates.getValue();
-        updateTextArea(mailTemplates.get(value));
+        updateTextArea(mailTemplatesModel.getTemplates().get(value));
         txtFieldNameTemplate.setText(value);
         templateKey = value;
     }
 
     private void updateTextArea(String value) {
         mailTemplatetxtArea.setText(value);
+    }
+
+    private void updateComboBoxTemplates() {
+        var mailTemplate = comboBoxFactory.getMailTemplateSelectorTemplate();
+        var content = comboBoxFactory.getContent();
+        content.remove(content.indexOf(mailTemplate));        
+        mailTemplate.clear();
+        for (var entry : mailTemplatesModel.getTemplates().entrySet()) {
+            mailTemplate.add(entry.getKey());
+        }
+        content.add(mailTemplate);
     }
 }
