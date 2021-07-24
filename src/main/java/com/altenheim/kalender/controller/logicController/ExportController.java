@@ -43,7 +43,12 @@ public class ExportController implements IExportController
             iCalCalendar.getComponents().add(createIcalEntryFromCalFXEntry((SerializableEntry) entry));
         }
         var outputter = new CalendarOutputter();
-        outputter.output(iCalCalendar, fout);
+        try {
+            outputter.output(iCalCalendar, fout);
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+        
         fout.close();
     }
 

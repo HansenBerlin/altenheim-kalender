@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.calendarfx.model.Calendar;
+import com.calendarfx.model.CalendarEvent;
 import com.calendarfx.model.Entry;
+
+import javafx.event.EventHandler;
 
 public class CalendarEntriesModel implements ICalendarEntriesModel {
     private List<Calendar> calendars;
@@ -17,6 +20,15 @@ public class CalendarEntriesModel implements ICalendarEntriesModel {
     }
 
     public void addCalendar(Calendar calendar) {
+        calendar.addEventHandler(new EventHandler<CalendarEvent>(){
+
+			@Override
+			public void handle(CalendarEvent event) {
+				// TODO Auto-generated method stub
+				//System.out.println(event);
+			}
+            
+        });
         calendars.add(calendar);
     }
 

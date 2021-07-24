@@ -31,15 +31,30 @@ public class ImportController implements IImportController
         {
             var stream = new FileInputStream(path);
             var builder = new CalendarBuilder();
-            iCalCalendar = builder.build(stream);
+            if (stream.read() == -1){
+                stream.close();
+                return null;
+            } else {
+                stream.close();
+                stream = new FileInputStream(path);
+                iCalCalendar = builder.build(stream);
+                return parseICal(iCalCalendar);
+            }
+            
 
-        } catch (IOException | ParserException e)
+        } catch (Exception e)
         {
             e.printStackTrace();
             return null;
         }
+        
+        
+        
+        
+    }
 
-        return parseICal(iCalCalendar);
+    private void validateFileInputStream( FileInputStream stream) {
+                
     }
 
     private com.calendarfx.model.Calendar parseICal(Calendar iCalCalendar)

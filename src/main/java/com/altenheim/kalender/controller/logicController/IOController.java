@@ -2,9 +2,12 @@ package com.altenheim.kalender.controller.logicController;
 
 import java.io.File;
 
+import com.altenheim.kalender.controller.viewController.CustomViewOverride;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.IEntryFactory;
+import com.altenheim.kalender.interfaces.IExportController;
 import com.altenheim.kalender.interfaces.IIOController;
+import com.altenheim.kalender.interfaces.IImportController;
 import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.models.SerializableEntry;
@@ -19,8 +22,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import net.fortuna.ical4j.data.*;
-import net.fortuna.ical4j.validate.ValidationException;
 
 public class IOController implements IIOController
 {
@@ -29,15 +30,25 @@ public class IOController implements IIOController
     private MailTemplateModel mailTemplates;
     private ContactModel contacts;
     private String hashedPassword;
+    private ICalendarEntriesModel calendarEntriesModel;
+    private IExportController exportCt;
+    private IImportController importCt;
+    private IEntryFactory entryFactory;
+    private CustomViewOverride calendarView;
 
     public IOController(IEntryFactory administrateEntries, SettingsModel settings, MailTemplateModel mailTemplates, 
-        ICalendarEntriesModel allEntries, ContactModel contacts)
+        ICalendarEntriesModel allEntries, ContactModel contacts, ICalendarEntriesModel calendarEntriesModel, IExportController exportCt, IImportController importCt, IEntryFactory entryFactory, CustomViewOverride calendarView)
     {
         this.allEntries = allEntries;
         this.settings = settings;
         this.mailTemplates = mailTemplates;
         this.allEntries = allEntries;
         this.contacts = contacts;
+        this.calendarEntriesModel = calendarEntriesModel;
+        this.exportCt = exportCt;
+        this.importCt = importCt;
+        this.entryFactory = entryFactory;
+        this.calendarView = calendarView;
     }
 
 
@@ -47,9 +58,27 @@ public class IOController implements IIOController
     }
     public String getDecryptedPasswordHash() { return hashedPassword; }
 
-    public void writeCalendarFiles() throws ValidationException, IOException
+    public void writeCalendarFiles()
     {
+        String path = settings.getPathToUserDirectory()+"calendarBackup";
+        var folder = new File(path);
+        for (var file : folder.listFiles()) 
+            file.delete();
 
+        for (var  calSource : calendarView.getCalendarSources()) {
+            String pathSource = path+"/"+calSource.getName();
+            var newFolder = new File(pathSource);
+            if (!newFolder.exists())
+                newFolder.mkdir();
+
+            for (var cal : calSource.getCalendars()) {
+               try {
+                    exportCt.exportCalendarAsFile(cal, pathSource);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } 
+            }
+        }       
     }
 
     public void createUserPath()
@@ -67,10 +96,20 @@ public class IOController implements IIOController
         }
     }
 
-    public void loadCalendarsFromFile() throws IOException, ParserException
+    public void loadCalendarsFromFile() 
     {
+        var calDirectorys = new File(settings.getPathToUserDirectory()+"calendarBackup/");
+        for (var calDirectory : calDirectorys.listFiles()) 
+            if (calDirectory.isDirectory()) 
+                for (var calFile : calDirectory.listFiles()) 
+                    if (calFile.getAbsolutePath().contains(".ics")) {
+                        var cal = importCt.importFile(calFile.getAbsolutePath());
+                        if (cal != null){
+                            calendarEntriesModel.addCalendar(cal);
+                            entryFactory.addCalendarToView(cal, calDirectory.getName());
+                        }
+                    }
     }
-
 
     public void saveContactsToFile()
     {
@@ -88,10 +127,9 @@ public class IOController implements IIOController
         }
     }
 
-
     public void loadContactsFromFile()
     {
-        //var path = settings.getPathToUserDirectory() + "/contacts/contacts.file";   
+          
         var file = new File(settings.getPathToUserDirectory() + "/contacts/contacts.file"); 
         if (file.exists() == false)
             return;  

@@ -27,7 +27,7 @@ public class InitialSetupController
     public void initializeSettings()
     {
         ioController.createUserPath();
-        //ioController.loadCalendarsFromFile();
+        ioController.loadCalendarsFromFile();
         try 
         {
             ioController.loadContactsFromFile();

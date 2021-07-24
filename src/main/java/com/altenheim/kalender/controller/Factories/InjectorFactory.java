@@ -16,7 +16,9 @@ public class InjectorFactory
     private InitialSetupController initialSettingsLoader;
     private CustomViewOverride customCalendarView;
     private SettingsModel settings;
-    public  CustomViewOverride getCustomCalendarView() { return customCalendarView; }
+    private IIOController ioCt;
+    public IIOController getIOController() { return ioCt; }
+    public CustomViewOverride getCustomCalendarView() { return customCalendarView; }
     public GuiUpdateController getGuiController() { return guiSetup; }
     public IViewRootsModel getAllViews() { return allViews; }
     public JMetro getJMetroSetup() { return jMetroStyle; }
@@ -50,7 +52,7 @@ public class InjectorFactory
         IExportController exportCt = new ExportController(settings, calendarEntriesModel);
         IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt, entryFactory);
-        IIOController ioCt = new IOController(entryFactory, settings, mailTemplates, calendarEntriesModel, contacts);
+        ioCt = new IOController(entryFactory, settings, mailTemplates, calendarEntriesModel, contacts, calendarEntriesModel, exportCt, importCt, entryFactory, customCalendarView);
 
         var statsVCt = new StatsViewController(calendarEntriesModel);
         var contactsVCt = new ContactsViewController(apiCt, ioCt);

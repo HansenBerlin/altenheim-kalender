@@ -45,7 +45,7 @@ public class JavaFXLauncher extends Application
         
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
-                System.out.println("Stage is closing");
+                objectFactory.getIOController().writeCalendarFiles();
                 System.exit(0);
             }
         });

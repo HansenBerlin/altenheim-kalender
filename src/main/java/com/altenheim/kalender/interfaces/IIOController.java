@@ -9,8 +9,8 @@ import net.fortuna.ical4j.validate.ValidationException;
 
 public interface IIOController 
 {
-    void writeCalendarFiles() throws FileNotFoundException, ValidationException, IOException;
-    void loadCalendarsFromFile() throws FileNotFoundException, IOException, ParserException;
+    void writeCalendarFiles();
+    void loadCalendarsFromFile();
     void saveContactsToFile() throws IOException;
     void loadContactsFromFile() throws IOException, ClassNotFoundException;
     void writeSettings(SettingsModel settings);
@@ -22,4 +22,5 @@ public interface IIOController
     String loadHashedPassword();
     void createUserPath();
     String getDecryptedPasswordHash();
+    
 }

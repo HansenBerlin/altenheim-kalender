@@ -99,7 +99,25 @@ public class EntryFactory implements IEntryFactory
         boolean inCalendarsSources = false;
         var calendarSource = new CalendarSource("Saved Calendars");
         for (var calSource : calendarView.getCalendarSources()) {
+            System.out.print(calSource.getName());
             if (calSource.getName().equals("Saved Calendars")){
+                calendarSource = calSource;
+                inCalendarsSources = true;
+                break;
+            }
+        }
+        calendarSource.getCalendars().addAll(calendar);
+        if (!inCalendarsSources) 
+            calendarView.getCalendarSources().addAll(calendarSource);
+    }
+
+    public void addCalendarToView(Calendar calendar, String source)
+    {
+        allCalendars.addCalendar(calendar);
+        boolean inCalendarsSources = false;
+        var calendarSource = new CalendarSource(source);
+        for (var calSource : calendarView.getCalendarSources()) {
+            if (calSource.getName().equals(source)){
                 calendarSource = calSource;
                 inCalendarsSources = true;
                 break;
@@ -113,36 +131,21 @@ public class EntryFactory implements IEntryFactory
     public void addHWRCalendarToView(Calendar calendar) {
         calendar.setName("HWR Kalender");
         calendar.setShortName("HWR");
-        boolean calSourceExists = false;
+
+        allCalendars.addCalendar(calendar);
+        boolean inCalendarsSources = false;
         var calendarSource = new CalendarSource("HWR Kalender");
-        for (var calSource : calendarView.getCalendarSources()) 
-            if (calSource.toString().equals("HWR Kalender")){ 
+        for (var calSource : calendarView.getCalendarSources()) {
+            if (calSource.getName().equals("HWR Kalender")){
                 calendarSource = calSource;
-                calSourceExists = true;
+                calendarSource.getCalendars().clear();
+                inCalendarsSources = true;
+                break;
             }
-
-        calendarSource.getCalendars().clear();
+        }
         calendarSource.getCalendars().addAll(calendar);
-        
-        if (calSourceExists) {
-            int index = -1;
-            for (var cal : allCalendars.getAllCalendars()) 
-                if (cal.getName().equals("HWR Kalender")) 
-                    index = allCalendars.getAllCalendars().indexOf(cal);
-            
-            if (index == -1) 
-                allCalendars.addCalendar(calendar);
-            else
-                allCalendars.getAllCalendars().set(index, calendar);
-            
-        }else {
-            allCalendars.addCalendar(calendar);
+        if (!inCalendarsSources) 
             calendarView.getCalendarSources().addAll(calendarSource);
-        }       
-        
-        
-        
-
     }
 
     private SerializableEntry createRandomEntry(int day, int month, int startT, int endT)
