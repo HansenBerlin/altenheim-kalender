@@ -14,7 +14,7 @@ public interface IIOController
     void saveContactsToFile() throws IOException;
     void loadContactsFromFile() throws IOException, ClassNotFoundException;
     void writeSettings(SettingsModel settings);
-    //SettingsModel restoreSettings();
+    SettingsModel restoreSettings();
     void writeMailTemplates(MailTemplateModel templates);
     MailTemplateModel restoreMailTemplates();
     void saveDecryptedPasswordHash(String hashedPassword);

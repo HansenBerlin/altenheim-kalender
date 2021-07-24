@@ -15,4 +15,5 @@ public interface IEntryFactory
     SerializableEntry createUserEntry (LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
     ArrayList<ArrayList<SerializableEntry>> createOpeningHoursWithLunchBreak();
     void addCalendarToView(Calendar calendar);
+    void addHWRCalendarToView(Calendar calendar);
 }

@@ -48,8 +48,8 @@ public class InjectorFactory
         IImportController importCt = new ImportController(settings);
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
         IExportController exportCt = new ExportController(settings, calendarEntriesModel);
-        IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt);
         IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView);
+        IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt, entryFactory);
         IIOController ioCt = new IOController(entryFactory, settings, mailTemplates, calendarEntriesModel, contacts);
 
         var statsVCt = new StatsViewController(calendarEntriesModel);

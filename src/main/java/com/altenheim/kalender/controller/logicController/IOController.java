@@ -164,7 +164,7 @@ public class IOController implements IIOController
         }
     }
 
-    public static SettingsModel restoreSettings()
+    public SettingsModel restoreSettings()
     {      
         var file = new File("userFiles/settings");
         if(!file.exists())

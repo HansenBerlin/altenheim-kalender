@@ -110,6 +110,41 @@ public class EntryFactory implements IEntryFactory
             calendarView.getCalendarSources().addAll(calendarSource);
     }
 
+    public void addHWRCalendarToView(Calendar calendar) {
+        calendar.setName("HWR Kalender");
+        calendar.setShortName("HWR");
+        boolean calSourceExists = false;
+        var calendarSource = new CalendarSource("HWR Kalender");
+        for (var calSource : calendarView.getCalendarSources()) 
+            if (calSource.toString().equals("HWR Kalender")){ 
+                calendarSource = calSource;
+                calSourceExists = true;
+            }
+
+        calendarSource.getCalendars().clear();
+        calendarSource.getCalendars().addAll(calendar);
+        
+        if (calSourceExists) {
+            int index = -1;
+            for (var cal : allCalendars.getAllCalendars()) 
+                if (cal.getName().equals("HWR Kalender")) 
+                    index = allCalendars.getAllCalendars().indexOf(cal);
+            
+            if (index == -1) 
+                allCalendars.addCalendar(calendar);
+            else
+                allCalendars.getAllCalendars().set(index, calendar);
+            
+        }else {
+            allCalendars.addCalendar(calendar);
+            calendarView.getCalendarSources().addAll(calendarSource);
+        }       
+        
+        
+        
+
+    }
+
     private SerializableEntry createRandomEntry(int day, int month, int startT, int endT)
     {
         var startAndEndDate = LocalDate.of(2021, month, day);

@@ -27,9 +27,6 @@ public class InitialSetupController
     public void initializeSettings()
     {
         ioController.createUserPath();
-        //var loadedSettings = ioController.restoreSettings();
-        //if (loadedSettings != null)
-        //    settings = loadedSettings;
         //ioController.loadCalendarsFromFile();
         try 
         {
@@ -40,9 +37,7 @@ public class InitialSetupController
             e.printStackTrace();
         } 
         settings.addPropertyChangeListener(new ChangeListener());
-        //websiteCt.startScraperTask();
-        websiteScraper.scrapeCalendar();
-        //entryFactory.createRandomCalendarList();
+        websiteScraper.startScraperTask();
         if (systemNotifications.initializeSystemTrayAccess()) {
             systemNotifications.startNotificationTask();
         }    
