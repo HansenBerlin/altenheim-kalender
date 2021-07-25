@@ -7,6 +7,6 @@ import com.altenheim.kalender.models.SerializableEntry;
 
 public interface IJsonParser {
     String parseJsonForLocationId(String jsonBody);
+
     public HashMap<DayOfWeek, List<SerializableEntry>> parseJsonForOpeningHours(String jsonBody);
-    
 }

@@ -87,4 +87,5 @@ public class JsonParser implements IJsonParser {
         }
         return openingHours;
     }
+    
 }

@@ -6,11 +6,10 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 
-public class ContactModel implements Serializable
-{
-    final static public ObservableList<ContactModel> data = FXCollections.observableArrayList();   
+public class ContactModel implements Serializable {
+    final static public ObservableList<ContactModel> data = FXCollections.observableArrayList();
     public static ObservableList<String> destinations = FXCollections.observableArrayList();
- 
+
     private static int globalId = 1;
     private int iD;
     private String firstName;
@@ -22,29 +21,40 @@ public class ContactModel implements Serializable
     private String phone;
     private String fullName;
     private String address;
-    
-    public int getContactId() { return iD; }
-    public String getFullName() { return fullName; }
-    public String getAddress() { return address; }
-    public String getMail() { return mail; }
-    public String getPhone() { return phone; }
 
-    public List<ContactModel> getDataToSerialize() 
-    { 
-        var listFromObservable = new ArrayList<ContactModel>();
-        for (var contactModel : data) 
-        {
-            listFromObservable.add(contactModel);            
-        }
-        return listFromObservable; 
-    }    
-
-    public ContactModel()
-    {        
+    public int getContactId() {
+        return iD;
     }
 
-    public ContactModel(String firstName, String surName, String mail, String streetAndNumber, String city, String postalCode, String phone)
-    {
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public List<ContactModel> getDataToSerialize() {
+        var listFromObservable = new ArrayList<ContactModel>();
+        for (var contactModel : data) {
+            listFromObservable.add(contactModel);
+        }
+        return listFromObservable;
+    }
+
+    public ContactModel() {
+    }
+
+    public ContactModel(String firstName, String surName, String mail, String streetAndNumber, String city,
+            String postalCode, String phone) {
         globalId++;
         this.iD = ContactModel.globalId;
         this.firstName = firstName;
@@ -59,17 +69,16 @@ public class ContactModel implements Serializable
         destinations.add(address);
     }
 
-    public void rebuildObservablaListFromSerializedData(List<ContactModel> serialized) 
-    { 
-        for (var contactModel : serialized) 
-        {
+    public void rebuildObservablaListFromSerializedData(List<ContactModel> serialized) {
+        for (var contactModel : serialized) {
             ContactModel.data.add(contactModel);
             ContactModel.destinations.add(contactModel.address);
         }
-    }    
+    }
 
-    final static public void addToList(String firstName, String surName, String mail, String streetAndNumber, String city, String postalCode, String phone)
-    {
+    final static public void addToList(String firstName, String surName, String mail, String streetAndNumber,
+            String city, String postalCode, String phone) {
         ContactModel.data.add(new ContactModel(firstName, surName, mail, streetAndNumber, city, postalCode, phone));
-    }    
+    }
+    
 }

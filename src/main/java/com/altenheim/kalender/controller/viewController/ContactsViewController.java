@@ -1,10 +1,6 @@
 package com.altenheim.kalender.controller.viewController;
 
 import java.io.IOException;
-import java.util.List;
-
-import com.altenheim.kalender.interfaces.IContactFactory;
-import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.models.ContactModel;
 import javafx.event.ActionEvent;
@@ -16,34 +12,33 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
-public class ContactsViewController extends ResponsiveController
-{ 
+public class ContactsViewController extends ResponsiveController {
 
-    @FXML private TextField txtFieldFirstName, txtFieldSurName, txtFieldMail, txtFieldStreet, txtFieldPostalCode, txtFieldCity, txtFieldPhone;
-    @FXML private Button btnAddContact;
-    @FXML private VBox tableContainer;
+    @FXML
+    private TextField txtFieldFirstName, txtFieldSurName, txtFieldMail, txtFieldStreet, txtFieldPostalCode,
+            txtFieldCity, txtFieldPhone;
+    @FXML
+    private Button btnAddContact;
+    @FXML
+    private VBox tableContainer;
 
-    private IGoogleAPIController api;
     private IIOController ioController;
 
-    public ContactsViewController(IGoogleAPIController api, IIOController ioController)
-    {        
+    public ContactsViewController(IIOController ioController) {
         this.ioController = ioController;
-        this.api = api;
     }
 
     @FXML
-    private void initialize()
-    {
+    private void initialize() {
         TableView<ContactModel> contactsTable = createTable();
         tableContainer.getChildren().add(contactsTable);
     }
 
     @FXML
-    private void buttonClicked(ActionEvent event) 
-    {
-        var newContact = new ContactModel(txtFieldFirstName.getText(), txtFieldSurName.getText(), txtFieldMail.getText(), 
-            txtFieldStreet.getText(), txtFieldCity.getText(), txtFieldPostalCode.getText(), txtFieldPhone.getText());
+    private void buttonClicked(ActionEvent event) {
+        var newContact = new ContactModel(txtFieldFirstName.getText(), txtFieldSurName.getText(),
+                txtFieldMail.getText(), txtFieldStreet.getText(), txtFieldCity.getText(), txtFieldPostalCode.getText(),
+                txtFieldPhone.getText());
         ContactModel.data.add(newContact);
         try {
             ioController.saveContactsToFile();
@@ -51,17 +46,12 @@ public class ContactsViewController extends ResponsiveController
             e.printStackTrace();
         }
     }
-    
 
-    
+    public final void changeContentPosition(double width, double height) {
+        //
+    }
 
-    public final void changeContentPosition(double width, double height) 
-    {
-        
-    }   
-    
-    private TableView<ContactModel> createTable()
-    {
+    private TableView<ContactModel> createTable() {
         TableColumn<ContactModel, String> name = new TableColumn<>("Name");
         TableColumn<ContactModel, String> address = new TableColumn<>("Adresse");
         TableColumn<ContactModel, String> mail = new TableColumn<>("Mailadresse");
@@ -77,7 +67,7 @@ public class ContactsViewController extends ResponsiveController
         address.setPrefWidth(400);
         mail.setPrefWidth(200);
         phone.setPrefWidth(200);
-        
+
         table.getColumns().add(name);
         table.getColumns().add(address);
         table.getColumns().add(mail);
@@ -85,6 +75,5 @@ public class ContactsViewController extends ResponsiveController
 
         return table;
     }
+    
 }
-
-

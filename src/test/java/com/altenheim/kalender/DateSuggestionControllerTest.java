@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 
 public class DateSuggestionControllerTest {
     @Test
-    void getDateSuggestionFromEntryList_ThreePossibleDays_ShouldReturnDateOnFirstDay()
-    {
+    void getDateSuggestionFromEntryList_ThreePossibleDays_ShouldReturnDateOnFirstDay() {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
@@ -34,8 +33,7 @@ public class DateSuggestionControllerTest {
     }
 
     @Test
-    void getDateSuggestionFromEntryList_ThreePossibleDays_ShouldReturnDateOnFirstDay2()
-    {
+    void getDateSuggestionFromEntryList_ThreePossibleDays_ShouldReturnDateOnFirstDay2() {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
@@ -56,8 +54,7 @@ public class DateSuggestionControllerTest {
     }
 
     @Test
-    void getDateSuggestionFromEntryList_ThreePossibleDays_ShouldReturnDateOnFirstDay3()
-    {
+    void getDateSuggestionFromEntryList_ThreePossibleDays_ShouldReturnDateOnFirstDay3() {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
@@ -78,8 +75,7 @@ public class DateSuggestionControllerTest {
     }
 
     @Test
-    void getDateSuggestionFromEntryList_ThreePossibleDays_ShouldReturnDateOnFirstDay4()
-    {
+    void getDateSuggestionFromEntryList_ThreePossibleDays_ShouldReturnDateOnFirstDay4() {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
@@ -100,8 +96,7 @@ public class DateSuggestionControllerTest {
     }
 
     @Test
-    void getDateSuggestionFromEntryList_NoPossibleDays_ShouldReturnNullEntrys()
-    {
+    void getDateSuggestionFromEntryList_NoPossibleDays_ShouldReturnNullEntrys() {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
@@ -118,8 +113,7 @@ public class DateSuggestionControllerTest {
     }
 
     @Test
-    void getDateSuggestionFromEntryList_NoPossibleDays_ShouldReturnNullEntrys2()
-    {
+    void getDateSuggestionFromEntryList_NoPossibleDays_ShouldReturnNullEntrys2() {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
@@ -136,8 +130,7 @@ public class DateSuggestionControllerTest {
     }
 
     @Test
-    void getDateSuggestionFromEntryList_ThreePossibleDays_ShouldReturnDateOnSecondDay()
-    {
+    void getDateSuggestionFromEntryList_ThreePossibleDays_ShouldReturnDateOnSecondDay() {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
@@ -158,8 +151,7 @@ public class DateSuggestionControllerTest {
     }
 
     @Test
-    void getDateSuggestionFromEntryList_TwoPossibleDays_ShouldReturnDateOnSecondHalfOfTheFirstDay()
-    {
+    void getDateSuggestionFromEntryList_TwoPossibleDays_ShouldReturnDateOnSecondHalfOfTheFirstDay() {
         var entryOne = createEntryDummy(10, 15, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(18, 20, 1, 1, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
@@ -178,8 +170,7 @@ public class DateSuggestionControllerTest {
     }
 
     @Test
-    void getDateSuggestionFromEntryList_TwoPossibleDays_ShouldReturnDateOnSecondHalfOfTheFirstDay2()
-    {
+    void getDateSuggestionFromEntryList_TwoPossibleDays_ShouldReturnDateOnSecondHalfOfTheFirstDay2() {
         var entryOne = createEntryDummy(10, 15, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(18, 20, 1, 1, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
@@ -197,16 +188,17 @@ public class DateSuggestionControllerTest {
         assertTrue(finalResult);
     }
 
-    private SerializableEntry createEntryDummy(int startTime, int EndTime, int startDay, int endDay, int startMonth, int endMonth)
-    {
+    private SerializableEntry createEntryDummy(int startTime, int EndTime, int startDay, int endDay, int startMonth,
+            int endMonth) {
         var entryUser = new SerializableEntry();
         entryUser.setTitle("User Preference");
-        var startDate = LocalDate.of(2021, startMonth, startDay);  
-        var endDate = LocalDate.of(2021, endMonth, endDay);  
+        var startDate = LocalDate.of(2021, startMonth, startDay);
+        var endDate = LocalDate.of(2021, endMonth, endDay);
         entryUser.changeStartDate(startDate);
         entryUser.changeEndDate(endDate);
         entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
         entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
         return entryUser;
     }
+    
 }
