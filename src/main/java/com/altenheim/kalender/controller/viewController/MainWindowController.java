@@ -221,7 +221,7 @@ public class MainWindowController extends ResponsiveController
 
     final void changeContentPosition(double width, double height) 
     {
-        if (width < 1000)
+        if (width < 1280)
         {
             currentMenuWidth = 70;
             for (String buttonName : allButtonsWithBackgrounds.keySet())             
