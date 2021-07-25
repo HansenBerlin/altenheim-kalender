@@ -44,7 +44,6 @@ public class SearchViewController extends ResponsiveController
     @FXML private Slider sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment;
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
     @FXML private Text infoName, infoDuration, infoBetweenDate, infoBetweenTime, infoWeekdays, infoTravelTime, infoTimeBefore, infoTimeAfter, infoReccurrences, infoInterval;   
-
     private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening;
 
     private ISmartSearchController smartSearch;
@@ -97,6 +96,7 @@ public class SearchViewController extends ResponsiveController
         dropdownEndAtDest = comboBoxFactory.create(ComboBoxCreate.DESTINATION);
         dropdownDestinationOpening = comboBoxFactory.create(ComboBoxCreate.DESTINATION);
         dropdownInterval = comboBoxFactory.create(ComboBoxCreate.RECCURENCEOPTIONS);
+        dropdownInterval.setValue(dropdownInterval.getItems().get(0));        
         containerTravel.getChildren().addAll(dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest);  
         containerOpeningHours.getChildren().add(dropdownDestinationOpening);
         containerReccurrence.getChildren().add(dropdownInterval);
@@ -121,66 +121,7 @@ public class SearchViewController extends ResponsiveController
             hBox.setScaleX(0);
             hBox.setScaleY(0);            
         }
-    }
-
-
-    private void setupToggleBindings()
-    {
-        ToggleSwitch[] toggles = { toggleDateRange, toggleTimeRange, toggleWeekdays, toggleUseTravelDuration, 
-            toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate };
-        HBox[] containers = { containerDateRange, containerTimeRange, containerWeekdays, containerTravel, 
-            containerOpeningHours, containerMargin, containerReccurrence };
-
-        int i = 0;
-
-        while (i < toggles.length) 
-        {
-            final int j = i;
-            toggles[j].selectedProperty().addListener(((observable, oldValue, newValue) -> 
-            {
-                Boolean valueToSet;
-                {
-                    if (j > 2 && j < 7)
-                        valueToSet = newValue;
-                    else
-                        valueToSet = oldValue;
-                }
-                animationController.growAndShrinkContainer(containers[j], valueToSet);
-            }));
-            i++;            
-        }
-    }
-
-
-    private void setupTextboxInputValidation()
-    {
-        TextField[] textFieldsFirstView = { tfDurationMinutes, tfDurationHours };
-        Slider[] sliderFirstView = { sliderDurationMinutes, sliderDurationHours };
-
-        int i = 0;
-
-        while (i < 2) 
-        {
-            final int j = i;            
-
-            textFieldsFirstView[j].textProperty().addListener(new ChangeListener<String>() 
-            {
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) 
-                {
-                    if (!newValue.matches("\\d*"))
-                    {
-                        textFieldsFirstView[j].setText(newValue.replaceAll("[^\\d]", ""));                    
-                    }  
-                    else
-                    {
-                        double value = Double.parseDouble(textFieldsFirstView[j].getText());
-                        sliderFirstView[j].setValue(Double.valueOf(value));
-                    }               
-                }
-            });
-        i++;            
-        };
-    }
+    }   
 
 
     @FXML
@@ -205,7 +146,7 @@ public class SearchViewController extends ResponsiveController
                 SuggestionsModel.data.clear(); 
                 startRequest();
                 iterateThroughSuggestions(); 
-                btnConfirm.setText("NÄCHSTER TAG"); 
+                btnConfirm.setText("NÄCHSTE 20 VORSCHLÄGE"); 
             }   
             if (userStep == 3)
             {                
@@ -218,13 +159,13 @@ public class SearchViewController extends ResponsiveController
         {
             if (userStep == 1)             
                 return;
-            if (userStep == 2)
-                btnReset.setVisible(false);
             if (userStep == 3)
+            {
+                btnReset.setVisible(false);
                 btnConfirm.setText("WEITER");
+            }
             incrementor = -1;
-        }         
-        
+        }  
         
         int currentIndex = userStep - 1;
         int requestedIndex = userStep - 1 + incrementor;
@@ -235,7 +176,7 @@ public class SearchViewController extends ResponsiveController
     
     
     private int recurrences = 1;   
-    private int timeBeforeGlobal = 0;
+    //private int timeBeforeGlobal = 0;
     private int timeAfterGlobal = 0;
     private int travelTimeTo = 0;
     private LocalDateTime timeToStartSearch;
@@ -295,9 +236,6 @@ public class SearchViewController extends ResponsiveController
                 tempDate = timeToStartSearch.plusDays(interval);
                 recurrences--;
             }
-
-                       
-            //checkIntervalAdditionForSuggestions();
         } 
     }
 
@@ -313,24 +251,43 @@ public class SearchViewController extends ResponsiveController
             currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), tfAppointmentName.getText(),
             traveltime);
     }
-
-    private void checkIntervalAdditionForSuggestions()
-    {
-        var resetStartTime = validateTimeInput()[0].plusMinutes(timeBeforeGlobal);
-        currentSuggestion.changeStartTime(resetStartTime);
-        if (calculateInterval() == 0)  
-            timeToStartSearch = currentSuggestion.getStartAsLocalDateTime().plusDays(1);        
-        else
-            timeToStartSearch = currentSuggestion.getStartAsLocalDateTime().plusDays(calculateInterval());
-    }
     
     private void clearFields()
     {
         currentSuggestion = null;
         currentSuggestions = null;
         timeToStartSearch = null;
-        SuggestionsModel.data.clear();
         recurrences = 1;
+        //timeBeforeGlobal = 0;
+        timeAfterGlobal = 0;
+        travelTimeTo = 0;   
+        SuggestionsModel.data.clear();
+        resetToggleStates();
+    }
+
+    private void resetToggleStates()
+    {
+        toggleUseTravelDuration.setSelected(false);
+        toggleUseOpeningHours.setSelected(false);
+        toggleUseMargin.setSelected(false);
+        toggleRecurringDate.setSelected(false);
+        toggleAddAutomatically.setSelected(false); 
+        toggleDateRange.setSelected(true);
+        toggleTimeRange.setSelected(true);
+        toggleWeekdays.setSelected(true);
+
+        Slider[] allSliders = { sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment };
+        CheckBox[] allTicks = { tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday };
+
+        for (var checkBox : allTicks) 
+        {
+            checkBox.setSelected(false);            
+        }
+
+        for (var slider : allSliders)
+        {
+            slider.setValue(0);
+        }
     }
 
     private void startRequest()
@@ -357,7 +314,7 @@ public class SearchViewController extends ResponsiveController
         
         recurrences = validateReccurrences();  
         //interval = intervalDays;
-        timeBeforeGlobal = updatedTimes[0];
+        //timeBeforeGlobal = updatedTimes[0];
         timeAfterGlobal = updatedTimes[1];
         //timeToStartSearch = currentSuggestions.get(0).getStartAsLocalDateTime(); 
         timeToStartSearch = LocalDateTime.of(startDateInput, startTimeInput); 
@@ -406,7 +363,7 @@ public class SearchViewController extends ResponsiveController
         }            
         else
             return new boolean[] { true, true, true, true, true, true, true };
-    }   
+    } 
     
     private int validateTravelTime()
     {
@@ -579,5 +536,62 @@ public class SearchViewController extends ResponsiveController
         table.getColumns().add(button);
 
         return table;
+    }
+
+    private void setupToggleBindings()
+    {
+        ToggleSwitch[] toggles = { toggleDateRange, toggleTimeRange, toggleWeekdays, toggleUseTravelDuration, 
+            toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate };
+        HBox[] containers = { containerDateRange, containerTimeRange, containerWeekdays, containerTravel, 
+            containerOpeningHours, containerMargin, containerReccurrence };
+
+        int i = 0;
+
+        while (i < toggles.length) 
+        {
+            final int j = i;
+            toggles[j].selectedProperty().addListener(((observable, oldValue, newValue) -> 
+            {
+                Boolean valueToSet;
+                {
+                    if (j > 2 && j < 7)
+                        valueToSet = newValue;
+                    else
+                        valueToSet = oldValue;
+                }
+                animationController.growAndShrinkContainer(containers[j], valueToSet);
+            }));
+            i++;            
+        }
+    }
+
+    private void setupTextboxInputValidation()
+    {
+        TextField[] textFieldsFirstView = { tfDurationMinutes, tfDurationHours };
+        Slider[] sliderFirstView = { sliderDurationMinutes, sliderDurationHours };
+
+        int i = 0;
+
+        while (i < 2) 
+        {
+            final int j = i;            
+
+            textFieldsFirstView[j].textProperty().addListener(new ChangeListener<String>() 
+            {
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) 
+                {
+                    if (!newValue.matches("\\d*"))
+                    {
+                        textFieldsFirstView[j].setText(newValue.replaceAll("[^\\d]", ""));                    
+                    }  
+                    else
+                    {
+                        double value = Double.parseDouble(textFieldsFirstView[j].getText());
+                        sliderFirstView[j].setValue(Double.valueOf(value));
+                    }               
+                }
+            });
+        i++;            
+        };
     }
 }
