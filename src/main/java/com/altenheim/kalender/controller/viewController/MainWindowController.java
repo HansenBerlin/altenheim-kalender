@@ -43,8 +43,8 @@ public class MainWindowController extends ResponsiveController
     private Background currentSecondaryColor;
     private SettingsModel settings;
 
-    @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, menuBtnPaneMail, menuBtnPaneContacts, menuBtnPaneStats;
-    @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnStats, menuBtnMail;     
+    @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, menuBtnPaneMail, menuBtnPaneContacts;
+    @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnMail;     
     @FXML private Button btnAddAppointment, btnSwitchModes;
     @FXML private GridPane rootContainer, childContainer, topMenu;
     @FXML private AnchorPane viewsRoot;
@@ -183,10 +183,10 @@ public class MainWindowController extends ResponsiveController
 
     private void setupMenuButtons() throws FileNotFoundException
     {
-        Button[] buttonsList = { menuBtnPlanner, menuBtnSearch, menuBtnStats, menuBtnContacts, menuBtnMail,
+        Button[] buttonsList = { menuBtnPlanner, menuBtnSearch, menuBtnContacts, menuBtnMail,
             menuBtnSettings, btnAddAppointment, btnSwitchModes};
-        Pane[] buttonBackgrounds = { menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneStats,
-            menuBtnPaneContacts, menuBtnPaneMail, menuBtnPaneSettings, null, null, null, null };
+        Pane[] buttonBackgrounds = { menuBtnPanePlanner, menuBtnPaneSmartSearch,
+            menuBtnPaneContacts, menuBtnPaneMail, menuBtnPaneSettings, null, null };
         allButtonsWithBackgrounds = guiSetup.createMainMenuButtons(buttonsList, buttonBackgrounds);
         currentlyActive = menuBtnPlanner;
         menuBtnPanePlanner.setBackground(currentSecondaryColor);

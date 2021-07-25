@@ -9,10 +9,10 @@ public class ViewRootsModel implements IViewRootsModel
     private GridPane[] allViews;
     private ResponsiveController[] allControllers;   
 
-    public ViewRootsModel(PlannerViewController plannerCt, SearchViewController searchViewCt, StatsViewController statsCt,
+    public ViewRootsModel(PlannerViewController plannerCt, SearchViewController searchViewCt,
         ContactsViewController contactsCt, MailTemplateViewController mailCt, SettingsViewController settingsCt)
     {
-        ResponsiveController[] allCt = { plannerCt, searchViewCt, statsCt, contactsCt, mailCt, settingsCt };
+        ResponsiveController[] allCt = { plannerCt, searchViewCt, contactsCt, mailCt, settingsCt };
         allViews = new GridPane[allCt.length];
         allControllers = allCt;
     }
