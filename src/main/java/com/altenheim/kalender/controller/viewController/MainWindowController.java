@@ -45,7 +45,7 @@ public class MainWindowController extends ResponsiveController
 
     @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, menuBtnPaneMail, menuBtnPaneContacts, menuBtnPaneStats;
     @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnStats, menuBtnMail;     
-    @FXML private Button btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser;
+    @FXML private Button btnAddAppointment, btnSwitchModes;
     @FXML private GridPane rootContainer, childContainer, topMenu;
     @FXML private AnchorPane viewsRoot;
     @FXML private ColumnConstraints columnLeftMenu;
@@ -184,7 +184,7 @@ public class MainWindowController extends ResponsiveController
     private void setupMenuButtons() throws FileNotFoundException
     {
         Button[] buttonsList = { menuBtnPlanner, menuBtnSearch, menuBtnStats, menuBtnContacts, menuBtnMail,
-            menuBtnSettings, btnAddAppointment, btnSwitchModes, btnSwitchLanguage, btnUser };
+            menuBtnSettings, btnAddAppointment, btnSwitchModes};
         Pane[] buttonBackgrounds = { menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneStats,
             menuBtnPaneContacts, menuBtnPaneMail, menuBtnPaneSettings, null, null, null, null };
         allButtonsWithBackgrounds = guiSetup.createMainMenuButtons(buttonsList, buttonBackgrounds);

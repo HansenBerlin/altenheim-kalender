@@ -45,8 +45,6 @@
                <children>
                   <Button fx:id="btnAddAppointment" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
                   <Button fx:id="btnSwitchModes" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#switchMode" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
-                  <Button fx:id="btnSwitchLanguage" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
-                  <Button fx:id="btnUser" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
                </children>
                <HBox.margin>
                   <Insets right="50.0" />

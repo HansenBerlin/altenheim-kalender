@@ -90,7 +90,7 @@ public class GuiUpdateController
     {
         setImages(buttons);
 
-        String[] buttonCaptions = {"Planer", "Smart Search", "Statistiken", "Kontakte", "Mailtemplates", "Einstellungen", "", "", "", ""};
+        String[] buttonCaptions = {"Planer", "Smart Search", "Statistiken", "Kontakte", "Mailtemplates", "Einstellungen", "", ""};
         var buttonsMap = new Hashtable<String, Pair<Button, Pane>>();
 
         for (int i = 0; i < buttons.length; i++) 
@@ -114,13 +114,13 @@ public class GuiUpdateController
         var iconSettings = new MDL2IconFont("\uE713");
         var iconPlus = new MDL2IconFont("\uE710");
         var iconMode = new MDL2IconFont("\uE793");
-        var iconLanguage = new MDL2IconFont("\uE774");
-        var iconUser = new MDL2IconFont("\uE748");
+        //var iconLanguage = new MDL2IconFont("\uE774");
+        //var iconUser = new MDL2IconFont("\uE748");
         //var iconClosePane = new MDL2IconFont("\uE8A0");
         //var iconOpenPane= new MDL2IconFont("\uE89F");
 
         MDL2IconFont[] iconListMenuButtons = {iconCal, iconSearch, iconStats, iconContacts, 
-            iconMail, iconSettings, iconPlus, iconMode, iconLanguage, iconUser };
+            iconMail, iconSettings, iconPlus, iconMode};
          
 
         for (int i = 0; i < iconListMenuButtons.length; i++) 
