@@ -28,11 +28,11 @@
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
-      <VBox fx:id="topContainer" alignment="BOTTOM_CENTER" spacing="15.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+      <VBox fx:id="topContainer" alignment="BOTTOM_CENTER" spacing="15.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <children>
             <Text fx:id="txtScrappingHWR" strokeType="OUTSIDE" strokeWidth="0.0" text="HWR Kalenderauswahl" />
             <HBox fx:id="containerComboBoxSelectorScrapping" alignment="TOP_CENTER" spacing="20.0" />
-            <Separator />
+            <Separator maxWidth="550.0" />
             <HBox alignment="TOP_CENTER" spacing="30.0">
                <children>
                   <Button fx:id="btnImport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Import">
@@ -65,7 +65,7 @@
                      </tooltip></Button>
                </children>
             </HBox>
-            <Separator />
+            <Separator maxWidth="550.0" />
             <VBox alignment="TOP_CENTER" spacing="10.0">
                <children>
                   <VBox fx:id="containerComboBoxNotificationMin" alignment="TOP_CENTER" spacing="5.0">
@@ -84,9 +84,9 @@
             <Insets />
          </GridPane.margin>
       </VBox>
-      <VBox fx:id="bottomContainer" alignment="TOP_CENTER" spacing="10.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+      <VBox fx:id="bottomContainer" alignment="TOP_CENTER" spacing="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <children>
-            <Separator />
+            <Separator maxWidth="550.0" />
             <HBox alignment="TOP_CENTER" spacing="10.0">
                <children>
                   <VBox spacing="5.0">
@@ -117,12 +117,12 @@
                   </VBox>
                </children>
             </HBox>
-            <Separator />
+            <Separator maxWidth="550.0" />
             <CheckBox fx:id="cBToolTips" mnemonicParsing="false" text="Tool Tips">
                <tooltip>
                   <Tooltip fx:id="ttToolTip" text="ToolTips Ein-/ Ausschalten" />
                </tooltip></CheckBox>
-            <Separator />
+            <Separator maxWidth="550.0" />
             <Text fx:id="txtError" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" />
 
             <HBox alignment="TOP_CENTER">
