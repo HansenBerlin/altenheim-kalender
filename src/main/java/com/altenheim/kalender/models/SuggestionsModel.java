@@ -19,52 +19,42 @@ public class SuggestionsModel {
     private LocalDate dayStart;
     private LocalDate dayEnd;
     private Button button;
+    private String title;
 
-    public SuggestionsModel(LocalTime startTime, LocalTime endTime, LocalDate dayStart, LocalDate dayEnd, Button button,
-            String title) {
+    public SuggestionsModel(LocalTime startTime, LocalTime endTime, LocalDate dayStart, LocalDate dayEnd, Button button, String title) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.dayStart = dayStart;
         this.dayEnd = dayEnd;
         this.button = button;
+        this.title = title;
+        registerButtonEvent();	    
+    }
 
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                if (toggleTravelTime)
-                    EntryFactory.createNewUserEntryIncludingTravelTimes(dayStart, dayEnd, startTime, endTime, title,
-                            travelTime);
-                else
-                    EntryFactory.createNewUserEntry(dayStart, dayEnd, startTime, endTime, title);
+    public LocalTime getStartTime() { return startTime; }
+    public LocalTime getEndTime() { return endTime; }
+    public LocalDate getDayStart() { return dayStart; }
+    public LocalDate getDayEnd() { return dayEnd; } 
+    public Button getButton() { return button; }
 
-                PopupViewsController.showEntryAddedDialog(dayStart.toString(), dayEnd.toString(), startTime.toString(),
-                        endTime.toString(), title);
+    private void registerButtonEvent()
+    {
+        button.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            public void handle(ActionEvent e) 
+            {
+                if (toggleTravelTime)                
+                    EntryFactory.createNewUserEntryIncludingTravelTimes(dayStart, dayEnd, startTime, endTime, title, travelTime);
+                else                
+				    EntryFactory.createNewUserEntry(dayStart, dayEnd, startTime, endTime, title);  
+                                  
+                PopupViewsController.showEntryAddedDialog(dayStart.toString(), dayEnd.toString(), startTime.toString(), endTime.toString(), title);
             }
         });
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
-    public LocalDate getDayStart() {
-        return dayStart;
-    }
-
-    public LocalDate getDayEnd() {
-        return dayEnd;
-    }
-
-    public Button getButton() {
-        return button;
-    }
+    }    
 
     final static public void addToList(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate,
             Button button, String title) {
         SuggestionsModel.data.add(new SuggestionsModel(startTime, endTime, startDate, endDate, button, title));
-    }
-    
+    }    
 }
