@@ -34,8 +34,8 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
 
     public void scrapeCalendar() {
 
-        if (isDownloadIcsSuccessful())
-            importHwrIcsFileToCalendar();
+        //if (isDownloadIcsSuccessful())
+          //  importHwrIcsFileToCalendar();
     }
 
     private void importHwrIcsFileToCalendar() {
