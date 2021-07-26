@@ -1,20 +1,13 @@
 package com.altenheim.kalender.controller.viewController;
 
 import java.io.IOException;
-import java.util.List;
-
-import com.altenheim.kalender.interfaces.IContactFactory;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.models.ContactModel;
-
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 

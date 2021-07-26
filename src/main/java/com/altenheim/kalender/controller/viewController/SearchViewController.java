@@ -101,6 +101,8 @@ public class SearchViewController extends ResponsiveController
         containerOpeningHours.getChildren().add(dropdownDestinationOpening);
         containerReccurrence.getChildren().add(dropdownInterval);
         dropdownEndAtDest.getEditor().textProperty().bindBidirectional(dropdownDestinationOpening.getEditor().textProperty());
+        startDate.setEditable(false);
+        endDate.setEditable(false);
     }
     
 
@@ -195,7 +197,7 @@ public class SearchViewController extends ResponsiveController
             SuggestionsModel.travelTime = travelTimeTo;
         }
 
-        int duration = (int)sliderDurationMinutes.getValue() + timeAfterGlobal;
+        int duration = validateDuration() + timeAfterGlobal;
         SuggestionsModel.data.clear();
 
         for (int i = 0; i < 20; i++)         
@@ -213,7 +215,7 @@ public class SearchViewController extends ResponsiveController
     
     private void automaticEntryCreation()
     {
-        int duration = (int)sliderDurationMinutes.getValue() + timeAfterGlobal;
+        int duration = validateDuration() + timeAfterGlobal;
         int interval = calculateInterval();
         if (interval == 0)
             interval = 1;
