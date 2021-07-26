@@ -34,7 +34,7 @@ public class SettingsViewController extends ResponsiveController
     @FXML private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
     @FXML private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
     @FXML private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
-        txtNotifocationMin, txtNotificationHour, txtError;   
+        txtNotifocationMin, txtScrappingHWR, txtError;   
     @FXML private HBox containerComboBoxSelectorScrapping;
     @FXML private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
     @FXML private CheckBox cBToolTips;
