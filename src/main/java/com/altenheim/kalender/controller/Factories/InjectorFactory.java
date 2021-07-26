@@ -54,7 +54,7 @@ public class InjectorFactory
         ioCt = new IOController(entryFactory, settings, contacts, calendarEntriesModel, exportCt, importCt, customCalendarView);
 
         
-        var contactsVCt = new ContactsViewController(ioCt);
+        var contactsVCt = new ContactsViewController(apiCt, ioCt);
         var plannerVCt = new PlannerViewController(customCalendarView);
         var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, comboBoxFactory, popupViewController);
         var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory);
