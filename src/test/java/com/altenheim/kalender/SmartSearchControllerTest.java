@@ -226,7 +226,7 @@ public class SmartSearchControllerTest {
         entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
         return entryUser;
     }
-
+/*
     @Test
     void findAvailableTimeSlot_Return() {
 
@@ -392,7 +392,7 @@ public class SmartSearchControllerTest {
 
         // möglich: 3 Termine
     }
-
+*/
     ///////////////////////////////////////////////////////////////////////////
 
     private SerializableEntry createEntryDummy(int startTime, int EndTime, int startDay, int startMonth, int endDay,
