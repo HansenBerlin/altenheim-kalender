@@ -7,23 +7,19 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
-import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.altenheim.kalender.models.SerializableEntry;
 
-public class SmartSearchController implements ISmartSearchController 
-{
+public class SmartSearchController implements ISmartSearchController {
 	private ICalendarEntriesModel administrateEntries;
 
-	public SmartSearchController(ICalendarEntriesModel administrateEntries) 
-	{
+	public SmartSearchController(ICalendarEntriesModel administrateEntries) {
 		this.administrateEntries = administrateEntries;
 	}
 
@@ -89,47 +85,46 @@ public class SmartSearchController implements ISmartSearchController
 		}			
 		return output;
 	}
-	
 
-	public ArrayList<SerializableEntry> findAvailableTimeSlot(SerializableEntry input, int duration, int before, int after) {			
-		var result = new LinkedList<List<Entry<?>>>();   
-        for (var calendar : administrateEntries.getAllCalendars()) {
-            result.addAll(calendar.findEntries(
-                input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values());
-        }		
+	public ArrayList<SerializableEntry> findAvailableTimeSlot(SerializableEntry input, int duration, int before,
+			int after) {
+		var result = new LinkedList<List<Entry<?>>>();
+		for (var calendar : administrateEntries.getAllCalendars()) {
+			result.addAll(
+					calendar.findEntries(input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values());
+		}
 		var output = new ArrayList<SerializableEntry>();
 
 		long start = input.getStartMillis() + before * 60000;
-		long end = input.getEndMillis() - after * 60000; 
+		long end = input.getEndMillis() - after * 60000;
 		long userStart = start;
 		long userEnd = end;
 
-		for (var entries : result) 				
-			for (int i = 0; i <= entries.size(); i++) 
-			{
+		for (var entries : result)
+			for (int i = 0; i <= entries.size(); i++) {
 				if (i >= 0 && i < entries.size())
 					end = entries.get(i).getStartMillis();
-				if (i > 0)				
-					start = entries.get(i-1).getEndMillis();			
-				if (i == entries.size())				
+				if (i > 0)
+					start = entries.get(i - 1).getEndMillis();
+				if (i == entries.size())
 					end = userEnd;
 				if (end < start)
-					continue;	
-				if ((end - start)/60000 >= duration && !((end-userStart)/60000 <= duration || (userEnd-start)/60000 < duration))
+					continue;
+				if ((end - start) / 60000 >= duration
+						&& !((end - userStart) / 60000 <= duration || (userEnd - start) / 60000 < duration))
 					output.add(createEntryFromMillis(start, end));
 				if (checkForDuplicates(output))
-					output.remove(output.size()-1);					
+					output.remove(output.size() - 1);
 			}
-		
+
 		if (result.isEmpty())
 			output.add(input);
 
 		return output;
 	}
 
-	private SerializableEntry createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end)
-	{
-		var entry = new SerializableEntry();				
+	private SerializableEntry createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end) {
+		var entry = new SerializableEntry();
 		entry.changeStartTime(start);
 		entry.changeEndTime(end);
 		entry.changeStartDate(startAndEnd);
@@ -137,11 +132,10 @@ public class SmartSearchController implements ISmartSearchController
 		return entry;
 	}
 
-	private SerializableEntry createEntryFromMillis(long start, long end)
-	{
+	private SerializableEntry createEntryFromMillis(long start, long end) {
 		var entry = new SerializableEntry();
 		var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
-		var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());		
+		var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());
 		entry.changeStartTime(dateStart.toLocalTime());
 		entry.changeStartDate(dateStart.toLocalDate());
 		entry.changeEndTime(dateEnd.toLocalTime());
@@ -150,16 +144,16 @@ public class SmartSearchController implements ISmartSearchController
 	}
 
 	private void reduceListLenght(ArrayList<SerializableEntry> list, int maxNumberOfEntrys) {
-		while (list.size()>maxNumberOfEntrys) {
-			list.remove(list.size()-1);
+		while (list.size() > maxNumberOfEntrys) {
+			list.remove(list.size() - 1);
 		}
 	}
-	
-	private boolean checkForDuplicates(ArrayList<SerializableEntry> currentEntries)
-	{
+
+	private boolean checkForDuplicates(ArrayList<SerializableEntry> currentEntries) {
 		if (currentEntries.size() < 2)
 			return false;
-		return (currentEntries.get(currentEntries.size()-2).getStartMillis() 
-		== currentEntries.get(currentEntries.size()-1).getStartMillis());
+		return (currentEntries.get(currentEntries.size() - 2).getStartMillis() == currentEntries
+				.get(currentEntries.size() - 1).getStartMillis());
 	}
+	
 }

@@ -9,11 +9,10 @@ import javafx.event.EventHandler;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 
-public class ContactModel implements Serializable
-{
-    final static public ObservableList<ContactModel> data = FXCollections.observableArrayList();   
+public class ContactModel implements Serializable {
+    final static public ObservableList<ContactModel> data = FXCollections.observableArrayList();
     public static ObservableList<String> destinations = FXCollections.observableArrayList();
- 
+
     private static int globalId = 1;
     private int iD;
     private String firstName;
@@ -27,12 +26,11 @@ public class ContactModel implements Serializable
     private String address; 
     private transient Button button;
 
-    public ContactModel()
-    {        
+    public ContactModel() {
     }
 
-    public ContactModel(String firstName, String surName, String mail, String streetAndNumber, String city, String postalCode, String phone)
-    {
+    public ContactModel(String firstName, String surName, String mail, String streetAndNumber, String city,
+            String postalCode, String phone) {
         globalId++;
         this.iD = ContactModel.globalId;
         this.firstName = firstName;

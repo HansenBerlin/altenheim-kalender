@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.calendarfx.model.Calendar;
+import com.calendarfx.model.CalendarEvent;
 import com.calendarfx.model.Entry;
+
+import javafx.event.EventHandler;
 
 public class CalendarEntriesModel implements ICalendarEntriesModel {
     private List<Calendar> calendars;
@@ -17,6 +20,15 @@ public class CalendarEntriesModel implements ICalendarEntriesModel {
     }
 
     public void addCalendar(Calendar calendar) {
+        calendar.addEventHandler(new EventHandler<CalendarEvent>() {
+
+            @Override
+            public void handle(CalendarEvent event) {
+                // TODO Auto-generated method stub
+                // System.out.println(event);
+            }
+
+        });
         calendars.add(calendar);
     }
 
@@ -49,12 +61,15 @@ public class CalendarEntriesModel implements ICalendarEntriesModel {
         var returnValue = new ArrayList<SerializableEntry>();
         var allEntries = new ArrayList<List<Entry<?>>>();
         for (Calendar calendar : calendars) {
-            allEntries.addAll(calendar.findEntries(start.toLocalDate(), end.toLocalDate(), ZoneId.systemDefault()).values());
+            allEntries.addAll(
+                    calendar.findEntries(start.toLocalDate(), end.toLocalDate(), ZoneId.systemDefault()).values());
         }
         for (var entries : allEntries)
             for (var entry : entries)
-                if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1)) && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1)))
+                if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1))
+                        && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1)))
                     returnValue.add((SerializableEntry) entry);
         return returnValue;
     }
+    
 }

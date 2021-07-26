@@ -22,9 +22,9 @@ public class DateSuggestionController implements IDateSuggestionController
                 if (entryStart.isAfter(startSearchDateTime))
                     startSearchDateTime = input.get(runNumber).getStartAsLocalDateTime();
 
-                if (entryStart.isBefore(startSearchDateTime.plusSeconds(1))
-                    && input.get(runNumber).getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes(dateLenght).minusSeconds(1)))
-                    return createEntry(startSearchDateTime, dateLenght);   
+                if (entryStart.isBefore(startSearchDateTime.plusSeconds(1)) && input.get(runNumber)
+                        .getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes(dateLenght).minusSeconds(1)))
+                    return createEntry(startSearchDateTime, dateLenght);
             }
         return null;
     }
@@ -36,5 +36,5 @@ public class DateSuggestionController implements IDateSuggestionController
         output.changeEndTime(startDateTime.plusMinutes(dateLenght).toLocalTime());
         output.changeStartTime(startDateTime.toLocalTime());
         return output;
-    }
+    }    
 }

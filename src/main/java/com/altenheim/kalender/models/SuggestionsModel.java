@@ -10,9 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
-public class SuggestionsModel 
-{
-    final static public ObservableList<SuggestionsModel> data = FXCollections.observableArrayList();    
+public class SuggestionsModel {
+    final static public ObservableList<SuggestionsModel> data = FXCollections.observableArrayList();
     public static boolean toggleTravelTime = false;
     public static int travelTime;
     private LocalTime startTime;
@@ -22,8 +21,7 @@ public class SuggestionsModel
     private Button button;
     private String title;
 
-    public SuggestionsModel(LocalTime startTime, LocalTime endTime, LocalDate dayStart, LocalDate dayEnd, Button button, String title)
-    {      
+    public SuggestionsModel(LocalTime startTime, LocalTime endTime, LocalDate dayStart, LocalDate dayEnd, Button button, String title) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.dayStart = dayStart;
@@ -32,6 +30,12 @@ public class SuggestionsModel
         this.title = title;
         registerButtonEvent();	    
     }
+
+    public LocalTime getStartTime() { return startTime; }
+    public LocalTime getEndTime() { return endTime; }
+    public LocalDate getDayStart() { return dayStart; }
+    public LocalDate getDayEnd() { return dayEnd; } 
+    public Button getButton() { return button; }
 
     private void registerButtonEvent()
     {
@@ -47,16 +51,10 @@ public class SuggestionsModel
                 PopupViewsController.showEntryAddedDialog(dayStart.toString(), dayEnd.toString(), startTime.toString(), endTime.toString(), title);
             }
         });
-    }
+    }    
 
-    public LocalTime getStartTime() { return startTime; }
-    public LocalTime getEndTime() { return endTime; }
-    public LocalDate getDayStart() { return dayStart; }
-    public LocalDate getDayEnd() { return dayEnd; }
-    public Button getButton() { return button; }
-
-    final static public void addToList(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, Button button, String title)
-    {        
+    final static public void addToList(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate,
+            Button button, String title) {
         SuggestionsModel.data.add(new SuggestionsModel(startTime, endTime, startDate, endDate, button, title));
-    }   
+    }    
 }

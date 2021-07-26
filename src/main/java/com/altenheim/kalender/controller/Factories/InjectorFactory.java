@@ -6,7 +6,6 @@ import com.altenheim.kalender.controller.logicController.*;
 import com.altenheim.kalender.controller.viewController.*;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.*;
-import com.altenheim.kalender.resourceClasses.StylePresets;
 
 public class InjectorFactory
 {    
@@ -15,59 +14,55 @@ public class InjectorFactory
     private JMetro jMetroStyle;
     private InitialSetupController initialSettingsLoader;
     private CustomViewOverride customCalendarView;
-    public  CustomViewOverride getCustomCalendarView() { return customCalendarView; }
+    private SettingsModel settings;
+    private IIOController ioCt;
+    public IIOController getIOController() { return ioCt; }
+    public CustomViewOverride getCustomCalendarView() { return customCalendarView; }
     public GuiUpdateController getGuiController() { return guiSetup; }
     public IViewRootsModel getAllViews() { return allViews; }
     public JMetro getJMetroSetup() { return jMetroStyle; }
     public InitialSetupController getInitialSettingsLoader() { return initialSettingsLoader; }
+    public SettingsModel getSettingsModel() {return settings; }
 
-    public void createServices() throws Exception 
+    public void createServices() 
     {     
         jMetroStyle = new JMetro();   
         var jsonParser = new JsonParser();
         
-        var settings = new SettingsModel();
+        settings = new SettingsModel();
         var mailTemplates = new MailTemplateModel();
         var contacts = new ContactModel();
 
         var settingsFile = new File("userFiles/settingsTest.file");    
         if (settingsFile.exists())        
             settings.readSimpleProperties();
-        switch (settings.cssMode) {
-            case "Light":
-                customCalendarView = new CustomViewOverride(StylePresets.LIGHT_CALENDAR_CSS_FILE);
-                break;
-            case "Dark":
-                customCalendarView = new CustomViewOverride(StylePresets.DARK_CALENDAR_CSS_FILE);
-                break;
-            default:
-                customCalendarView = new CustomViewOverride(StylePresets.LIGHT_CALENDAR_CSS_FILE);
-                break;
-        }        
+        customCalendarView =new CustomViewOverride(settings.cssMode);
+                
 
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
         IAnimationController animationController = new AnimationController();
         IPopupViewController popupViewController = new PopupViewsController();
         IGoogleAPIController apiCt = new GoogleAPIController(settings, jsonParser);
-        IMailCreationController mailCreationCt = new MailCreationController(mailTemplates);       
+        //IMailCreationController mailCreationCt = new MailCreationController(mailTemplates);       
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel();
         IDateSuggestionController dateSuggestionController = new DateSuggestionController();
         IImportController importCt = new ImportController(settings);
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
-        IExportController exportCt = new ExportController(settings, calendarEntriesModel);
-        IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt);
+        IExportController exportCt = new ExportController(settings);
         IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView);
-        IIOController ioCt = new IOController(entryFactory, settings, mailTemplates, calendarEntriesModel, contacts);
+        IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt, entryFactory);
+        ioCt = new IOController(entryFactory, settings, contacts, calendarEntriesModel, exportCt, importCt, customCalendarView);
 
-        var statsVCt = new StatsViewController(calendarEntriesModel);
-        var contactsVCt = new ContactsViewController(apiCt, ioCt);
-        var plannerVCt = new PlannerViewController(calendarEntriesModel, entryFactory, importCt, exportCt, customCalendarView, popupViewController);
-        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, comboBoxFactory, popupViewController, ioCt);
-        var mailVCt = new MailTemplateViewController(ioCt, settings, mailTemplates, mailCreationCt, mailTemplates, comboBoxFactory);
+        
+        var contactsVCt = new ContactsViewController(ioCt);
+        var plannerVCt = new PlannerViewController(customCalendarView);
+        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, comboBoxFactory, popupViewController);
+        var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory);
         var searchVCt = new SearchViewController(smartSearch, entryFactory, mailTemplates, settings, apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
-        allViews = new ViewRootsModel(plannerVCt, searchVCt, statsVCt, contactsVCt, mailVCt, settingsVCt);
+        allViews = new ViewRootsModel(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews);
         initialSettingsLoader = new InitialSetupController(settings, ioCt, popupViewController, websiteCt, systemNotificationsCt);
     }
+    
 }

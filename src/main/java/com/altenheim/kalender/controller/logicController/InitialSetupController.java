@@ -1,13 +1,11 @@
 package com.altenheim.kalender.controller.logicController;
 
-
 import java.io.IOException;
 
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
 
-public class InitialSetupController
-{
+public class InitialSetupController {
     private SettingsModel settings;
     private IIOController ioController;
     private IPopupViewController popup;
@@ -15,8 +13,7 @@ public class InitialSetupController
     private ISystemNotificationsController systemNotifications;
 
     public InitialSetupController(SettingsModel settings, IIOController ioController, IPopupViewController popup,
-                                  IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications)
-    {
+            IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications) {
         this.settings = settings;
         this.ioController = ioController;
         this.popup = popup;
@@ -24,37 +21,25 @@ public class InitialSetupController
         this.systemNotifications = systemNotifications;
     }
 
-    public void initializeSettings()
-    {
+    public void initializeSettings() {
         ioController.createUserPath();
-        //var loadedSettings = ioController.restoreSettings();
-        //if (loadedSettings != null)
-        //    settings = loadedSettings;
-        //ioController.loadCalendarsFromFile();
-        try 
-        {
+        ioController.loadCalendarsFromFile();
+        try {
             ioController.loadContactsFromFile();
-        } 
-        catch (ClassNotFoundException | IOException e) 
-        {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
-        } 
+        }
         settings.addPropertyChangeListener(new ChangeListener());
-        //websiteCt.startScraperTask();
-        websiteScraper.scrapeCalendar();
-        //entryFactory.createRandomCalendarList();
+        websiteScraper.startScraperTask();
         if (systemNotifications.initializeSystemTrayAccess()) {
             systemNotifications.startNotificationTask();
-        }    
+        }
     }
 
-    public void initialValidationCheck()
-    {
-        if (ioController.loadHashedPassword().isBlank())
-        {
+    public void initialValidationCheck() {
+        if (ioController.loadHashedPassword().isBlank()) {
             var userValidationPassed = validateUserPassword();
-            if (!userValidationPassed)
-            {
+            if (!userValidationPassed) {
                 settings.setAdvancedFeaturesFlag(false);
                 return;
             }
@@ -64,20 +49,17 @@ public class InitialSetupController
 
     }
 
-    private boolean validateUserPassword()
-    {
+    private boolean validateUserPassword() {
         var password = popup.showPasswordInputDialog();
         var security = new SecureAesController();
-        var hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_", SettingsModel.PASSWORDHASH);
-        while(hashedPasswordAfterUserValidation.isBlank())
-        {
-            if (popup.isRevalidationWanted())
-            {
+        var hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_",
+                SettingsModel.PASSWORDHASH);
+        while (hashedPasswordAfterUserValidation.isBlank()) {
+            if (popup.isRevalidationWanted()) {
                 password = popup.showPasswordInputDialog();
-                hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_", SettingsModel.PASSWORDHASH);
-            }
-            else
-            {
+                hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_",
+                        SettingsModel.PASSWORDHASH);
+            } else {
                 popup.showCancelDialog();
                 return false;
             }
@@ -86,4 +68,5 @@ public class InitialSetupController
         popup.showConfirmationDialog();
         return true;
     }
+    
 }

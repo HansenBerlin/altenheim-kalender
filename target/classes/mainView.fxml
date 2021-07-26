@@ -45,8 +45,6 @@
                <children>
                   <Button fx:id="btnAddAppointment" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
                   <Button fx:id="btnSwitchModes" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#switchMode" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
-                  <Button fx:id="btnSwitchLanguage" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
-                  <Button fx:id="btnUser" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
                </children>
                <HBox.margin>
                   <Insets right="50.0" />
@@ -73,22 +71,6 @@
                <children>
                   <Pane fx:id="menuBtnPaneSmartSearch" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
                   <Button fx:id="menuBtnSearch" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Smart Search">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
-               <children>
-                  <Pane fx:id="menuBtnPaneStats" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
-                  <Button fx:id="menuBtnStats" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Stats">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
