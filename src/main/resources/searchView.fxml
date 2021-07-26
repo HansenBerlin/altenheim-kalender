@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -148,11 +149,17 @@
                            </HBox.margin>
                            <font>
                               <Font size="14.0" />
-                           </font></Label>
+                           </font>
+                           <tooltip>
+                              <Tooltip fx:id="tttxtAppointmentName" text="Name des Kalendereintrages" />
+                           </tooltip></Label>
                         <TextField fx:id="tfAppointmentName" prefHeight="30.0" prefWidth="510.0">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
+                           <tooltip>
+                              <Tooltip fx:id="ttAppointmentName" text="Name des Kalendereintrages" />
+                           </tooltip>
                         </TextField>
                      </children>
                      <padding>
@@ -177,11 +184,17 @@
                               </Label>
                               <VBox alignment="CENTER" prefWidth="265.0">
                                  <children>
-                                    <Slider fx:id="sliderDurationMinutes" blockIncrement="1.0" majorTickUnit="1.0" max="60.0" minWidth="100.0" minorTickCount="0" prefHeight="30.0" prefWidth="200.0" snapToTicks="true" />
+                                    <Slider fx:id="sliderDurationMinutes" blockIncrement="1.0" majorTickUnit="1.0" max="60.0" minWidth="100.0" minorTickCount="0" prefHeight="30.0" prefWidth="200.0" snapToTicks="true">
+                                       <tooltip>
+                                          <Tooltip fx:id="ttsliderDurationMinutes" text="Termindauer in Min." />
+                                       </tooltip></Slider>
                                     <TextField fx:id="tfDurationMinutes" alignment="CENTER" maxWidth="100.0" prefHeight="20.0" prefWidth="100.0" promptText="MIN">
                                        <VBox.margin>
                                           <Insets />
                                        </VBox.margin>
+                                       <tooltip>
+                                          <Tooltip fx:id="tttfDurationMinutes" text="Termindauer in Min." />
+                                       </tooltip>
                                     </TextField>
                                  </children>
                                  <HBox.margin>
@@ -190,11 +203,17 @@
                               </VBox>
                               <VBox alignment="CENTER" prefWidth="265.0">
                                  <children>
-                                    <Slider fx:id="sliderDurationHours" blockIncrement="1.0" majorTickUnit="1.0" max="24.0" minWidth="100.0" minorTickCount="0" prefHeight="30.0" prefWidth="200.0" snapToTicks="true" />
+                                    <Slider fx:id="sliderDurationHours" blockIncrement="1.0" majorTickUnit="1.0" max="24.0" minWidth="100.0" minorTickCount="0" prefHeight="30.0" prefWidth="200.0" snapToTicks="true">
+                                       <tooltip>
+                                          <Tooltip fx:id="ttsliderDurationHours" text="Termindauer in Stunden" />
+                                       </tooltip></Slider>
                                     <TextField fx:id="tfDurationHours" alignment="CENTER" maxWidth="100.0" prefHeight="20.0" prefWidth="100.0" promptText="STD">
                                        <VBox.margin>
                                           <Insets />
                                        </VBox.margin>
+                                       <tooltip>
+                                          <Tooltip fx:id="tttfDurationHours" text="Termindauer in Stunden" />
+                                       </tooltip>
                                     </TextField>
                                  </children>
                                  <HBox.margin>
@@ -231,6 +250,9 @@
                                  <font>
                                     <Font size="11.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip fx:id="ttToggleDateRange" text="Wechsel schnellstmöglich/ Suche zwischen gewählten Daten" />
+                                 </tooltip>
                               </ToggleSwitch>
                               <HBox fx:id="containerDateRange" alignment="CENTER_LEFT" prefWidth="510.0" visible="false">
                                  <children>
@@ -274,6 +296,9 @@
                                  <font>
                                     <Font size="11.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip fx:id="ttToggleTimeRange" text="Auswahl gewünschte Zeiten" />
+                                 </tooltip>
                               </ToggleSwitch>
                               <HBox fx:id="containerTimeRange" alignment="CENTER_LEFT" prefWidth="510.0" visible="false">
                                  <children>
@@ -327,6 +352,9 @@
                                  <font>
                                     <Font size="11.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip fx:id="ttToggleWeekdays" text="Auswahl gewünschter Wochentage" />
+                                 </tooltip>
                               </ToggleSwitch>
                               <HBox fx:id="containerWeekdays" alignment="CENTER_LEFT" prefWidth="510.0" spacing="12.0" visible="false">
                                  <children>
@@ -365,7 +393,10 @@
                            </HBox.margin>
                            <font>
                               <Font size="11.0" />
-                           </font></ToggleSwitch>
+                           </font>
+                           <tooltip>
+                              <Tooltip fx:id="ttToggleUseTravelDuration" text="Auswahl Verkehrmittel, Start und Ziel zur Wegzeitberechnung" />
+                           </tooltip></ToggleSwitch>
                         <HBox fx:id="containerTravel" alignment="CENTER_LEFT" prefWidth="440.0" spacing="5.0">
                            <HBox.margin>
                               <Insets left="20.0" />
@@ -385,7 +416,10 @@
                         <ToggleSwitch fx:id="toggleUseOpeningHours" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="190.0" text="Öffnungszeiten">
                            <font>
                               <Font size="11.0" />
-                           </font></ToggleSwitch>
+                           </font>
+                           <tooltip>
+                              <Tooltip fx:id="ttToggleUseOpeningHours" text="Auswahl ob die Öffnungszeiten des Ziels beachtet werden (wenn vorhanden)" />
+                           </tooltip></ToggleSwitch>
                         <HBox fx:id="containerOpeningHours" alignment="CENTER_LEFT" prefWidth="440.0" visible="false">
                            <HBox.margin>
                               <Insets left="20.0" />
@@ -408,7 +442,10 @@
                            </HBox.margin>
                            <font>
                               <Font size="11.0" />
-                           </font></ToggleSwitch>
+                           </font>
+                           <tooltip>
+                              <Tooltip fx:id="ttToggleUseMargin" text="Gewünschte freie Zeit vor und nach dem Termin" />
+                           </tooltip></ToggleSwitch>
                         <HBox fx:id="containerMargin" prefWidth="440.0" visible="false">
                            <children>
                               <VBox alignment="CENTER" prefWidth="240.0">
@@ -456,7 +493,10 @@
                            </HBox.margin>
                            <font>
                               <Font size="11.0" />
-                           </font></ToggleSwitch>
+                           </font>
+                           <tooltip>
+                              <Tooltip fx:id="ttToggleRecurringDate" text="Auswahl Intervall und Anzahl der Wiederholungen" />
+                           </tooltip></ToggleSwitch>
                         <HBox fx:id="containerReccurrence" alignment="CENTER_LEFT" prefWidth="440.0" spacing="10.0" visible="false">
                            <children>
                               <VBox alignment="CENTER" prefWidth="210.0">
