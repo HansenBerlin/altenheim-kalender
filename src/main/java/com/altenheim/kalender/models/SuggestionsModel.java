@@ -20,6 +20,7 @@ public class SuggestionsModel
     private LocalDate dayStart;
     private LocalDate dayEnd;
     private Button button;
+    private String title;
 
     public SuggestionsModel(LocalTime startTime, LocalTime endTime, LocalDate dayStart, LocalDate dayEnd, Button button, String title)
     {      
@@ -28,8 +29,13 @@ public class SuggestionsModel
         this.dayStart = dayStart;
         this.dayEnd = dayEnd;
         this.button = button;
+        this.title = title;
+        registerButtonEvent();	    
+    }
 
-	    button.setOnAction(new EventHandler<ActionEvent>() 
+    private void registerButtonEvent()
+    {
+        button.setOnAction(new EventHandler<ActionEvent>() 
         {
             public void handle(ActionEvent e) 
             {
