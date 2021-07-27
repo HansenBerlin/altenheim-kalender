@@ -12,14 +12,11 @@ public interface IEntryFactory {
     void createRandomCalendarList();
 
     HashMap<String, List<SerializableEntry>> createEntryListForEachCalendar();
-
     SerializableEntry createUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
-
     ArrayList<ArrayList<SerializableEntry>> createOpeningHoursWithLunchBreak();
-
     void addCalendarToView(Calendar calendar);
-
     void addHWRCalendarToView(Calendar calendar);
-
     void addCalendarToView(Calendar calendar, String source);
+    void createNewUserEntryIncludingTravelTimes(LocalDate dateStart, LocalDate dateEnd,
+        LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel);
 }

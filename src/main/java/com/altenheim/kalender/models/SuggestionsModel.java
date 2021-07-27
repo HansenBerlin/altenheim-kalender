@@ -1,9 +1,13 @@
 package com.altenheim.kalender.models;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import com.altenheim.kalender.controller.Factories.EntryFactory;
 import com.altenheim.kalender.controller.viewController.PopupViewsController;
+import com.calendarfx.model.Entry;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,10 +47,9 @@ public class SuggestionsModel {
         {
             public void handle(ActionEvent e) 
             {
-                if (toggleTravelTime)                
-                    EntryFactory.createNewUserEntryIncludingTravelTimes(dayStart, dayEnd, startTime, endTime, title, travelTime);
-                else                
-				    EntryFactory.createNewUserEntry(dayStart, dayEnd, startTime, endTime, title);  
+                if (toggleTravelTime == false)
+                    travelTime = 0;                               
+                invokeEntryFactoryCreation(dayStart, dayEnd, startTime, endTime, title, travelTime);                 
                                   
                 PopupViewsController.showEntryAddedDialog(dayStart.toString(), dayEnd.toString(), startTime.toString(), endTime.toString(), title);
             }
@@ -56,5 +59,22 @@ public class SuggestionsModel {
     final static public void addToList(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate,
             Button button, String title) {
         SuggestionsModel.data.add(new SuggestionsModel(startTime, endTime, startDate, endDate, button, title));
-    }    
+    } 
+
+    
+    private void invokeEntryFactoryCreation(LocalDate dateStart, LocalDate dateEnd,
+        LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel)
+    {
+        try 
+        {
+            var entryFactory = Class.forName("EntryFactory");
+            var method = entryFactory.getDeclaredMethod("createNewUserEntryIncludingTravelTimes", LocalDate.class, LocalDate.class,
+            LocalTime.class, LocalTime.class, String.class, int.class);
+            method.invoke(null, dayStart, dayEnd, startTime, endTime, title, travelTime);
+        } 
+        catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) 
+        {
+            e.printStackTrace();
+        }        
+    }
 }

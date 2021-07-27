@@ -44,6 +44,8 @@ public class SearchViewController extends ResponsiveController
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
     @FXML private Text infoName, infoDuration, infoBetweenDate, infoBetweenTime, infoWeekdays, infoTravelTime, infoTimeBefore, infoTimeAfter, infoReccurrences, infoInterval;   
     private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening;
+    private int userStep = 1;
+    private Button dummyButton = new Button();
 
     private ISmartSearchController smartSearch;
     private IEntryFactory entryFactory;
@@ -55,8 +57,7 @@ public class SearchViewController extends ResponsiveController
     private MailTemplateModel mailTemplates;
     private SettingsModel settings;
     private ArrayList<SerializableEntry> currentSuggestions;
-    private int userStep = 1;
-    private Button dummyButton = new Button();
+    
 
     public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory,
             MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api,
@@ -226,7 +227,7 @@ public class SearchViewController extends ResponsiveController
         if (toggleUseTravelDuration.isSelected()) {
             traveltime = travelTimeTo;
         }
-        EntryFactory.createNewUserEntryIncludingTravelTimes(currentSuggestion.getStartDate(),
+        entryFactory.createNewUserEntryIncludingTravelTimes(currentSuggestion.getStartDate(),
                 currentSuggestion.getEndDate(), currentSuggestion.getStartTime(),
                 currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), tfAppointmentName.getText(), traveltime);
     }

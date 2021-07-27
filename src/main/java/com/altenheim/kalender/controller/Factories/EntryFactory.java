@@ -1,8 +1,8 @@
 package com.altenheim.kalender.controller.Factories;
 
-import com.altenheim.kalender.interfaces.IEntryFactory;
+import com.altenheim.kalender.interfaces.*;
+import com.calendarfx.model.*;
 import com.altenheim.kalender.controller.viewController.CustomViewOverride;
-import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.models.SerializableEntry;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,19 +13,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.CalendarSource;
-import com.calendarfx.model.Calendar.Style;
 
 public class EntryFactory implements IEntryFactory {
     private ICalendarEntriesModel allCalendars;
-    private static ICalendarEntriesModel allCalendarsStatic;
     private CustomViewOverride calendarView;
 
     public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView) {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
-        EntryFactory.allCalendarsStatic = allCalendars;
     }
 
     public EntryFactory(ICalendarEntriesModel allCalendars) {
@@ -76,9 +71,6 @@ public class EntryFactory implements IEntryFactory {
                 }
             }
         }
-
-        calendar.setStyle(Style.STYLE6);
-
         addCalendarToView(calendar);
     }
 
@@ -190,7 +182,7 @@ public class EntryFactory implements IEntryFactory {
         return ThreadLocalRandom.current().nextInt(startInclusive, endInclusive + 1);
     }
 
-    public static void createNewUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart,
+    public void createNewUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart,
             LocalTime timeEnd, String title) {
         var entry = new SerializableEntry();
         entry.changeStartTime(timeStart);
@@ -198,10 +190,10 @@ public class EntryFactory implements IEntryFactory {
         entry.changeEndTime(timeEnd);
         entry.changeEndDate(dateEnd);
         entry.setTitle(title);
-        EntryFactory.allCalendarsStatic.getAllCalendars().get(0).addEntries(entry);
+        allCalendars.getAllCalendars().get(0).addEntries(entry);
     }
 
-    public static void createNewUserEntryIncludingTravelTimes(LocalDate dateStart, LocalDate dateEnd,
+    public void createNewUserEntryIncludingTravelTimes(LocalDate dateStart, LocalDate dateEnd,
             LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel) {
         if (timeTravel > 0) {
             var startAt = LocalDateTime.of(dateStart, timeStart);
@@ -214,7 +206,7 @@ public class EntryFactory implements IEntryFactory {
             entry.changeEndTime(endAt.toLocalTime());
             entry.changeEndDate(endAt.toLocalDate());
             entry.setTitle("Anfahrtzeit für " + title);
-            EntryFactory.allCalendarsStatic.getAllCalendars().get(0).addEntries(entry);
+            allCalendars.getAllCalendars().get(0).addEntries(entry);
         }
         if (timeTravel > 0) {
             var startAt = LocalDateTime.of(dateEnd, timeEnd);
@@ -227,7 +219,7 @@ public class EntryFactory implements IEntryFactory {
             entry.changeEndTime(endAt.toLocalTime());
             entry.changeEndDate(endAt.toLocalDate());
             entry.setTitle("Anfahrtzeit für " + title);
-            EntryFactory.allCalendarsStatic.getAllCalendars().get(0).addEntries(entry);
+            allCalendars.getAllCalendars().get(0).addEntries(entry);
         }
 
         var entry = new SerializableEntry();
@@ -236,7 +228,8 @@ public class EntryFactory implements IEntryFactory {
         entry.changeEndTime(timeEnd);
         entry.changeEndDate(dateEnd);
         entry.setTitle(title);
-        EntryFactory.allCalendarsStatic.getAllCalendars().get(0).addEntries(entry);
-    }
+        allCalendars.getAllCalendars().get(0).addEntries(entry);
+    }  
+    
     
 }
