@@ -19,6 +19,7 @@ public class SuggestionsModel {
     private LocalDate dayStart;
     private LocalDate dayEnd;
     private Button button;
+    private String title;
 
     public SuggestionsModel(LocalTime startTime, LocalTime endTime, LocalDate dayStart, LocalDate dayEnd, Button button,
             String title) {
@@ -27,17 +28,22 @@ public class SuggestionsModel {
         this.dayStart = dayStart;
         this.dayEnd = dayEnd;
         this.button = button;
+        this.title = title;
+        registerButtonEvent();	    
+    }
 
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                if (toggleTravelTime)
-                    EntryFactory.createNewUserEntryIncludingTravelTimes(dayStart, dayEnd, startTime, endTime, title,
-                            travelTime);
-                else
-                    EntryFactory.createNewUserEntry(dayStart, dayEnd, startTime, endTime, title);
-
-                PopupViewsController.showEntryAddedDialog(dayStart.toString(), dayEnd.toString(), startTime.toString(),
-                        endTime.toString(), title);
+    private void registerButtonEvent()
+    {
+        button.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            public void handle(ActionEvent e) 
+            {
+                if (toggleTravelTime)                
+                    EntryFactory.createNewUserEntryIncludingTravelTimes(dayStart, dayEnd, startTime, endTime, title, travelTime);
+                else                
+				    EntryFactory.createNewUserEntry(dayStart, dayEnd, startTime, endTime, title);  
+                                  
+                PopupViewsController.showEntryAddedDialog(dayStart.toString(), dayEnd.toString(), startTime.toString(), endTime.toString(), title);
             }
         });
     }

@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import com.altenheim.kalender.interfaces.IDateSuggestionController;
 import com.altenheim.kalender.models.SerializableEntry;
 
-public class DateSuggestionController implements IDateSuggestionController {
-    public SerializableEntry getDateSuggestionFromEntryList(ArrayList<SerializableEntry> input,
-            LocalDateTime startSearchDateTimeInput, int dateLenght) {
-        var startSearchDateTime = LocalDateTime.of(startSearchDateTimeInput.toLocalDate(),
-                startSearchDateTimeInput.toLocalTime());
-
-        if (input.get(input.size() - 1).getEndAsLocalDateTime()
-                .isAfter(startSearchDateTime.plusMinutes((long) dateLenght + 1)))
-            for (int runNumber = 0; runNumber < input.size(); runNumber++) {
+public class DateSuggestionController implements IDateSuggestionController 
+{
+    public SerializableEntry getDateSuggestionFromEntryList(ArrayList<SerializableEntry> input, LocalDateTime startSearchDateTimeInput, int dateLenght) 
+    {
+        if (input.isEmpty())
+            return null;
+            
+        var startSearchDateTime  = LocalDateTime.of(startSearchDateTimeInput.toLocalDate(), startSearchDateTimeInput.toLocalTime());
+        
+        if (input.get(input.size()-1).getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes((long) dateLenght + 1))) 
+            for (int runNumber = 0; runNumber < input.size(); runNumber++) 
+            {
                 var entryStart = input.get(runNumber).getStartAsLocalDateTime();
 
                 if (entryStart.isAfter(startSearchDateTime))
