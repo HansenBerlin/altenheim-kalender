@@ -11,11 +11,16 @@ import com.altenheim.kalender.interfaces.IImportController;
 import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.MailTemplateModel;
 import com.altenheim.kalender.models.SettingsModel;
+
+import net.fortuna.ical4j.validate.ValidationException;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 public class IOController implements IIOController {
@@ -60,13 +65,13 @@ public class IOController implements IIOController {
             if (!newFolder.exists())
                 newFolder.mkdir();
 
-            for (var cal : calSource.getCalendars()) {
-                try {
-                    exportCt.exportCalendarAsFile(cal, pathSource);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            for (var cal : calSource.getCalendars()) 
+                if (cal.findEntries(LocalDate.MIN, LocalDate.MAX, ZoneId.systemDefault()).size() > 0) 
+                    try {
+                        exportCt.exportCalendarAsFile(cal, pathSource);
+                    } catch (ValidationException | IOException e) {
+                        e.printStackTrace();
+                    }   
         }
     }
 
@@ -91,11 +96,13 @@ public class IOController implements IIOController {
                 for (var calFile : calDirectory.listFiles())
                     if (calFile.getAbsolutePath().contains(".ics")) {
                         var cal = importCt.importFile(calFile.getAbsolutePath());
-                        if (cal != null) {
+                        if (cal != null && cal.findEntries(LocalDate.MIN, LocalDate.MAX, ZoneId.systemDefault()).size() > 0) {
                             calendarEntriesModel.addCalendar(cal);
                             entryFactory.addCalendarToView(cal, calDirectory.getName());
                         }
                     }
+        
+        
     }
 
     public void saveContactsToFile() {

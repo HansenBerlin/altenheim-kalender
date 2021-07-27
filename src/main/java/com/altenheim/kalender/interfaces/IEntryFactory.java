@@ -17,9 +17,9 @@ public interface IEntryFactory {
 
     ArrayList<ArrayList<SerializableEntry>> createOpeningHoursWithLunchBreak();
 
-    void addCalendarToView(Calendar calendar);
-
     void addHWRCalendarToView(Calendar calendar);
 
     void addCalendarToView(Calendar calendar, String source);
+
+    void removeCalendarFromView(String source, String calName);
 }

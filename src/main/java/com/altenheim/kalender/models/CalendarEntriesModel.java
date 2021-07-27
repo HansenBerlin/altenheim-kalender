@@ -24,7 +24,6 @@ public class CalendarEntriesModel implements ICalendarEntriesModel {
 
             @Override
             public void handle(CalendarEvent event) {
-                // TODO Auto-generated method stub
                 // System.out.println(event);
             }
 

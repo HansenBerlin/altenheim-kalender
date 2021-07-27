@@ -96,7 +96,7 @@ public class PopupViewsController implements IPopupViewController {
         if (file == null)
             return;
         var importedCalendar = importController.importFile(file.getAbsolutePath());
-        entryFactory.addCalendarToView(importedCalendar);
+        entryFactory.addCalendarToView(importedCalendar, "gespeicherte Kalender");
     }
 
     public void exportDialog(IExportController exportController, ICalendarEntriesModel allEntries, Window stage) {

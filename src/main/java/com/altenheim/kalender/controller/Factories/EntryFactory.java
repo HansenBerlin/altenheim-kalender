@@ -79,23 +79,19 @@ public class EntryFactory implements IEntryFactory {
 
         calendar.setStyle(Style.STYLE6);
 
-        addCalendarToView(calendar);
+        addCalendarToView(calendar, "gespeicherte Kalender");
     }
 
-    public void addCalendarToView(Calendar calendar) {
-        allCalendars.addCalendar(calendar);
-        boolean inCalendarsSources = false;
-        var calendarSource = new CalendarSource("Saved Calendars");
-        for (var calSource : calendarView.getCalendarSources()) {
-            if (calSource.getName().equals("Saved Calendars")) {
-                calendarSource = calSource;
-                inCalendarsSources = true;
-                break;
-            }
-        }
-        calendarSource.getCalendars().addAll(calendar);
-        if (!inCalendarsSources)
-            calendarView.getCalendarSources().addAll(calendarSource);
+    public void removeCalendarFromView(String source, String calName) {
+        for (var calSource : calendarView.getCalendarSources()) 
+            if (calSource.getName().equals(source)) 
+                for (var cal : calSource.getCalendars()) 
+                    if (cal.getName().equals(calName)) {
+                        calSource.getCalendars().remove(cal);
+                        if (calSource.getCalendars().isEmpty()) 
+                            calendarView.getCalendarSources().remove(calSource); 
+                    }
+       
     }
 
     public void addCalendarToView(Calendar calendar, String source) {
