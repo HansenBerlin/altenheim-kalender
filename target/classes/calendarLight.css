@@ -10,11 +10,11 @@
     -weekend-fill-color: rgb(151, 151, 151);
     -today-fill-color: rgb(79, 186, 116);
 
-    -usage-very-low-color: lightgreen;
-    -usage-low-color: green;
-    -usage-medium-color: gold;
-    -usage-high-color: darkorange;
-    -usage-very-high-color: red;
+    -usage-very-low-color: rgb(45, 221, 90);
+    -usage-low-color: rgb(45, 221, 90);
+    -usage-medium-color: rgb(45, 221, 90);
+    -usage-high-color: rgb(45, 221, 90);
+    -usage-very-high-color: rgb(45, 221, 90);
 
     -usage-very-low-text-color: green;
     -usage-low-text-color: lightgreen;
