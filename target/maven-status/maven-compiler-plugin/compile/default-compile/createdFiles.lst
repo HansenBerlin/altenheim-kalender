@@ -1,15 +1,14 @@
 com\altenheim\kalender\models\SerializableEntry.class
+com\altenheim\kalender\JavaFXLauncher$1.class
 com\altenheim\kalender\models\SuggestionsModel$1.class
 com\altenheim\kalender\controller\logicController\DateSuggestionController.class
 com\altenheim\kalender\models\SettingsModel.class
 com\altenheim\kalender\interfaces\ISystemNotificationsController.class
 com\altenheim\kalender\controller\logicController\JsonParser.class
 com\altenheim\kalender\controller\viewController\MainWindowController.class
-com\altenheim\kalender\Main.class
 com\altenheim\kalender\interfaces\IAnimationController.class
 com\altenheim\kalender\interfaces\IViewRootsModel.class
 com\altenheim\kalender\controller\logicController\WebsiteScraperController.class
-com\altenheim\kalender\JavaFXLauncher.class
 com\altenheim\kalender\controller\viewController\AnimationController.class
 com\altenheim\kalender\resourceClasses\FxmlFiles.class
 com\altenheim\kalender\controller\viewController\ResponsiveController.class
@@ -39,9 +38,7 @@ com\altenheim\kalender\interfaces\IMailCreationController.class
 com\altenheim\kalender\models\UserModel.class
 com\altenheim\kalender\resourceClasses\ComboBoxCreate.class
 com\altenheim\kalender\controller\Factories\EntryFactory.class
-com\altenheim\kalender\controller\viewController\StatsViewController.class
 com\altenheim\kalender\controller\logicController\InitialSetupController.class
-com\altenheim\kalender\controller\Factories\InjectorFactory.class
 com\altenheim\kalender\controller\logicController\ImportController.class
 com\altenheim\kalender\controller\viewController\CustomViewOverride.class
 com\altenheim\kalender\controller\viewController\MailTemplateViewController.class
