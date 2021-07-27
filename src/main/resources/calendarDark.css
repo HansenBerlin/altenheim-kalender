@@ -10,11 +10,11 @@
     -weekend-fill-color: rgb(151, 151, 151);
     -today-fill-color: rgb(51, 51, 48);
 
-    -usage-very-low-color: rgb(75, 51, 125);
-    -usage-low-color: rgb(75, 51, 125);
-    -usage-medium-color: rgb(75, 51, 125);;
-    -usage-high-color: rgb(75, 51, 125);;
-    -usage-very-high-color: rgb(75, 51, 125);;
+    -usage-very-low-color: lightgreen;
+    -usage-low-color: green;
+    -usage-medium-color: gold;
+    -usage-high-color: darkorange;
+    -usage-very-high-color: red;
 
     -usage-very-low-text-color: green;
     -usage-low-text-color: lightgreen;
@@ -194,7 +194,7 @@
  */
 
 .date-popover > .border {
-    -fx-fill: linear-gradient(#4b337d 50.0%, #4b337d 100.0%) !important;
+    -fx-fill: linear-gradient(#ff0000 50.0%, #ff0000 100.0%) !important;
 }
 
 .date-popover > .content > .entries-pane {
@@ -788,7 +788,7 @@
 .search-result-view > .list-view,
 .search-result-view > .list-view:focused {
     -fx-pref-width: 200.0px;
-    -fx-background-color: rgb(0, 0, 0);
+    -fx-background-color: rgb(255, 0, 0);
 }
 
 .search-result-view > .list-view > .placeholder-label {

@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -36,10 +35,7 @@
                   <TextField fx:id="txtFieldCity" promptText="Ort" />
                </children>
             </HBox>
-            <Button fx:id="btnAddContact" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="300.0" text="EINFÜGEN">
-               <tooltip>
-                  <Tooltip fx:id="ttBtnAddContact" text="Einfügen ins bestehende Adressbuch" />
-               </tooltip></Button>
+            <Button fx:id="btnAddContact" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="300.0" text="EINFÜGEN" />
          </children>
       </VBox>
    </children>

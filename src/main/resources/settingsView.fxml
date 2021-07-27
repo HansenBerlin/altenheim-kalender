@@ -7,7 +7,6 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -30,16 +29,12 @@
    <children>
       <VBox fx:id="topContainer" alignment="BOTTOM_CENTER" fillWidth="false" spacing="15.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="HWR Kalenderauswahl" />
             <HBox fx:id="containerComboBoxSelectorScrapping" alignment="TOP_CENTER" spacing="20.0" />
-            <Separator maxWidth="550.0" />
+            <Separator />
             <HBox alignment="TOP_CENTER" spacing="30.0">
                <children>
-                  <Button fx:id="btnImport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Import">
-                     <tooltip>
-                        <Tooltip fx:id="ttBtnImport" text="Import von ICS Dateien" />
-                     </tooltip></Button>
-                  <MenuButton fx:id="btnMenuImportColour" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Colour" visible="false">
+                  <Button fx:id="btnImport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Import" />
+                  <MenuButton fx:id="btnMenuImportColour" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Colour">
                      <items>
                         <MenuItem mnemonicParsing="false" text="Farbe 1 " />
                         <MenuItem mnemonicParsing="false" text="Farbe 2" />
@@ -52,17 +47,11 @@
             </HBox>
             <HBox alignment="TOP_CENTER" spacing="30.0">
                <children>
-                  <Button fx:id="btnExport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Export">
-                     <tooltip>
-                        <Tooltip fx:id="ttBtnExport" text="Export als ICS Datei" />
-                     </tooltip></Button>
-                  <Button fx:id="btnGenerate" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Dummy">
-                     <tooltip>
-                        <Tooltip fx:id="ttBtnGenerate" text="zufälligen Kalender erzeugen" />
-                     </tooltip></Button>
+                  <Button fx:id="btnExport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Export" />
+                  <Button fx:id="btnGenerate" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Dummy" />
                </children>
             </HBox>
-            <Separator maxWidth="550.0" />
+            <Separator />
             <VBox fx:id="containerComboBoxNotificationMin" alignment="TOP_CENTER" spacing="5.0">
                <children>
                   <Text fx:id="txtNotificationHour" strokeType="OUTSIDE" strokeWidth="0.0" text="Benachrichtigung vor dem Termin in Minuten" />
@@ -78,7 +67,7 @@
       </VBox>
       <VBox fx:id="bottomContainer" alignment="TOP_CENTER" spacing="10.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <children>
-            <Separator maxWidth="550.0" />
+            <Separator />
             <HBox alignment="TOP_CENTER" spacing="10.0">
                <children>
                   <VBox spacing="5.0">
@@ -109,12 +98,9 @@
                   </VBox>
                </children>
             </HBox>
-            <Separator maxWidth="550.0" />
-            <CheckBox fx:id="cBToolTips" mnemonicParsing="false" text="Tool Tips">
-               <tooltip>
-                  <Tooltip fx:id="ttCBToolTips" text="Ein-/ Ausschalten von Tool Tips" />
-               </tooltip></CheckBox>
-            <Separator maxWidth="550.0" />
+            <Separator />
+            <CheckBox fx:id="cBToolTips" mnemonicParsing="false" text="Tool Tips" />
+            <Separator />
             <Text fx:id="txtError" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" />
 
                   <HBox alignment="TOP_CENTER">
