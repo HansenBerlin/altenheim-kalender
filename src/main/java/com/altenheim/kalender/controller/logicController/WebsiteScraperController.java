@@ -4,6 +4,8 @@ import com.altenheim.kalender.interfaces.IEntryFactory;
 import com.altenheim.kalender.interfaces.IImportController;
 import com.altenheim.kalender.interfaces.IWebsiteScraperController;
 import com.altenheim.kalender.models.SettingsModel;
+import com.calendarfx.model.Calendar;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -35,16 +37,16 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
     public void scrapeCalendar() {
 
         if (isDownloadIcsSuccessful())
-            importHwrIcsFileToCalendar();
+        {
+            var calendarHwr = importedHwrIcsFile();
+            //entryFactory.addCalendarToView(calendarHwr, "HWR Calendar");
+        }
     }
 
-    private void importHwrIcsFileToCalendar() {
+    private Calendar importedHwrIcsFile() {
         var ics = Paths.get(settings.getPathToHwrScrapedFile());
         var pathOfIcs = ics.toAbsolutePath().toString();
-        var calHWR = icsImport.importFile(pathOfIcs);
-
-        entryFactory.addHWRCalendarToView(calHWR);
-
+        return icsImport.importFile(pathOfIcs);
     }
 
     private boolean isDownloadIcsSuccessful() {
@@ -60,6 +62,5 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
             e.printStackTrace();
             return false;
         }
-    }
-    
+    }    
 }

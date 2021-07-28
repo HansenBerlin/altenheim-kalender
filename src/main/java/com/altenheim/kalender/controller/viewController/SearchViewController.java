@@ -11,6 +11,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import com.altenheim.kalender.controller.Factories.EntryFactory;
+import com.altenheim.kalender.controller.Factories.SplitMenuButtonFactory;
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
@@ -36,8 +39,8 @@ public class SearchViewController extends ResponsiveController
     @FXML private DatePicker startDate, endDate;    
     @FXML private CheckBox tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday;  
     @FXML private TimeField timeStart, timeEnd; 
-    @FXML private ToggleSwitch toggleDateRange, toggleTimeRange, toggleWeekdays;   
-    @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays;
+    @FXML private ToggleSwitch toggleDateRange, toggleTimeRange, toggleWeekdays, toggleCalendars;   
+    @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays, containerCalendars;
     @FXML private HBox containerTravel, containerOpeningHours, containerMargin, containerReccurrence;
     @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleAddAutomatically; 
     @FXML private Slider sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment;
@@ -46,6 +49,7 @@ public class SearchViewController extends ResponsiveController
     private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening;
     private int userStep = 1;
     private Button dummyButton = new Button();
+    private SplitMenuButton calendarSelection = new SplitMenuButton();
 
     private ISmartSearchController smartSearch;
     private IEntryFactory entryFactory;
@@ -54,6 +58,7 @@ public class SearchViewController extends ResponsiveController
     private IAnimationController animationController;
     private IComboBoxFactory comboBoxFactory;
     private IDateSuggestionController dateSuggestionController;
+    private ICalendarEntriesModel allCalendars;
     private MailTemplateModel mailTemplates;
     private SettingsModel settings;
     private ArrayList<SerializableEntry> currentSuggestions;
@@ -62,7 +67,8 @@ public class SearchViewController extends ResponsiveController
     public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory,
             MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api,
             IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory,
-            IDateSuggestionController dateSuggestionController) {
+            IDateSuggestionController dateSuggestionController, ICalendarEntriesModel allCalendars) 
+    {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
         this.mailTemplates = mailTemplates;
@@ -72,6 +78,7 @@ public class SearchViewController extends ResponsiveController
         this.animationController = animationController;
         this.comboBoxFactory = comboBoxFactory;
         this.dateSuggestionController = dateSuggestionController;
+        this.allCalendars = allCalendars;
         dummyButton.setVisible(false);
     }
 
@@ -115,7 +122,43 @@ public class SearchViewController extends ResponsiveController
             hBox.setScaleX(0);
             hBox.setScaleY(0);
         }
-    }   
+    }     
+
+    @FXML
+    private void calendarToggleClicked(MouseEvent event) 
+    {
+        if (toggleCalendars.isDisabled())
+        {
+            calendarSelection = SplitMenuButtonFactory.createButtonForAvailableCalendars(allCalendars.getAllCalendars());
+            containerCalendars.getChildren().add(calendarSelection);
+        }
+        else
+        {
+            containerCalendars.getChildren().remove(calendarSelection);
+        }
+    }
+
+    private void validateCalendarSelectionInput()
+    {
+        allCalendars.clearCalendarsSelectedByUser();
+        if (toggleCalendars.isSelected())
+        {
+            allCalendars.addToAllCalendarsSelectedByUser(allCalendars.getSpecificCalendarByIndex(0));
+        }
+        else
+        {
+            var tickBoxesCalendar = calendarSelection.getChildrenUnmodifiable();
+            for (var node : tickBoxesCalendar) 
+            {
+                var checkbox = (CheckBox)node;
+                if (checkbox.isSelected())
+                {
+                    allCalendars.addToAllCalendarsSelectedByUserByCalendarName(checkbox.getText());
+                }                
+            }
+        }
+    }
+
 
     @FXML
     private void updateUserStepView(ActionEvent event) {
@@ -285,7 +328,8 @@ public class SearchViewController extends ResponsiveController
         int timeAfter = (int) sliderMarginAfterAppointment.getValue();
         var updatedTimes = compareTimes(timeBefore, timeAfter, travelTime);
         var weekdays = validateWeekdays();        
-        int intervalDays = calculateInterval();        
+        int intervalDays = calculateInterval();   
+        validateCalendarSelectionInput();    
         //var suggestionsCount = validateSuggestionsCount();         
         
         currentSuggestions = smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, 

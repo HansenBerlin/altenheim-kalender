@@ -89,7 +89,7 @@ public class SmartSearchController implements ISmartSearchController {
 	public ArrayList<SerializableEntry> findAvailableTimeSlot(SerializableEntry input, int duration, int before,
 			int after) {
 		var result = new LinkedList<List<Entry<?>>>();
-		for (var calendar : administrateEntries.getAllCalendars()) {
+		for (var calendar : administrateEntries.getAllCalendarsSelectedByUser()) {
 			result.addAll(
 					calendar.findEntries(input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values());
 		}

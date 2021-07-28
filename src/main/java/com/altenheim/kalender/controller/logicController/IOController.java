@@ -84,18 +84,27 @@ public class IOController implements IIOController {
         }
     }
 
-    public void loadCalendarsFromFile() {
+    public void loadCalendarsFromFile() 
+    {
         var calDirectorys = new File(settings.getPathToUserDirectory() + "calendarBackup/");
         for (var calDirectory : calDirectorys.listFiles())
+        {
             if (calDirectory.isDirectory())
+            {
                 for (var calFile : calDirectory.listFiles())
-                    if (calFile.getAbsolutePath().contains(".ics")) {
+                {
+                    if (calFile.getAbsolutePath().contains(".ics")) 
+                    {
                         var cal = importCt.importFile(calFile.getAbsolutePath());
-                        if (cal != null) {
+                        if (cal != null) 
+                        {
                             calendarEntriesModel.addCalendar(cal);
-                            entryFactory.addCalendarToView(cal, calDirectory.getName());
+                            entryFactory.addCalendarToView(cal, cal.getName());
                         }
                     }
+                } 
+            }
+        }  
     }
 
     public void saveContactsToFile() {

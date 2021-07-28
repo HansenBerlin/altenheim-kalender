@@ -2,6 +2,9 @@ package com.altenheim.kalender.controller.Factories;
 
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.model.*;
+
+import javafx.collections.FXCollections;
+
 import com.altenheim.kalender.controller.viewController.CustomViewOverride;
 import com.altenheim.kalender.models.SerializableEntry;
 import java.time.LocalDate;
@@ -22,7 +25,7 @@ public class EntryFactory implements IEntryFactory {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
     }
-
+/*
     public EntryFactory(ICalendarEntriesModel allCalendars) {
         this.allCalendars = allCalendars;
 
@@ -30,7 +33,7 @@ public class EntryFactory implements IEntryFactory {
 
     public ICalendarEntriesModel getEntriesModel() {
         return allCalendars;
-    }
+    }*/
 
     public HashMap<String, List<SerializableEntry>> createEntryListForEachCalendar() {
         var result = allCalendars.getAllCalendars();
@@ -71,9 +74,9 @@ public class EntryFactory implements IEntryFactory {
                 }
             }
         }
-        addCalendarToView(calendar);
+        addCalendarToView(calendar, "TestKalender");
     }
-
+/*
     public void addCalendarToView(Calendar calendar) {
         allCalendars.addCalendar(calendar);
         boolean inCalendarsSources = false;
@@ -88,44 +91,28 @@ public class EntryFactory implements IEntryFactory {
         calendarSource.getCalendars().addAll(calendar);
         if (!inCalendarsSources)
             calendarView.getCalendarSources().addAll(calendarSource);
-    }
+    }*/
 
-    public void addCalendarToView(Calendar calendar, String source) {
-        allCalendars.addCalendar(calendar);
-        boolean inCalendarsSources = false;
-        var calendarSource = new CalendarSource(source);
-        for (var calSource : calendarView.getCalendarSources()) {
-            if (calSource.getName().equals(source)) {
-                calendarSource = calSource;
-                inCalendarsSources = true;
-                break;
-            }
+    public void addCalendarToView(Calendar calendar, String name) 
+    {
+        calendar.setName(name);
+        allCalendars.getAllCalendars().clear();
+        var calendarList = calendarView.getCalendars();
+        //var allCalendarsInCollection = calendarSource.getCalendars();
+        //calendarView.getCalendars().clear();
+        
+        for (var cal : calendarList) 
+        {
+            if (cal.getName().equals(name))            
+                cal = calendar;                
+             
+            calendarList.add(cal);
+            allCalendars.addCalendar(cal);           
         }
-        calendarSource.getCalendars().addAll(calendar);
-        if (!inCalendarsSources)
-            calendarView.getCalendarSources().addAll(calendarSource);
-    }
-
-    public void addHWRCalendarToView(Calendar calendar) {
-        String calName = "HWR Kalender";
-        calendar.setName(calName);
-        calendar.setShortName("HWR");
-
+        calendarList.add(calendar);
         allCalendars.addCalendar(calendar);
-        boolean inCalendarsSources = false;
-        var calendarSource = new CalendarSource(calName);
-        for (var calSource : calendarView.getCalendarSources()) {
-            if (calSource.getName().equals(calName)) {
-                calendarSource = calSource;
-                calendarSource.getCalendars().clear();
-                inCalendarsSources = true;
-                break;
-            }
-        }
-        calendarSource.getCalendars().addAll(calendar);
-        if (!inCalendarsSources)
-            calendarView.getCalendarSources().addAll(calendarSource);
-    }
+        calendarView.getCalendars().addAll(calendarList);
+    }    
 
     private SerializableEntry createRandomEntry(int day, int month, int startT, int endT) {
         var startAndEndDate = LocalDate.of(2021, month, day);

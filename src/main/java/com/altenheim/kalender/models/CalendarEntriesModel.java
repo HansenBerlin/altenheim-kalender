@@ -6,14 +6,14 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.CalendarEvent;
-import com.calendarfx.model.Entry;
+import com.calendarfx.model.*;
 
 import javafx.event.EventHandler;
 
-public class CalendarEntriesModel implements ICalendarEntriesModel {
+public class CalendarEntriesModel implements ICalendarEntriesModel 
+{
     private List<Calendar> calendars;
+    private List<Calendar> calendarsSelectedByUser;
 
     public CalendarEntriesModel() {
         calendars = new ArrayList<Calendar>();
@@ -32,9 +32,29 @@ public class CalendarEntriesModel implements ICalendarEntriesModel {
         calendars.add(calendar);
     }
 
-    public List<Calendar> getAllCalendars() {
-        return calendars;
+    public List<Calendar> getAllCalendars() { return calendars; }
+    public List<Calendar> getAllCalendarsSelectedByUser() { return calendarsSelectedByUser; }
+
+    public void addToAllCalendarsSelectedByUser(Calendar calendar)
+    {
+        calendarsSelectedByUser.add(calendar);
     }
+
+    public void clearCalendarsSelectedByUser()
+    {
+        calendarsSelectedByUser.clear();
+    }
+
+    public void addToAllCalendarsSelectedByUserByCalendarName(String calendarName)
+    {
+        for (var calendar : calendars) 
+        {
+            if (calendar.getName().equals(calendarName))
+                calendarsSelectedByUser.add(calendar);            
+        }
+    }
+
+
 
     public List<SerializableEntry> getSpecificRange(LocalDate startDate, LocalDate endDate) {
         var calendar = calendars.get(0);
