@@ -157,6 +157,7 @@ public class MainWindowController extends ResponsiveController {
     }
 
     public void updateViewOnButtonClicked(Button pressed) {
+        System.out.println(pressed);
         for (String buttonName : allButtonsWithBackgrounds.keySet()) {
             var buttonPair = allButtonsWithBackgrounds.get(buttonName);
             if (buttonPair.getKey().equals(currentlyActive) && !currentlyActive.equals(pressed))
@@ -225,6 +226,10 @@ public class MainWindowController extends ResponsiveController {
         topRow.setMinHeight(topMenuHeight);
         topRow.setMaxHeight(topMenuHeight);
         topRow.setPrefHeight(topMenuHeight);
+    }
+
+    public Button getPlannerMenuButton() {
+        return menuBtnPlanner;
     }
     
 }
