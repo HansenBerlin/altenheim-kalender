@@ -174,14 +174,15 @@
 }
 
 .day-page > .container > .content > .left-side > .header > .year-month-view > .container > .day-of-month-label {
-    -fx-text-fill: rgb(0, 0, 0);
+    -fx-text-fill: rgb(255, 255, 255);
     -fx-font-size: .9em;
 }
 
 .day-page > .container > .content > .left-side > .header > .year-month-view > .container > .day-not-of-month-label {
-    -fx-text-fill: rgb(114, 114, 114);
+    -fx-text-fill: rgb(0, 0, 0);
     -fx-text-stroke: rgb(255, 0, 212);
-    -fx-font-size: .8em;
+    -fx-font-size: .9em;
+    -fx-font-weight: bold;
 }
 
 .day-page > .container > .content > .left-side > .header > .year-month-view > .container > .weekend-day {
