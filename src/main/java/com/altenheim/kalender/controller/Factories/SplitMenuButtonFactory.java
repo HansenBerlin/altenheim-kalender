@@ -13,6 +13,7 @@ public class SplitMenuButtonFactory
     public static SplitMenuButton createButtonForAvailableCalendars(List<Calendar> allCalendars)
     {
         var splitMenuButton = new SplitMenuButton();
+        splitMenuButton.setText("Folgende Kalender berücksichtigen");
         for (var calendar : allCalendars)
         {
             var checkBox = new CheckBox(calendar.getName());                     

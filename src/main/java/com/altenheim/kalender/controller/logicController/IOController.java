@@ -4,7 +4,6 @@ import java.io.File;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.*;
 import com.calendarfx.model.Calendar;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,12 +16,11 @@ public class IOController implements IIOController
     protected SettingsModel settings;
     private ContactModel contacts;
     private String hashedPassword;
-    private ICalendarEntriesModel calendarEntriesModel;
     private IExportController exportCt;
     private IImportController importCt;
     private IEntryFactory entryFactory;
 
-    public IOController(SettingsModel settings, ContactModel contacts, ICalendarEntriesModel calendarEntriesModel, 
+    public IOController(SettingsModel settings, ContactModel contacts, 
         IExportController exportCt, IImportController importCt, IEntryFactory entryFactory) 
     {
         this.settings = settings;
@@ -30,7 +28,6 @@ public class IOController implements IIOController
         this.exportCt = exportCt;
         this.importCt = importCt;
         this.entryFactory = entryFactory;
-        this.calendarEntriesModel = calendarEntriesModel;
     }
 
     public void addEntryFactory(IEntryFactory entryFactory)
@@ -50,7 +47,7 @@ public class IOController implements IIOController
         var parentFolder = new File("userFiles");
         if (!parentFolder.exists())
             parentFolder.mkdir();
-        String[] folderNames = { "calendarBackup", "contacts", "calendars", "userSettings", "mailTemplates" };
+        String[] folderNames = { "contacts", "calendars", "userSettings", "mailTemplates" };
         for (var folderName : folderNames) {
             var newFolder = new File("userFiles/" + folderName);
             if (!newFolder.exists())

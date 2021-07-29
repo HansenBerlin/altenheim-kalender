@@ -1,6 +1,5 @@
 package com.altenheim.kalender.models;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
 
     public List<Calendar> getAllCalendars() 
     { 
-        calendarView.setShowSourceTray(false);
+        //calendarView.setShowSourceTray(false);
         var allCalendars = new ArrayList<Calendar>();
         for (var source : calendarView.getCalendarSources()) 
         {
@@ -39,34 +38,53 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
         return allCalendars; 
     }
 
+
     public void addCalendar(Calendar calendar) 
     {        
         //calendars.add(calendar);
     }
+
+    public void addEntryToCalendarWithName(String name, Entry<String> entry)
+    {
+        for (var calendar : getAllCalendars()) 
+        {
+            if (calendar.getName().equals(name))
+            {
+                calendar.addEntry(entry);     
+                return;
+            }
+        }
+        calendarView.getCalendarSources().get(0).getCalendars().get(0).addEntry(entry);
+    }
+
     
     public List<Calendar> getAllCalendarsSelectedByUser() { return calendarsSelectedByUser; }
     
-       /*
-
+    public void clearCalendarsSelectedByUser()
+    {
+        calendarsSelectedByUser.clear();
+    }
 
     public void addToAllCalendarsSelectedByUser(Calendar calendar)
     {
         calendarsSelectedByUser.add(calendar);
     }
 
-    public void clearCalendarsSelectedByUser()
-    {
-        calendarsSelectedByUser.clear();
-    }
+       
+
+
+    
+
+    
 
     public void addToAllCalendarsSelectedByUserByCalendarName(String calendarName)
     {
-        for (var calendar : calendars) 
+        for (var calendar : getAllCalendars()) 
         {
             if (calendar.getName().equals(calendarName))
                 calendarsSelectedByUser.add(calendar);            
         }
-    }*/
+    }
 /*
     public List<Entry<String>> getSpecificRange(LocalDate startDate, LocalDate endDate) 
     {
@@ -100,4 +118,6 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
                     returnValue.add((Entry<String>) entry);
         return returnValue;
     }
+
+    
 }

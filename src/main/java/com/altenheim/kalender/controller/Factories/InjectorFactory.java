@@ -49,8 +49,8 @@ public class InjectorFactory
         IImportController importCt = new ImportController(settings);
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
         IExportController exportCt = new ExportController(settings);
-        ioCt = new IOController(settings, contacts, calendarEntriesModel, exportCt, importCt, null);
-        IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, ioCt);
+        ioCt = new IOController(settings, contacts, exportCt, importCt, null);
+        IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, ioCt, settings);
         ioCt.addEntryFactory(entryFactory);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt, entryFactory);
         

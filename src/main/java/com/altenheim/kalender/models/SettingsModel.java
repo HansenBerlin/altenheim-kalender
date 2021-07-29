@@ -38,62 +38,27 @@ public class SettingsModel implements Serializable {
     private boolean useAdvancedFeatures = false; // je nachdem ob der pw hash erfolgreich geladen wird an oder aus,
                                                  // wegesuche und ÖZ dann ausgrauen
     public String cssMode = "Light";
+    public String defaultCalendarForSearchView = "TestKalender";
 
     private SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
     private SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
 
-    public SimpleStringProperty[] getSettingsInputFieldsContainer() {
-        return settingsInputFieldsContainer;
-    }
+    public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
 
-    public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() {
-        return settingsDropdownTitlesContainer;
+    public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer;
     }  
     
-    public String getPathToUserDirectory() {
-        return userDirectory;
-    }
-
-    public File getPasswordhashFile() {
-        return new File(userDirectory + "savedHash");
-    }
-
-    public String getDecryptedPasswordHash() {
-        return decryptedPassword;
-    }
-
-    public void setDecryptedPasswordHash(String decryptedHash) {
-        decryptedPassword = decryptedHash;
-    }
-
-    public void setAdvancedFeaturesFlag(boolean useAdvancedFeatures) {
-        this.useAdvancedFeatures = useAdvancedFeatures;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public long getScrapingInterval() {
-        return scrapingIntervalInMinutes;
-    }
-
-    public void setCustomPathToSavedFiles(String pathToSaveBackupFiles) {
-        this.pathToSaveBackupFiles = pathToSaveBackupFiles;
-    }
-
-    public void setCalendarParser(String scrappingURL) {
-        this.scrappingURL = scrappingURL;
-    }
-
-    public String getCustomPathToSavedFiles() {
-        return pathToSaveBackupFiles;
-    }
-
-    public String getCalendarParser() {
-        return scrappingURL;
-    }
-
+    public String getPathToUserDirectory() { return userDirectory; }
+    public File getPasswordhashFile() { return new File(userDirectory + "savedHash"); }
+    public String getDecryptedPasswordHash() { return decryptedPassword; }
+    public void setDecryptedPasswordHash(String decryptedHash) { decryptedPassword = decryptedHash; }
+    public void setAdvancedFeaturesFlag(boolean useAdvancedFeatures) { this.useAdvancedFeatures = useAdvancedFeatures; }
+    public String getUrl() { return url; }
+    public long getScrapingInterval() { return scrapingIntervalInMinutes; }
+    public void setCustomPathToSavedFiles(String pathToSaveBackupFiles) { this.pathToSaveBackupFiles = pathToSaveBackupFiles; }
+    public void setCalendarParser(String scrappingURL) { this.scrappingURL = scrappingURL; }
+    public String getCustomPathToSavedFiles() { return pathToSaveBackupFiles; }
+    public String getCalendarParser() { return scrappingURL; }
     public void setScrapingInterval(long interval) {
         propertyChange.firePropertyChange("scrapingIntervalInMinutes", scrapingIntervalInMinutes, interval);
         scrapingIntervalInMinutes = interval;
