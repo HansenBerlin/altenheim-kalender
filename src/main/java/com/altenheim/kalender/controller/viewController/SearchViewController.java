@@ -12,7 +12,6 @@ import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import java.io.IOException;
@@ -26,6 +25,7 @@ import java.util.List;
 import com.altenheim.kalender.controller.Factories.EntryFactory;
 import com.altenheim.kalender.controller.Factories.SplitMenuButtonFactory;
 import com.altenheim.kalender.interfaces.*;
+import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -61,7 +61,7 @@ public class SearchViewController extends ResponsiveController
     private ICalendarEntriesModel allCalendars;
     private MailTemplateModel mailTemplates;
     private SettingsModel settings;
-    private ArrayList<SerializableEntry> currentSuggestions;
+    private ArrayList<Entry<String>> currentSuggestions;
     
 
     public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory,
@@ -140,7 +140,7 @@ public class SearchViewController extends ResponsiveController
 
     private void validateCalendarSelectionInput()
     {
-        allCalendars.clearCalendarsSelectedByUser();
+        /*allCalendars.clearCalendarsSelectedByUser();
         if (toggleCalendars.isSelected())
         {
             allCalendars.addToAllCalendarsSelectedByUser(allCalendars.getSpecificCalendarByIndex(0));
@@ -156,7 +156,7 @@ public class SearchViewController extends ResponsiveController
                     allCalendars.addToAllCalendarsSelectedByUserByCalendarName(checkbox.getText());
                 }                
             }
-        }
+        }*/
     }
 
 
@@ -210,7 +210,7 @@ public class SearchViewController extends ResponsiveController
     private int timeAfterGlobal = 0;
     private int travelTimeTo = 0;
     private LocalDateTime timeToStartSearch;
-    private SerializableEntry currentSuggestion;
+    private Entry<String> currentSuggestion;
 
     private void iterateThroughSuggestions() {
         if (toggleAddAutomatically.isSelected()) {
@@ -265,7 +265,7 @@ public class SearchViewController extends ResponsiveController
         } 
     }
 
-    private void createEntryIncludingTravelTimes(SerializableEntry currentSuggestion) {
+    private void createEntryIncludingTravelTimes(Entry<String> currentSuggestion) {
         int traveltime = 0;
         if (toggleUseTravelDuration.isSelected()) {
             traveltime = travelTimeTo;
@@ -416,8 +416,8 @@ public class SearchViewController extends ResponsiveController
         return travelTime;
     }
 
-    private HashMap<DayOfWeek, List<SerializableEntry>> validateOpeningHours() {
-        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
+    private HashMap<DayOfWeek, List<Entry<String>>> validateOpeningHours() {
+        var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
         var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
 
         if (toggleUseOpeningHours.isSelected() && destination.isEmpty() == false)

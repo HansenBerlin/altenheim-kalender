@@ -5,16 +5,18 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import com.altenheim.kalender.models.SerializableEntry;
 import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
 
-public interface IEntryFactory {
+public interface IEntryFactory 
+{
+    void initCalendarList();
     void createRandomCalendarList();
-
-    HashMap<String, List<SerializableEntry>> createEntryListForEachCalendar();
-    SerializableEntry createUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
-    ArrayList<ArrayList<SerializableEntry>> createOpeningHoursWithLunchBreak();
+    HashMap<String, List<Entry<String>>> createEntryListForEachCalendar();
+    Entry<String> createUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
+    ArrayList<ArrayList<Entry<String>>> createOpeningHoursWithLunchBreak();
     void addCalendarToView(Calendar calendar, String name);
     void createNewUserEntryIncludingTravelTimes(LocalDate dateStart, LocalDate dateEnd,
         LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel);
+
 }

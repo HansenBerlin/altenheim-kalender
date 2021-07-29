@@ -34,24 +34,22 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
         scrapeCalendar();
     }
 
-    public void scrapeCalendar() {
+    public void scrapeCalendar() 
+    {
+        /*
 
         if (isDownloadIcsSuccessful())
         {
-            var calendarHwr = importedHwrIcsFile();
-            //entryFactory.addCalendarToView(calendarHwr, "HWR Calendar");
-        }
-    }
-
-    private Calendar importedHwrIcsFile() {
-        var ics = Paths.get(settings.getPathToHwrScrapedFile());
-        var pathOfIcs = ics.toAbsolutePath().toString();
-        return icsImport.importFile(pathOfIcs);
-    }
+            var calendarFile = settings.getPathToUserDirectory() + "calendars/hwrFile.ics";
+            var calendar = icsImport.importFile(calendarFile);
+            //var calendarHwr = importedHwrIcsFile();
+            entryFactory.addCalendarToView(calendar, "HWR Calendar");
+        }*/
+    }    
 
     private boolean isDownloadIcsSuccessful() {
         try {
-            var fos = new FileOutputStream(settings.getPathToHwrScrapedFile());
+            var fos = new FileOutputStream(settings.getPathToUserDirectory() + "calendars/hwrFile.ics");
             var url = new URL(settings.getUrl());
             var rbc = Channels.newChannel(url.openStream());
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);

@@ -15,8 +15,6 @@ public class SettingsModel implements Serializable {
     public final static String APICYPHERTEXT = "apCg/0Odtz1r9kYuh011M4sur5xv5UU0hYJQcymI9gpAfMWP1eJWOtgpXu/lawR+";
     public final static String PASSWORDHASH = "54fvHpgroWTcl6h/4SxMEiwchYBcYzqtrXX4eMySjf94gqHjPhjPCPl4d2IH7jg0";
 
-    private String icsExportedFile = "userFiles/exportedCalendars/TestKalender.ics";
-    private String hwrScrapedFile = "userFiles/crawledCalendarFiles/1415872094.ics";
     private String userDirectory = "userfiles/";
     private String decryptedPassword = "";
     private String pathToSaveBackupFiles = null;
@@ -50,20 +48,8 @@ public class SettingsModel implements Serializable {
 
     public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() {
         return settingsDropdownTitlesContainer;
-    }
-
-    public void setPathToIcsExportedFile(String path) {
-        icsExportedFile = path;
-    }
-
-    public String getPathToIcsExportedFile() {
-        return icsExportedFile;
-    }
-
-    public String getPathToHwrScrapedFile() {
-        return hwrScrapedFile;
-    }
-
+    }  
+    
     public String getPathToUserDirectory() {
         return userDirectory;
     }

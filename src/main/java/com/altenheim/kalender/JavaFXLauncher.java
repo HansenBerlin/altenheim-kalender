@@ -10,9 +10,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class JavaFXLauncher extends Application {
+public class JavaFXLauncher extends Application 
+{
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws Exception 
+    {
         var objectFactory = new InjectorFactory();
         objectFactory.createServices();
         var guiSetup = objectFactory.getGuiController();
@@ -42,9 +44,11 @@ public class JavaFXLauncher extends Application {
 
         mainController.switchCssMode();
 
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent we) {
-                objectFactory.getIOController().writeCalendarFiles();
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() 
+        {
+            public void handle(WindowEvent we) 
+            {
+                //objectFactory.getIOController().writeCalendarFiles();
                 System.exit(0);
             }
         });
@@ -52,7 +56,8 @@ public class JavaFXLauncher extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         launch(args);
     }
     

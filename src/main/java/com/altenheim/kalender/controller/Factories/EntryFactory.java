@@ -2,11 +2,11 @@ package com.altenheim.kalender.controller.Factories;
 
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.model.*;
-
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 
+import com.altenheim.kalender.controller.logicController.IOController;
 import com.altenheim.kalender.controller.viewController.CustomViewOverride;
-import com.altenheim.kalender.models.SerializableEntry;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,14 +17,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class EntryFactory implements IEntryFactory {
+public class EntryFactory implements IEntryFactory 
+{
     private ICalendarEntriesModel allCalendars;
     private CustomViewOverride calendarView;
+    private IExportController expController;
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView) {
+    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView, IExportController expController) 
+    {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
+        this.expController = expController;
     }
+
+    public void initCalendarList()
+    {
+        var calendarList = calendarView.getCalendarSources().get(0);
+        for (var calendar : calendarList.getCalendars()) 
+        {
+            addCalendarToView(calendar, calendar.getName());            
+        }
+    }
+
 /*
     public EntryFactory(ICalendarEntriesModel allCalendars) {
         this.allCalendars = allCalendars;
@@ -35,29 +49,31 @@ public class EntryFactory implements IEntryFactory {
         return allCalendars;
     }*/
 
-    public HashMap<String, List<SerializableEntry>> createEntryListForEachCalendar() {
+    public HashMap<String, List<Entry<String>>> createEntryListForEachCalendar() {
         var result = allCalendars.getAllCalendars();
-        var output = new HashMap<String, List<SerializableEntry>>();
+        var output = new HashMap<String, List<Entry<String>>>();
         var zoneId = ZoneId.systemDefault();
 
         for (var calendar : result) {
-            var tempList = new ArrayList<SerializableEntry>();
+            var tempList = new ArrayList<Entry<String>>();
             var firstEntry = LocalDate.ofInstant(calendar.getEarliestTimeUsed(), zoneId);
             var lastEntry = LocalDate.ofInstant(calendar.getLatestTimeUsed(), zoneId);
             var entries = calendar.findEntries(firstEntry, lastEntry, zoneId);
 
             for (var entry : entries.values()) {
                 for (var singleEntry : entry)
-                    tempList.add((SerializableEntry) singleEntry);
+                    tempList.add((Entry<String>) singleEntry);
             }
             output.put(calendar.getName(), tempList);
         }
         return output;
     }
+    int i = 0;
 
-    public void createRandomCalendarList() {
+    public void createRandomCalendarList() 
+    {
         int dayOfMonth;
-        var calendar = new Calendar("TestKalender");
+        var calendar = new Calendar("TestKalender" + i);
         calendar.setName(calendar.getName());
         for (int i = 1; i <= 12; i++) {
             if (Arrays.asList(new int[] { 1, 3, 5, 7, 8, 10, 12 }).contains(i))
@@ -74,7 +90,8 @@ public class EntryFactory implements IEntryFactory {
                 }
             }
         }
-        addCalendarToView(calendar, "TestKalender");
+        addCalendarToView(calendar, "TestKalender" + i);
+        i++;
     }
 /*
     public void addCalendarToView(Calendar calendar) {
@@ -96,29 +113,38 @@ public class EntryFactory implements IEntryFactory {
     public void addCalendarToView(Calendar calendar, String name) 
     {
         calendar.setName(name);
-        allCalendars.getAllCalendars().clear();
-        var calendarList = calendarView.getCalendars();
-        //var allCalendarsInCollection = calendarSource.getCalendars();
-        //calendarView.getCalendars().clear();
         
-        for (var cal : calendarList) 
+        for (var source : calendarView.getCalendarSources()) 
         {
-            if (cal.getName().equals(name))            
-                cal = calendar;                
-             
-            calendarList.add(cal);
-            allCalendars.addCalendar(cal);           
+            for (var cal : source.getCalendars()) 
+            {
+                if (cal.getName().equals(name)) 
+                {
+                    cal = calendar;   
+                }           
+                
+                EventHandler<CalendarEvent> eventHandler = event -> handleEvent(event);
+                //calendarList.add(cal);
+                cal.addEventHandler(eventHandler); 
+            }            
         }
-        calendarList.add(calendar);
-        allCalendars.addCalendar(calendar);
-        calendarView.getCalendars().addAll(calendarList);
-    }    
+        //calendarView.getCalendars().add(calendar);       
+        var calSource = new CalendarSource();
+        calSource.getCalendars().add(calendar);
+        calendarView.getCalendarSources().add(calSource);
+    }  
+    
+    private void handleEvent(CalendarEvent event)
+    {
+        //var test = event.
+        //expController.exportCalendarAsFile(event.getCalendar(), event.getCalendar().getName());
+    }
 
-    private SerializableEntry createRandomEntry(int day, int month, int startT, int endT) {
+    private Entry<String> createRandomEntry(int day, int month, int startT, int endT) {
         var startAndEndDate = LocalDate.of(2021, month, day);
         var startTime = LocalTime.of(startT, 0);
         var endTime = LocalTime.of(endT, 0);
-        var entry = new SerializableEntry();
+        var entry = new Entry<String>();
         entry.changeStartDate(startAndEndDate);
         entry.changeEndDate(startAndEndDate);
         entry.changeStartTime(startTime);
@@ -126,9 +152,9 @@ public class EntryFactory implements IEntryFactory {
         return entry;
     }
 
-    public SerializableEntry createUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart,
+    public Entry<String> createUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart,
             LocalTime timeEnd) {
-        var entry = new SerializableEntry();
+        var entry = new Entry<String>();
         entry.changeStartTime(timeStart);
         entry.changeStartDate(dateStart);
         entry.changeEndTime(timeEnd);
@@ -136,10 +162,10 @@ public class EntryFactory implements IEntryFactory {
         return entry;
     }
 
-    public ArrayList<ArrayList<SerializableEntry>> createOpeningHoursWithLunchBreak() {
-        ArrayList<ArrayList<SerializableEntry>> openingHours = new ArrayList<ArrayList<SerializableEntry>>();
+    public ArrayList<ArrayList<Entry<String>>> createOpeningHoursWithLunchBreak() {
+        ArrayList<ArrayList<Entry<String>>> openingHours = new ArrayList<ArrayList<Entry<String>>>();
         for (int i = 0; i < 6; i++) {
-            var day1 = new ArrayList<SerializableEntry>();
+            var day1 = new ArrayList<Entry<String>>();
             if (i % 2 == 0) {
                 day1.add(createEntryDummy(10, 13, 1, 1));
                 day1.add(createEntryDummy(16, 22, 1, 1));
@@ -149,12 +175,12 @@ public class EntryFactory implements IEntryFactory {
 
             openingHours.add(day1);
         }
-        openingHours.add(new ArrayList<SerializableEntry>());
+        openingHours.add(new ArrayList<Entry<String>>());
         return openingHours;
     }
 
-    private SerializableEntry createEntryDummy(int startTime, int EndTime, int startDay, int endDay) {
-        var entryUser = new SerializableEntry();
+    private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay) {
+        var entryUser = new Entry<String>();
         entryUser.setTitle("User Preference");
         var startDate = LocalDate.of(2021, 1, startDay);
         var endDate = LocalDate.of(2021, 1, endDay);
@@ -171,7 +197,7 @@ public class EntryFactory implements IEntryFactory {
 
     public void createNewUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart,
             LocalTime timeEnd, String title) {
-        var entry = new SerializableEntry();
+        var entry = new Entry<String>();
         entry.changeStartTime(timeStart);
         entry.changeStartDate(dateStart);
         entry.changeEndTime(timeEnd);
@@ -181,13 +207,15 @@ public class EntryFactory implements IEntryFactory {
     }
 
     public void createNewUserEntryIncludingTravelTimes(LocalDate dateStart, LocalDate dateEnd,
-            LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel) {
-        if (timeTravel > 0) {
+            LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel) 
+    {
+        if (timeTravel > 0) 
+        {
             var startAt = LocalDateTime.of(dateStart, timeStart);
             startAt = startAt.minusMinutes(timeTravel);
             var endAt = LocalDateTime.of(dateStart, timeStart);
 
-            var entry = new SerializableEntry();
+            var entry = new Entry<String>();
             entry.changeStartTime(startAt.toLocalTime());
             entry.changeStartDate(startAt.toLocalDate());
             entry.changeEndTime(endAt.toLocalTime());
@@ -195,11 +223,12 @@ public class EntryFactory implements IEntryFactory {
             entry.setTitle("Anfahrtzeit für " + title);
             allCalendars.getAllCalendars().get(0).addEntries(entry);
         }
-        if (timeTravel > 0) {
+        if (timeTravel > 0) 
+        {
             var startAt = LocalDateTime.of(dateEnd, timeEnd);
             var endAt = LocalDateTime.of(dateEnd, timeEnd);
             endAt = endAt.plusMinutes(timeTravel);
-            var entry = new SerializableEntry();
+            var entry = new Entry<String>();
 
             entry.changeStartTime(startAt.toLocalTime());
             entry.changeStartDate(startAt.toLocalDate());
@@ -209,7 +238,7 @@ public class EntryFactory implements IEntryFactory {
             allCalendars.getAllCalendars().get(0).addEntries(entry);
         }
 
-        var entry = new SerializableEntry();
+        var entry = new Entry<String>();
         entry.changeStartTime(timeStart);
         entry.changeStartDate(dateStart);
         entry.changeEndTime(timeEnd);

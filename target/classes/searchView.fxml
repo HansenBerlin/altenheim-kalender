@@ -27,7 +27,7 @@
    <rowConstraints>
       <RowConstraints fx:id="firstRow" maxHeight="80.0" minHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="80.0" minHeight="50.0" prefHeight="80.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="430.0" minHeight="430.0" prefHeight="430.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="520.0" minHeight="520.0" prefHeight="520.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="70.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
@@ -342,6 +342,37 @@
                                     <Insets left="20.0" right="20.0" />
                                  </HBox.margin>
                               </HBox>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
+               <children>
+                  <VBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label minWidth="130.0" text="Kalender">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <HBox fx:id="containerCalendars" alignment="CENTER_LEFT">
+                           <children>
+                              <ToggleSwitch fx:id="toggleCalendars" graphicTextGap="0.0" minWidth="80.0" nodeOrientation="LEFT_TO_RIGHT" onMouseReleased="#calendarToggleClicked" prefHeight="20.0" prefWidth="108.0" selected="true" text="Standard">
+                                 <HBox.margin>
+                                    <Insets right="50.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                              </ToggleSwitch>
                            </children>
                         </HBox>
                      </children>

@@ -8,17 +8,20 @@ import java.util.List;
 import java.util.Map;
 import com.altenheim.kalender.interfaces.IContactFactory;
 import com.altenheim.kalender.models.ContactModel;
-import com.altenheim.kalender.models.SerializableEntry;
+import com.calendarfx.model.Entry;
 
-public class ContactFactory implements IContactFactory {
+public class ContactFactory implements IContactFactory 
+{
     private int iDCounter;
     private List<ContactModel> contacts;
 
-    public ContactFactory(List<ContactModel> contacts) {
+    public ContactFactory(List<ContactModel> contacts) 
+    {
         this.contacts = contacts;
     }
 
-    public void createRandomContactsList(int amount) {
+    public void createRandomContactsList(int amount) 
+    {
         var contacts = new ArrayList<ContactModel>();
         for (int i = 0; i < amount; i++) {
             String testFirstName = "ThisIsAName" + i;
@@ -33,26 +36,31 @@ public class ContactFactory implements IContactFactory {
         this.contacts.addAll(contacts);
     }
 
-    private Map<DayOfWeek, List<SerializableEntry>> createOpeningHours() {
-        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
+    private Map<DayOfWeek, List<Entry<String>>> createOpeningHours() 
+    {
+        var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
         var startTime = LocalTime.of(8, 0);
         var endTimeAlt = LocalTime.of(12, 0);
         var startTimeAlt = LocalTime.of(14, 0);
         var endTime = LocalTime.of(20, 0);
 
-        for (var day : DayOfWeek.values()) {
-            var entrys = new ArrayList<SerializableEntry>();
-            if (day.getValue() % 2 == 0) {
-                var entryOne = new SerializableEntry();
-                var entryTwo = new SerializableEntry();
+        for (var day : DayOfWeek.values()) 
+        {
+            var entrys = new ArrayList<Entry<String>>();
+            if (day.getValue() % 2 == 0) 
+            {
+                var entryOne = new Entry<String>();
+                var entryTwo = new Entry<String>();
                 entryOne.changeStartTime(startTime);
                 entryOne.changeEndTime(endTimeAlt);
                 entryTwo.changeStartTime(startTimeAlt);
                 entryTwo.changeEndTime(endTime);
                 entrys.add(entryOne);
                 entrys.add(entryTwo);
-            } else {
-                var entryOne = new SerializableEntry();
+            }
+            else 
+            {
+                var entryOne = new Entry<String>();
                 entryOne.changeStartTime(startTime);
                 entryOne.changeEndTime(endTime);
                 entrys.add(entryOne);
@@ -61,9 +69,4 @@ public class ContactFactory implements IContactFactory {
         }
         return openingHours;
     }
-
-    public void createContact() {
-
-    }
-
 }

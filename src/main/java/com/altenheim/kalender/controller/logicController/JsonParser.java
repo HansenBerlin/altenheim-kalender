@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.altenheim.kalender.interfaces.IJsonParser;
-import com.altenheim.kalender.models.SerializableEntry;
+import com.calendarfx.model.Entry;
+
 import org.json.JSONObject;
 
 public class JsonParser implements IJsonParser {
@@ -23,18 +24,18 @@ public class JsonParser implements IJsonParser {
         return locationId.get(0);
     }
 
-    public HashMap<DayOfWeek, List<SerializableEntry>> parseJsonForOpeningHours(String jsonBody) {
+    public HashMap<DayOfWeek, List<Entry<String>>> parseJsonForOpeningHours(String jsonBody) {
         if (jsonBody.isEmpty())
             return null;
 
-        var openingHours = new HashMap<DayOfWeek, List<SerializableEntry>>();
+        var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
 
         var json = new JSONObject(jsonBody);
         var openingHoursJson = json.getJSONObject("result").getJSONObject("opening_hours");
         var periods = openingHoursJson.getJSONArray("periods");
 
         for (var day : DayOfWeek.values()) {
-            var entryList = new ArrayList<SerializableEntry>();
+            var entryList = new ArrayList<Entry<String>>();
             openingHours.put(day, entryList);
         }
 
@@ -59,7 +60,7 @@ public class JsonParser implements IJsonParser {
 
             if (openDay != closeDay) {
                 var dayList = openingHours.get(DayOfWeek.of(openDay));
-                var entry = new SerializableEntry();
+                var entry = new Entry<String>();
                 entry.changeStartTime(LocalTime.of(Integer.valueOf(openTime.substring(0, 2)),
                         Integer.valueOf(openTime.substring(2, 4))));
                 entry.changeEndTime(LocalTime.of(23, 59, 59));
@@ -67,7 +68,7 @@ public class JsonParser implements IJsonParser {
                 openingHours.replace(DayOfWeek.of(openDay), dayList);
 
                 var day2List = openingHours.get(DayOfWeek.of(closeDay));
-                var entry2 = new SerializableEntry();
+                var entry2 = new Entry<String>();
                 entry2.changeStartTime(LocalTime.of(0, 0));
                 entry2.changeEndTime(LocalTime.of(Integer.valueOf(closeTime.substring(0, 2)),
                         Integer.valueOf(closeTime.substring(2, 4))));
@@ -76,7 +77,7 @@ public class JsonParser implements IJsonParser {
 
             } else {
                 var dayList = openingHours.get(DayOfWeek.of(openDay));
-                var entry = new SerializableEntry();
+                var entry = new Entry<String>();
                 entry.changeStartTime(LocalTime.of(Integer.valueOf(openTime.substring(0, 2)),
                         Integer.valueOf(openTime.substring(2, 4))));
                 entry.changeEndTime(LocalTime.of(Integer.valueOf(closeTime.substring(0, 2)),
