@@ -3,6 +3,8 @@ package com.altenheim.kalender.controller.logicController;
 import java.io.File;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.*;
+import com.calendarfx.model.Calendar;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -56,35 +58,30 @@ public class IOController implements IIOController
         }
     }
 
-    public void writeCalendarFiles() 
-    {
-        for (var calendar : calendarEntriesModel.getAllCalendars()) 
+    public void saveCalendar(Calendar calendar) 
+    {        
+        try 
         {
-            try 
-            {
-                String path = settings.getPathToUserDirectory() + "calendars";
-                exportCt.exportCalendarAsFile(calendar, path);
-            } 
-            catch (Exception e) 
-            {
-                e.printStackTrace();
-            }        
-        }
+            String path = settings.getPathToUserDirectory() + "calendars";
+            exportCt.exportCalendarAsFile(calendar, path);
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        } 
     }
 
     public void loadCalendarsFromFile() 
     {
+        entryFactory.clearCalendarSourceList();
         var allCalendarFiles = new File(settings.getPathToUserDirectory() + "calendars").listFiles();
         for (var calendarFile : allCalendarFiles)
         {
             if (calendarFile.getAbsolutePath().contains(".ics")) 
             {
                 var calendar = importCt.importFile(calendarFile.getAbsolutePath());
-                if (calendar != null) 
-                {
-                    //calendarEntriesModel.addCalendar(calendar);
-                    entryFactory.addCalendarToView(calendar, calendar.getName());
-                }
+                if (calendar != null)                 
+                    entryFactory.addCalendarToView(calendar, calendar.getName());                
             }
         }  
     }

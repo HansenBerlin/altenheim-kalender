@@ -2,10 +2,11 @@ package com.altenheim.kalender.interfaces;
 
 import java.io.IOException;
 import com.altenheim.kalender.models.*;
+import com.calendarfx.model.Calendar;
 
 public interface IIOController 
 {
-    void writeCalendarFiles();
+    void saveCalendar(Calendar calendar);
     void loadCalendarsFromFile();
     void saveContactsToFile() throws IOException;
     void loadContactsFromFile() throws IOException, ClassNotFoundException;

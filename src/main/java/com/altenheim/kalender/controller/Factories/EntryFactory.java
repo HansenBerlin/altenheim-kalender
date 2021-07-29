@@ -2,10 +2,7 @@ package com.altenheim.kalender.controller.Factories;
 
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.model.*;
-import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
-
-import com.altenheim.kalender.controller.logicController.IOController;
 import com.altenheim.kalender.controller.viewController.CustomViewOverride;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,23 +18,16 @@ public class EntryFactory implements IEntryFactory
 {
     private ICalendarEntriesModel allCalendars;
     private CustomViewOverride calendarView;
-    private IExportController expController;
+    private IIOController ioController;
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView, IExportController expController) 
+    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView, IIOController ioController) 
     {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
-        this.expController = expController;
+        this.ioController = ioController;
     }
 
-    public void initCalendarList()
-    {
-        var calendarList = calendarView.getCalendarSources().get(0);
-        for (var calendar : calendarList.getCalendars()) 
-        {
-            addCalendarToView(calendar, calendar.getName());            
-        }
-    }
+    
 
 /*
     public EntryFactory(ICalendarEntriesModel allCalendars) {
@@ -68,12 +58,11 @@ public class EntryFactory implements IEntryFactory
         }
         return output;
     }
-    int i = 0;
 
     public void createRandomCalendarList() 
     {
         int dayOfMonth;
-        var calendar = new Calendar("TestKalender" + i);
+        var calendar = new Calendar("TestKalender");
         calendar.setName(calendar.getName());
         for (int i = 1; i <= 12; i++) {
             if (Arrays.asList(new int[] { 1, 3, 5, 7, 8, 10, 12 }).contains(i))
@@ -90,54 +79,28 @@ public class EntryFactory implements IEntryFactory
                 }
             }
         }
-        addCalendarToView(calendar, "TestKalender" + i);
-        i++;
+        addCalendarToView(calendar, "TestKalender");
+        ioController.saveCalendar(calendar);
     }
-/*
-    public void addCalendarToView(Calendar calendar) {
-        allCalendars.addCalendar(calendar);
-        boolean inCalendarsSources = false;
-        var calendarSource = new CalendarSource("Saved Calendars");
-        for (var calSource : calendarView.getCalendarSources()) {
-            if (calSource.getName().equals("Saved Calendars")) {
-                calendarSource = calSource;
-                inCalendarsSources = true;
-                break;
-            }
-        }
-        calendarSource.getCalendars().addAll(calendar);
-        if (!inCalendarsSources)
-            calendarView.getCalendarSources().addAll(calendarSource);
-    }*/
 
     public void addCalendarToView(Calendar calendar, String name) 
     {
-        calendar.setName(name);
-        
-        for (var source : calendarView.getCalendarSources()) 
-        {
-            for (var cal : source.getCalendars()) 
-            {
-                if (cal.getName().equals(name)) 
-                {
-                    cal = calendar;   
-                }           
-                
-                EventHandler<CalendarEvent> eventHandler = event -> handleEvent(event);
-                //calendarList.add(cal);
-                cal.addEventHandler(eventHandler); 
-            }            
-        }
-        //calendarView.getCalendars().add(calendar);       
-        var calSource = new CalendarSource();
-        calSource.getCalendars().add(calendar);
-        calendarView.getCalendarSources().add(calSource);
+        calendar.setName(name);       
+        EventHandler<CalendarEvent> eventHandler = event -> handleEvent(event);
+        calendar.addEventHandler(eventHandler);
+        calendarView.getCalendarSources().get(0).getCalendars().add(calendar);  
     }  
-    
-    private void handleEvent(CalendarEvent event)
+
+    public void clearCalendarSourceList()
     {
-        //var test = event.
-        //expController.exportCalendarAsFile(event.getCalendar(), event.getCalendar().getName());
+        calendarView.getCalendarSources().clear();
+        var calSource = new CalendarSource("Alle Kalender");
+        calendarView.getCalendarSources().add(calSource);
+    }
+    
+    public void handleEvent(CalendarEvent event)
+    {
+        ioController.saveCalendar(event.getCalendar());
     }
 
     private Entry<String> createRandomEntry(int day, int month, int startT, int endT) {

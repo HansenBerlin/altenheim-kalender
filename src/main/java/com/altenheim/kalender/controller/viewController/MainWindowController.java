@@ -41,29 +41,20 @@ public class MainWindowController extends ResponsiveController {
     private Background currentSecondaryColor;
     private SettingsModel settings;
 
-    @FXML
-    private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, menuBtnPaneMail, menuBtnPaneContacts;
-    @FXML
-    private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnMail;
-    @FXML
-    private Button btnAddAppointment, btnSwitchModes;
-    @FXML
-    private GridPane rootContainer, childContainer, topMenu;
-    @FXML
-    private AnchorPane viewsRoot;
-    @FXML
-    private ColumnConstraints columnLeftMenu;
-    @FXML
-    private RowConstraints topRow;
-    @FXML
-    private Text txtVersion, txtBreadcrumb;
-    @FXML
-    private VBox vboxLeftPane;
-    @FXML
-    private HBox topButtonRow;
+    @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, menuBtnPaneMail, menuBtnPaneContacts;
+    @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnMail;
+    @FXML private Button btnAddAppointment, btnSwitchModes;
+    @FXML private GridPane rootContainer, childContainer, topMenu;
+    @FXML private AnchorPane viewsRoot;
+    @FXML private ColumnConstraints columnLeftMenu;
+    @FXML private RowConstraints topRow;
+    @FXML private Text txtVersion, txtBreadcrumb;
+    @FXML private VBox vboxLeftPane;
+    @FXML private HBox topButtonRow;
 
     public MainWindowController(Stage stage, IViewRootsModel allViewsInformation, GuiUpdateController guiSetup,
-            CustomViewOverride customCalendar, SettingsModel settings) {
+            CustomViewOverride customCalendar, SettingsModel settings) 
+    {
         this.stage = stage;
         this.allViewsInformation = allViewsInformation;
         this.guiSetup = guiSetup;
@@ -72,8 +63,9 @@ public class MainWindowController extends ResponsiveController {
     }
 
     @FXML
-    private void initialize() throws IOException {
-        ((PlannerViewController) allViewsInformation.getAllViewControllers()[0]).updateCustomCalendarView(null);
+    private void initialize() throws IOException 
+    {
+        ((PlannerViewController)allViewsInformation.getAllViewControllers()[0]).updateCustomCalendarView(null);
         viewsRoot.getChildren().addAll(allViewsInformation.getAllViews());
         switchMode(null);
         setupMenuButtons();
@@ -82,7 +74,8 @@ public class MainWindowController extends ResponsiveController {
     }
 
     @FXML
-    private void changeScene(MouseEvent event) {
+    private void changeScene(MouseEvent event) 
+    {
         var button = (Button) event.getSource();
         if (button != currentlyActive) {
             int userChoice = Integer.parseInt(button.getAccessibleText());
@@ -99,14 +92,17 @@ public class MainWindowController extends ResponsiveController {
     }
 
     @FXML
-    private void switchMode(ActionEvent event) {
+    private void switchMode(ActionEvent event) 
+    {
         switchCssMode();
         if (event != null)
             updateViewOnButtonClicked(currentlyActive);
     }
 
-    public void switchCssMode() {
-        if (settings.cssMode.equals("Light")) {
+    public void switchCssMode() 
+    {
+        if (settings.cssMode.equals("Light")) 
+        {
             setColorsForDarkAndLightMode(Style.DARK, StylePresets.DARK_MENU_BACKGROUND,
                     StylePresets.DARK_MAIN_BACKGROUND, StylePresets.DARK_PRIMARY, StylePresets.DARK_SECONDARY,
                     StylePresets.DARK_SECONDARY_CSS, StylePresets.DARK_APPLICATION_CSS_FILE,
@@ -114,7 +110,9 @@ public class MainWindowController extends ResponsiveController {
             currentSecondaryColor = StylePresets.DARK_SECONDARY;
             settings.cssMode = "Dark";
             settings.writeSimpleProperties();
-        } else {
+        } 
+        else 
+        {
             setColorsForDarkAndLightMode(Style.LIGHT, StylePresets.LIGHT_MENU_BACKGROUND,
                     StylePresets.LIGHT_MAIN_BACKGROUND, StylePresets.LIGHT_PRIMARY, StylePresets.LIGHT_SECONDARY,
                     StylePresets.LIGHT_SECONDARY_CSS, StylePresets.LIGHT_APPLICATION_CSS_FILE,
@@ -123,11 +121,11 @@ public class MainWindowController extends ResponsiveController {
             settings.cssMode = "Light";
             settings.writeSimpleProperties();
         }
-
     }
 
     private void setColorsForDarkAndLightMode(Style style, Background menu, Background background, Background primary,
-            Background secondary, String secondaryCSS, String appCssFile, String calCssFileOld, String calCssFileNew) {
+            Background secondary, String secondaryCSS, String appCssFile, String calCssFileOld, String calCssFileNew) 
+    {
         guiSetup.getJMetroStyle().setStyle(style);
         vboxLeftPane.setBackground(menu);
         viewsRoot.setBackground(background);
@@ -136,49 +134,40 @@ public class MainWindowController extends ResponsiveController {
         customCalendar.updateCss(calCssFileOld, calCssFileNew);
         for (var view : allViewsInformation.getAllViews())
             view.setBackground(background);
-        if (initilizationDone) {
+        if (initilizationDone) 
+        {
             var applicationStyle = guiSetup.getJMetroStyle().getOverridingStylesheets();
             applicationStyle.clear();
             applicationStyle.add(0, appCssFile);
-
         }
-    }
+    }   
 
-    private void updateCalendarStyle(CalendarView calendarView, String cssFile) {
-        var newView = new CalendarView();
-        newView.getStylesheets().add(cssFile);
-        var newCalendarSource = new CalendarSource();
-        var oldCalendarSources = calendarView.getCalendarSources();
-        for (var source : oldCalendarSources) {
-            newCalendarSource.getCalendars().addAll(source.getCalendars());
-        }
-        ((PlannerViewController) allViewsInformation.getAllViewControllers()[0])
-                .updateCustomCalendarView((CustomViewOverride) newView);
-    }
-
-    public void updateViewOnButtonClicked(Button pressed) {
-        for (String buttonName : allButtonsWithBackgrounds.keySet()) {
+    public void updateViewOnButtonClicked(Button pressed) 
+    {
+        for (String buttonName : allButtonsWithBackgrounds.keySet()) 
+        {
             var buttonPair = allButtonsWithBackgrounds.get(buttonName);
             if (buttonPair.getKey().equals(currentlyActive) && !currentlyActive.equals(pressed))
                 buttonPair.getValue().setBackground(StylePresets.TRANSPARENT);
-            else if (buttonPair.getKey().equals(pressed)) {
+            else if (buttonPair.getKey().equals(pressed)) 
+            {
                 buttonPair.getValue().setBackground(currentSecondaryColor);
                 txtBreadcrumb.setText(buttonName);
             }
         }
     }
 
-    private void setupMenuButtons() throws FileNotFoundException {
-        Button[] buttonsList = { menuBtnPlanner, menuBtnSearch, menuBtnContacts, menuBtnMail, menuBtnSettings,
-                btnAddAppointment, btnSwitchModes };
-        Pane[] buttonBackgrounds = { menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneContacts, menuBtnPaneMail,
-                menuBtnPaneSettings, null, null };
+    private void setupMenuButtons() throws FileNotFoundException 
+    {
+        Button[] buttonsList = { menuBtnPlanner, menuBtnSearch, menuBtnContacts, menuBtnMail, menuBtnSettings, btnAddAppointment, btnSwitchModes };
+        Pane[] buttonBackgrounds = { menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneContacts, menuBtnPaneMail, menuBtnPaneSettings, null, null };
         allButtonsWithBackgrounds = guiSetup.createMainMenuButtons(buttonsList, buttonBackgrounds);
         currentlyActive = menuBtnPlanner;
         menuBtnPanePlanner.setBackground(currentSecondaryColor);
     }
 
-    private void bindWindowSize() {
+    private void bindWindowSize() 
+    {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             changeContentPosition(stage.getWidth(), stage.getHeight());
             updateWindowSize();
@@ -187,7 +176,8 @@ public class MainWindowController extends ResponsiveController {
         stage.heightProperty().addListener(stageSizeListener);
     }
 
-    private void updateWindowSize() {
+    private void updateWindowSize() 
+    {
         double width = stage.getWidth() - currentMenuWidth;
         double height = stage.getHeight() - topMenuHeight;
 
@@ -200,14 +190,17 @@ public class MainWindowController extends ResponsiveController {
         allViewsInformation.getAllViewControllers()[currentView].changeContentPosition(width, height);
     }
 
-    final void changeContentPosition(double width, double height) {
+    final void changeContentPosition(double width, double height) 
+    {
         if (width < 1280) {
             currentMenuWidth = 70;
             for (String buttonName : allButtonsWithBackgrounds.keySet())
                 allButtonsWithBackgrounds.get(buttonName).getKey().setText("");
             btnLogo.setText("SP");
             txtVersion.setText("v. 0.1.2");
-        } else {
+        } 
+        else 
+        {
             currentMenuWidth = 240;
             for (String buttonName : allButtonsWithBackgrounds.keySet())
                 allButtonsWithBackgrounds.get(buttonName).getKey().setText(buttonName);
@@ -225,6 +218,5 @@ public class MainWindowController extends ResponsiveController {
         topRow.setMinHeight(topMenuHeight);
         topRow.setMaxHeight(topMenuHeight);
         topRow.setPrefHeight(topMenuHeight);
-    }
-    
+    }    
 }

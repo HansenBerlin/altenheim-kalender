@@ -54,7 +54,7 @@ public class InjectorFactory
         ioCt.addEntryFactory(entryFactory);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt, entryFactory);
         
-        var plannerVCt = new PlannerViewController(customCalendarView);
+        var plannerVCt = new PlannerViewController(customCalendarView, ioCt, entryFactory, popupViewController);
         var contactsVCt = new ContactsViewController(ioCt);
         var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, comboBoxFactory, popupViewController, ioCt);
         var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory);
@@ -63,7 +63,6 @@ public class InjectorFactory
         allViews = new ViewRootsModel(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews);
         initialSettingsLoader = new InitialSetupController(settings, ioCt, popupViewController, websiteCt, systemNotificationsCt);
-        entryFactory.initCalendarList();
     }
     
 }

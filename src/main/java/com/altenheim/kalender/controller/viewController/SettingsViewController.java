@@ -99,7 +99,6 @@ public class SettingsViewController extends ResponsiveController {
             popupViewController.exportDialog(exportController, allCalendars, stage);
         } else if (button.equals(btnGenerate)) {
             calendarFactory.createRandomCalendarList();
-            iOController.writeCalendarFiles();
         }
     }
 

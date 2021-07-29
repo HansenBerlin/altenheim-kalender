@@ -27,6 +27,8 @@ public class ExportController implements IExportController
             throws ValidationException, IOException 
     {
         var entries = fxCalendar.findEntries("");
+        if (entries.size() == 0)
+            return;
         var fxCalendarName = fxCalendar.getName();
         var fout = new FileOutputStream(new File(path + "/" + fxCalendarName + ".ics"));
         var iCalCalendar = initICalCalendar();

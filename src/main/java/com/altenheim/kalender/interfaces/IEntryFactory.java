@@ -10,7 +10,6 @@ import com.calendarfx.model.Entry;
 
 public interface IEntryFactory 
 {
-    void initCalendarList();
     void createRandomCalendarList();
     HashMap<String, List<Entry<String>>> createEntryListForEachCalendar();
     Entry<String> createUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
@@ -18,5 +17,7 @@ public interface IEntryFactory
     void addCalendarToView(Calendar calendar, String name);
     void createNewUserEntryIncludingTravelTimes(LocalDate dateStart, LocalDate dateEnd,
         LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel);
+    void clearCalendarSourceList();
+
 
 }

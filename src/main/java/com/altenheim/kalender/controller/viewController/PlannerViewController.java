@@ -1,13 +1,27 @@
 package com.altenheim.kalender.controller.viewController;
 
+import com.altenheim.kalender.interfaces.IEntryFactory;
+import com.altenheim.kalender.interfaces.IIOController;
+import com.altenheim.kalender.interfaces.IPopupViewController;
+import com.calendarfx.model.Calendar;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+
 public class PlannerViewController extends ResponsiveController 
 {
     private CustomViewOverride customCalendar;
+    private IIOController iOController;
+    private IEntryFactory entryFactory;
+    private IPopupViewController popups;
 
-    public PlannerViewController(CustomViewOverride custumCalendar) 
+    public PlannerViewController(CustomViewOverride custumCalendar, IIOController iOController, IEntryFactory entryFactory, IPopupViewController popups) 
     {
         this.customCalendar = custumCalendar;
-    }
+        this.iOController = iOController;
+        this.entryFactory = entryFactory;
+        this.popups = popups;
+    }    
 
     public void updateCustomCalendarView(CustomViewOverride calendarView) 
     {
@@ -22,6 +36,23 @@ public class PlannerViewController extends ResponsiveController
     public void changeContentPosition(double width, double height) 
     {
         //
-    }
+
+    } 
     
+    public void registerButtonEvents()
+    {
+        Button addButton = (Button)childContainer.lookup("#add-calendar-button");
+        addButton.setOnAction(new EventHandler<ActionEvent>()
+        { 
+            public void handle(ActionEvent event) 
+            {
+                var calendar = new Calendar();
+                String calName = popups.showChooseCalendarNameDialog();
+                if (calName.isBlank())
+                    calName = "Neuer Kalender";
+                entryFactory.addCalendarToView(calendar, calName);
+                iOController.saveCalendar(calendar);                   
+            }
+        });  
+    }
 }
