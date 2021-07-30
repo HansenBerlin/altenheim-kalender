@@ -6,10 +6,14 @@ import com.altenheim.kalender.interfaces.IPopupViewController;
 import com.calendarfx.model.Calendar;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 public class PlannerViewController extends ResponsiveController 
 {
+
+    @FXML private Button btnImport, btnExport;
+
     private CustomViewOverride customCalendar;
     private IIOController iOController;
     private IEntryFactory entryFactory;
@@ -21,7 +25,23 @@ public class PlannerViewController extends ResponsiveController
         this.iOController = iOController;
         this.entryFactory = entryFactory;
         this.popups = popups;
-    }    
+    }  
+    
+    @FXML
+    void openFilePicker(ActionEvent event) 
+    {
+        var button = (Button)event.getSource();
+        var stage = button.getScene().getWindow();
+        if (button.equals(btnImport))
+        {
+            //popups.importDialog(importController, entryFactory, stage);
+        }
+        else
+        {
+            //popups.exportDialog(exportController, allEntries, stage);
+        }
+
+    }
 
     public void updateCustomCalendarView(CustomViewOverride calendarView) 
     {
@@ -55,4 +75,6 @@ public class PlannerViewController extends ResponsiveController
             }
         });  
     }
+
+    
 }
