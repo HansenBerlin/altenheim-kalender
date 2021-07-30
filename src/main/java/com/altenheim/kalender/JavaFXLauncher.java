@@ -41,13 +41,12 @@ public class JavaFXLauncher extends Application
         initialSettingsLoader.initialValidationCheck();
 
         mainController.switchCssMode();
-        
+        mainController.updateViewOnButtonClicked(mainController.getPlannerMenuButton());        
         
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() 
         {
             public void handle(WindowEvent we) 
-            {
-                //objectFactory.getIOController().writeCalendarFiles();
+            {              
                 System.exit(0);
             }
         });

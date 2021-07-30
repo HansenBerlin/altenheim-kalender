@@ -27,7 +27,8 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 import jfxtras.styles.jmetro.Style;
 
-public class MainWindowController extends ResponsiveController {
+public class MainWindowController extends ResponsiveController 
+{
     private IViewRootsModel allViewsInformation;
     private CustomViewOverride customCalendar;
     private Stage stage;
@@ -61,6 +62,8 @@ public class MainWindowController extends ResponsiveController {
         this.customCalendar = customCalendar;
         this.settings = settings;
     }
+    
+    public Button getPlannerMenuButton() { return menuBtnPlanner; } //TODO: warum?
 
     @FXML
     private void initialize() throws IOException 
@@ -141,6 +144,19 @@ public class MainWindowController extends ResponsiveController {
         }
     }   
 
+    private void updateCalendarStyle(CalendarView calendarView, String cssFile) 
+    {
+        var newView = new CalendarView();
+        newView.getStylesheets().add(cssFile);
+        var newCalendarSource = new CalendarSource();
+        var oldCalendarSources = calendarView.getCalendarSources();
+        for (var source : oldCalendarSources) {
+            newCalendarSource.getCalendars().addAll(source.getCalendars());
+        }
+        ((PlannerViewController) allViewsInformation.getAllViewControllers()[0])
+                .updateCustomCalendarView((CustomViewOverride) newView);
+    }
+  
     public void updateViewOnButtonClicked(Button pressed) 
     {
         for (String buttonName : allButtonsWithBackgrounds.keySet()) 
@@ -217,5 +233,5 @@ public class MainWindowController extends ResponsiveController {
         topRow.setMinHeight(topMenuHeight);
         topRow.setMaxHeight(topMenuHeight);
         topRow.setPrefHeight(topMenuHeight);
-    }    
+    }  
 }
