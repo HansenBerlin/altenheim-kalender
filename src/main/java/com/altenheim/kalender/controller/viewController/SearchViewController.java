@@ -22,7 +22,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import com.altenheim.kalender.controller.Factories.EntryFactory;
 import com.altenheim.kalender.controller.Factories.SplitMenuButtonFactory;
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.model.Entry;
@@ -40,14 +39,15 @@ public class SearchViewController extends ResponsiveController
     @FXML private CheckBox tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday;  
     @FXML private TimeField timeStart, timeEnd; 
     @FXML private ToggleSwitch toggleDateRange, toggleTimeRange, toggleWeekdays, toggleCalendars;   
-    @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays, containerCalendars;
+    @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays, containerCalendars, containerMailTemplate;
     @FXML private HBox containerTravel, containerOpeningHours, containerMargin, containerReccurrence;
-    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleAddAutomatically; 
+    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, 
+        toggleAddAutomatically, toggleUseMailTemplate; 
     @FXML private Slider sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment;
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
     @FXML private Text infoName, infoDuration, infoBetweenDate, infoBetweenTime, infoWeekdays, infoTravelTime, infoTimeBefore, infoTimeAfter, infoReccurrences, infoInterval;   
     
-    private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening;
+    private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening, dropdownMailTemplates;
     private int userStep = 1;
     private Button dummyButton = new Button();
     private SplitMenuButton calendarSelection = new SplitMenuButton();
@@ -65,19 +65,19 @@ public class SearchViewController extends ResponsiveController
     private IComboBoxFactory comboBoxFactory;
     private IDateSuggestionController dateSuggestionController;
     private ICalendarEntriesModel allCalendars;
-    private MailTemplateModel mailTemplates;
+    private IMailCreationController mailCreationController;
     private SettingsModel settings;
     private ArrayList<Entry<String>> currentSuggestions;
     
 
     public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory,
-            MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api,
+            IMailCreationController mailCreationController, SettingsModel settings, IGoogleAPIController api,
             IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory,
             IDateSuggestionController dateSuggestionController, ICalendarEntriesModel allCalendars) 
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
-        this.mailTemplates = mailTemplates;
+        this.mailCreationController = mailCreationController;
         this.settings = settings;
         this.api = api;
         this.iOController = iOController;
@@ -168,10 +168,13 @@ public class SearchViewController extends ResponsiveController
         dropdownEndAtDest = comboBoxFactory.create(ComboBoxCreate.DESTINATION);
         dropdownDestinationOpening = comboBoxFactory.create(ComboBoxCreate.DESTINATION);
         dropdownInterval = comboBoxFactory.create(ComboBoxCreate.RECCURENCEOPTIONS);
-        dropdownInterval.setValue(dropdownInterval.getItems().get(0));        
+        dropdownInterval.setValue(dropdownInterval.getItems().get(0)); 
+        dropdownMailTemplates = comboBoxFactory.create(ComboBoxCreate.MAILTEMPLATESELECTORTEMPLATE);
+
         containerTravel.getChildren().addAll(dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest);  
         containerOpeningHours.getChildren().add(dropdownDestinationOpening);
         containerReccurrence.getChildren().add(dropdownInterval);
+        containerMailTemplate.getChildren().add(dropdownMailTemplates);
         dropdownEndAtDest.getEditor().textProperty().bindBidirectional(dropdownDestinationOpening.getEditor().textProperty());
         startDate.setEditable(false);
         endDate.setEditable(false);
@@ -180,7 +183,7 @@ public class SearchViewController extends ResponsiveController
     private void setupInitialContainerStates() 
     {
         HBox[] containers = { containerDateRange, containerTimeRange, containerWeekdays, containerTravel,
-                containerOpeningHours, containerMargin, containerReccurrence };
+                containerOpeningHours, containerMargin, containerReccurrence, containerCalendars, containerMailTemplate };
 
         for (var hBox : containers) 
         {
@@ -471,15 +474,7 @@ public class SearchViewController extends ResponsiveController
             default -> 0;
         };
         return returnValue;
-    }
-
-    private int validateSuggestionsCount() 
-    {
-        if (toggleRecurringDate.isSelected() == false && toggleAddAutomatically.isSelected())
-            return 1;
-        else
-            return 1000;
-    }
+    }    
 
     private int validateReccurrences() 
     {
@@ -489,14 +484,17 @@ public class SearchViewController extends ResponsiveController
             return 1;
     }
 
-    private LocalTime validateStartSearchTime(LocalTime startTimeInput) 
+    private void validateMailTemplate()
     {
-        var currentTime = LocalDateTime.now().toLocalTime();
-        if (startTimeInput.isBefore(currentTime))
-            return currentTime;
-        else
-            return startTimeInput;
+        if (toggleUseMailTemplate.isSelected())
+        {
+            mailcre
+
+
+        }
     }
+
+   
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC) 
     {
@@ -568,9 +566,9 @@ public class SearchViewController extends ResponsiveController
     private void setupToggleBindings()
     {
         ToggleSwitch[] toggles = { toggleDateRange, toggleTimeRange, toggleWeekdays, toggleUseTravelDuration, 
-            toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate };
+            toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleCalendars, toggleUseMailTemplate };
         HBox[] containers = { containerDateRange, containerTimeRange, containerWeekdays, containerTravel, 
-            containerOpeningHours, containerMargin, containerReccurrence };
+            containerOpeningHours, containerMargin, containerReccurrence, containerCalendars, containerMailTemplate };
 
         int i = 0;
 

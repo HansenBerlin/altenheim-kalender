@@ -48,7 +48,8 @@ public class ComboBoxFactory implements IComboBoxFactory {
         content.add(mailTemplateSelectorTemplate);
     }
 
-    public ComboBox<String> create(ComboBoxCreate type) {
+    public ComboBox<String> create(ComboBoxCreate type) 
+    {
         int typeOrdinal = type.ordinal();
         var comboBox = new ComboBox<String>();
         comboBox.setPrefWidth(140);
@@ -66,5 +67,4 @@ public class ComboBoxFactory implements IComboBoxFactory {
     public List<ObservableList<String>> getContent() {
         return content;
     }
-
 }

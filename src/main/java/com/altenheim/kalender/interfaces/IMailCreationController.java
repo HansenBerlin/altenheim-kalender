@@ -1,10 +1,6 @@
 package com.altenheim.kalender.interfaces;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
-public interface IMailCreationController {
-    void sendMail(String recipient, String subject, String body) throws IOException, URISyntaxException;
-
-    String processPlaceholders(String body, String date, String time, int template);
+public interface IMailCreationController 
+{
+    public void processMailWrapper(String templateName, String date, String time, String recipient);
 }

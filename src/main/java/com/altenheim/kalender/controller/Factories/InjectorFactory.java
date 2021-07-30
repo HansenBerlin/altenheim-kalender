@@ -43,7 +43,7 @@ public class InjectorFactory
         IAnimationController animationController = new AnimationController();
         IPopupViewController popupViewController = new PopupViewsController();
         IGoogleAPIController apiCt = new GoogleAPIController(settings, jsonParser);
-        //IMailCreationController mailCreationCt = new MailCreationController(mailTemplates);       
+        IMailCreationController mailCreationCt = new MailCreationController(mailTemplates);       
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel(customCalendarView);
         IDateSuggestionController dateSuggestionController = new DateSuggestionController();
         IImportController importCt = new ImportController(settings);
@@ -58,7 +58,7 @@ public class InjectorFactory
         var contactsVCt = new ContactsViewController(ioCt);
         var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, comboBoxFactory, popupViewController, ioCt);
         var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory);
-        var searchVCt = new SearchViewController(smartSearch, entryFactory, mailTemplates, settings, apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController, calendarEntriesModel);
+        var searchVCt = new SearchViewController(smartSearch, entryFactory, mailCreationCt, settings, apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController, calendarEntriesModel);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews);

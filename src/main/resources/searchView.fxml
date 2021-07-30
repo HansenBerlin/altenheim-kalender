@@ -136,7 +136,7 @@
             <Insets top="30.0" />
          </GridPane.margin>
       </HBox>
-      <VBox fx:id="stepOneUserInput" alignment="TOP_CENTER" spacing="20.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+      <VBox fx:id="stepOneUserInput" alignment="TOP_CENTER" spacing="20.0" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
          <children>
             <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
                <children>
@@ -384,7 +384,7 @@
             </AnchorPane>
          </children>
       </VBox>
-      <VBox fx:id="stepTwoUserInput" alignment="TOP_CENTER" spacing="20.0" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+      <VBox fx:id="stepTwoUserInput" alignment="TOP_CENTER" spacing="20.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
          <children>
             <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
                <children>
@@ -508,6 +508,25 @@
                               <Insets left="20.0" />
                            </HBox.margin>
                         </HBox>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane id="customBox" maxHeight="70.0" maxWidth="700.0" minHeight="70.0" minWidth="600.0" prefHeight="70.0" prefWidth="700.0">
+               <children>
+                  <HBox fx:id="containerMailTemplate" alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ToggleSwitch fx:id="toggleUseMailTemplate" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="170.0" text="Anfrage per Mail">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </ToggleSwitch>
                      </children>
                      <padding>
                         <Insets left="20.0" />
