@@ -88,7 +88,6 @@ public class MainWindowController extends ResponsiveController {
             currentlyActive = button;
             updateWindowSize();
         }
-
     }
 
     @FXML

@@ -35,7 +35,6 @@ public class InitialSetupController
         {
             e.printStackTrace();
         }
-        settings.addPropertyChangeListener(new ChangeListener());
         websiteScraper.startScraperTask();
         if (systemNotifications.initializeSystemTrayAccess()) 
         {

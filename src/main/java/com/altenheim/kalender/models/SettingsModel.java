@@ -11,15 +11,22 @@ import java.io.Serializable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class SettingsModel implements Serializable {
+public class SettingsModel implements Serializable 
+{
     public final static String APICYPHERTEXT = "apCg/0Odtz1r9kYuh011M4sur5xv5UU0hYJQcymI9gpAfMWP1eJWOtgpXu/lawR+";
     public final static String PASSWORDHASH = "54fvHpgroWTcl6h/4SxMEiwchYBcYzqtrXX4eMySjf94gqHjPhjPCPl4d2IH7jg0";
 
     private String userDirectory = "userfiles/";
     private String decryptedPassword = "";
     private String pathToSaveBackupFiles = null;
-
     private String scrappingURL = "";
+    public long entrySystemMessageIntervalInMinutes = 1;
+    public long notificationTimeBeforeEntryInMinutes = 15;
+    private Long scrapingIntervalInMinutes = (long) 60000;    
+    public String cssMode = "Light";
+    public String defaultCalendarForSearchView = "TestKalender";
+    public String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
+    private boolean useAdvancedFeatures = false;
 
     public SimpleStringProperty street = new SimpleStringProperty();
     public SimpleStringProperty houseNumber = new SimpleStringProperty();
@@ -31,22 +38,10 @@ public class SettingsModel implements Serializable {
     public SimpleStringProperty semester = new SimpleStringProperty("Sem.");
     public SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
     public PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
-    public String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
-    public long entrySystemMessageIntervalInMinutes = 1;
-    public long notificationTimeBeforeEntryInMinutes = 15;
-    private Long scrapingIntervalInMinutes = (long) 60000;
-    private boolean useAdvancedFeatures = false; // je nachdem ob der pw hash erfolgreich geladen wird an oder aus,
-                                                 // wegesuche und ÖZ dann ausgrauen
-    public String cssMode = "Light";
-    public String defaultCalendarForSearchView = "TestKalender";
-
     private SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
     private SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
-
     public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
-
-    public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer;
-    }  
+    public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer;}  
     
     public String getPathToUserDirectory() { return userDirectory; }
     public File getPasswordhashFile() { return new File(userDirectory + "savedHash"); }
@@ -62,10 +57,6 @@ public class SettingsModel implements Serializable {
     public void setScrapingInterval(long interval) {
         propertyChange.firePropertyChange("scrapingIntervalInMinutes", scrapingIntervalInMinutes, interval);
         scrapingIntervalInMinutes = interval;
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChange.addPropertyChangeListener(listener);
     }
 
     public void writeSimpleProperties() {
@@ -110,6 +101,5 @@ public class SettingsModel implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    
+    }    
 }

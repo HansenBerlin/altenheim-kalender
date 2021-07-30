@@ -142,17 +142,10 @@ public class SmartSearchController implements ISmartSearchController {
 		return entry;
 	}
 
-	private void reduceListLenght(ArrayList<Entry<String>> list, int maxNumberOfEntrys) {
-		while (list.size() > maxNumberOfEntrys) {
-			list.remove(list.size() - 1);
-		}
-	}
-
 	private boolean checkForDuplicates(ArrayList<Entry<String>> currentEntries) {
 		if (currentEntries.size() < 2)
 			return false;
 		return (currentEntries.get(currentEntries.size() - 2).getStartMillis() == currentEntries
 				.get(currentEntries.size() - 1).getStartMillis());
-	}
-	
+	}	
 }

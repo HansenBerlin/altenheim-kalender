@@ -1,7 +1,6 @@
 package com.altenheim.kalender.controller.viewController;
 
 import java.io.IOException;
-import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.models.ContactModel;
 import javafx.collections.ListChangeListener;
@@ -13,17 +12,14 @@ import javafx.scene.layout.VBox;
 
 public class ContactsViewController extends ResponsiveController {
 
-    @FXML
-    private TextField txtFieldFirstName, txtFieldSurName, txtFieldMail, txtFieldStreet, txtFieldPostalCode,
-            txtFieldCity, txtFieldPhone;
-    @FXML
-    private Button btnAddContact;
-    @FXML
-    private VBox tableContainer;
+    @FXML private TextField txtFieldFirstName, txtFieldSurName, txtFieldMail, txtFieldStreet, txtFieldPostalCode, txtFieldCity, txtFieldPhone;
+    @FXML private Button btnAddContact;
+    @FXML private VBox tableContainer;
 
     private IIOController ioController;
 
-    public ContactsViewController(IIOController ioController) {
+    public ContactsViewController(IIOController ioController) 
+    {
         this.ioController = ioController;
     }
 

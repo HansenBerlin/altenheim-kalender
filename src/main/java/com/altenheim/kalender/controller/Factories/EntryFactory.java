@@ -30,18 +30,6 @@ public class EntryFactory implements IEntryFactory
         this.settings = settings;
     }
 
-    
-
-/*
-    public EntryFactory(ICalendarEntriesModel allCalendars) {
-        this.allCalendars = allCalendars;
-
-    }
-
-    public ICalendarEntriesModel getEntriesModel() {
-        return allCalendars;
-    }*/
-
     public HashMap<String, List<Entry<String>>> createEntryListForEachCalendar() 
     {
         var result = allCalendars.getAllCalendars();
@@ -130,52 +118,6 @@ public class EntryFactory implements IEntryFactory
         entry.changeEndDate(dateEnd);
         return entry;
     }
-/*
-    public ArrayList<ArrayList<Entry<String>>> createOpeningHoursWithLunchBreak() 
-    {
-        ArrayList<ArrayList<Entry<String>>> openingHours = new ArrayList<ArrayList<Entry<String>>>();
-        for (int i = 0; i < 6; i++) 
-        {
-            var day1 = new ArrayList<Entry<String>>();
-            if (i % 2 == 0) {
-                day1.add(createEntryDummy(10, 13, 1, 1));
-                day1.add(createEntryDummy(16, 22, 1, 1));
-            } else {
-                day1.add(createEntryDummy(10, 22, 1, 1));
-            }
-
-            openingHours.add(day1);
-        }
-        openingHours.add(new ArrayList<Entry<String>>());
-        return openingHours;
-    }
-
-    private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay) 
-    {
-        var entryUser = new Entry<String>();
-        entryUser.setTitle("User Preference");
-        var startDate = LocalDate.of(2021, 1, startDay);
-        var endDate = LocalDate.of(2021, 1, endDay);
-        entryUser.changeStartDate(startDate);
-        entryUser.changeEndDate(endDate);
-        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
-        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
-        return entryUser;
-    }
-
-    
-
-    public void createNewUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd, String title) 
-    {
-        var entry = new Entry<String>();
-        entry.changeStartTime(timeStart);
-        entry.changeStartDate(dateStart);
-        entry.changeEndTime(timeEnd);
-        entry.changeEndDate(dateEnd);
-        entry.setTitle(title);
-        allCalendars.getAllCalendars().get(0).addEntries(entry);
-    }  
-    */
     
     private int rG(int startInclusive, int endInclusive) 
     {
@@ -191,12 +133,7 @@ public class EntryFactory implements IEntryFactory
             var startAt = LocalDateTime.of(dateStart, timeStart);
             startAt = startAt.minusMinutes(timeTravel);
             var endAt = LocalDateTime.of(dateStart, timeStart);
-
-            var entry = new Entry<String>();
-            entry.changeStartTime(startAt.toLocalTime());
-            entry.changeStartDate(startAt.toLocalDate());
-            entry.changeEndTime(endAt.toLocalTime());
-            entry.changeEndDate(endAt.toLocalDate());
+            var entry = createUserEntry(startAt.toLocalDate(), endAt.toLocalDate(), startAt.toLocalTime(), endAt.toLocalTime());          
             entry.setTitle("Anfahrtzeit für " + title);
             allCalendars.addEntryToCalendarWithName(calName, entry);
         }
@@ -204,25 +141,13 @@ public class EntryFactory implements IEntryFactory
         {
             var startAt = LocalDateTime.of(dateEnd, timeEnd);
             var endAt = LocalDateTime.of(dateEnd, timeEnd);
-            endAt = endAt.plusMinutes(timeTravel);
-            var entry = new Entry<String>();
-
-            entry.changeStartTime(startAt.toLocalTime());
-            entry.changeStartDate(startAt.toLocalDate());
-            entry.changeEndTime(endAt.toLocalTime());
-            entry.changeEndDate(endAt.toLocalDate());
+            endAt = endAt.plusMinutes(timeTravel);            
+            var entry = createUserEntry(startAt.toLocalDate(), endAt.toLocalDate(), startAt.toLocalTime(), endAt.toLocalTime()); 
             entry.setTitle("Anfahrtzeit für " + title);
             allCalendars.addEntryToCalendarWithName(calName, entry);
         }
-
-        var entry = new Entry<String>();
-        entry.changeStartTime(timeStart);
-        entry.changeStartDate(dateStart);
-        entry.changeEndTime(timeEnd);
-        entry.changeEndDate(dateEnd);
+        var entry = createUserEntry(dateStart, dateEnd,timeStart, timeEnd); 
         entry.setTitle(title);
         allCalendars.addEntryToCalendarWithName(calName, entry);
-    }  
-    
-    
+    } 
 }

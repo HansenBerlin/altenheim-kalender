@@ -12,20 +12,19 @@ import com.calendarfx.model.*;
 
 public class CalendarEntriesModel implements ICalendarEntriesModel 
 {
-    //private List<Calendar> calendars;
     private List<Calendar> calendarsSelectedByUser;
     private CustomViewOverride calendarView;
 
     public CalendarEntriesModel(CustomViewOverride calendarView) 
     {
-        //calendars = new ArrayList<Calendar>();
         calendarsSelectedByUser = new ArrayList<Calendar>();
         this.calendarView = calendarView;
     }
+    
+    public List<Calendar> getAllCalendarsSelectedByUser() { return calendarsSelectedByUser; }
 
     public List<Calendar> getAllCalendars() 
     { 
-        //calendarView.setShowSourceTray(false);
         var allCalendars = new ArrayList<Calendar>();
         for (var source : calendarView.getCalendarSources()) 
         {
@@ -36,12 +35,6 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
         }
 
         return allCalendars; 
-    }
-
-
-    public void addCalendar(Calendar calendar) 
-    {        
-        //calendars.add(calendar);
     }
 
     public void addEntryToCalendarWithName(String name, Entry<String> entry)
@@ -55,10 +48,7 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
             }
         }
         calendarView.getCalendarSources().get(0).getCalendars().get(0).addEntry(entry);
-    }
-
-    
-    public List<Calendar> getAllCalendarsSelectedByUser() { return calendarsSelectedByUser; }
+    }    
     
     public void clearCalendarsSelectedByUser()
     {
@@ -70,13 +60,6 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
         calendarsSelectedByUser.add(calendar);
     }
 
-       
-
-
-    
-
-    
-
     public void addToAllCalendarsSelectedByUserByCalendarName(String calendarName)
     {
         for (var calendar : getAllCalendars()) 
@@ -85,24 +68,6 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
                 calendarsSelectedByUser.add(calendar);            
         }
     }
-/*
-    public List<Entry<String>> getSpecificRange(LocalDate startDate, LocalDate endDate) 
-    {
-        var calendar = calendars.get(0);
-        var result = calendar.findEntries(startDate, endDate, ZoneId.systemDefault());
-        var allEntries = result.values();
-        var returnValue = new ArrayList<Entry<String>>();
-        for (var entries : allEntries) 
-        {
-            for (var entry : entries) 
-            {
-                returnValue.add((Entry<String>) entry);
-            }
-        }
-        return returnValue;
-    }*/
-
-    
 
     public List<Entry<String>> getEntrysWithStartInSpecificRange(LocalDateTime start, LocalDateTime end) {
         var returnValue = new ArrayList<Entry<String>>();
@@ -118,6 +83,4 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
                     returnValue.add((Entry<String>) entry);
         return returnValue;
     }
-
-    
 }
