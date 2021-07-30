@@ -24,28 +24,23 @@ public class SettingsViewController extends ResponsiveController {
     private IEntryFactory calendarFactory;
     private IPopupViewController popupViewController;
     private IComboBoxFactory comboBoxFactory;
+    private IIOController iOController;
     private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse,
             comboBoxSelectionSemester;
 
-    @FXML
-    private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
-    @FXML
-    private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
-    @FXML
-    private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail,
+    @FXML private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
+    @FXML private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
+    @FXML private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail,
             txtNotifocationMin, txtNotificationHour, txtError;
-    @FXML
-    private HBox containerComboBoxSelectorScrapping;
-    @FXML
-    private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
-    @FXML
-    private CheckBox cBToolTips;
-    @FXML
-    private VBox topContainer, bottomContainer, containerComboBoxNotificationMin;
+    @FXML private HBox containerComboBoxSelectorScrapping;
+    @FXML private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
+    @FXML private CheckBox cBToolTips;
+    @FXML private VBox topContainer, bottomContainer, containerComboBoxNotificationMin;
 
     public SettingsViewController(SettingsModel settings, IImportController importController,
             IEntryFactory calendarFactory, IExportController exportController, ICalendarEntriesModel allCalendars,
-            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController) {
+            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, IIOController iOController) 
+    {
         this.settings = settings;
         this.importController = importController;
         this.exportController = exportController;
@@ -53,6 +48,7 @@ public class SettingsViewController extends ResponsiveController {
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
         this.comboBoxFactory = comboBoxFactory;
+        this.iOController = iOController;
     }
 
     @FXML
@@ -85,8 +81,7 @@ public class SettingsViewController extends ResponsiveController {
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionCourse);
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSemester);
 
-        comboBoxNotificationMin.getSelectionModel()
-                .select(String.valueOf(settings.notificationTimeBeforeEntryInMinutes));
+        comboBoxNotificationMin.getSelectionModel().select(String.valueOf(settings.notificationTimeBeforeEntryInMinutes));
         comboBoxSelectionSpecialField.getSelectionModel().select(settings.specialField.getValue());
         comboBoxSelectionSemester.getSelectionModel().select(settings.semester.getValue());
         comboBoxSelectionCourse.getSelectionModel().select(settings.course.getValue());

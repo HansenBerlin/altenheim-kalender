@@ -3,10 +3,11 @@ package com.altenheim.kalender.interfaces;
 import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.List;
-import com.altenheim.kalender.models.SerializableEntry;
 
-public interface IJsonParser {
+import com.calendarfx.model.Entry;
+
+public interface IJsonParser 
+{
     String parseJsonForLocationId(String jsonBody);
-
-    public HashMap<DayOfWeek, List<SerializableEntry>> parseJsonForOpeningHours(String jsonBody);
+    public HashMap<DayOfWeek, List<Entry<String>>> parseJsonForOpeningHours(String jsonBody);
 }

@@ -1,12 +1,9 @@
 package com.altenheim.kalender.models;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import com.altenheim.kalender.controller.Factories.EntryFactory;
 import com.altenheim.kalender.controller.viewController.PopupViewsController;
-import com.calendarfx.model.Entry;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
