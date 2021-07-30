@@ -34,9 +34,10 @@ public class PopupViewsController implements IPopupViewController
         jmetro.setScene(alert.getDialogPane().getScene());
         alert.setTitle("Eingabe fehlgeschlagen");
         alert.setHeaderText("Das Passwort war falsch.");
-        alert.setContentText("Der Kalender kann trotzdem genutzt werden, aber erweiterte "
-                + "Funktionen wie der automatische Abruf von Öffnungszeiten "
-                + "werden nicht funktionieren. Nochmal versuchen?");
+        alert.setContentText("Der Kalender kann trotzdem genutzt werden, aber \nerweiterte "
+                            + "Funktionen wie der automatische Abruf von\n"
+                            + "Öffnungszeiten werden nicht funktionieren.\n"
+                            + "Nochmal versuchen?");
 
         var result = alert.showAndWait();
 
@@ -49,8 +50,8 @@ public class PopupViewsController implements IPopupViewController
         jmetro.setScene(alert.getDialogPane().getScene());
         alert.setTitle("Validierung erfolgreich");
         alert.setHeaderText(null);
-        alert.setContentText("Passwortvalidierung erfolgreich. Viel Spaß bei "
-                + "der Nutzung der erweiterten Funktionen des Smart Planners!");
+        alert.setContentText("Passwortvalidierung erfolgreich. Viel Spaß bei \n"
+                + "der Nutzung der erweiterten Funktionen \n"+"des Smart Planners!");
         alert.showAndWait();
     }
 
@@ -61,8 +62,9 @@ public class PopupViewsController implements IPopupViewController
         jmetro.setScene(alert.getDialogPane().getScene());
         alert.setTitle("Erweiterte Funktionen nicht aktiv.");
         alert.setHeaderText(null);
-        alert.setContentText("Du kannst beim nächsten Start das Passwort erneut eingeben "
-                + "um die erweiterten Funktionen zu nutzen");
+        alert.setContentText("Du kannst beim nächsten Start das Passwort\n"
+                            +"erneut eingeben um die erweiterten Funktionen\n"
+                            +"zu nutzen.");
         alert.showAndWait();
     }
 
