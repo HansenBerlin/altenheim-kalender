@@ -10,8 +10,8 @@ import java.util.TimerTask;
 import java.awt.TrayIcon.MessageType;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISystemNotificationsController;
-import com.altenheim.kalender.models.SerializableEntry;
 import com.altenheim.kalender.models.SettingsModel;
+import com.calendarfx.model.Entry;
 
 public class SystemNotificationsController extends TimerTask implements ISystemNotificationsController {
     private SettingsModel settings;
@@ -38,11 +38,11 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
         var timeToAdd = settings.notificationTimeBeforeEntryInMinutes;
         var end = start.plusMinutes(settings.entrySystemMessageIntervalInMinutes);
         var entries = administrateEntries.getEntrysWithStartInSpecificRange(start, end.plusMinutes(timeToAdd));
-        var currentEntries = new ArrayList<SerializableEntry>();
+        var currentEntries = new ArrayList<Entry<String>>();
         for (var entry : entries)
             if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1))
                     && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1)))
-                currentEntries.add((SerializableEntry) entry);
+                currentEntries.add((Entry<String>) entry);
         outputSystemMessageForEntryList("Termin beginnt jetzt", currentEntries);
 
         currentEntries.clear();
@@ -51,12 +51,12 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
         for (var entry : entries)
             if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1))
                     && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1)))
-                currentEntries.add((SerializableEntry) entry);
+                currentEntries.add((Entry<String>) entry);
         outputSystemMessageForEntryList("Termin beginnt in " + (int) timeToAdd / 60 + " Minuten", currentEntries);
     }
 
-    private void outputSystemMessageForEntryList(String messageTitle, List<SerializableEntry> entries) {
-        for (SerializableEntry entry : entries) {
+    private void outputSystemMessageForEntryList(String messageTitle, List<Entry<String>> entries) {
+        for (Entry<String> entry : entries) {
             trayIcon.displayMessage(messageTitle, entry.getTitle(), MessageType.INFO);
         }
     }

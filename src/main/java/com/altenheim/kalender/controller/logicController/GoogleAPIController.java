@@ -9,8 +9,9 @@ import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.List;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
-import com.altenheim.kalender.models.SerializableEntry;
 import com.altenheim.kalender.models.SettingsModel;
+import com.calendarfx.model.Entry;
+
 import org.json.*;
 
 public class GoogleAPIController implements IGoogleAPIController {
@@ -27,7 +28,7 @@ public class GoogleAPIController implements IGoogleAPIController {
         this.jsonParser = jsonParser;
     }
 
-    public HashMap<DayOfWeek, List<SerializableEntry>> getOpeningHours(String locationSearchUserInput) {
+    public HashMap<DayOfWeek, List<Entry<String>>> getOpeningHours(String locationSearchUserInput) {
         var security = new SecureAesController();
         var apiKey = security.decrypt(settings.getDecryptedPasswordHash(), SALT, SettingsModel.APICYPHERTEXT);
         String input = locationSearchUserInput.replace(" ", "%20");

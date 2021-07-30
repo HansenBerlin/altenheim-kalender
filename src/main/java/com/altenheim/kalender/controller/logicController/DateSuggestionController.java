@@ -2,12 +2,12 @@ package com.altenheim.kalender.controller.logicController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import com.calendarfx.model.Entry;
 import com.altenheim.kalender.interfaces.IDateSuggestionController;
-import com.altenheim.kalender.models.SerializableEntry;
 
 public class DateSuggestionController implements IDateSuggestionController 
 {
-    public SerializableEntry getDateSuggestionFromEntryList(ArrayList<SerializableEntry> input, LocalDateTime startSearchDateTimeInput, int dateLenght) 
+    public Entry<String> getDateSuggestionFromEntryList(ArrayList<Entry<String>> input, LocalDateTime startSearchDateTimeInput, int dateLenght) 
     {
         if (input.isEmpty())
             return null;
@@ -29,8 +29,8 @@ public class DateSuggestionController implements IDateSuggestionController
         return null;
     }
 
-    private SerializableEntry createEntry(LocalDateTime startDateTime, int dateLenght) {
-        var output = new SerializableEntry();
+    private Entry<String> createEntry(LocalDateTime startDateTime, int dateLenght) {
+        var output = new Entry<String>();
         output.changeEndDate(startDateTime.plusMinutes(dateLenght).toLocalDate());
         output.changeStartDate(startDateTime.toLocalDate());
         output.changeEndTime(startDateTime.plusMinutes(dateLenght).toLocalTime());

@@ -5,8 +5,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import com.altenheim.kalender.interfaces.*;
-import com.altenheim.kalender.models.SerializableEntry;
 import com.altenheim.kalender.models.SettingsModel;
+import com.calendarfx.model.Entry;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Property;
@@ -48,7 +48,7 @@ public class ImportController implements IImportController {
             fxCalendar = new com.calendarfx.model.Calendar(iCalCalendarName);
 
         } else
-            fxCalendar = new com.calendarfx.model.Calendar("Standart-Kalender");
+            fxCalendar = new com.calendarfx.model.Calendar("Standard-Kalender");
 
         var components = iCalCalendar.getComponents("VEVENT");
         for (int i = 0; i < components.size(); i++) {
@@ -67,8 +67,8 @@ public class ImportController implements IImportController {
         return fxCalendar;
     }
 
-    private SerializableEntry createCalendarFXEntryFromMillis(long start, long end) {
-        var entry = new SerializableEntry();
+    private Entry<String> createCalendarFXEntryFromMillis(long start, long end) {
+        var entry = new Entry<String>();
         var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
         var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());
         entry.changeStartTime(dateStart.toLocalTime());
@@ -76,6 +76,5 @@ public class ImportController implements IImportController {
         entry.changeEndTime(dateEnd.toLocalTime());
         entry.changeEndDate(dateEnd.toLocalDate());
         return entry;
-    }
-    
+    }    
 }

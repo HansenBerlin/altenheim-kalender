@@ -9,19 +9,23 @@ import com.altenheim.kalender.models.MailTemplateModel;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class MailCreationController implements IMailCreationController {
+public class MailCreationController implements IMailCreationController 
+{
     private MailTemplateModel mailTemplates;
 
-    public MailCreationController(MailTemplateModel mailTemplates) {
+    public MailCreationController(MailTemplateModel mailTemplates) 
+    {
         this.mailTemplates = mailTemplates;
     }
 
-    public void sendMail(String recipient, String subject, String body) throws IOException, URISyntaxException {
+    public void sendMail(String recipient, String subject, String body) throws IOException, URISyntaxException 
+    {
         String uriStr = String.format("mailto:%s?subject=%s&body=%s", recipient, encodeUrl(subject), encodeUrl(body));
         Desktop.getDesktop().browse(new URI(uriStr));
     }
 
-    public String processPlaceholders(String body, String date, String time, int template) {
+    public String processPlaceholders(String body, String date, String time, int template) 
+    {
         var templates = new MailTemplateModel();
         if (template == 1)
             body = templates.getTemplateOne();
@@ -34,12 +38,15 @@ public class MailCreationController implements IMailCreationController {
         return body;
     }
 
-    private String encodeUrl(String uri) {
-        try {
+    private String encodeUrl(String uri) 
+    {
+        try 
+        {
             return URLEncoder.encode(uri, "UTF-8").replace("+", "%20");
-        } catch (UnsupportedEncodingException e) {
+        } 
+        catch (UnsupportedEncodingException e) 
+        {
             throw new RuntimeException(e);
         }
-    }
-    
+    }    
 }

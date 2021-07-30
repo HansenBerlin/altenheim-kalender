@@ -10,9 +10,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class JavaFXLauncher extends Application {
+public class JavaFXLauncher extends Application 
+{
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws Exception 
+    {
         var objectFactory = new InjectorFactory();
         objectFactory.createServices();
         var guiSetup = objectFactory.getGuiController();
@@ -32,28 +34,29 @@ public class JavaFXLauncher extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Smart Planner HWR");
-        primaryStage.setMaximized(true);
-        primaryStage.setMinHeight(720);
-        primaryStage.setMinWidth(1080);
+        primaryStage.setMaximized(true);        
 
         var initialSettingsLoader = objectFactory.getInitialSettingsLoader();
         initialSettingsLoader.initializeSettings();
         initialSettingsLoader.initialValidationCheck();
 
         mainController.switchCssMode();
-        mainController.updateViewOnButtonClicked(mainController.getPlannerMenuButton());
-
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent we) {
-                objectFactory.getIOController().writeCalendarFiles();
+        mainController.updateViewOnButtonClicked(mainController.getPlannerMenuButton());        
+        
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() 
+        {
+            public void handle(WindowEvent we) 
+            {              
                 System.exit(0);
             }
         });
-
+        
         primaryStage.show();
+        guiSetup.registerAddCalendarButton();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         launch(args);
     }
     

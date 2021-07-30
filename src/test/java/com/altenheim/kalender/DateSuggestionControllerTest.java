@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import com.altenheim.kalender.controller.logicController.DateSuggestionController;
-import com.altenheim.kalender.models.SerializableEntry;
+import com.calendarfx.model.Entry;
+
 import org.junit.jupiter.api.Test;
 
 public class DateSuggestionControllerTest {
@@ -16,7 +17,7 @@ public class DateSuggestionControllerTest {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
-        var input = new ArrayList<SerializableEntry>();
+        var input = new ArrayList<Entry<String>>();
         input.add(entryOne);
         input.add(entryTwo);
         input.add(entryThree);
@@ -37,7 +38,7 @@ public class DateSuggestionControllerTest {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
-        var input = new ArrayList<SerializableEntry>();
+        var input = new ArrayList<Entry<String>>();
         input.add(entryOne);
         input.add(entryTwo);
         input.add(entryThree);
@@ -58,7 +59,7 @@ public class DateSuggestionControllerTest {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
-        var input = new ArrayList<SerializableEntry>();
+        var input = new ArrayList<Entry<String>>();
         input.add(entryOne);
         input.add(entryTwo);
         input.add(entryThree);
@@ -79,7 +80,7 @@ public class DateSuggestionControllerTest {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
-        var input = new ArrayList<SerializableEntry>();
+        var input = new ArrayList<Entry<String>>();
         input.add(entryOne);
         input.add(entryTwo);
         input.add(entryThree);
@@ -100,7 +101,7 @@ public class DateSuggestionControllerTest {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
-        var input = new ArrayList<SerializableEntry>();
+        var input = new ArrayList<Entry<String>>();
         input.add(entryOne);
         input.add(entryTwo);
         input.add(entryThree);
@@ -117,7 +118,7 @@ public class DateSuggestionControllerTest {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
-        var input = new ArrayList<SerializableEntry>();
+        var input = new ArrayList<Entry<String>>();
         input.add(entryOne);
         input.add(entryTwo);
         input.add(entryThree);
@@ -134,7 +135,7 @@ public class DateSuggestionControllerTest {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(10, 18, 2, 2, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
-        var input = new ArrayList<SerializableEntry>();
+        var input = new ArrayList<Entry<String>>();
         input.add(entryOne);
         input.add(entryTwo);
         input.add(entryThree);
@@ -155,7 +156,7 @@ public class DateSuggestionControllerTest {
         var entryOne = createEntryDummy(10, 15, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(18, 20, 1, 1, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
-        var input = new ArrayList<SerializableEntry>();
+        var input = new ArrayList<Entry<String>>();
         input.add(entryOne);
         input.add(entryTwo);
         input.add(entryThree);
@@ -174,7 +175,7 @@ public class DateSuggestionControllerTest {
         var entryOne = createEntryDummy(10, 15, 1, 1, 1, 1);
         var entryTwo = createEntryDummy(18, 20, 1, 1, 1, 1);
         var entryThree = createEntryDummy(10, 18, 3, 3, 1, 1);
-        var input = new ArrayList<SerializableEntry>();
+        var input = new ArrayList<Entry<String>>();
         input.add(entryOne);
         input.add(entryTwo);
         input.add(entryThree);
@@ -188,9 +189,9 @@ public class DateSuggestionControllerTest {
         assertTrue(finalResult);
     }
 
-    private SerializableEntry createEntryDummy(int startTime, int EndTime, int startDay, int endDay, int startMonth,
+    private Entry<String> createEntryDummy(int startTime, int EndTime, int startDay, int endDay, int startMonth,
             int endMonth) {
-        var entryUser = new SerializableEntry();
+        var entryUser = new Entry<String>();
         entryUser.setTitle("User Preference");
         var startDate = LocalDate.of(2021, startMonth, startDay);
         var endDate = LocalDate.of(2021, endMonth, endDay);
