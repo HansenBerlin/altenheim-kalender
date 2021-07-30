@@ -33,7 +33,7 @@ public class SearchViewController extends ResponsiveController
     @FXML private RowConstraints firstRow;
     @FXML private Text txtHeaderStep, txtFirstStep, txtSecondStep, txtThirdStep;
     @FXML private TextField tfAppointmentName, tfDurationMinutes, tfDurationHours;
-    @FXML private Button btnBack, btnConfirm, btnReset;    
+    @FXML private Button btnBack, btnConfirm, btnReset, btnSendMail;    
     @FXML private VBox stepOneUserInput, stepTwoUserInput, stepThreeUserInput;
     @FXML private DatePicker startDate, endDate;    
     @FXML private CheckBox tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday;  
@@ -47,7 +47,7 @@ public class SearchViewController extends ResponsiveController
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
     @FXML private Text infoName, infoDuration, infoBetweenDate, infoBetweenTime, infoWeekdays, infoTravelTime, infoTimeBefore, infoTimeAfter, infoReccurrences, infoInterval;   
     
-    private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening, dropdownMailTemplates;
+    private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening, dropdownMailTemplates, dropDownContact;
     private int userStep = 1;
     private Button dummyButton = new Button();
     private SplitMenuButton calendarSelection = new SplitMenuButton();
@@ -115,18 +115,21 @@ public class SearchViewController extends ResponsiveController
     }
 
     @FXML
-    private void updateUserStepView(ActionEvent event) {
+    private void updateUserStepView(ActionEvent event) 
+    {
         String[] headings = { "Basisinformationen", "Optionale Informationen", "Vorschlagsauswahl" };
         Circle[] images = { imgFirstStep, imgSecondStep, imgThirdStep };
         VBox[] allSteps = { stepOneUserInput, stepTwoUserInput, stepThreeUserInput };
         int incrementor = 0;
         var button = (Button) event.getSource();
 
-        if (button.equals(btnReset)) {
+        if (button.equals(btnReset)) 
+        {
             clearFields();
             return;
         }
-        if (button.equals(btnConfirm)) {
+        if (button.equals(btnConfirm)) 
+        {
             btnReset.setVisible(true);
             if (userStep == 2) {
                 SuggestionsModel.data.clear();
@@ -135,6 +138,8 @@ public class SearchViewController extends ResponsiveController
                 btnConfirm.setText("NÄCHSTE 20 VORSCHLÄGE"); 
                 if (toggleAddAutomatically.isSelected())
                     btnConfirm.setVisible(false);
+                if (recurrences > 1 == false)
+                    btnSendMail.setVisible(true);
             }   
             if (userStep == 3)
             {                
@@ -142,12 +147,15 @@ public class SearchViewController extends ResponsiveController
                 return;
             }
             incrementor = 1;
-        } else if (button.equals(btnBack)) {
+        } 
+        else if (button.equals(btnBack)) 
+        {
             if (userStep == 1)
                 return;
             if (userStep == 3)
             {
                 btnReset.setVisible(false);
+                btnSendMail.setVisible(false);
                 btnConfirm.setVisible(true);
                 btnConfirm.setText("WEITER");
             }
@@ -161,6 +169,19 @@ public class SearchViewController extends ResponsiveController
         txtHeaderStep.setText(headings[currentIndex]);
     }
 
+    @FXML
+    void clickSendMail(ActionEvent event) 
+    {
+        if (toggleUseMailTemplate.isSelected())
+        {
+            String templateName = dropdownMailTemplates.getValue();
+            String recipient = validateRecipient();
+            String date = currentSuggestion.getStartDate().toString();
+            String time = currentSuggestion.getStartTime().toString();
+            mailCreationController.processMailWrapper(templateName, date, time, recipient);
+        }
+    }
+
     private void createComboBoxes() 
     {
         dropdownVehicle = comboBoxFactory.create(ComboBoxCreate.VEHICLES);
@@ -170,11 +191,12 @@ public class SearchViewController extends ResponsiveController
         dropdownInterval = comboBoxFactory.create(ComboBoxCreate.RECCURENCEOPTIONS);
         dropdownInterval.setValue(dropdownInterval.getItems().get(0)); 
         dropdownMailTemplates = comboBoxFactory.create(ComboBoxCreate.MAILTEMPLATESELECTORTEMPLATE);
+        dropDownContact = comboBoxFactory.create(ComboBoxCreate.START);
 
         containerTravel.getChildren().addAll(dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest);  
         containerOpeningHours.getChildren().add(dropdownDestinationOpening);
         containerReccurrence.getChildren().add(dropdownInterval);
-        containerMailTemplate.getChildren().add(dropdownMailTemplates);
+        containerMailTemplate.getChildren().addAll(dropdownMailTemplates, dropDownContact);
         dropdownEndAtDest.getEditor().textProperty().bindBidirectional(dropdownDestinationOpening.getEditor().textProperty());
         startDate.setEditable(false);
         endDate.setEditable(false);
@@ -484,17 +506,16 @@ public class SearchViewController extends ResponsiveController
             return 1;
     }
 
-    private void validateMailTemplate()
+    private String validateRecipient()
     {
-        if (toggleUseMailTemplate.isSelected())
+        String selectedContact = dropDownContact.getValue();
+        for (var contact : ContactModel.data) 
         {
-            mailcre
-
-
+            if (contact.getFullName().equals(selectedContact));
+                return contact.getMail();            
         }
-    }
-
-   
+        return "";
+    }   
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC) 
     {

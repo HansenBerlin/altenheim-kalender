@@ -54,7 +54,8 @@ public class SuggestionsModel {
     }    
 
     final static public void addToList(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate,
-            Button button, String title) {
+            Button button, String title) 
+    {
         SuggestionsModel.data.add(new SuggestionsModel(startTime, endTime, startDate, endDate, button, title));
     } 
 
