@@ -1,30 +1,44 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
+
+import org.controlsfx.control.PopOver;
+
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import javafx.stage.Window;
 import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.Style;
 
 public class PopupViewsController implements IPopupViewController 
 {
-    public static void showEntryAddedDialog(String date, String dateEnd, String start, String end, String title) 
+    public static void showEntryAddedDialog(String date, String dateEnd, String start, String end, String title, Button sendMailButton) 
     {
-        var alert = new Alert(Alert.AlertType.INFORMATION);
+        var popup = new PopOver();
         var jmetro = new JMetro(Style.LIGHT);
-        jmetro.setScene(alert.getDialogPane().getScene());
-        alert.setTitle("Kalendereintrag " + title + " erstellt");
-        alert.setHeaderText(null);
-        alert.setContentText(
-                String.format("Ein Termin von %s %s bis %s %s wurde im " + "aktuell gewählten Kalender erstellt", date,
-                        start, dateEnd, end));
-        alert.showAndWait();
+        jmetro.setScene(popup.getScene());
+        popup. setTitle("Kalendereintrag " + title + " erstellt");
+        //popup.sethead(null);
+        
+        var contentText = new Text(String.format("Ein Termin von %s %s bis %s %s wurde im " 
+                                          + "aktuell gewählten Kalender erstellt", 
+                                            date, start, dateEnd, end));
+        
+        var container = new VBox();
+        //var loginButtonType = new ButtonType("Bestätigen", ButtonBar.ButtonData.OK_DONE);
+        if (sendMailButton != null)
+            container.getChildren().addAll(contentText, sendMailButton);
+        else
+            container.getChildren().addAll(contentText);
+        popup.setContentNode(container);
+        popup.show(owner);
     }
 
     public boolean isRevalidationWanted() 
@@ -44,7 +58,8 @@ public class PopupViewsController implements IPopupViewController
         return result.get() == ButtonType.OK;
     }
 
-    public void showConfirmationDialog() {
+    public void showConfirmationDialog() 
+    {
         var alert = new Alert(Alert.AlertType.INFORMATION);
         var jmetro = new JMetro(Style.LIGHT);
         jmetro.setScene(alert.getDialogPane().getScene());
@@ -70,7 +85,7 @@ public class PopupViewsController implements IPopupViewController
 
     public String showPasswordInputDialog() 
     {
-        var dialog = new Dialog();
+        var dialog = new Dialog<String>();
         var jmetro = new JMetro(Style.LIGHT);
         jmetro.setScene(dialog.getDialogPane().getScene());
         dialog.setTitle("Entschlüsselung");
@@ -99,7 +114,7 @@ public class PopupViewsController implements IPopupViewController
 
     public String showChooseCalendarNameDialog() 
     {
-        var dialog = new Dialog();
+        var dialog = new Dialog<String>();
         var jmetro = new JMetro(Style.LIGHT);
         jmetro.setScene(dialog.getDialogPane().getScene());
         dialog.setTitle("Kalendername wählen");

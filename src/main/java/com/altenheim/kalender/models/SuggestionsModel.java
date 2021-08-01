@@ -11,7 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
-public class SuggestionsModel {
+public class SuggestionsModel 
+{
     final static public ObservableList<SuggestionsModel> data = FXCollections.observableArrayList();
     public static boolean toggleTravelTime = false;
     public static int travelTime;
@@ -22,14 +23,14 @@ public class SuggestionsModel {
     private Button button;
     private String title;
 
-    public SuggestionsModel(LocalTime startTime, LocalTime endTime, LocalDate dayStart, LocalDate dayEnd, Button button, String title) {
+    public SuggestionsModel(LocalTime startTime, LocalTime endTime, LocalDate dayStart, LocalDate dayEnd, Button button, String title) 
+    {
         this.startTime = startTime;
         this.endTime = endTime;
         this.dayStart = dayStart;
         this.dayEnd = dayEnd;
         this.button = button;
-        this.title = title;
-        registerButtonEvent();	    
+        this.title = title;        	    
     }
 
     public LocalTime getStartTime() { return startTime; }
@@ -38,6 +39,7 @@ public class SuggestionsModel {
     public LocalDate getDayEnd() { return dayEnd; } 
     public Button getButton() { return button; }
 
+    /*
     private void registerButtonEvent()
     {
         button.setOnAction(new EventHandler<ActionEvent>() 
@@ -48,18 +50,18 @@ public class SuggestionsModel {
                     travelTime = 0;                               
                 invokeEntryFactoryCreation(dayStart, dayEnd, startTime, endTime, title, travelTime);                 
                                   
-                PopupViewsController.showEntryAddedDialog(dayStart.toString(), dayEnd.toString(), startTime.toString(), endTime.toString(), title);
+                PopupViewsController.showEntryAddedDialog(dayStart.toString(), dayEnd.toString(), startTime.toString(), 
+                    endTime.toString(), title, sendMailButton);
             }
         });
-    }    
+    }    */
 
-    final static public void addToList(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate,
-            Button button, String title) 
+    static public void addToList(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, Button button, String title) 
     {
         SuggestionsModel.data.add(new SuggestionsModel(startTime, endTime, startDate, endDate, button, title));
     } 
 
-    
+    /*
     private void invokeEntryFactoryCreation(LocalDate dateStart, LocalDate dateEnd,
         LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel)
     {
@@ -74,5 +76,5 @@ public class SuggestionsModel {
         {
             e.printStackTrace();
         }        
-    }
+    }*/
 }

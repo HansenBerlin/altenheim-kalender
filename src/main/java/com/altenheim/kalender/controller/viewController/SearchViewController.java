@@ -3,6 +3,7 @@ package com.altenheim.kalender.controller.viewController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
@@ -49,7 +50,7 @@ public class SearchViewController extends ResponsiveController
     
     private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening, dropdownMailTemplates, dropDownContact;
     private int userStep = 1;
-    private Button dummyButton = new Button();
+    //private Button sendMailButton = new Button("Mailanfrage");
     private SplitMenuButton calendarSelection = new SplitMenuButton();
     private int recurrences = 1;   
     private int timeAfterGlobal = 0;
@@ -85,7 +86,7 @@ public class SearchViewController extends ResponsiveController
         this.comboBoxFactory = comboBoxFactory;
         this.dateSuggestionController = dateSuggestionController;
         this.allCalendars = allCalendars;
-        dummyButton.setVisible(false);
+        //sendMailButton.setVisible(false);
     }
 
     @FXML
@@ -139,7 +140,7 @@ public class SearchViewController extends ResponsiveController
                 btnConfirm.setText("NÄCHSTE 20 VORSCHLÄGE"); 
                 if (toggleAddAutomatically.isSelected())
                     btnConfirm.setVisible(false);
-                if (recurrences > 1 == false)
+                if (recurrences == 1)
                     btnSendMail.setVisible(true);
             }   
             if (userStep == 3)
@@ -172,15 +173,7 @@ public class SearchViewController extends ResponsiveController
 
     @FXML
     void clickSendMail(ActionEvent event) 
-    {
-        if (toggleUseMailTemplate.isSelected())
-        {
-            String templateName = dropdownMailTemplates.getValue();
-            String recipient = validateRecipient();
-            String date = currentSuggestion.getStartDate().toString();
-            String time = currentSuggestion.getStartTime().toString();
-            mailCreationController.processMailWrapper(templateName, date, time, recipient);
-        }
+    {        
     }
 
     private void createComboBoxes() 
@@ -266,11 +259,14 @@ public class SearchViewController extends ResponsiveController
             currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
             
             if (currentSuggestion == null)
-                return;        
+                return; 
             
+            var buttonAdd = createAddEntryButton(currentSuggestion);
             timeToStartSearch = currentSuggestion.getEndAsLocalDateTime(); 
-            SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
-                currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), new Button("EINTRAGEN"), tfAppointmentName.getText());
+            SuggestionsModel.addToList(currentSuggestion.getStartTime(), 
+                currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
+                currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), 
+                buttonAdd, tfAppointmentName.getText());
         } 
     } 
     
@@ -281,7 +277,8 @@ public class SearchViewController extends ResponsiveController
         if (interval == 0)
             interval = 1;
         LocalDateTime tempDate = timeToStartSearch.minusMinutes(1);
-        LocalTime startAt = timeToStartSearch.toLocalTime();
+        LocalTime startAt = timeToStartSearch.toLocalTime();                
+
         while (recurrences > 0) 
         {
             currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
@@ -292,15 +289,18 @@ public class SearchViewController extends ResponsiveController
 
             if (currentSuggestion.getStartAsLocalDateTime().isAfter(tempDate))
             {
+                var sendMailButton = createSendMailButton();
                 createEntryIncludingTravelTimes(currentSuggestion);                
-                SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
-                    currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), dummyButton, tfAppointmentName.getText());
+                SuggestionsModel.addToList(currentSuggestion.getStartTime(), 
+                    currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
+                    currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), 
+                    sendMailButton, tfAppointmentName.getText());
                 timeToStartSearch = LocalDateTime.of(timeToStartSearch.toLocalDate(), startAt);
                 tempDate = timeToStartSearch.plusDays(interval);
                 recurrences--;
             }
         } 
-    }
+    }    
 
     private void createEntryIncludingTravelTimes(Entry<String> currentSuggestion) 
     {
@@ -313,6 +313,61 @@ public class SearchViewController extends ResponsiveController
                 currentSuggestion.getEndDate(), currentSuggestion.getStartTime(),
                 currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), tfAppointmentName.getText(), traveltime);
     }
+
+    private Button createSendMailButton()
+    {
+        var button = new Button("Mailanfrage");
+        if (toggleUseMailTemplate.isSelected())  
+        {
+            button.setVisible(true); 
+            registerButtonSendMailEvent(button);
+        }      
+        else
+            button.setVisible(false);
+
+        return button;
+    }
+
+    private Button createAddEntryButton(Entry<String> currSug)
+    {
+        var button = new Button("EINTRAGEN");
+        String startDate = currSug.getStartDate().toString();
+        String endDate = currSug.getEndDate().toString();
+        String startTime = currSug.getStartTime().toString();
+        String endTime = currSug.getEndTime().toString();
+        String title = currSug.getTitle();
+        var sendMailButton = createSendMailButton();
+
+        button.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            public void handle(ActionEvent e) 
+            {
+                if (toggleUseTravelDuration.isSelected() == false)
+                    travelTimeTo = 0; 
+                createEntryIncludingTravelTimes(currSug);                           
+                                  
+                PopupViewsController.showEntryAddedDialog(startDate, endDate, startTime, endTime, title, sendMailButton);
+            }
+        }); 
+        return button;      
+    }
+
+
+
+    private void registerButtonSendMailEvent(Button button)
+    {
+        button.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            public void handle(ActionEvent e) 
+            {                
+                String templateName = dropdownMailTemplates.getValue();
+                String recipient = validateRecipient();
+                String date = currentSuggestion.getStartDate().toString();
+                String time = currentSuggestion.getStartTime().toString();
+                mailCreationController.processMailWrapper(templateName, date, time, recipient);                               
+            }
+        });
+    } 
     
     private void clearFields()
     {
@@ -587,10 +642,10 @@ public class SearchViewController extends ResponsiveController
 
     private void setupToggleBindings()
     {
-        ToggleSwitch[] toggles = { toggleDateRange, toggleTimeRange, toggleWeekdays, toggleUseTravelDuration, 
-            toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleCalendars, toggleUseMailTemplate };
-        HBox[] containers = { containerDateRange, containerTimeRange, containerWeekdays, containerTravel, 
-            containerOpeningHours, containerMargin, containerReccurrence, containerCalendars, containerMailTemplate };
+        ToggleSwitch[] toggles = { toggleDateRange, toggleTimeRange, toggleWeekdays, toggleCalendars, toggleUseTravelDuration, 
+            toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleUseMailTemplate };
+        HBox[] containers = { containerDateRange, containerTimeRange, containerWeekdays, containerCalendars, containerTravel, 
+            containerOpeningHours, containerMargin, containerReccurrence, containerMailTemplate };
 
         int i = 0;
 
@@ -601,7 +656,7 @@ public class SearchViewController extends ResponsiveController
             {
                 Boolean valueToSet;
                 {
-                    if (j > 2 && j < 9)
+                    if (j > 3 && j < 9)
                         valueToSet = newValue;
                     else
                         valueToSet = oldValue;
