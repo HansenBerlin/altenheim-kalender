@@ -145,13 +145,13 @@ public class MailTemplateViewController extends ResponsiveController {
 
     private void updateComboBoxTemplates() {
         var mailTemplate = comboBoxFactory.getMailTemplateSelectorTemplate();
-        var content = comboBoxFactory.getContent();
-        content.remove(content.indexOf(mailTemplate));
+        //var content = comboBoxFactory.getContent();
+        //content.remove(content.indexOf(mailTemplate));
         mailTemplate.clear();
         for (var entry : mailTemplatesModel.getTemplates().entrySet()) {
             mailTemplate.add(entry.getKey());
         }
-        content.add(mailTemplate);
+        //content.add(mailTemplate);
     }
     
 }

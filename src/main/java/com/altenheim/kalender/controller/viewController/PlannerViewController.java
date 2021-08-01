@@ -71,10 +71,9 @@ public class PlannerViewController extends ResponsiveController
                 if (calName.isBlank())
                     calName = "Neuer Kalender";
                 entryFactory.addCalendarToView(calendar, calName);
-                iOController.saveCalendar(calendar);                   
+                iOController.saveCalendar(calendar); 
+
             }
         });  
     }
-
-    
 }

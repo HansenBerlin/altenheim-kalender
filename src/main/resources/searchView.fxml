@@ -364,7 +364,7 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <HBox fx:id="containerCalendars" alignment="CENTER_LEFT">
+                        <HBox alignment="CENTER_LEFT">
                            <children>
                               <ToggleSwitch fx:id="toggleCalendars" graphicTextGap="0.0" minWidth="80.0" nodeOrientation="LEFT_TO_RIGHT" onMouseReleased="#calendarToggleClicked" prefHeight="20.0" prefWidth="108.0" selected="true" text="Standard">
                                  <HBox.margin>
@@ -374,6 +374,7 @@
                                     <Font size="11.0" />
                                  </font>
                               </ToggleSwitch>
+                              <HBox fx:id="containerCalendars" alignment="CENTER_LEFT" />
                            </children>
                         </HBox>
                      </children>

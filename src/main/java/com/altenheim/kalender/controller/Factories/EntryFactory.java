@@ -1,6 +1,7 @@
 package com.altenheim.kalender.controller.Factories;
 
 import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.models.CalendarEntriesModel;
 import com.altenheim.kalender.models.SettingsModel;
 import com.calendarfx.model.*;
 import javafx.event.EventHandler;
@@ -82,6 +83,7 @@ public class EntryFactory implements IEntryFactory
         EventHandler<CalendarEvent> eventHandler = event -> handleEvent(event);
         calendar.addEventHandler(eventHandler);
         calendarView.getCalendarSources().get(0).getCalendars().add(calendar);  
+        CalendarEntriesModel.calendarsComboBox.add(calendar.getName());
     }  
 
     public void clearCalendarSourceList()

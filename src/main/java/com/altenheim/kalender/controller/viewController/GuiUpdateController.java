@@ -65,7 +65,7 @@ public class GuiUpdateController
         }
     }
 
-    public void registerAddCalendarButton()
+    public void registerCalendars()
     {
         ((PlannerViewController)viewsInformation.getAllViewControllers()[0]).registerButtonEvents();
     }

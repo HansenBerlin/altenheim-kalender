@@ -106,7 +106,7 @@ public class IOController implements IIOController
             var loadFile = new FileInputStream(file);
             var inputStream = new ObjectInputStream(loadFile);
             var loadedContacts = (List<ContactModel>) inputStream.readObject();
-            contacts.rebuildObservablaListFromSerializedData(loadedContacts);
+            contacts.rebuildObservableListFromSerializedData(loadedContacts);
             inputStream.close();
             loadFile.close();
         } catch (ClassNotFoundException | IOException e) {

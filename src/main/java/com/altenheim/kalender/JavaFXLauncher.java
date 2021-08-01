@@ -52,7 +52,8 @@ public class JavaFXLauncher extends Application
         });
         
         primaryStage.show();
-        guiSetup.registerAddCalendarButton();
+        guiSetup.registerCalendars();
+
     }
 
     public static void main(String[] args) 

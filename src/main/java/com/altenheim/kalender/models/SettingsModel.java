@@ -1,6 +1,5 @@
 package com.altenheim.kalender.models;
 
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,22 +23,22 @@ public class SettingsModel implements Serializable
     public long notificationTimeBeforeEntryInMinutes = 15;
     private Long scrapingIntervalInMinutes = (long) 60000;    
     public String cssMode = "Light";
-    public String defaultCalendarForSearchView = "TestKalender";
+    public String defaultCalendarForSearchView = "";
     public String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
     private boolean useAdvancedFeatures = false;
 
-    public SimpleStringProperty street = new SimpleStringProperty();
-    public SimpleStringProperty houseNumber = new SimpleStringProperty();
-    public SimpleStringProperty zipCode = new SimpleStringProperty();
-    public SimpleStringProperty city = new SimpleStringProperty();
-    public SimpleStringProperty mail = new SimpleStringProperty();
-    public SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
-    public SimpleStringProperty course = new SimpleStringProperty("Kurs");
-    public SimpleStringProperty semester = new SimpleStringProperty("Sem.");
-    public SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
-    public PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
-    private SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
-    private SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
+    public transient SimpleStringProperty street = new SimpleStringProperty();
+    public transient SimpleStringProperty houseNumber = new SimpleStringProperty();
+    public transient SimpleStringProperty zipCode = new SimpleStringProperty();
+    public transient SimpleStringProperty city = new SimpleStringProperty();
+    public transient SimpleStringProperty mail = new SimpleStringProperty();
+    public transient SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
+    public transient SimpleStringProperty course = new SimpleStringProperty("Kurs");
+    public transient SimpleStringProperty semester = new SimpleStringProperty("Sem.");
+    public transient SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
+    public transient PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
+    private transient  SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
+    private transient  SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
     public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
     public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer;}  
     
@@ -59,16 +58,20 @@ public class SettingsModel implements Serializable
         scrapingIntervalInMinutes = interval;
     }
 
-    public void writeSimpleProperties() {
-        String path = "userFiles/settingsTest.file";
-        try {
+    public void writeSimpleProperties() 
+    {
+        String path = "userFiles/userSettings/settingsTest.file";
+        try 
+        {
             var writeToFile = new FileOutputStream(path);
             var streamOut = new ObjectOutputStream(writeToFile);
 
-            for (var simpleStringProperty : settingsInputFieldsContainer) {
+            for (var simpleStringProperty : settingsInputFieldsContainer) 
+            {
                 streamOut.writeUTF(simpleStringProperty.getValueSafe());
             }
-            for (var simpleStringProperty : settingsDropdownTitlesContainer) {
+            for (var simpleStringProperty : settingsDropdownTitlesContainer) 
+            {
                 streamOut.writeUTF(simpleStringProperty.getValueSafe());
             }
             streamOut.writeLong(scrapingIntervalInMinutes);
@@ -76,21 +79,27 @@ public class SettingsModel implements Serializable
             streamOut.writeUTF(cssMode);
             streamOut.close();
             writeToFile.close();
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
         }
     }
 
-    public void readSimpleProperties() {
-        try {
-            String path = "userFiles/settingsTest.file";
+    public void readSimpleProperties() 
+    {
+        try 
+        {
+            String path = "userFiles/userSettings/settingsTest.file";
             var loadFile = new FileInputStream(path);
             var inputStream = new ObjectInputStream(loadFile);
 
-            for (var simpleStringProperty : settingsInputFieldsContainer) {
+            for (var simpleStringProperty : settingsInputFieldsContainer) 
+            {
                 simpleStringProperty.set(inputStream.readUTF());
             }
-            for (var simpleStringProperty : settingsDropdownTitlesContainer) {
+            for (var simpleStringProperty : settingsDropdownTitlesContainer) 
+            {
                 simpleStringProperty.set(inputStream.readUTF());
             }
             scrapingIntervalInMinutes = inputStream.readLong();
@@ -98,7 +107,9 @@ public class SettingsModel implements Serializable
             cssMode = inputStream.readUTF();
             inputStream.close();
             loadFile.close();
-        } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
             e.printStackTrace();
         }
     }    

@@ -89,7 +89,8 @@ public class SearchViewController extends ResponsiveController
     }
 
     @FXML
-    private void initialize() {
+    private void initialize() 
+    {
         TableView<SuggestionsModel> tableSuggestions = createTable();
         stepThreeUserInput.getChildren().add(tableSuggestions);
         setupInitialContainerStates();
@@ -600,7 +601,7 @@ public class SearchViewController extends ResponsiveController
             {
                 Boolean valueToSet;
                 {
-                    if (j > 2 && j < 7)
+                    if (j > 2 && j < 9)
                         valueToSet = newValue;
                     else
                         valueToSet = oldValue;

@@ -5,8 +5,9 @@ import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 
-public interface IComboBoxFactory {
+public interface IComboBoxFactory 
+{
     ComboBox<String> create(ComboBoxCreate type);
     ObservableList<String> getMailTemplateSelectorTemplate();
-    List<ObservableList<String>> getContent();
+    //List<ObservableList<String>> getContent();
 }

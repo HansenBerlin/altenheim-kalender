@@ -68,6 +68,11 @@
                   <Text fx:id="txtNotificationHour" strokeType="OUTSIDE" strokeWidth="0.0" text="Benachrichtigung vor dem Termin in Minuten" />
                </children>
             </VBox>
+            <VBox fx:id="containerComboBoxDefaultCalendar" alignment="TOP_CENTER" spacing="5.0">
+               <children>
+                  <Text fx:id="txtNotificationHour1" strokeType="OUTSIDE" strokeWidth="0.0" text="Standardkalender" />
+               </children>
+            </VBox>
          </children>
          <opaqueInsets>
             <Insets />
