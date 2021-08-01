@@ -10,19 +10,19 @@ import com.altenheim.kalender.models.*;
 public class InjectorFactory
 {    
     private IViewRootsModel allViews;
+    private IIOController ioCt;
     private GuiUpdateController guiSetup;
     private JMetro jMetroStyle;
     private InitialSetupController initialSettingsLoader;
     private CustomViewOverride customCalendarView;
     private SettingsModel settings;
-    private IIOController ioCt;
     public IIOController getIOController() { return ioCt; }
+    public IViewRootsModel getAllViews() { return allViews; }
     public CustomViewOverride getCustomCalendarView() { return customCalendarView; }
     public GuiUpdateController getGuiController() { return guiSetup; }
-    public IViewRootsModel getAllViews() { return allViews; }
     public JMetro getJMetroSetup() { return jMetroStyle; }
     public InitialSetupController getInitialSettingsLoader() { return initialSettingsLoader; }
-    public SettingsModel getSettingsModel() {return settings; }
+    public SettingsModel getSettingsModel() { return settings; }
 
     public void createServices() 
     {     
@@ -57,11 +57,10 @@ public class InjectorFactory
         var contactsVCt = new ContactsViewController(ioCt);
         var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, comboBoxFactory, popupViewController, ioCt);
         var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory, ioCt);
-        var searchVCt = new SearchViewController(smartSearch, entryFactory, mailCreationCt, settings, apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController, calendarEntriesModel);
+        var searchVCt = new SearchViewController(smartSearch, entryFactory, mailCreationCt, settings, apiCt, animationController, comboBoxFactory, dateSuggestionController, calendarEntriesModel);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews);
         initialSettingsLoader = new InitialSetupController(settings, ioCt, popupViewController, websiteCt, systemNotificationsCt);
-    }
-    
+    }    
 }

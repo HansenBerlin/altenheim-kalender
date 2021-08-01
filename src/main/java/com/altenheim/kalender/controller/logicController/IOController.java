@@ -142,7 +142,7 @@ public class IOController implements IIOController
     {
         var file = new File(settings.getPathToUserDirectory() + "/mailTemplates/templates.file");
         if (!file.exists())
-            return null;
+            return new MailTemplateModel();
         try 
         {
             var loadFile = new FileInputStream(file);
@@ -155,7 +155,7 @@ public class IOController implements IIOController
         catch (IOException | ClassNotFoundException e) 
         {
             e.printStackTrace();
-            return null;
+            return new MailTemplateModel();
         }
     }
 
@@ -230,7 +230,7 @@ public class IOController implements IIOController
         catch (IOException | ClassNotFoundException e) 
         {
             e.printStackTrace();
-            return null;
+            return new SettingsModel();
         }
     }
 }
