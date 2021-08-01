@@ -69,7 +69,7 @@ public class PlannerViewController extends ResponsiveController
                 var calendar = new Calendar();
                 String calName = popups.showChooseCalendarNameDialog();
                 if (calName.isBlank())
-                    calName = "Neuer Kalender";
+                    return;
                 entryFactory.addCalendarToView(calendar, calName);
                 iOController.saveCalendar(calendar); 
 

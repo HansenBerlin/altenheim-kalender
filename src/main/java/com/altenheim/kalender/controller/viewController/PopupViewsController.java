@@ -119,7 +119,7 @@ public class PopupViewsController implements IPopupViewController
         var userInfo = new Text();
         userInfo.setText("Bitte gebe einen Namen für den neuen Kalender ein.\n"
             + "Der Kalender wird erst gespeichert wenn ein Termin eingetragen wurde.");
-        var loginButtonType = new ButtonType("Bestätigen", ButtonBar.ButtonData.OK_DONE);
+        var loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
         var grid = new GridPane();
         grid.setHgap(10);
@@ -134,7 +134,11 @@ public class PopupViewsController implements IPopupViewController
         Platform.runLater(() -> textInput.requestFocus());
         dialog.showAndWait();
 
-        return textInput.getText();
+        var dialogResult = dialog.resultProperty().toString();
+        if (dialogResult.equals("ObjectProperty [value: ButtonType [text=OK, buttonData=OK_DONE]]"))
+            return textInput.getText();
+        else
+            return "";
     }
 
     public void importDialog(IImportController importController, IEntryFactory entryFactory, Window stage) 
