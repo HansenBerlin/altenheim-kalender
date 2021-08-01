@@ -11,8 +11,9 @@ import javafx.collections.FXCollections;
 
 public class ContactModel implements Serializable 
 {
-    final static public ObservableList<ContactModel> data = FXCollections.observableArrayList();
+    public static ObservableList<ContactModel> data = FXCollections.observableArrayList();
     public static ObservableList<String> destinations = FXCollections.observableArrayList();
+    public static ObservableList<String> mailadresses = FXCollections.observableArrayList();
 
     private static int globalId = 1;
     private int iD;
@@ -46,6 +47,7 @@ public class ContactModel implements Serializable
         fullName = "%s %s".formatted(firstName, surName);
         address = "%s, %s %s".formatted(streetAndNumber, postalCode, city);
         destinations.add(address);
+        mailadresses.add(mail);
         registerButtonEvent();
     }
 
@@ -90,6 +92,7 @@ public class ContactModel implements Serializable
             contactModel.registerButtonEvent();
             ContactModel.data.add(contactModel);
             ContactModel.destinations.add(contactModel.address);
+            ContactModel.mailadresses.add(contactModel.mail);
         }
     } 
 }

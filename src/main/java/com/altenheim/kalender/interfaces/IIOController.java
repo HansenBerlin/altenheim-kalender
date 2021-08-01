@@ -10,14 +10,14 @@ public interface IIOController
     void loadCalendarsFromFile();
     void saveContactsToFile() throws IOException;
     void loadContactsFromFile() throws IOException, ClassNotFoundException;
+    void saveMailTemplatesToFile(MailTemplateModel templates);
     void writeSettings(SettingsModel settings);
-    SettingsModel restoreSettings();
-    void writeMailTemplates(MailTemplateModel templates);
-    MailTemplateModel restoreMailTemplates();
     void saveDecryptedPasswordHash(String hashedPassword);
     void saveHashedPassword(String passwordHash);
-    String loadHashedPassword();
     void createUserPath();
-    String getDecryptedPasswordHash();
     void addEntryFactory(IEntryFactory entryFactory);
+    String loadHashedPassword();
+    String getDecryptedPasswordHash();
+    MailTemplateModel loadMailTemplatesFromFile();
+    SettingsModel restoreSettings();
 }

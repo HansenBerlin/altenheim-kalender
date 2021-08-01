@@ -22,7 +22,9 @@ public class ComboBoxFactory implements IComboBoxFactory
     private ObservableList<String> mailTemplateSelectorTemplate = FXCollections.observableArrayList();
     private List<ObservableList<String>> content = new ArrayList<ObservableList<String>>();
     private ObservableList<String> calendars = FXCollections.observableArrayList();
-    private String[] headers = { "Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs", "Semester", "MailTemplate", "Standardkalender" };
+    private ObservableList<String> mailAdresses = FXCollections.observableArrayList();
+    private String[] headers = { "Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs", 
+        "Semester", "MailTemplate", "Standardkalender", "Mailadressen" };
 
     /*public void addToDestinations(String address) 
     {
@@ -39,6 +41,7 @@ public class ComboBoxFactory implements IComboBoxFactory
         vehicles.addAll("zu Fuß", "Fahrrad", "Öffis", "Auto");
         destinations = ContactModel.destinations;
         calendars = CalendarEntriesModel.calendarsComboBox;
+        mailAdresses = ContactModel.mailadresses;
         recurrenceOptions.addAll("täglich", "wöchentlich", "monatlich", "halbjährlich", "jährlich");
         notificationMin.addAll("5", "15", "30", "60");
         selectionSpecialField.addAll("IP", "Bank", "Bauwesen", "DL", "Elektrotechnik", "FM", "Handel", "IBA",
@@ -57,6 +60,7 @@ public class ComboBoxFactory implements IComboBoxFactory
         content.add(selectionSemester);
         content.add(mailTemplateSelectorTemplate);
         content.add(calendars);
+        content.add(mailAdresses);
     }
 
     public ObservableList<String> getMailTemplateSelectorTemplate() { return mailTemplateSelectorTemplate; }

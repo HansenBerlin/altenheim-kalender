@@ -1,44 +1,41 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
-
-import org.controlsfx.control.PopOver;
-
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Popup;
 import javafx.stage.Window;
 import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.Style;
 
 public class PopupViewsController implements IPopupViewController 
 {
-    public static void showEntryAddedDialog(String date, String dateEnd, String start, String end, String title, Button sendMailButton) 
+    public static void showEntryAddedDialogWithMailOption(String date, String dateEnd, String start, String end, String title, Button sendMailButton) 
     {
-        var popup = new PopOver();
+        var dialog = new Dialog<String>();
         var jmetro = new JMetro(Style.LIGHT);
-        jmetro.setScene(popup.getScene());
-        popup. setTitle("Kalendereintrag " + title + " erstellt");
-        //popup.sethead(null);
-        
-        var contentText = new Text(String.format("Ein Termin von %s %s bis %s %s wurde im " 
-                                          + "aktuell gewählten Kalender erstellt", 
-                                            date, start, dateEnd, end));
-        
-        var container = new VBox();
-        //var loginButtonType = new ButtonType("Bestätigen", ButtonBar.ButtonData.OK_DONE);
-        if (sendMailButton != null)
-            container.getChildren().addAll(contentText, sendMailButton);
-        else
-            container.getChildren().addAll(contentText);
-        popup.setContentNode(container);
-        popup.show(owner);
+        jmetro.setScene(dialog.getDialogPane().getScene());
+        dialog.setTitle("Eintrag erstellt");
+        dialog.setHeaderText(null);
+        var userInfo = new Text();
+        userInfo.setText(String.format("Ein Termin von %s %s bis %s %s wurde im " 
+                                        + "aktuell gewählten Kalender erstellt", 
+                                        date, start, dateEnd, end));
+        var loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType);
+        var grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));        
+        grid.add(userInfo, 0, 0, 2, 1);
+        grid.add(sendMailButton, 1, 1);
+        dialog.getDialogPane().setContent(grid);
+        dialog.showAndWait();
+
     }
 
     public boolean isRevalidationWanted() 

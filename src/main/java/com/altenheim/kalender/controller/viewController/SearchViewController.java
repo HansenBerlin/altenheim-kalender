@@ -42,16 +42,14 @@ public class SearchViewController extends ResponsiveController
     @FXML private ToggleSwitch toggleDateRange, toggleTimeRange, toggleWeekdays, toggleCalendars;   
     @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays, containerCalendars, containerMailTemplate;
     @FXML private HBox containerTravel, containerOpeningHours, containerMargin, containerReccurrence;
-    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, 
-        toggleAddAutomatically, toggleUseMailTemplate; 
+    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleAddAutomatically, toggleUseMailTemplate; 
     @FXML private Slider sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment;
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
     @FXML private Text infoName, infoDuration, infoBetweenDate, infoBetweenTime, infoWeekdays, infoTravelTime, infoTimeBefore, infoTimeAfter, infoReccurrences, infoInterval;   
     
     private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening, dropdownMailTemplates, dropDownContact;
-    private int userStep = 1;
-    //private Button sendMailButton = new Button("Mailanfrage");
     private SplitMenuButton calendarSelection = new SplitMenuButton();
+    private int userStep = 1;
     private int recurrences = 1;   
     private int timeAfterGlobal = 0;
     private int travelTimeTo = 0;
@@ -86,7 +84,6 @@ public class SearchViewController extends ResponsiveController
         this.comboBoxFactory = comboBoxFactory;
         this.dateSuggestionController = dateSuggestionController;
         this.allCalendars = allCalendars;
-        //sendMailButton.setVisible(false);
     }
 
     @FXML
@@ -98,7 +95,6 @@ public class SearchViewController extends ResponsiveController
         setupToggleBindings();
         setupTextboxInputValidation();
         createComboBoxes();
-        // setupSliderBindings();
         btnReset.setVisible(false);
     }
 
@@ -185,7 +181,7 @@ public class SearchViewController extends ResponsiveController
         dropdownInterval = comboBoxFactory.create(ComboBoxCreate.RECCURENCEOPTIONS);
         dropdownInterval.setValue(dropdownInterval.getItems().get(0)); 
         dropdownMailTemplates = comboBoxFactory.create(ComboBoxCreate.MAILTEMPLATESELECTORTEMPLATE);
-        dropDownContact = comboBoxFactory.create(ComboBoxCreate.START);
+        dropDownContact = comboBoxFactory.create(ComboBoxCreate.MAILADRESSES);
 
         containerTravel.getChildren().addAll(dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest);  
         containerOpeningHours.getChildren().add(dropdownDestinationOpening);
@@ -346,13 +342,11 @@ public class SearchViewController extends ResponsiveController
                     travelTimeTo = 0; 
                 createEntryIncludingTravelTimes(currSug);                           
                                   
-                PopupViewsController.showEntryAddedDialog(startDate, endDate, startTime, endTime, title, sendMailButton);
+                PopupViewsController.showEntryAddedDialogWithMailOption(startDate, endDate, startTime, endTime, title, sendMailButton);
             }
         }); 
         return button;      
     }
-
-
 
     private void registerButtonSendMailEvent(Button button)
     {

@@ -16,7 +16,7 @@ public class MailTemplateModel implements Serializable
     public String getDefaultTemplate() 
     {
         return "Sehr geehrte Damen und Herren, \nich hätte gerne einen Termin am "
-                + "[Datum] um [Uhrzeit].\nVielen Dank und mit freundlichem Gruß\nDein Stalker";
+                + "[Datum] um [Uhrzeit].\nVielen Dank und mit freundlichem Gruß,\n";
     }
 
     public void addTemplate(String key, String value) 
@@ -30,5 +30,5 @@ public class MailTemplateModel implements Serializable
     public void setTemplates(Map<String, String> map) 
     {
         this.templates = map;
-    }    
+    } 
 }

@@ -26,9 +26,9 @@ public class InitialSetupController
     public void initializeSettings() 
     {
         ioController.createUserPath();
-        ioController.loadCalendarsFromFile();
         try 
         {
+            ioController.loadCalendarsFromFile();
             ioController.loadContactsFromFile();
         } 
         catch (ClassNotFoundException | IOException e) 

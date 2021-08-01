@@ -30,15 +30,17 @@ public class InjectorFactory
         var jsonParser = new JsonParser();
         
         settings = new SettingsModel();
-        var mailTemplates = new MailTemplateModel();
         var contacts = new ContactModel();
-
-        var settingsFile = new File("userFiles/settingsTest.file");    
+        var settingsFile = new File("userFiles/userSettings/settingsTest.file");   
         if (settingsFile.exists())        
             settings.readSimpleProperties();
         customCalendarView = new CustomViewOverride(settings.cssMode);
                 
 
+        IExportController exportCt = new ExportController(settings);
+        IImportController importCt = new ImportController(settings);
+        ioCt = new IOController(settings, contacts, exportCt, importCt, null);
+        var mailTemplates = ioCt.loadMailTemplatesFromFile();
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
         IAnimationController animationController = new AnimationController();
         IPopupViewController popupViewController = new PopupViewsController();
@@ -46,10 +48,7 @@ public class InjectorFactory
         IMailCreationController mailCreationCt = new MailCreationController(mailTemplates);       
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel(customCalendarView);
         IDateSuggestionController dateSuggestionController = new DateSuggestionController();
-        IImportController importCt = new ImportController(settings);
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
-        IExportController exportCt = new ExportController(settings);
-        ioCt = new IOController(settings, contacts, exportCt, importCt, null);
         IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, ioCt, settings);
         ioCt.addEntryFactory(entryFactory);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt, entryFactory);
@@ -57,7 +56,7 @@ public class InjectorFactory
         var plannerVCt = new PlannerViewController(customCalendarView, ioCt, entryFactory, popupViewController);
         var contactsVCt = new ContactsViewController(ioCt);
         var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, comboBoxFactory, popupViewController, ioCt);
-        var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory);
+        var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory, ioCt);
         var searchVCt = new SearchViewController(smartSearch, entryFactory, mailCreationCt, settings, apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController, calendarEntriesModel);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
