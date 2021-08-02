@@ -16,7 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class SettingsViewController extends ResponsiveController {
+public class SettingsViewController extends ResponsiveController 
+{
     private SettingsModel settings;
     private IImportController importController;
     private IExportController exportController;
@@ -24,7 +25,6 @@ public class SettingsViewController extends ResponsiveController {
     private IEntryFactory calendarFactory;
     private IPopupViewController popupViewController;
     private IComboBoxFactory comboBoxFactory;
-    private IIOController iOController;
     private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse,
             comboBoxSelectionSemester, comboBoxDefaultCalendar;
 
@@ -39,7 +39,7 @@ public class SettingsViewController extends ResponsiveController {
 
     public SettingsViewController(SettingsModel settings, IImportController importController,
             IEntryFactory calendarFactory, IExportController exportController, ICalendarEntriesModel allCalendars,
-            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, IIOController iOController) 
+            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController) 
     {
         this.settings = settings;
         this.importController = importController;
@@ -48,7 +48,6 @@ public class SettingsViewController extends ResponsiveController {
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
         this.comboBoxFactory = comboBoxFactory;
-        this.iOController = iOController;
     }
 
     @FXML
@@ -140,6 +139,5 @@ public class SettingsViewController extends ResponsiveController {
     public void changeContentPosition(double width, double height) 
     {
         //
-    }
-    
+    }    
 }

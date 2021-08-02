@@ -55,7 +55,6 @@ public class MailTemplateViewController extends ResponsiveController
             updateTextArea("");
             txtFieldNameTemplate.setText("");
         }
-
     }
 
 
@@ -155,6 +154,5 @@ public class MailTemplateViewController extends ResponsiveController
 
     public void changeContentPosition(double width, double height) {
         //
-    }
-    
+    }    
 }

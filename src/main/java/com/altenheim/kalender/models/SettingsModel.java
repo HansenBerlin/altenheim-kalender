@@ -1,14 +1,10 @@
 package com.altenheim.kalender.models;
 
+import java.io.*;
 import java.beans.PropertyChangeSupport;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import jfxtras.styles.jmetro.Style;
 
 public class SettingsModel implements Serializable 
 {
@@ -40,8 +36,8 @@ public class SettingsModel implements Serializable
     private transient  SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
     private transient  SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
     public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
-    public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer;}  
-    
+    public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer; }   
+
     public String getPathToUserDirectory() { return userDirectory; }
     public File getPasswordhashFile() { return new File(userDirectory + "savedHash"); }
     public String getDecryptedPasswordHash() { return decryptedPassword; }
@@ -53,9 +49,19 @@ public class SettingsModel implements Serializable
     public void setCalendarParser(String scrappingURL) { this.scrappingURL = scrappingURL; }
     public String getCustomPathToSavedFiles() { return pathToSaveBackupFiles; }
     public String getCalendarParser() { return scrappingURL; }
-    public void setScrapingInterval(long interval) {
+    
+    public void setScrapingInterval(long interval) 
+    {
         propertyChange.firePropertyChange("scrapingIntervalInMinutes", scrapingIntervalInMinutes, interval);
         scrapingIntervalInMinutes = interval;
+    }
+
+    public Style getCssStyle() 
+    {
+        if (cssMode.equals("Light"))
+            return Style.LIGHT;
+        else
+            return Style.DARK;
     }
 
     public void writeSimpleProperties() 

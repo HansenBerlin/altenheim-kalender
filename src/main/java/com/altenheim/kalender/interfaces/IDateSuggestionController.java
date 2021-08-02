@@ -7,6 +7,5 @@ import com.calendarfx.model.Entry;
 
 public interface IDateSuggestionController 
 {
-    Entry<String> getDateSuggestionFromEntryList(ArrayList<Entry<String>> input,
-            LocalDateTime startSearchDateTime, int dateLenght);
+    Entry<String> getDateSuggestionFromEntryList(ArrayList<Entry<String>> input, LocalDateTime startSearchDateTime, int dateLenght);
 }

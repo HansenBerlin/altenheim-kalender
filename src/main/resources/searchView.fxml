@@ -21,7 +21,7 @@
 
 <GridPane alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="700.0" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints fx:id="firstRow" maxHeight="80.0" minHeight="30.0" vgrow="SOMETIMES" />

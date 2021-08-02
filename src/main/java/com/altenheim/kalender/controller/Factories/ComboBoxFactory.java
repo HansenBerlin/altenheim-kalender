@@ -24,17 +24,7 @@ public class ComboBoxFactory implements IComboBoxFactory
     private ObservableList<String> calendars = FXCollections.observableArrayList();
     private ObservableList<String> mailAdresses = FXCollections.observableArrayList();
     private String[] headers = { "Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs", 
-        "Semester", "MailTemplate", "Standardkalender", "Mailadressen" };
-
-    /*public void addToDestinations(String address) 
-    {
-        destinations.add(address);
-    }*/
-
-    /*public void addToCalendars(String name)
-    {
-        calendars.add(name);
-    }*/
+        "Semester", "MailTemplate", "Standardkalender", "Mailadressen" };    
 
     public ComboBoxFactory() 
     {
@@ -76,6 +66,4 @@ public class ComboBoxFactory implements IComboBoxFactory
             comboBox.setEditable(true);
         return comboBox;
     }
-
-    //public List<ObservableList<String>> getContent() { return content; }
 }

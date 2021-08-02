@@ -15,7 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
-import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,7 +31,6 @@ import org.controlsfx.control.ToggleSwitch;
 public class SearchViewController extends ResponsiveController
 {
     @FXML private Text txtHeaderStep, txtFirstStep, txtSecondStep, txtThirdStep;
-    @FXML private Text infoName, infoDuration, infoBetweenDate, infoBetweenTime, infoWeekdays, infoTravelTime, infoTimeBefore, infoTimeAfter, infoReccurrences, infoInterval;   
     @FXML private TextField tfAppointmentName, tfDurationMinutes, tfDurationHours;
     @FXML private ToggleSwitch toggleDateRange, toggleTimeRange, toggleWeekdays, toggleCalendars;   
     @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleAddAutomatically, toggleUseMailTemplate; 
@@ -64,13 +62,13 @@ public class SearchViewController extends ResponsiveController
     private IDateSuggestionController dateSuggestionController;
     private ICalendarEntriesModel allCalendars;
     private IMailCreationController mailCreationController;
+    private IPopupViewController popupViewController;
     private SettingsModel settings;
-    private ArrayList<Entry<String>> currentSuggestions;
-    
+    private ArrayList<Entry<String>> currentSuggestions;    
 
     public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory,
             IMailCreationController mailCreationController, SettingsModel settings, IGoogleAPIController api,
-            IAnimationController animationController, IComboBoxFactory comboBoxFactory,
+            IAnimationController animationController, IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController,
             IDateSuggestionController dateSuggestionController, ICalendarEntriesModel allCalendars) 
     {
         this.smartSearch = smartSearch;
@@ -82,6 +80,7 @@ public class SearchViewController extends ResponsiveController
         this.comboBoxFactory = comboBoxFactory;
         this.dateSuggestionController = dateSuggestionController;
         this.allCalendars = allCalendars;
+        this.popupViewController = popupViewController;
     }
 
     @FXML
@@ -333,7 +332,7 @@ public class SearchViewController extends ResponsiveController
                     travelTimeTo = 0; 
                 createEntryIncludingTravelTimes(currSug);                           
                                   
-                PopupViewsController.showEntryAddedDialogWithMailOption(startDate, endDate, startTime, endTime, title, sendMailButton);
+                popupViewController.showEntryAddedDialogWithMailOption(startDate, endDate, startTime, endTime, title, sendMailButton);
             }
         }); 
         return button;      
@@ -366,7 +365,11 @@ public class SearchViewController extends ResponsiveController
         resetToggleStates();
         resetSliderStates();
         setDateAndTimeFields();
-        containerCalendars.getChildren().clear();  
+        containerCalendars.getChildren().clear(); 
+        dropdownStartAtDest.getEditor().setText("");
+        dropdownEndAtDest.getEditor().setText("");
+        dropdownDestinationOpening.getEditor().setText("");
+         
     }
 
     private void resetToggleStates()
@@ -584,34 +587,6 @@ public class SearchViewController extends ResponsiveController
         nextC.setId("customCircleActive");
     }
 
-    @FXML
-    private void testUpdate(ActionEvent event) throws IOException, ClassNotFoundException 
-    {
-        // entryFactory.createRandomContactsList(100);
-        // iOController.saveContactsToFile();
-    }
-
-    @FXML
-    private void resetTest(ActionEvent event) throws IOException, ClassNotFoundException 
-    {
-        SuggestionsModel.data.clear();
-    }
-
-    final void changeContentPosition(double width, double height) 
-    {
-        Text[] headers = { txtFirstStep, txtSecondStep, txtThirdStep };
-        Circle[] circles = { imgFirstStep, imgSecondStep, imgThirdStep };
-        boolean isWindowSmall = false;
-        int rowHeight = 80;
-        if (height < 700) {
-            isWindowSmall = true;
-            rowHeight = 30;
-        }
-        firstRow.setPrefHeight(rowHeight);
-        firstRow.setMaxHeight(rowHeight);
-        animationController.growAndShrinkCircle(circles, headers, isWindowSmall);
-    }
-
     private TableView<SuggestionsModel> createTable() 
     {
         TableColumn<SuggestionsModel, String> startTimeColumn = new TableColumn<>("Startzeit");
@@ -627,10 +602,10 @@ public class SearchViewController extends ResponsiveController
         dateColumnEnd.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("dayEnd"));
         button.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("button"));
 
-        startTimeColumn.setPrefWidth(150);
-        endTimeColumn.setPrefWidth(150);
-        dateColumnStart.setPrefWidth(150);
-        dateColumnEnd.setPrefWidth(150);
+        startTimeColumn.setPrefWidth(100);
+        endTimeColumn.setPrefWidth(100);
+        dateColumnStart.setPrefWidth(100);
+        dateColumnEnd.setPrefWidth(100);
         button.setPrefWidth(150);
         table.getColumns().add(startTimeColumn);
         table.getColumns().add(endTimeColumn);
@@ -696,5 +671,20 @@ public class SearchViewController extends ResponsiveController
             });
         i++;            
         };
+    }
+
+    final void changeContentPosition(double width, double height) 
+    {
+        Text[] headers = { txtFirstStep, txtSecondStep, txtThirdStep };
+        Circle[] circles = { imgFirstStep, imgSecondStep, imgThirdStep };
+        boolean isWindowSmall = false;
+        int rowHeight = 80;
+        if (height < 700) {
+            isWindowSmall = true;
+            rowHeight = 30;
+        }
+        firstRow.setPrefHeight(rowHeight);
+        firstRow.setMaxHeight(rowHeight);
+        animationController.growAndShrinkCircle(circles, headers, isWindowSmall);
     }
 }

@@ -19,12 +19,12 @@ public class JavaFXLauncher extends Application
         objectFactory.createServices();
         var guiSetup = objectFactory.getGuiController();
         guiSetup.init();
-        var mainController = new MainWindowController(primaryStage, objectFactory.getAllViews(), guiSetup,
+        var mainWindowController = new MainWindowController(primaryStage, objectFactory.getAllViews(), guiSetup,
                 objectFactory.getCustomCalendarView(), objectFactory.getSettingsModel());
 
         var loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/mainView.fxml"));
-        loader.setController(mainController);
+        loader.setController(mainWindowController);
 
         Parent root = loader.load();
         var scene = new Scene(root);
@@ -40,8 +40,7 @@ public class JavaFXLauncher extends Application
         initialSettingsLoader.initializeSettings();
         initialSettingsLoader.initialValidationCheck();
 
-        mainController.switchCssMode();
-        mainController.updateViewOnButtonClicked(mainController.getPlannerMenuButton());        
+        mainWindowController.switchCssMode();
         
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() 
         {
@@ -59,6 +58,5 @@ public class JavaFXLauncher extends Application
     public static void main(String[] args) 
     {
         launch(args);
-    }
-    
+    }    
 }

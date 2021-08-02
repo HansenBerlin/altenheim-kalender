@@ -1,6 +1,9 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.models.SettingsModel;
+import com.calendarfx.model.Calendar;
+
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -14,10 +17,17 @@ import jfxtras.styles.jmetro.Style;
 
 public class PopupViewsController implements IPopupViewController 
 {
-    public static void showEntryAddedDialogWithMailOption(String date, String dateEnd, String start, String end, String title, Button sendMailButton) 
+    private SettingsModel settings;
+
+    public PopupViewsController(SettingsModel settings)
+    {
+        this.settings = settings;
+    }
+
+    public void showEntryAddedDialogWithMailOption(String date, String dateEnd, String start, String end, String title, Button sendMailButton) 
     {
         var dialog = new Dialog<String>();
-        var jmetro = new JMetro(Style.LIGHT);
+        var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(dialog.getDialogPane().getScene());
         dialog.setTitle("Eintrag erstellt");
         dialog.setHeaderText(null);
@@ -41,7 +51,7 @@ public class PopupViewsController implements IPopupViewController
     public boolean isRevalidationWanted() 
     {
         var alert = new Alert(Alert.AlertType.CONFIRMATION);
-        var jmetro = new JMetro(Style.LIGHT);
+        var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
         alert.setTitle("Eingabe fehlgeschlagen");
         alert.setHeaderText("Das Passwort war falsch.");
@@ -58,7 +68,7 @@ public class PopupViewsController implements IPopupViewController
     public void showConfirmationDialog() 
     {
         var alert = new Alert(Alert.AlertType.INFORMATION);
-        var jmetro = new JMetro(Style.LIGHT);
+        var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
         alert.setTitle("Validierung erfolgreich");
         alert.setHeaderText(null);
@@ -70,7 +80,7 @@ public class PopupViewsController implements IPopupViewController
     public void showCancelDialog() 
     {
         var alert = new Alert(Alert.AlertType.WARNING);
-        var jmetro = new JMetro(Style.LIGHT);
+        var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
         alert.setTitle("Erweiterte Funktionen nicht aktiv.");
         alert.setHeaderText(null);
@@ -83,7 +93,7 @@ public class PopupViewsController implements IPopupViewController
     public String showPasswordInputDialog() 
     {
         var dialog = new Dialog<String>();
-        var jmetro = new JMetro(Style.LIGHT);
+        var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(dialog.getDialogPane().getScene());
         dialog.setTitle("Entschlüsselung");
         dialog.setHeaderText(null);
@@ -112,7 +122,7 @@ public class PopupViewsController implements IPopupViewController
     public String showChooseCalendarNameDialog() 
     {
         var dialog = new Dialog<String>();
-        var jmetro = new JMetro(Style.LIGHT);
+        var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(dialog.getDialogPane().getScene());
         dialog.setTitle("Kalendername wählen");
         dialog.setHeaderText(null);
@@ -151,19 +161,48 @@ public class PopupViewsController implements IPopupViewController
         entryFactory.addCalendarToView(importedCalendar, file.getName());
     }
 
+    private void showCalendarExportedDialog(int exportedCount, boolean isSuccessful) 
+    {
+        String message = "";
+        if (isSuccessful)
+            message = "Es wurden " + exportedCount + " Kalenderdateien exportiert.";
+        else
+            message = "Aufrund eines Fehlers wurde kein Kalender exportiert.";
+
+        var alert = new Alert(Alert.AlertType.INFORMATION);
+        var jmetro = new JMetro(settings.getCssStyle());
+        jmetro.setScene(alert.getDialogPane().getScene());
+        alert.setTitle("Kalender erfolgreich exportiert");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     public void exportDialog(IExportController exportController, ICalendarEntriesModel allEntries, Window stage) 
     {
         var calendars = allEntries.getAllCalendars();
-        var directoryChooser = new DirectoryChooser();
-        var path = directoryChooser.showDialog(stage);
-        if (path == null)
-            return;
-        for (var calendar : calendars) {
-            try {
+        
+        for (var calendar : calendars) 
+        {
+            try 
+            {
+                var directoryChooser = new DirectoryChooser();
+                directoryChooser.setTitle("Speicherort für Kalender " + calendar.getName() + " wählen.");
+                var path = directoryChooser.showDialog(stage);
+                if (path == null)
+                {
+                    showCalendarExportedDialog(0, false);
+                    return;
+                }
                 exportController.exportCalendarAsFile(calendar, path.getAbsolutePath());
-            } catch (Exception e) {
+            } 
+            catch (Exception e) 
+            {
                 e.printStackTrace();
+                showCalendarExportedDialog(0, false);
+                return;
             }
         }
+        showCalendarExportedDialog(calendars.size(), true);
     }    
 }

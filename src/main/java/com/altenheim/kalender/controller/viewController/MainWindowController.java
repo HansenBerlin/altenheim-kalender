@@ -61,9 +61,7 @@ public class MainWindowController extends ResponsiveController
         this.guiSetup = guiSetup;
         this.customCalendar = customCalendar;
         this.settings = settings;
-    }
-    
-    public Button getPlannerMenuButton() { return menuBtnPlanner; } //TODO: warum?
+    }   
 
     @FXML
     private void initialize() throws IOException 
@@ -142,19 +140,6 @@ public class MainWindowController extends ResponsiveController
             applicationStyle.clear();
             applicationStyle.add(0, appCssFile);
         }
-    }   
-
-    private void updateCalendarStyle(CalendarView calendarView, String cssFile) 
-    {
-        var newView = new CalendarView();
-        newView.getStylesheets().add(cssFile);
-        var newCalendarSource = new CalendarSource();
-        var oldCalendarSources = calendarView.getCalendarSources();
-        for (var source : oldCalendarSources) {
-            newCalendarSource.getCalendars().addAll(source.getCalendars());
-        }
-        ((PlannerViewController) allViewsInformation.getAllViewControllers()[0])
-                .updateCustomCalendarView((CustomViewOverride) newView);
     }
   
     public void updateViewOnButtonClicked(Button pressed) 
@@ -178,7 +163,10 @@ public class MainWindowController extends ResponsiveController
         Pane[] buttonBackgrounds = { menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneContacts, menuBtnPaneMail, menuBtnPaneSettings, null, null };
         allButtonsWithBackgrounds = guiSetup.createMainMenuButtons(buttonsList, buttonBackgrounds);
         currentlyActive = menuBtnPlanner;
-        menuBtnPanePlanner.setBackground(currentSecondaryColor);
+        if (settings.cssMode.equals("Dark"))
+            menuBtnPanePlanner.setBackground(StylePresets.LIGHT_SECONDARY);
+        else
+            menuBtnPanePlanner.setBackground(StylePresets.DARK_SECONDARY);
     }
 
     private void bindWindowSize() 

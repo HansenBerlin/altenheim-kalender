@@ -1,9 +1,7 @@
 package com.altenheim.kalender.controller.Factories;
 
 import java.util.List;
-
 import com.calendarfx.model.Calendar;
-
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitMenuButton;
