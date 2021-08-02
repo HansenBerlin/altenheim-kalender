@@ -6,7 +6,8 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.geometry.Insets;
 
-public class StylePresets {
+public class StylePresets 
+{
     public static final Background DARK_PRIMARY = getPreset(1);
     public static final Background DARK_SECONDARY = getPreset(2);
     public static final Background DARK_MAIN_BACKGROUND = getPreset(3);
@@ -23,7 +24,8 @@ public class StylePresets {
     public static final String DARK_CALENDAR_CSS_FILE = getCalendarCssFile(true);
     public static final String LIGHT_CALENDAR_CSS_FILE = getCalendarCssFile(false);
 
-    private static Background getPreset(int presetNumber) {
+    private static Background getPreset(int presetNumber) 
+    {
         String stylesheet = null;
         switch (presetNumber) {
             case 1:
