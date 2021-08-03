@@ -1,25 +1,25 @@
-package com.altenheim.kalender.controller.logicController;
+package com.altenheim.kalender.resourceClasses;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class DateFormatController {
-    public String formatDate(LocalDate date) {
+public class DateFormatConverter {
+    public static String formatDate(LocalDate date) {
         var dateFormat = new SimpleDateFormat("dd.mm.yyyy");
         dateFormat.format(date);
         return dateFormat.toString();
     }
 
-    public String formatTime(LocalTime time) {
+    public static String formatTime(LocalTime time) {
         var timeFormat = new SimpleDateFormat("hh.mm.ss");
         timeFormat.format(time);
         return timeFormat.toString();        
     }
 
-    public String formatDateTime(LocalDateTime dateTime) {
-        var dateTimeFormat = new SimpleDateFormat("hh.mm.ss. dd.mm.yyyy");
+    public static String formatDateTime(LocalDateTime dateTime) {
+        var dateTimeFormat = new SimpleDateFormat("hh.mm.ss dd.mm.yyyy");
         dateTimeFormat.format(dateTime);
         return dateTimeFormat.toString();
     }
