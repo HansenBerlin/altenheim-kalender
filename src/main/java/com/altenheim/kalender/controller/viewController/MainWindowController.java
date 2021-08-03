@@ -1,6 +1,7 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.IAnimationController;
+import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.interfaces.IViewRootsModel;
 import com.altenheim.kalender.models.SettingsModel;
 import com.altenheim.kalender.resourceClasses.StylePresets;
@@ -30,6 +31,7 @@ import jfxtras.styles.jmetro.Style;
 public class MainWindowController extends ResponsiveController 
 {
     private IViewRootsModel allViewsInformation;
+    private IIOController iOController;
     private CustomViewOverride customCalendar;
     private Stage stage;
     private GuiUpdateController guiSetup;
@@ -54,13 +56,15 @@ public class MainWindowController extends ResponsiveController
     @FXML private HBox topButtonRow;
 
     public MainWindowController(Stage stage, IViewRootsModel allViewsInformation, GuiUpdateController guiSetup,
-            CustomViewOverride customCalendar, SettingsModel settings) 
+            CustomViewOverride customCalendar, SettingsModel settings, IIOController iOController) 
     {
         this.stage = stage;
         this.allViewsInformation = allViewsInformation;
         this.guiSetup = guiSetup;
         this.customCalendar = customCalendar;
         this.settings = settings;
+        this.iOController = iOController;
+
     }   
 
     @FXML
@@ -109,7 +113,8 @@ public class MainWindowController extends ResponsiveController
                     StylePresets.LIGHT_CALENDAR_CSS_FILE, StylePresets.DARK_CALENDAR_CSS_FILE);
             currentSecondaryColor = StylePresets.DARK_SECONDARY;
             settings.cssMode = "Dark";
-            settings.writeSimpleProperties();
+            //settings.writeSimpleProperties();
+            iOController.writeSettings(settings);
         } 
         else 
         {
@@ -119,7 +124,8 @@ public class MainWindowController extends ResponsiveController
                     StylePresets.DARK_CALENDAR_CSS_FILE, StylePresets.LIGHT_CALENDAR_CSS_FILE);
             currentSecondaryColor = StylePresets.LIGHT_SECONDARY;
             settings.cssMode = "Light";
-            settings.writeSimpleProperties();
+            //settings.writeSimpleProperties();
+            iOController.writeSettings(settings);
         }
     }
 
@@ -189,7 +195,6 @@ public class MainWindowController extends ResponsiveController
         allViewsInformation.getAllViews()[currentView].setMinSize(width, height);
         allViewsInformation.getAllViews()[currentView].setPrefSize(width, height);
         allViewsInformation.getAllViews()[currentView].setMaxSize(width, height);
-
         allViewsInformation.getAllViewControllers()[currentView].changeContentPosition(width, height);
     }
 

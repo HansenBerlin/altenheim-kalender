@@ -33,8 +33,8 @@ public class SettingsModel implements Serializable
     public transient SimpleStringProperty semester = new SimpleStringProperty("Sem.");
     public transient SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
     public transient PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
-    private transient  SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
-    private transient  SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
+    private transient SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
+    private transient SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
     public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
     public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer; }   
 
@@ -66,7 +66,7 @@ public class SettingsModel implements Serializable
 
     public void writeSimpleProperties() 
     {
-        String path = "userFiles/userSettings/settingsTest.file";
+        String path = "userFiles/userSettings/settingsSimpleProps.file";
         try 
         {
             var writeToFile = new FileOutputStream(path);
@@ -96,7 +96,7 @@ public class SettingsModel implements Serializable
     {
         try 
         {
-            String path = "userFiles/userSettings/settingsTest.file";
+            String path = "userFiles/userSettings/settingsSimpleProps.file";
             var loadFile = new FileInputStream(path);
             var inputStream = new ObjectInputStream(loadFile);
 

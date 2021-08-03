@@ -25,6 +25,7 @@ public class SettingsViewController extends ResponsiveController
     private IEntryFactory calendarFactory;
     private IPopupViewController popupViewController;
     private IComboBoxFactory comboBoxFactory;
+    private IIOController iOController;
     private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse,
             comboBoxSelectionSemester, comboBoxDefaultCalendar;
 
@@ -39,7 +40,7 @@ public class SettingsViewController extends ResponsiveController
 
     public SettingsViewController(SettingsModel settings, IImportController importController,
             IEntryFactory calendarFactory, IExportController exportController, ICalendarEntriesModel allCalendars,
-            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController) 
+            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, IIOController iOController) 
     {
         this.settings = settings;
         this.importController = importController;
@@ -48,6 +49,7 @@ public class SettingsViewController extends ResponsiveController
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
         this.comboBoxFactory = comboBoxFactory;
+        this.iOController = iOController;
     }
 
     @FXML
@@ -132,6 +134,7 @@ public class SettingsViewController extends ResponsiveController
         settings.notificationTimeBeforeEntryInMinutes = (long) Long.valueOf(comboBoxNotificationMin.getValue());
         settings.defaultCalendarForSearchView = comboBoxDefaultCalendar.getValue();
         settings.writeSimpleProperties();
+        iOController.writeSettings(settings);    
     }
 
    

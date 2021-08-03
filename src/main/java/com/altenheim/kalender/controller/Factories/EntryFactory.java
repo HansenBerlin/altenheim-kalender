@@ -22,12 +22,15 @@ public class EntryFactory implements IEntryFactory
     private CustomViewOverride calendarView;
     private IIOController ioController;
     private SettingsModel settings;
+    private IExportController exportController;
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView, IIOController ioController, SettingsModel settings) 
+    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView, 
+        IIOController ioController, SettingsModel settings, IExportController exportController) 
     {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
         this.ioController = ioController;
+        this.exportController = exportController;
         this.settings = settings;
     }
 
@@ -74,7 +77,7 @@ public class EntryFactory implements IEntryFactory
             }
         }
         addCalendarToView(calendar, "TestKalender");
-        ioController.saveCalendar(calendar);
+        ioController.saveCalendar(calendar, exportController);
     }
 
     public void addCalendarToView(Calendar calendar, String name) 
@@ -95,7 +98,7 @@ public class EntryFactory implements IEntryFactory
     
     public void handleEvent(CalendarEvent event)
     {
-        ioController.saveCalendar(event.getCalendar());
+        ioController.saveCalendar(event.getCalendar(), exportController);
     }
 
     private Entry<String> createRandomEntry(int day, int month, int startT, int endT)

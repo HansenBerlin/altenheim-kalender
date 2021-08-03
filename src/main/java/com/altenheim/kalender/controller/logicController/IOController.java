@@ -14,33 +14,16 @@ import java.util.List;
 public class IOController implements IIOController 
 {
     protected SettingsModel settings;
-    private ContactModel contacts;
+    //private ContactModel contacts;
+    //private String hashedPassword;
+    //private IExportController exportCt;
+    //private IImportController importCt;
+    //private IEntryFactory entryFactory;
     private String hashedPassword;
-    private IExportController exportCt;
-    private IImportController importCt;
-    private IEntryFactory entryFactory;
-
-    public IOController(SettingsModel settings, ContactModel contacts, 
-        IExportController exportCt, IImportController importCt, IEntryFactory entryFactory) 
-    {
-        this.settings = settings;
-        this.contacts = contacts;
-        this.exportCt = exportCt;
-        this.importCt = importCt;
-        this.entryFactory = entryFactory;
-    }
-
-    public void addEntryFactory(IEntryFactory entryFactory)
-    {
-        this.entryFactory = entryFactory;
-    }
-
-    public void saveDecryptedPasswordHash(String hashedPassword) 
-    {
-        this.hashedPassword = hashedPassword;
-    }
-
-    public String getDecryptedPasswordHash() { return hashedPassword; }    
+    
+    public void saveDecryptedPasswordHash(String hashedPassword) { this.hashedPassword = hashedPassword; }
+    public String getDecryptedPasswordHash() { return hashedPassword; }
+    public void addSettingsModel(SettingsModel settings) { this.settings = settings; }
 
     public void createUserPath() 
     {
@@ -55,7 +38,7 @@ public class IOController implements IIOController
         }
     }
 
-    public void saveCalendar(Calendar calendar) 
+    public void saveCalendar(Calendar calendar, IExportController exportCt) 
     {        
         try 
         {
@@ -68,7 +51,7 @@ public class IOController implements IIOController
         } 
     }
 
-    public void loadCalendarsFromFile() 
+    public void loadCalendarsFromFile(IEntryFactory entryFactory, IImportController importCt) 
     {
         entryFactory.clearCalendarSourceList();
         var allCalendarFiles = new File(settings.getPathToUserDirectory() + "calendars").listFiles();
@@ -83,7 +66,7 @@ public class IOController implements IIOController
         }  
     }
 
-    public void saveContactsToFile() 
+    public void saveContactsToFile(ContactModel contacts) 
     {
         var path = settings.getPathToUserDirectory() + "/contacts/contacts.file";
         try 
@@ -100,7 +83,7 @@ public class IOController implements IIOController
         }
     }
 
-    public void loadContactsFromFile() 
+    public void loadContactsFromFile(ContactModel contacts) 
     {
         var file = new File(settings.getPathToUserDirectory() + "/contacts/contacts.file");
         if (file.exists() == false)
@@ -198,6 +181,7 @@ public class IOController implements IIOController
 
     public void writeSettings(SettingsModel settings) 
     {
+        settings.writeSimpleProperties();
         var path = settings.getPathToUserDirectory() + "/userSettings/settings.file";
         try 
         {
@@ -217,7 +201,7 @@ public class IOController implements IIOController
     {
         var file = new File("userFiles/userSettings/settings.file");
         if (!file.exists())
-            return null;
+            return new SettingsModel();
         try 
         {
             var loadFile = new FileInputStream("userFiles/userSettings/settings.file");

@@ -18,10 +18,12 @@ public class ContactsViewController extends ResponsiveController
     @FXML private VBox tableContainer;
 
     private IIOController ioController;
+    private ContactModel contacts;
 
-    public ContactsViewController(IIOController ioController) 
+    public ContactsViewController(IIOController ioController, ContactModel contacts) 
     {
         this.ioController = ioController;
+        this.contacts = contacts;
     }
 
     @FXML
@@ -49,9 +51,9 @@ public class ContactsViewController extends ResponsiveController
             {
                 try 
                 {
-                    ioController.saveContactsToFile();
+                    ioController.saveContactsToFile(contacts);
                 } 
-                catch (IOException e) 
+                catch (Exception e) 
                 {
                     e.printStackTrace();
                 }               
