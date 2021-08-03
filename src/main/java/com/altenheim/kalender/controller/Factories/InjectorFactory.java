@@ -60,9 +60,10 @@ public class InjectorFactory
         var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory);
         var searchVCt = new SearchViewController(smartSearch, entryFactory, mailTemplates, settings, apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController, calendarEntriesModel);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
+        var timerTasksController = new TimerTasksController(customCalendarView, settings, systemNotificationsCt, websiteCt);
         allViews = new ViewRootsModel(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews);
-        initialSettingsLoader = new InitialSetupController(settings, ioCt, popupViewController, websiteCt, systemNotificationsCt);
+        initialSettingsLoader = new InitialSetupController(settings, ioCt, popupViewController, systemNotificationsCt, timerTasksController);
     }
     
 }

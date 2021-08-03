@@ -10,17 +10,17 @@ public class InitialSetupController
     private SettingsModel settings;
     private IIOController ioController;
     private IPopupViewController popup;
-    private IWebsiteScraperController websiteScraper;
     private ISystemNotificationsController systemNotifications;
+    private TimerTasksController timerTasksController;
 
-    public InitialSetupController(SettingsModel settings, IIOController ioController, IPopupViewController popup,
-            IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications) 
+    public InitialSetupController(SettingsModel settings, IIOController ioController, IPopupViewController popup, 
+            ISystemNotificationsController systemNotifications, TimerTasksController timerTasksController) 
     {
         this.settings = settings;
         this.ioController = ioController;
         this.popup = popup;
-        this.websiteScraper = websiteScraper;
         this.systemNotifications = systemNotifications;
+        this.timerTasksController = timerTasksController;
     }
 
     public void initializeSettings() 
@@ -35,11 +35,10 @@ public class InitialSetupController
         {
             e.printStackTrace();
         }
-        websiteScraper.startScraperTask();
-        if (systemNotifications.initializeSystemTrayAccess()) 
-        {
-            systemNotifications.startNotificationTask();
-        }
+        
+        if (systemNotifications.initializeSystemTrayAccess())
+            timerTasksController.setpossibleSystemNotifications(true);
+        timerTasksController.startNotificationTasks();
     }
 
     public void initialValidationCheck() 

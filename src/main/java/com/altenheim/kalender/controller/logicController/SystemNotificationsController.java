@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 
@@ -18,7 +16,7 @@ import com.altenheim.kalender.interfaces.ISystemNotificationsController;
 import com.altenheim.kalender.models.SettingsModel;
 import com.calendarfx.model.Entry;
 
-public class SystemNotificationsController extends TimerTask implements ISystemNotificationsController {
+public class SystemNotificationsController implements ISystemNotificationsController {
     private SettingsModel settings;
     private ICalendarEntriesModel administrateEntries;
 
@@ -29,16 +27,7 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
         this.administrateEntries = administrateEntries;
     }
 
-    public void startNotificationTask() {
-        var timer = new Timer();
-        timer.schedule(this, 0, settings.entrySystemMessageIntervalInMinutes * 60000);
-    }
-
-    public void run() {
-        prepareSystemMessagesForEntrys();
-    }
-
-    private void prepareSystemMessagesForEntrys() {
+    public void prepareSystemMessagesForEntrys() {
         var start = LocalDateTime.now();
         var timeToAdd = settings.notificationTimeBeforeEntryInMinutes;
         var end = start.plusMinutes(settings.entrySystemMessageIntervalInMinutes);

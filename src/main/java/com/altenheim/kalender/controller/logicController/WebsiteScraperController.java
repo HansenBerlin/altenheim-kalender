@@ -11,10 +11,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.file.Paths;
-import java.util.Timer;
-import java.util.TimerTask;
 
-public class WebsiteScraperController extends TimerTask implements IWebsiteScraperController {
+public class WebsiteScraperController implements IWebsiteScraperController {
     private SettingsModel settings;
     private IImportController icsImport;
     private IEntryFactory entryFactory;
@@ -23,15 +21,6 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
         this.settings = settings;
         this.icsImport = icsImport;
         this.entryFactory = entryFactory;
-    }
-
-    public void startScraperTask() {
-        var timer = new Timer();
-        timer.schedule(this, 0, settings.getScrapingInterval() * 60000);
-    }
-
-    public void run() {
-        scrapeCalendar();
     }
 
     public void scrapeCalendar() 
