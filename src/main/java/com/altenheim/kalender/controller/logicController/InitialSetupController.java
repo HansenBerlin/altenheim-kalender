@@ -2,6 +2,7 @@ package com.altenheim.kalender.controller.logicController;
 
 import java.io.IOException;
 
+import com.altenheim.kalender.controller.viewController.CustomViewOverride;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
 
@@ -12,15 +13,17 @@ public class InitialSetupController
     private IPopupViewController popup;
     private IWebsiteScraperController websiteScraper;
     private ISystemNotificationsController systemNotifications;
+    private CustomViewOverride customViewOverride;
 
     public InitialSetupController(SettingsModel settings, IIOController ioController, IPopupViewController popup,
-            IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications) 
+            IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications, CustomViewOverride customViewOverride) 
     {
         this.settings = settings;
         this.ioController = ioController;
         this.popup = popup;
         this.websiteScraper = websiteScraper;
         this.systemNotifications = systemNotifications;
+        this.customViewOverride = customViewOverride;
     }
 
     public void initializeSettings() 
@@ -40,6 +43,7 @@ public class InitialSetupController
         {
             systemNotifications.startNotificationTask();
         }
+        customViewOverride.registerTimeUpdate();
     }
 
     public void initialValidationCheck() 
