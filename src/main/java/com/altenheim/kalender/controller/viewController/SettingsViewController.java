@@ -69,6 +69,7 @@ public class SettingsViewController extends ResponsiveController
             stringPropertiesCollectionText[i].textProperty()
                     .bindBidirectional(settings.getSettingsInputFieldsContainer()[i]);
         }
+        cBToolTips.selectedProperty().bindBidirectional(settings.getToolTipEnabled());
     }
 
     private void createComboBoxes() 
@@ -126,12 +127,14 @@ public class SettingsViewController extends ResponsiveController
             settings.specialField.set(comboBoxSelectionSpecialField.getValue());
             settings.course.set(comboBoxSelectionCourse.getValue());
             settings.semester.set(comboBoxSelectionSemester.getValue());            
-            settings.setCalendarParser(resultURL);
+            settings.hwrWebsiteUrl = resultURL;
         }
-        cBToolTips.setTooltip(cBToolTips.getTooltip());
+        //cBToolTips.setTooltip(cBToolTips.getTooltip());
         settings.notificationTimeBeforeEntryInMinutes = (long) Long.valueOf(comboBoxNotificationMin.getValue());
         settings.defaultCalendarForSearchView = comboBoxDefaultCalendar.getValue();
-        settings.writeSimpleProperties();
+        settings.entrySystemMessageIntervalInMinutes = 1;
+        //settings.toolTip = cBToolTips.selectedProperty();
+        settings.saveSettings();
     }
 
    

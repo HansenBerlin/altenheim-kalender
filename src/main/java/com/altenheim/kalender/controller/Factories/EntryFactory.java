@@ -6,6 +6,8 @@ import com.altenheim.kalender.models.SettingsModel;
 import com.calendarfx.model.*;
 import javafx.event.EventHandler;
 import com.altenheim.kalender.controller.viewController.CustomViewOverride;
+
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,14 +24,29 @@ public class EntryFactory implements IEntryFactory
     private CustomViewOverride calendarView;
     private IIOController ioController;
     private SettingsModel settings;
+    private IExportController exportController;
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView, IIOController ioController, SettingsModel settings) 
+    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView, 
+        IIOController ioController, SettingsModel settings, IExportController exportController) 
     {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
         this.ioController = ioController;
+        this.exportController = exportController;
         this.settings = settings;
     }
+
+    public static Entry<String> createCalendarFXEntryFromMillis(long start, long end) 
+    {
+        var entry = new Entry<String>();
+        var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
+        var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());
+        entry.changeStartTime(dateStart.toLocalTime());
+        entry.changeStartDate(dateStart.toLocalDate());
+        entry.changeEndTime(dateEnd.toLocalTime());
+        entry.changeEndDate(dateEnd.toLocalDate());
+        return entry;
+    } 
 
     public HashMap<String, List<Entry<String>>> createEntryListForEachCalendar() 
     {
@@ -74,7 +91,7 @@ public class EntryFactory implements IEntryFactory
             }
         }
         addCalendarToView(calendar, "TestKalender");
-        ioController.saveCalendar(calendar);
+        ioController.saveCalendar(calendar, exportController);
     }
 
     public void addCalendarToView(Calendar calendar, String name) 
@@ -95,7 +112,7 @@ public class EntryFactory implements IEntryFactory
     
     public void handleEvent(CalendarEvent event)
     {
-        ioController.saveCalendar(event.getCalendar());
+        ioController.saveCalendar(event.getCalendar(), exportController);
     }
 
     private Entry<String> createRandomEntry(int day, int month, int startT, int endT)
@@ -151,5 +168,5 @@ public class EntryFactory implements IEntryFactory
         var entry = createUserEntry(dateStart, dateEnd,timeStart, timeEnd); 
         entry.setTitle(title);
         allCalendars.addEntryToCalendarWithName(calName, entry);
-    } 
+    }    
 }

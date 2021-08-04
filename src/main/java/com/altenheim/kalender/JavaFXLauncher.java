@@ -1,7 +1,6 @@
 package com.altenheim.kalender;
 
 import com.altenheim.kalender.controller.Factories.InjectorFactory;
-import com.altenheim.kalender.controller.viewController.MainWindowController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -20,8 +19,9 @@ public class JavaFXLauncher extends Application
         objectFactory.createServices();
         var guiSetup = objectFactory.getGuiController();
         guiSetup.init();
-        var mainWindowController = new MainWindowController(primaryStage, objectFactory.getAllViews(), guiSetup,
-                objectFactory.getCustomCalendarView(), objectFactory.getSettingsModel());
+        var mainWindowController = objectFactory.getMainWindowController();
+        var jmetro = guiSetup.getJMetroStyle();
+        mainWindowController.initJFXObjects(primaryStage, jmetro);        
 
         var loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/mainView.fxml"));
@@ -29,8 +29,8 @@ public class JavaFXLauncher extends Application
 
         Parent root = loader.load();
         var scene = new Scene(root);
-        var jMetroStyle = objectFactory.getJMetroSetup();
-        jMetroStyle.setScene(scene);
+        jmetro.setScene(scene);
+
         guiSetup.setupColorMode();
 
         primaryStage.setScene(scene);
@@ -40,8 +40,6 @@ public class JavaFXLauncher extends Application
         var initialSettingsLoader = objectFactory.getInitialSettingsLoader();
         initialSettingsLoader.initializeSettings();
         initialSettingsLoader.initialValidationCheck();
-
-        mainWindowController.switchCssMode();
         
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() 
         {

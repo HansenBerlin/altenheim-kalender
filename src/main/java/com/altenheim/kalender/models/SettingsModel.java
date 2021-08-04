@@ -1,27 +1,25 @@
 package com.altenheim.kalender.models;
 
 import java.io.*;
-import java.beans.PropertyChangeSupport;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import jfxtras.styles.jmetro.Style;
 
-public class SettingsModel implements Serializable 
+public class SettingsModel
 {
     public final static String APICYPHERTEXT = "apCg/0Odtz1r9kYuh011M4sur5xv5UU0hYJQcymI9gpAfMWP1eJWOtgpXu/lawR+";
     public final static String PASSWORDHASH = "54fvHpgroWTcl6h/4SxMEiwchYBcYzqtrXX4eMySjf94gqHjPhjPCPl4d2IH7jg0";
 
     private String userDirectory = "userfiles/";
-    private String decryptedPassword = "";
-    private String pathToSaveBackupFiles = null;
-    private String scrappingURL = "";
+    public String decryptedPassword = "";
+    public String hwrWebsiteUrl = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
+    //public String cssMode = "Light";
+    public String defaultCalendarForSearchView = "";
     public long entrySystemMessageIntervalInMinutes = 1;
     public long notificationTimeBeforeEntryInMinutes = 15;
-    private Long scrapingIntervalInMinutes = (long) 60000;    
-    public String cssMode = "Light";
-    public String defaultCalendarForSearchView = "";
-    public String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
-    private boolean useAdvancedFeatures = false;
+    public long hwrRequestIntervalInMinutes = (long) 1440;    
+    public boolean useAdvancedFeatures = false;
+    public boolean isDarkmodeActive = false;
 
     public transient SimpleStringProperty street = new SimpleStringProperty();
     public transient SimpleStringProperty houseNumber = new SimpleStringProperty();
@@ -32,41 +30,25 @@ public class SettingsModel implements Serializable
     public transient SimpleStringProperty course = new SimpleStringProperty("Kurs");
     public transient SimpleStringProperty semester = new SimpleStringProperty("Sem.");
     public transient SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
-    public transient PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
-    private transient  SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
-    private transient  SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
+    private transient SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
+    private transient SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
     public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
-    public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer; }   
-
+    public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer; }  
+    public SimpleBooleanProperty getToolTipEnabled() { return toolTip; } 
     public String getPathToUserDirectory() { return userDirectory; }
     public File getPasswordhashFile() { return new File(userDirectory + "savedHash"); }
-    public String getDecryptedPasswordHash() { return decryptedPassword; }
-    public void setDecryptedPasswordHash(String decryptedHash) { decryptedPassword = decryptedHash; }
-    public void setAdvancedFeaturesFlag(boolean useAdvancedFeatures) { this.useAdvancedFeatures = useAdvancedFeatures; }
-    public String getUrl() { return url; }
-    public long getScrapingInterval() { return scrapingIntervalInMinutes; }
-    public void setCustomPathToSavedFiles(String pathToSaveBackupFiles) { this.pathToSaveBackupFiles = pathToSaveBackupFiles; }
-    public void setCalendarParser(String scrappingURL) { this.scrappingURL = scrappingURL; }
-    public String getCustomPathToSavedFiles() { return pathToSaveBackupFiles; }
-    public String getCalendarParser() { return scrappingURL; }
-    
-    public void setScrapingInterval(long interval) 
-    {
-        propertyChange.firePropertyChange("scrapingIntervalInMinutes", scrapingIntervalInMinutes, interval);
-        scrapingIntervalInMinutes = interval;
-    }
 
     public Style getCssStyle() 
     {
-        if (cssMode.equals("Light"))
-            return Style.LIGHT;
-        else
+        if (isDarkmodeActive)
             return Style.DARK;
+        else
+            return Style.LIGHT;
     }
 
-    public void writeSimpleProperties() 
+    public void saveSettings() 
     {
-        String path = "userFiles/userSettings/settingsTest.file";
+        String path = "userFiles/userSettings/settings.file";
         try 
         {
             var writeToFile = new FileOutputStream(path);
@@ -80,9 +62,14 @@ public class SettingsModel implements Serializable
             {
                 streamOut.writeUTF(simpleStringProperty.getValueSafe());
             }
-            streamOut.writeLong(scrapingIntervalInMinutes);
+            streamOut.writeBoolean(toolTip.getValue());
+            streamOut.writeLong(hwrRequestIntervalInMinutes);
             streamOut.writeLong(notificationTimeBeforeEntryInMinutes);
-            streamOut.writeUTF(cssMode);
+            streamOut.writeLong(entrySystemMessageIntervalInMinutes);
+            streamOut.writeBoolean(useAdvancedFeatures);
+            streamOut.writeBoolean(isDarkmodeActive);
+            streamOut.writeUTF(defaultCalendarForSearchView);
+            streamOut.writeUTF(hwrWebsiteUrl);
             streamOut.close();
             writeToFile.close();
         } 
@@ -92,11 +79,14 @@ public class SettingsModel implements Serializable
         }
     }
 
-    public void readSimpleProperties() 
+    public void loadSettings() 
     {
+        String path = "userFiles/userSettings/settings.file";
+        var file = new File(path);
+        if (file.exists() == false)
+            return;
         try 
         {
-            String path = "userFiles/userSettings/settingsTest.file";
             var loadFile = new FileInputStream(path);
             var inputStream = new ObjectInputStream(loadFile);
 
@@ -108,9 +98,14 @@ public class SettingsModel implements Serializable
             {
                 simpleStringProperty.set(inputStream.readUTF());
             }
-            scrapingIntervalInMinutes = inputStream.readLong();
+            toolTip.set(inputStream.readBoolean());
+            hwrRequestIntervalInMinutes = inputStream.readLong();
             notificationTimeBeforeEntryInMinutes = inputStream.readLong();
-            cssMode = inputStream.readUTF();
+            entrySystemMessageIntervalInMinutes = inputStream.readLong();
+            useAdvancedFeatures = inputStream.readBoolean();
+            isDarkmodeActive = inputStream.readBoolean();
+            defaultCalendarForSearchView = inputStream.readUTF();
+            hwrWebsiteUrl = inputStream.readUTF();
             inputStream.close();
             loadFile.close();
         } 
