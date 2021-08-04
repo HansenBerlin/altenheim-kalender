@@ -9,8 +9,8 @@ import javafx.scene.control.Button;
 public class SuggestionsModel 
 {
     final static public ObservableList<SuggestionsModel> data = FXCollections.observableArrayList();
-    public static boolean toggleTravelTime = false;
-    public static int travelTime;
+    //public static boolean toggleTravelTime = false;
+    //public static int travelTime;
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDate dayStart;
