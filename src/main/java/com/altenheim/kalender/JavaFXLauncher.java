@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -47,6 +48,9 @@ public class JavaFXLauncher extends Application
                 System.exit(0);
             }
         });
+
+        var image = new Image(getClass().getResource("/Penaut.png").toString());
+        primaryStage.getIcons().add(image);
         
         primaryStage.show();
         guiSetup.registerCalendars();
