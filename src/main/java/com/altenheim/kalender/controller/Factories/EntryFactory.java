@@ -6,6 +6,8 @@ import com.altenheim.kalender.models.SettingsModel;
 import com.calendarfx.model.*;
 import javafx.event.EventHandler;
 import com.altenheim.kalender.controller.viewController.CustomViewOverride;
+
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -33,6 +35,18 @@ public class EntryFactory implements IEntryFactory
         this.exportController = exportController;
         this.settings = settings;
     }
+
+    public static Entry<String> createCalendarFXEntryFromMillis(long start, long end) 
+    {
+        var entry = new Entry<String>();
+        var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
+        var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());
+        entry.changeStartTime(dateStart.toLocalTime());
+        entry.changeStartDate(dateStart.toLocalDate());
+        entry.changeEndTime(dateEnd.toLocalTime());
+        entry.changeEndDate(dateEnd.toLocalDate());
+        return entry;
+    } 
 
     public HashMap<String, List<Entry<String>>> createEntryListForEachCalendar() 
     {
@@ -154,5 +168,5 @@ public class EntryFactory implements IEntryFactory
         var entry = createUserEntry(dateStart, dateEnd,timeStart, timeEnd); 
         entry.setTitle(title);
         allCalendars.addEntryToCalendarWithName(calName, entry);
-    } 
+    }    
 }

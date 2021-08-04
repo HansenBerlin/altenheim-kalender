@@ -25,7 +25,6 @@ public class SettingsViewController extends ResponsiveController
     private IEntryFactory calendarFactory;
     private IPopupViewController popupViewController;
     private IComboBoxFactory comboBoxFactory;
-    private IIOController iOController;
     private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse,
             comboBoxSelectionSemester, comboBoxDefaultCalendar;
 
@@ -40,7 +39,7 @@ public class SettingsViewController extends ResponsiveController
 
     public SettingsViewController(SettingsModel settings, IImportController importController,
             IEntryFactory calendarFactory, IExportController exportController, ICalendarEntriesModel allCalendars,
-            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, IIOController iOController) 
+            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController) 
     {
         this.settings = settings;
         this.importController = importController;
@@ -49,7 +48,6 @@ public class SettingsViewController extends ResponsiveController
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
         this.comboBoxFactory = comboBoxFactory;
-        this.iOController = iOController;
     }
 
     @FXML
@@ -71,6 +69,7 @@ public class SettingsViewController extends ResponsiveController
             stringPropertiesCollectionText[i].textProperty()
                     .bindBidirectional(settings.getSettingsInputFieldsContainer()[i]);
         }
+        cBToolTips.selectedProperty().bindBidirectional(settings.getToolTipEnabled());
     }
 
     private void createComboBoxes() 
@@ -128,13 +127,14 @@ public class SettingsViewController extends ResponsiveController
             settings.specialField.set(comboBoxSelectionSpecialField.getValue());
             settings.course.set(comboBoxSelectionCourse.getValue());
             settings.semester.set(comboBoxSelectionSemester.getValue());            
-            settings.setCalendarParser(resultURL);
+            settings.hwrWebsiteUrl = resultURL;
         }
-        cBToolTips.setTooltip(cBToolTips.getTooltip());
+        //cBToolTips.setTooltip(cBToolTips.getTooltip());
         settings.notificationTimeBeforeEntryInMinutes = (long) Long.valueOf(comboBoxNotificationMin.getValue());
         settings.defaultCalendarForSearchView = comboBoxDefaultCalendar.getValue();
-        settings.writeSimpleProperties();
-        iOController.writeSettings(settings);    
+        settings.entrySystemMessageIntervalInMinutes = 1;
+        //settings.toolTip = cBToolTips.selectedProperty();
+        settings.saveSettings();
     }
 
    

@@ -1,29 +1,32 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.calendarfx.view.CalendarView;
+import com.altenheim.kalender.models.SettingsModel;
 import com.altenheim.kalender.resourceClasses.StylePresets;
 
 public class CustomViewOverride extends CalendarView 
 {
-    public CustomViewOverride(String cssMode) 
+    private String currentPath;
+    private SettingsModel settings;
+
+    public CustomViewOverride(SettingsModel settings) 
     {
-        initCss(cssMode);        
+        this.settings = settings;
+        initCss();        
     }
 
-    private void initCss(String cssMode)
+    private void initCss()
     {
-        String stylePreset = switch (cssMode) 
-        {
-            case "Light" -> StylePresets.LIGHT_CALENDAR_CSS_FILE;
-            case "Dark" -> StylePresets.DARK_CALENDAR_CSS_FILE;            
-            default -> StylePresets.LIGHT_CALENDAR_CSS_FILE;
-        };
-        getStylesheets().add(stylePreset);        
+        if (settings.isDarkmodeActive)
+            currentPath = StylePresets.LIGHT_CALENDAR_CSS_FILE; 
+        else 
+            currentPath = StylePresets.DARK_CALENDAR_CSS_FILE;  
+        getStylesheets().add(currentPath); 
     }
 
-    public void updateCss(String oldPath, String newPath) 
+    public void updateCss() 
     {
-        getStylesheets().remove(oldPath);
-        getStylesheets().add(newPath);
+        getStylesheets().remove(currentPath);
+        initCss();
     }    
 }

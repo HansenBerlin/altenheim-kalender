@@ -1,7 +1,5 @@
 package com.altenheim.kalender.controller.logicController;
 
-import java.io.IOException;
-
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.SettingsModel;
@@ -57,12 +55,12 @@ public class InitialSetupController
             var userValidationPassed = validateUserPassword();
             if (!userValidationPassed) 
             {
-                settings.setAdvancedFeaturesFlag(false);
+                settings.useAdvancedFeatures = false;
                 return;
             }
         }
-        settings.setDecryptedPasswordHash(ioController.loadHashedPassword());
-        settings.setAdvancedFeaturesFlag(true);
+        settings.decryptedPassword = ioController.loadHashedPassword();
+        settings.useAdvancedFeatures = true;
 
     }
 

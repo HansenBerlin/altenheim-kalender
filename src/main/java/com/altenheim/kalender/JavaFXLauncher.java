@@ -18,9 +18,11 @@ public class JavaFXLauncher extends Application
         var objectFactory = new InjectorFactory();
         objectFactory.createServices();
         var guiSetup = objectFactory.getGuiController();
+        //guiSetup.setupColorMode();
         guiSetup.init();
-        var mainWindowController = new MainWindowController(primaryStage, objectFactory.getAllViews(), guiSetup,
-                objectFactory.getCustomCalendarView(), objectFactory.getSettingsModel(), objectFactory.getIOController());
+        var mainWindowController = objectFactory.getMainWindowController();
+        var jmetro = guiSetup.getJMetroStyle();
+        mainWindowController.initJFXObjects(primaryStage, jmetro);        
 
         var loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/mainView.fxml"));
@@ -28,19 +30,19 @@ public class JavaFXLauncher extends Application
 
         Parent root = loader.load();
         var scene = new Scene(root);
-        var jMetroStyle = objectFactory.getJMetroSetup();
-        jMetroStyle.setScene(scene);
+        jmetro.setScene(scene);
+
         guiSetup.setupColorMode();
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Smart Planner HWR");
         primaryStage.setMaximized(true);        
 
+        //mainWindowController.switchCssMode();
         var initialSettingsLoader = objectFactory.getInitialSettingsLoader();
         initialSettingsLoader.initializeSettings();
         initialSettingsLoader.initialValidationCheck();
 
-        mainWindowController.switchCssMode();
         
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() 
         {
@@ -52,7 +54,6 @@ public class JavaFXLauncher extends Application
         
         primaryStage.show();
         guiSetup.registerCalendars();
-
     }
 
     public static void main(String[] args) 

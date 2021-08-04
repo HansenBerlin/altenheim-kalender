@@ -19,11 +19,15 @@ public class IOController implements IIOController
     //private IExportController exportCt;
     //private IImportController importCt;
     //private IEntryFactory entryFactory;
-    private String hashedPassword;
+    //private String hashedPassword;
+
+    public IOController(SettingsModel settings)
+    {
+        this.settings = settings;
+    }
     
-    public void saveDecryptedPasswordHash(String hashedPassword) { this.hashedPassword = hashedPassword; }
-    public String getDecryptedPasswordHash() { return hashedPassword; }
-    public void addSettingsModel(SettingsModel settings) { this.settings = settings; }
+    //public void saveDecryptedPasswordHash(String hashedPassword) { this.hashedPassword = hashedPassword; }
+    //public String getDecryptedPasswordHash() { return hashedPassword; }
 
     public void createUserPath() 
     {
@@ -176,45 +180,6 @@ public class IOController implements IIOController
         {
             e.printStackTrace();
             return "";
-        }
-    }
-
-    public void writeSettings(SettingsModel settings) 
-    {
-        settings.writeSimpleProperties();
-        var path = settings.getPathToUserDirectory() + "/userSettings/settings.file";
-        try 
-        {
-            var writeToFile = new FileOutputStream(path);
-            var convert = new ObjectOutputStream(writeToFile);
-            convert.writeObject(settings);
-            convert.close();
-            writeToFile.close();
-        } 
-        catch (IOException e) 
-        {
-            e.printStackTrace();
-        }
-    }
-
-    public SettingsModel restoreSettings() 
-    {
-        var file = new File("userFiles/userSettings/settings.file");
-        if (!file.exists())
-            return new SettingsModel();
-        try 
-        {
-            var loadFile = new FileInputStream("userFiles/userSettings/settings.file");
-            var inputStream = new ObjectInputStream(loadFile);
-            var settings = (SettingsModel) inputStream.readObject();
-            inputStream.close();
-            loadFile.close();
-            return settings;
-        } 
-        catch (IOException | ClassNotFoundException e) 
-        {
-            e.printStackTrace();
-            return new SettingsModel();
         }
     }
 }

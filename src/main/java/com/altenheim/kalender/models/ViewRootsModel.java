@@ -8,9 +8,10 @@ public class ViewRootsModel implements IViewRootsModel
 {
     private GridPane[] allViews;
     private ResponsiveController[] allControllers;
+    private MainWindowController mainWindowController;
 
-    public ViewRootsModel(PlannerViewController plannerCt, SearchViewController searchViewCt,
-            ContactsViewController contactsCt, MailTemplateViewController mailCt, SettingsViewController settingsCt) 
+    public ViewRootsModel(PlannerViewController plannerCt, SearchViewController searchViewCt, ContactsViewController contactsCt, 
+        MailTemplateViewController mailCt, SettingsViewController settingsCt) 
     {
         ResponsiveController[] allCt = { plannerCt, searchViewCt, contactsCt, mailCt, settingsCt };
         allViews = new GridPane[allCt.length];
@@ -18,6 +19,8 @@ public class ViewRootsModel implements IViewRootsModel
     }
 
     public GridPane[] getAllViews() { return allViews; }
+    public void addViewRootToList(int atIndex, GridPane view) { allViews[atIndex] = view; } 
     public ResponsiveController[] getAllViewControllers() { return allControllers; }
-    public void addViewRootToList(int atIndex, GridPane view) { allViews[atIndex] = view; }    
+    public MainWindowController getMainWindowController() { return mainWindowController; }
+    public void setMainWindowController(MainWindowController mainWindowController) { this.mainWindowController = mainWindowController; }   
 }

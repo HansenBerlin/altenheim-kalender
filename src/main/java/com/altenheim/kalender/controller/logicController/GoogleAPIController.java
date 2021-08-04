@@ -30,7 +30,7 @@ public class GoogleAPIController implements IGoogleAPIController {
 
     public HashMap<DayOfWeek, List<Entry<String>>> getOpeningHours(String locationSearchUserInput) {
         var security = new SecureAesController();
-        var apiKey = security.decrypt(settings.getDecryptedPasswordHash(), SALT, SettingsModel.APICYPHERTEXT);
+        var apiKey = security.decrypt(settings.decryptedPassword, SALT, SettingsModel.APICYPHERTEXT);
         String input = locationSearchUserInput.replace(" ", "%20");
 
         try {
@@ -49,7 +49,7 @@ public class GoogleAPIController implements IGoogleAPIController {
     public int[] searchForDestinationDistance(String startAt, String destination) {
 
         var security = new SecureAesController();
-        var apiKey = security.decrypt(settings.getDecryptedPasswordHash(), SALT, SettingsModel.APICYPHERTEXT);
+        var apiKey = security.decrypt(settings.decryptedPassword, SALT, SettingsModel.APICYPHERTEXT);
 
         int[] returnValues = new int[2];
         var start = startAt.replace(" ", "%20");
@@ -70,7 +70,7 @@ public class GoogleAPIController implements IGoogleAPIController {
 
     public int[] searchForDestinationDistance(String origin, String destination, String travelMode) {
         var security = new SecureAesController();
-        var apiKey = security.decrypt(settings.getDecryptedPasswordHash(), SALT, SettingsModel.APICYPHERTEXT);
+        var apiKey = security.decrypt(settings.decryptedPassword, SALT, SettingsModel.APICYPHERTEXT);
 
         int[] returnValues = new int[2];
         var start = origin.replace(" ", "%20");
