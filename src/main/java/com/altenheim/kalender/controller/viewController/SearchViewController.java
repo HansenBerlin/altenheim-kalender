@@ -15,6 +15,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
+import com.altenheim.kalender.resourceClasses.DateFormatConverter;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -317,10 +319,10 @@ public class SearchViewController extends ResponsiveController
     private Button createAddEntryButton(Entry<String> currSug)
     {
         var button = new Button("EINTRAGEN");
-        String startDate = currSug.getStartDate().toString();
-        String endDate = currSug.getEndDate().toString();
-        String startTime = currSug.getStartTime().toString();
-        String endTime = currSug.getEndTime().toString();
+        String startDate = DateFormatConverter.formatDate(currSug.getStartDate());
+        String endDate = DateFormatConverter.formatDate(currSug.getEndDate());
+        String startTime = DateFormatConverter.formatTime(currSug.getStartTime());
+        String endTime = DateFormatConverter.formatTime(currSug.getEndTime());
         String title = currSug.getTitle();
         var sendMailButton = createSendMailButton();
 
@@ -346,8 +348,8 @@ public class SearchViewController extends ResponsiveController
             {                
                 String templateName = dropdownMailTemplates.getValue();
                 String recipient = validateRecipient();
-                String date = currentSuggestion.getStartDate().toString();
-                String time = currentSuggestion.getStartTime().toString();
+                String date = DateFormatConverter.formatDate(currentSuggestion.getStartDate());
+                String time = DateFormatConverter.formatTime(currentSuggestion.getStartTime());
                 mailCreationController.processMailWrapper(templateName, date, time, recipient);                               
             }
         });
