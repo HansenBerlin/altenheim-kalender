@@ -4,20 +4,23 @@ import com.altenheim.kalender.controller.viewController.*;
 import com.altenheim.kalender.interfaces.IViewRootsModel;
 import javafx.scene.layout.GridPane;
 
-public class ViewRootsModel implements IViewRootsModel
+public class ViewRootsModel implements IViewRootsModel 
 {
     private GridPane[] allViews;
-    private ResponsiveController[] allControllers;   
+    private ResponsiveController[] allControllers;
+    private MainWindowController mainWindowController;
 
-    public ViewRootsModel(PlannerViewController plannerCt, SearchViewController searchViewCt, StatsViewController statsCt,
-        ContactsViewController contactsCt, MailTemplateViewController mailCt, SettingsViewController settingsCt)
+    public ViewRootsModel(PlannerViewController plannerCt, SearchViewController searchViewCt, ContactsViewController contactsCt, 
+        MailTemplateViewController mailCt, SettingsViewController settingsCt) 
     {
-        ResponsiveController[] allCt = { plannerCt, searchViewCt, statsCt, contactsCt, mailCt, settingsCt };
+        ResponsiveController[] allCt = { plannerCt, searchViewCt, contactsCt, mailCt, settingsCt };
         allViews = new GridPane[allCt.length];
         allControllers = allCt;
     }
 
     public GridPane[] getAllViews() { return allViews; }
-    public ResponsiveController[] getAllViewControllers() { return allControllers; }   
-    public void addViewRootToList(int atIndex, GridPane view) { allViews[atIndex] = view; }
+    public void addViewRootToList(int atIndex, GridPane view) { allViews[atIndex] = view; } 
+    public ResponsiveController[] getAllViewControllers() { return allControllers; }
+    public MainWindowController getMainWindowController() { return mainWindowController; }
+    public void setMainWindowController(MainWindowController mainWindowController) { this.mainWindowController = mainWindowController; }   
 }

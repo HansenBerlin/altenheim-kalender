@@ -1,13 +1,16 @@
 package com.altenheim.kalender.interfaces;
 
+import javafx.scene.control.Button;
 import javafx.stage.Window;
 
 public interface IPopupViewController 
 {
-    public boolean isRevalidationWanted();
-    public void showConfirmationDialog();
-    public void showCancelDialog();    
-    public String showPasswordInputDialog();
-    public void importDialog(IImportController importController, IEntryFactory entryFactory, Window stage);
-    public void exportDialog(IExportController exportController, ICalendarEntriesModel allEntries, Window stage);    
+    void showConfirmationDialog();
+    void showCancelDialog();
+    void importDialog(IImportController importController, IEntryFactory entryFactory, Window stage);
+    void exportDialog(IExportController exportController, ICalendarEntriesModel allEntries, Window stage);
+    void showEntryAddedDialogWithMailOption(String date, String dateEnd, String start, String end, String title, Button sendMailButton);
+    boolean isRevalidationWanted();
+    String showPasswordInputDialog();
+    String showChooseCalendarNameDialog();
 }

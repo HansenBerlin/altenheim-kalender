@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -43,10 +44,14 @@
             </VBox>
             <HBox alignment="CENTER_RIGHT" spacing="15.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button fx:id="btnAddAppointment" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
-                  <Button fx:id="btnSwitchModes" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#switchMode" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
-                  <Button fx:id="btnSwitchLanguage" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
-                  <Button fx:id="btnUser" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;" />
+                  <Button fx:id="btnAddAppointment" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;">
+                     <tooltip>
+                        <Tooltip fx:id="ttBtnAddAppointment" text="Hinzufügen von Kalendereinträgen" />
+                     </tooltip></Button>
+                  <Button fx:id="btnSwitchModes" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#switchMode" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;">
+                     <tooltip>
+                        <Tooltip fx:id="ttBtnSwitchModes" text="Wechsel Dark-/ Lightmode" />
+                     </tooltip></Button>
                </children>
                <HBox.margin>
                   <Insets right="50.0" />
@@ -66,6 +71,9 @@
                      <padding>
                         <Insets left="20.0" />
                      </padding>
+                     <tooltip>
+                        <Tooltip fx:id="ttMenuBtnPlanner" text="Kalenderansichten" />
+                     </tooltip>
                   </Button>
                </children>
             </HBox>
@@ -82,22 +90,9 @@
                      <font>
                         <Font size="14.0" />
                      </font>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
-               <children>
-                  <Pane fx:id="menuBtnPaneStats" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
-                  <Button fx:id="menuBtnStats" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Stats">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
+                     <tooltip>
+                        <Tooltip fx:id="ttMenuBtnSearch" text="Terminsuche mit auswählbaren Kriterien" />
+                     </tooltip>
                   </Button>
                </children>
             </HBox>
@@ -114,6 +109,9 @@
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip fx:id="ttMenuBtnContacts" text="Hinzufügen/ Ändern/ Löschen von Adressbucheinträgen" />
+                     </tooltip>
                   </Button>
                </children>
             </HBox>
@@ -130,6 +128,9 @@
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip fx:id="ttMenuBtnMail" text="Hinzufügen/ Ändern/ Löschen von E-Mail Vorlagen" />
+                     </tooltip>
                   </Button>
                </children>
             </HBox>
@@ -146,10 +147,13 @@
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip fx:id="ttMenuBtnSettings" text="individuelle Einstellungen" />
+                     </tooltip>
                   </Button>
                </children>
             </HBox>
-            <Text fx:id="txtVersion" cache="true" cacheHint="SPEED" fill="#dadada" strokeType="OUTSIDE" strokeWidth="0.0" text="v. 0.1.1 HWR WI Gr. C">
+            <Text fx:id="txtVersion" cache="true" cacheHint="SPEED" fill="#dadada" strokeType="OUTSIDE" strokeWidth="0.0" text="v. 0.3.18 HWR WI Gr. C">
                <font>
                   <Font name="Consolas" size="8.0" />
                </font>

@@ -1,16 +1,18 @@
 package com.altenheim.kalender.interfaces;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import com.altenheim.kalender.models.SerializableEntry;
 import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
 
-public interface ICalendarEntriesModel
-{
-    Calendar getSpecificCalendarByIndex(int index);
-    void addCalendar(Calendar calendar);
-    List<SerializableEntry> getSpecificRange(LocalDate startDate, LocalDate endDate);
+public interface ICalendarEntriesModel 
+{   
+    void clearCalendarsSelectedByUser();
+    void addEntryToCalendarWithName(String name, Entry<String> entry);
+    void addToAllCalendarsSelectedByUser(Calendar calendar);
+    void addToAllCalendarsSelectedByUserByCalendarName(String calendarName);
+    String[] getAllCalendarNames();
     List<Calendar> getAllCalendars();
-    List<SerializableEntry> getEntrysWithStartInSpecificRange(LocalDateTime start, LocalDateTime end);
+    List<Calendar> getAllCalendarsSelectedByUser();
+    List<Entry<String>> getEntrysWithStartInSpecificRange(LocalDateTime start, LocalDateTime end);
 }

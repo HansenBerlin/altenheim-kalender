@@ -1,6 +1,9 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.models.SettingsModel;
+import com.calendarfx.model.Calendar;
+
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -12,72 +15,92 @@ import javafx.stage.Window;
 import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.Style;
 
-public class PopupViewsController implements IPopupViewController
+public class PopupViewsController implements IPopupViewController 
 {
-    public static void showEntryAddedDialog(String date, String dateEnd, String start, String end, String title)
+    private SettingsModel settings;
+
+    public PopupViewsController(SettingsModel settings)
     {
-        var alert = new Alert(Alert.AlertType.INFORMATION);
-        var jmetro = new JMetro(Style.LIGHT);
-        jmetro.setScene(alert.getDialogPane().getScene());
-        alert.setTitle("Kalendereintrag " + title + " erstellt");
-        alert.setHeaderText(null);
-        alert.setContentText(String.format("Ein Termin am %s von %s bis %s wurde im " +
-            "aktuell gewählten Kalender erstellt", date, start, end));
-        alert.showAndWait();
+        this.settings = settings;
     }
 
-    public boolean isRevalidationWanted()
+    public void showEntryAddedDialogWithMailOption(String date, String dateEnd, String start, String end, String title, Button sendMailButton) 
+    {
+        var dialog = new Dialog<String>();
+        var jmetro = new JMetro(settings.getCssStyle());
+        jmetro.setScene(dialog.getDialogPane().getScene());
+        dialog.setTitle("Eintrag erstellt");
+        dialog.setHeaderText(null);
+        var userInfo = new Text();
+        userInfo.setText(String.format("Ein Termin von %s %s bis %s %s wurde im " 
+                                        + "aktuell gewählten Kalender erstellt", 
+                                        date, start, dateEnd, end));
+        var loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType);
+        var grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));        
+        grid.add(userInfo, 0, 0, 2, 1);
+        grid.add(sendMailButton, 1, 1);
+        dialog.getDialogPane().setContent(grid);
+        dialog.showAndWait();
+
+    }
+
+    public boolean isRevalidationWanted() 
     {
         var alert = new Alert(Alert.AlertType.CONFIRMATION);
-        var jmetro = new JMetro(Style.LIGHT);
+        var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
         alert.setTitle("Eingabe fehlgeschlagen");
         alert.setHeaderText("Das Passwort war falsch.");
-        alert.setContentText("Der Kalender kann trotzdem genutzt werden, aber erweiterte " +
-                "Funktionen wie der automatische Abruf von Öffnungszeiten " +
-                "werden nicht funktionieren. Nochmal versuchen?");
+        alert.setContentText("Der Kalender kann trotzdem genutzt werden, aber \nerweiterte "
+                            + "Funktionen wie der automatische Abruf von\n"
+                            + "Öffnungszeiten werden nicht funktionieren.\n"
+                            + "Nochmal versuchen?");
 
         var result = alert.showAndWait();
 
         return result.get() == ButtonType.OK;
     }
 
-    public void showConfirmationDialog()
+    public void showConfirmationDialog() 
     {
         var alert = new Alert(Alert.AlertType.INFORMATION);
-        var jmetro = new JMetro(Style.LIGHT);
+        var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
         alert.setTitle("Validierung erfolgreich");
         alert.setHeaderText(null);
-        alert.setContentText("Passwortvalidierung erfolgreich. Viel Spaß bei " +
-                "der Nutzung der erweiterten Funktionen des Smart Planners!");
-        alert.showAndWait();
-    }    
-
-    public void showCancelDialog()
-    {
-        var alert = new Alert(Alert.AlertType.WARNING);
-        var jmetro = new JMetro(Style.LIGHT);
-        jmetro.setScene(alert.getDialogPane().getScene());
-        alert.setTitle("Erweiterte Funktionen nicht aktiv.");
-        alert.setHeaderText(null);
-        alert.setContentText("Du kannst beim nächsten Start das Passwort erneut eingeben " +
-                "um die erweiterten Funktionen zu nutzen");
+        alert.setContentText("Passwortvalidierung erfolgreich. Viel Spaß bei \n"
+                + "der Nutzung der erweiterten Funktionen \n"+"des Smart Planners!");
         alert.showAndWait();
     }
 
-    public String showPasswordInputDialog()
+    public void showCancelDialog() 
     {
-        var dialog = new Dialog();
-        var jmetro = new JMetro(Style.LIGHT);
+        var alert = new Alert(Alert.AlertType.WARNING);
+        var jmetro = new JMetro(settings.getCssStyle());
+        jmetro.setScene(alert.getDialogPane().getScene());
+        alert.setTitle("Erweiterte Funktionen nicht aktiv.");
+        alert.setHeaderText(null);
+        alert.setContentText("Du kannst beim nächsten Start das Passwort\n"
+                            +"erneut eingeben um die erweiterten Funktionen\n"
+                            +"zu nutzen.");
+        alert.showAndWait();
+    }
+
+    public String showPasswordInputDialog() 
+    {
+        var dialog = new Dialog<String>();
+        var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(dialog.getDialogPane().getScene());
         dialog.setTitle("Entschlüsselung");
         dialog.setHeaderText(null);
         var userInfo = new Text();
-        userInfo.setText("Einmalige Passworteingabe um erweiterte Funktionen\n" +
-                "(Wegstreckenberechnung, Öffnungszeiten berücksichtigen)\n" +
-                "über die Google API zu nutzen. Das Passwort kannst du über\n" +
-                "die Entwickler beziehen.");
+        userInfo.setText("Einmalige Passworteingabe um erweiterte Funktionen\n"
+                + "(Wegstreckenberechnung, Öffnungszeiten berücksichtigen)\n"
+                + "über die Google API zu nutzen. Das Passwort kannst du über\n" + "die Entwickler beziehen.");
         var loginButtonType = new ButtonType("Bestätigen", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
         var grid = new GridPane();
@@ -96,33 +119,90 @@ public class PopupViewsController implements IPopupViewController
         return password.getText();
     }
 
-    public void importDialog(IImportController importController, IEntryFactory entryFactory, Window stage)
-    {        
+    public String showChooseCalendarNameDialog() 
+    {
+        var dialog = new Dialog<String>();
+        var jmetro = new JMetro(settings.getCssStyle());
+        jmetro.setScene(dialog.getDialogPane().getScene());
+        dialog.setTitle("Kalendername wählen");
+        dialog.setHeaderText(null);
+        var userInfo = new Text();
+        userInfo.setText("Bitte gebe einen Namen für den neuen Kalender ein.\n"
+            + "Der Kalender wird erst gespeichert wenn ein Termin eingetragen wurde.");
+        var loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+        var grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        var textInput = new TextField();
+        textInput.setPromptText("Kalendername");
+        grid.add(userInfo, 0, 0, 2, 1);
+        grid.add(new Label("Kalendername:"), 0, 1);
+        grid.add(textInput, 1, 1);
+        dialog.getDialogPane().setContent(grid);
+        Platform.runLater(() -> textInput.requestFocus());
+        dialog.showAndWait();
+
+        var dialogResult = dialog.resultProperty().toString();
+        if (dialogResult.equals("ObjectProperty [value: ButtonType [text=OK, buttonData=OK_DONE]]"))
+            return textInput.getText();
+        else
+            return "";
+    }
+
+    public void importDialog(IImportController importController, IEntryFactory entryFactory, Window stage) 
+    {
         var filePicker = new FileChooser();
         var file = filePicker.showOpenDialog(stage);
         if (file == null)
             return;
         var importedCalendar = importController.importFile(file.getAbsolutePath());
-        entryFactory.addCalendarToView(importedCalendar);      
+        entryFactory.addCalendarToView(importedCalendar, file.getName());
     }
 
-    public void exportDialog(IExportController exportController, ICalendarEntriesModel allEntries, Window stage)
+    private void showCalendarExportedDialog(int exportedCount, boolean isSuccessful) 
+    {
+        String message = "";
+        if (isSuccessful)
+            message = "Es wurden " + exportedCount + " Kalenderdateien exportiert.";
+        else
+            message = "Aufrund eines Fehlers wurde kein Kalender exportiert.";
+
+        var alert = new Alert(Alert.AlertType.INFORMATION);
+        var jmetro = new JMetro(settings.getCssStyle());
+        jmetro.setScene(alert.getDialogPane().getScene());
+        alert.setTitle("Kalender erfolgreich exportiert");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public void exportDialog(IExportController exportController, ICalendarEntriesModel allEntries, Window stage) 
     {
         var calendars = allEntries.getAllCalendars();
-        var directoryChooser = new DirectoryChooser();
-        var path = directoryChooser.showDialog(stage);
-        if (path == null)
-            return;
-        for (var calendar: calendars)
+        
+        for (var calendar : calendars) 
         {
             try 
             {
-                exportController.exportCalendarAsFile(calendar, path.getAbsolutePath());                
+                var directoryChooser = new DirectoryChooser();
+                directoryChooser.setTitle("Speicherort für Kalender " + calendar.getName() + " wählen.");
+                var path = directoryChooser.showDialog(stage);
+                if (path == null)
+                {
+                    showCalendarExportedDialog(0, false);
+                    return;
+                }
+                exportController.exportCalendarAsFile(calendar, path.getAbsolutePath());
             } 
             catch (Exception e) 
             {
                 e.printStackTrace();
+                showCalendarExportedDialog(0, false);
+                return;
             }
         }
-    }
+        showCalendarExportedDialog(calendars.size(), true);
+    }    
 }

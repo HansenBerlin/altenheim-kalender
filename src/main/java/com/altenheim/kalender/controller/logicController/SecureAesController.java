@@ -10,34 +10,34 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-public class SecureAesController
+public class SecureAesController 
 {
-    public String encrypt(String password, String salt, String plainText)
+    public String encrypt(String password, String salt, String plainText) 
     {
-        try
+        try 
         {
             var paramKeyPair = createSpecs(password, salt);
             var cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, paramKeyPair.getValue(), paramKeyPair.getKey());
             return Base64.getEncoder().encodeToString(cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8)));
-        }
-        catch(Exception e)
+        } 
+        catch (Exception e) 
         {
             e.printStackTrace();
             return "";
         }
     }
 
-    public String decrypt(String password, String salt, String cypherText)
+    public String decrypt(String password, String salt, String cypherText) 
     {
-        try
+        try 
         {
             var paramKeyPair = createSpecs(password, salt);
             var cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, paramKeyPair.getValue(), paramKeyPair.getKey());
             return new String(cipher.doFinal(Base64.getDecoder().decode(cypherText)));
-        }
-        catch (Exception e)
+        } 
+        catch (Exception e) 
         {
             e.printStackTrace();
             return "";
@@ -45,7 +45,7 @@ public class SecureAesController
     }
 
     private Pair<IvParameterSpec, SecretKeySpec> createSpecs(String password, String salt)
-            throws NoSuchAlgorithmException, InvalidKeySpecException
+            throws NoSuchAlgorithmException, InvalidKeySpecException 
     {
         byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         var ivSpec = new IvParameterSpec(iv);

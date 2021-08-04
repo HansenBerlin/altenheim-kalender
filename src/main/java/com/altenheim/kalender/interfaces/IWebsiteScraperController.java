@@ -2,6 +2,6 @@ package com.altenheim.kalender.interfaces;
 
 public interface IWebsiteScraperController 
 {
-    //void startScraperTask();
+    void startScraperTask();
     void scrapeCalendar();
 }

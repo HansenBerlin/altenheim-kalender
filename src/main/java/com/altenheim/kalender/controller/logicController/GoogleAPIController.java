@@ -9,14 +9,16 @@ import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.List;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
-import com.altenheim.kalender.models.SerializableEntry;
 import com.altenheim.kalender.models.SettingsModel;
+import com.calendarfx.model.Entry;
+
 import org.json.*;
 
 public class GoogleAPIController implements IGoogleAPIController {
     private static final String FINDPLACEQUERY = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=%s&inputtype=textquery&fields=place_id&key=%s";
     private static final String OPENINGHOURSQUERY = "https://maps.googleapis.com/maps/api/place/details/json?place_id=%s&fields=opening_hours&key=%s";
     private static final String FINDDESTINATIONSQUERY = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=%s";
+    private static final String SALT = "e]<J3Grct{~'HJv-";
 
     private SettingsModel settings;
     private JsonParser jsonParser;
@@ -26,11 +28,10 @@ public class GoogleAPIController implements IGoogleAPIController {
         this.jsonParser = jsonParser;
     }
 
-    public HashMap<DayOfWeek, List<SerializableEntry>> getOpeningHours(String locationSearchUserInput) {
+    public HashMap<DayOfWeek, List<Entry<String>>> getOpeningHours(String locationSearchUserInput) {
         var security = new SecureAesController();
-        var apiKey = security.decrypt(settings.getDecryptedPasswordHash(), "e]<J3Grct{~'HJv-",
-                SettingsModel.APICYPHERTEXT);
-        String input = locationSearchUserInput.replaceAll(" ", "%20");
+        var apiKey = security.decrypt(settings.decryptedPassword, SALT, SettingsModel.APICYPHERTEXT);
+        String input = locationSearchUserInput.replace(" ", "%20");
 
         try {
             var jsonResponse = makeHttpRequest(String.format(FINDPLACEQUERY, input, apiKey));
@@ -42,21 +43,17 @@ public class GoogleAPIController implements IGoogleAPIController {
             e.printStackTrace();
             // ungültige Ortsangabe
             return null;
-        } finally {
-            apiKey = null;
-            security = null;
         }
     }
 
     public int[] searchForDestinationDistance(String startAt, String destination) {
 
         var security = new SecureAesController();
-        var apiKey = security.decrypt(settings.getDecryptedPasswordHash(), "e]<J3Grct{~'HJv-",
-                SettingsModel.APICYPHERTEXT);
+        var apiKey = security.decrypt(settings.decryptedPassword, SALT, SettingsModel.APICYPHERTEXT);
 
         int[] returnValues = new int[2];
-        var start = startAt.replaceAll(" ", "%20");
-        var end = destination.replaceAll(" ", "%20");
+        var start = startAt.replace(" ", "%20");
+        var end = destination.replace(" ", "%20");
         try {
             var jsonBody = makeHttpRequest(String.format(FINDDESTINATIONSQUERY, start, end, apiKey));
             var json = new JSONObject(jsonBody);
@@ -67,21 +64,17 @@ public class GoogleAPIController implements IGoogleAPIController {
             e.printStackTrace();
             returnValues[0] = -1;
             returnValues[1] = -1;
-        } finally {
-            apiKey = null;
-            security = null;
         }
         return returnValues;
     }
 
     public int[] searchForDestinationDistance(String origin, String destination, String travelMode) {
         var security = new SecureAesController();
-        var apiKey = security.decrypt(settings.getDecryptedPasswordHash(), "e]<J3Grct{~'HJv-",
-                SettingsModel.APICYPHERTEXT);
+        var apiKey = security.decrypt(settings.decryptedPassword, SALT, SettingsModel.APICYPHERTEXT);
 
         int[] returnValues = new int[2];
-        var start = origin.replaceAll(" ", "%20");
-        var end = destination.replaceAll(" ", "%20");
+        var start = origin.replace(" ", "%20");
+        var end = destination.replace(" ", "%20");
 
         String furtherAttributes = "&mode=";
         switch (travelMode) {
@@ -113,9 +106,6 @@ public class GoogleAPIController implements IGoogleAPIController {
             e.printStackTrace();
             returnValues[0] = -1;
             returnValues[1] = -1;
-        } finally {
-            apiKey = null;
-            security = null;
         }
         return returnValues;
     }

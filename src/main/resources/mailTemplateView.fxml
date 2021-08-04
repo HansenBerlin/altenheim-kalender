@@ -3,11 +3,15 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <GridPane alignment="CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
@@ -20,19 +24,46 @@
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
-      <VBox alignment="TOP_CENTER">
+      <VBox alignment="TOP_CENTER" spacing="10.0">
          <children>
-            <HBox fx:id="containerComboBoxSelectorTemplate" alignment="TOP_CENTER" spacing="20.0" />
             <HBox alignment="TOP_CENTER" spacing="20.0">
                <children>
-                  <Button fx:id="btnMailTemplateDate" mnemonicParsing="false" onAction="#insertDateMailTemplate" text="Datum" />
-                  <Button fx:id="btnMailTemplateTime" mnemonicParsing="false" onAction="#insertTimeMailTemplate" text="Uhrzeit" />
+                  <HBox fx:id="containerComboBoxSelectorTemplate" alignment="TOP_CENTER" />
+                  <Button mnemonicParsing="false" onAction="#loadTemplate" text="laden">
+                     <tooltip>
+                        <Tooltip fx:id="ttLoadMailTemplate" text="Laden der ausgewählten Vorlage" />
+                     </tooltip></Button>
                </children></HBox>
-            <TextArea fx:id="mailTemplatetxtArea" minHeight="50.0" minWidth="100.0" />
+            <Text fx:id="txtError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font></Text>
+            <TextField fx:id="txtFieldNameTemplate" promptText="Name des Templates" />
+            <HBox spacing="20.0">
+               <children>
+                  <Button fx:id="btnMailTemplateDate" mnemonicParsing="false" onAction="#insertDateMailTemplate" text="Datum">
+                     <tooltip>
+                        <Tooltip fx:id="ttBtnMailTemplateDate" text="Einsetzen des Platzhalters für das Datum." />
+                     </tooltip></Button>
+                  <Button fx:id="btnMailTemplateTime" mnemonicParsing="false" onAction="#insertTimeMailTemplate" text="Uhrzeit">
+                     <tooltip>
+                        <Tooltip fx:id="ttBtnMailTemplateTime" text="Einsetzen des Platzhalters für die Uhrzeit." />
+                     </tooltip></Button>
+               </children></HBox>
+            <TextArea fx:id="mailTemplatetxtArea" minHeight="50.0" minWidth="100.0" promptText="Inhalt des Templates">
+               <font>
+                  <Font size="18.0" />
+               </font></TextArea>
             <HBox alignment="TOP_CENTER" spacing="20.0">
                <children>
-                  <Button fx:id="btnMailTemplateNewTemplate" mnemonicParsing="false" onAction="#createNewTemplate" text="Neues Template" />
-                  <Button fx:id="btnMailTemplaterRemoveTemplate" mnemonicParsing="false" onAction="#removeTemplate" text="Template Löschen" />
+                  <Button fx:id="btnMailTemplateNewTemplate" mnemonicParsing="false" onAction="#createNewTemplate" text="Neue Vorlage">
+                     <tooltip>
+                        <Tooltip fx:id="ttBtnMailTemplateNewTemplate" text="neue leere Vorlage erstellen" />
+                     </tooltip></Button>
+                  <Button fx:id="btnMailTemplaterRemoveTemplate" mnemonicParsing="false" onAction="#removeTemplate" text="Vorlage Löschen">
+                     <tooltip>
+                        <Tooltip fx:id="ttBtnMailTemplaterRemoveTemplate" text="Löschen der aktuellen Vorlage" />
+                     </tooltip></Button>
                   <Button fx:id="btnMailTemplateSave" mnemonicParsing="false" onAction="#saveMailTemplate" text="Speichern" />
                </children></HBox>
          </children>

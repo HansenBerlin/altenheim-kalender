@@ -1,12 +1,8 @@
 package com.altenheim.kalender.controller.viewController;
 
-import java.util.List;
-import java.util.Map;
 import com.altenheim.kalender.interfaces.IComboBoxFactory;
 import com.altenheim.kalender.interfaces.IIOController;
-import com.altenheim.kalender.interfaces.IMailCreationController;
 import com.altenheim.kalender.models.MailTemplateModel;
-import com.altenheim.kalender.models.SettingsModel;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,133 +14,126 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class MailTemplateViewController extends ResponsiveController
-{ 
-    private IIOController ioController;
-    private SettingsModel settings;
-    private IMailCreationController mailController;
+public class MailTemplateViewController extends ResponsiveController 
+{
     private MailTemplateModel mailTemplatesModel;
     private IComboBoxFactory comboBoxFactory;
+    private IIOController iOController;
+
+    private String templateKey;
     private ComboBox<String> comboBoxTemplates;
+
     @FXML private Button btnMailTemplateDate, btnMailTemplateTime, btnMailTemplateNewTemplate, 
         btnMailTemplaterRemoveTemplate, btnMailTemplateSave, btnTemplateLoad;
     @FXML private HBox containerComboBoxSelectorTemplate;
     @FXML private TextArea mailTemplatetxtArea;
     @FXML private TextField txtFieldNameTemplate;
-    @FXML private Text txtError;
+    @FXML private Text txtError;    
 
-    @FXML
-    private void initialize()
-    {/*
-        comboBoxTemplates = comboBoxFactory.create(ComboBoxCreate.MAILTEMPLATESELECTORTEMPLATE);
-        containerComboBoxSelectorTemplate.getChildren().add(comboBoxTemplates);
-        comboBoxFactory.updateMailTemplates(mailTemplates);*/
-    }
-
-    public MailTemplateViewController(IIOController ioController, SettingsModel settings, MailTemplateModel mailTemplateModel,
-        IMailCreationController mailController, MailTemplateModel mailTemplatesModel, IComboBoxFactory comboBoxFactory)
+    public MailTemplateViewController(MailTemplateModel mailTemplateModel, IComboBoxFactory comboBoxFactory, IIOController iOController) 
     {
-        this.ioController = ioController;
-        this.settings = settings;
-        this.mailController = mailController;
         this.comboBoxFactory = comboBoxFactory;
         this.mailTemplatesModel = mailTemplateModel;
-    }
-    
-    public void changeContentPosition(double width, double height) 
-    {
-        
+        this.iOController = iOController;
     }
 
-    private Map<String, String> mailTemplates;
     @FXML
-    void removeTemplate(ActionEvent event) 
+    private void initialize() 
     {
+        comboBoxTemplates = comboBoxFactory.create(ComboBoxCreate.MAILTEMPLATESELECTORTEMPLATE);
+        containerComboBoxSelectorTemplate.getChildren().add(comboBoxTemplates);
+        updateComboBoxTemplates();
+    }
+
+    @FXML
+    private void removeTemplate(ActionEvent event) {
         var templateName = comboBoxTemplates.getValue();
-        
-        if (mailTemplates.get(templateName)!=null) {
-            mailTemplates.remove(templateName);
-            comboBoxFactory.updateMailTemplates(mailTemplates);
+
+        if (mailTemplatesModel.getTemplates().get(templateName) != null) {
+            mailTemplatesModel.getTemplates().remove(templateName);
+            updateComboBoxTemplates();
             updateTextArea("");
             txtFieldNameTemplate.setText("");
         }
-        
     }
-    private String templateKey;
+
+
     @FXML
-    void saveMailTemplate(ActionEvent event) {
-        comboBoxFactory.updateMailTemplates(mailTemplates);
+    private void saveMailTemplate(ActionEvent event) {
+        updateComboBoxTemplates();
         var templateName = txtFieldNameTemplate.getText();
         var templateValue = mailTemplatetxtArea.getText();
         if (templateName.isBlank()) {
             printErrorMessage("Der Name der Templates darf nicht leer sein!");
-        }else if(!templateValue.contains("[Datum]") ){
+        } else if (!templateValue.contains("[Datum]")) {
             printErrorMessage("Datum fehlt im Template. Klicke auf den Knopf Datum um den Platzhalter einzufügen.");
-        }else if(!templateValue.contains("[Uhrzeit]") ){
+        } else if (!templateValue.contains("[Uhrzeit]")) {
             printErrorMessage("Uhrzeit fehlt im Template. Klicke auf den Knopf Uhrzeit um den Platzhalter einzufügen.");
-        }else {
+        } else {
             txtError.setVisible(false);
             if (templateKey == null || templateKey.isBlank()) {
-                mailTemplates.put(templateName, templateValue);
-            }else if(!templateKey.equals(templateName)){
-                mailTemplates.remove(templateKey);
-                mailTemplates.put(templateName, templateValue);
+                mailTemplatesModel.getTemplates().put(templateName, templateValue);
+            } else if (!templateKey.equals(templateName)) {
+                mailTemplatesModel.getTemplates().remove(templateKey);
+                mailTemplatesModel.getTemplates().put(templateName, templateValue);
             } else {
-                mailTemplates.replace(templateName, templateValue);
+                mailTemplatesModel.getTemplates().replace(templateName, templateValue);
             }
-            comboBoxFactory.updateMailTemplates(mailTemplates);
+            updateComboBoxTemplates();
             comboBoxTemplates.setValue(templateName);
         }
+        iOController.saveMailTemplatesToFile(mailTemplatesModel);
     }
 
-    private void printErrorMessage(String error){
+    private void printErrorMessage(String error) {
         txtError.setVisible(true);
         txtError.setText(error);
         txtError.setFill(Color.RED);
     }
-    
+
     @FXML
-    void txtFieldtxtChanged() {
+    private void txtFieldtxtChanged() {
         if (txtFieldNameTemplate.getText().isBlank()) {
             txtError.setVisible(true);
             txtError.setText("Der Name der Templates darf nicht leer sein!");
             txtError.setFill(Color.RED);
-        }else {
+        } else {
             txtError.setVisible(false);
         }
     }
 
     @FXML
-    void createNewTemplate(ActionEvent event) {
+    private void createNewTemplate(ActionEvent event) {
         updateTextArea("");
-        txtFieldNameTemplate.setText(""); 
-        templateKey = ""; 
+        txtFieldNameTemplate.setText("");
+        templateKey = "";
     }
 
     @FXML
-    void insertDateMailTemplate(ActionEvent event) {
+    private void insertDateMailTemplate(ActionEvent event) {
+        insertSomethingInMailTemplateTxtArea("Datum");
+    }
+
+    @FXML
+    private void insertTimeMailTemplate(ActionEvent event) {
+        insertSomethingInMailTemplateTxtArea("Uhrzeit");
+    }
+
+    private void insertSomethingInMailTemplateTxtArea(String txt) {
         var position = mailTemplatetxtArea.getCaretPosition();
         var text = mailTemplatetxtArea.getText();
-        mailTemplatetxtArea.setText(text.substring(0, position)+"[Datum] "+text.substring(position, text.length()));
-        if (txtError.getText().contains("Datum fehlt im Template.")) {
+        if (txtError.getText().contains(txt + "fehlt im Template."))
             txtError.setVisible(false);
-        }
+        txt = "[" + txt + "] ";
+        mailTemplatetxtArea.setText(text.substring(0, position) + txt + text.substring(position, text.length()));
+        mailTemplatetxtArea.requestFocus();
+        mailTemplatetxtArea.positionCaret(position + txt.length());
     }
 
     @FXML
-    void insertTimeMailTemplate(ActionEvent event) {
-        var position = mailTemplatetxtArea.getCaretPosition();
-        var text = mailTemplatetxtArea.getText();
-        mailTemplatetxtArea.setText(text.substring(0, position)+"[Uhrzeit] "+text.substring(position, text.length()));
-        if (txtError.getText().contains("Uhrzeit fehlt im Template.")) {
-            txtError.setVisible(false);
-        }
-    }
-
-    @FXML
-    void loadTemplate(ActionEvent event) {
+    private void loadTemplate(ActionEvent event) {
         var value = comboBoxTemplates.getValue();
-        updateTextArea(mailTemplates.get(value));
+        updateTextArea(mailTemplatesModel.getTemplates().get(value));
         txtFieldNameTemplate.setText(value);
         templateKey = value;
     }
@@ -152,4 +141,18 @@ public class MailTemplateViewController extends ResponsiveController
     private void updateTextArea(String value) {
         mailTemplatetxtArea.setText(value);
     }
+
+    private void updateComboBoxTemplates() 
+    {
+        var mailTemplate = comboBoxFactory.getMailTemplateSelectorTemplate();
+        mailTemplate.clear();
+        for (var entry : mailTemplatesModel.getTemplates().entrySet()) 
+        {
+            mailTemplate.add(entry.getKey());
+        }
+    }
+
+    public void changeContentPosition(double width, double height) {
+        //
+    }    
 }
