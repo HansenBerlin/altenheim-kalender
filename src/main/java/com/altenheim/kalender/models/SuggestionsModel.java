@@ -12,8 +12,6 @@ import javafx.scene.control.Button;
 public class SuggestionsModel 
 {
     final static public ObservableList<SuggestionsModel> data = FXCollections.observableArrayList();
-    public static boolean toggleTravelTime = false;
-    public static int travelTime;
     private String startTime;
     private String endTime;
     private String dayStart;
