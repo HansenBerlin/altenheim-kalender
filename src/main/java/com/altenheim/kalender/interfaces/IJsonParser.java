@@ -9,5 +9,5 @@ import com.calendarfx.model.Entry;
 public interface IJsonParser 
 {
     String parseJsonForLocationId(String jsonBody);
-    public HashMap<DayOfWeek, List<Entry<String>>> parseJsonForOpeningHours(String jsonBody);
+    HashMap<DayOfWeek, List<Entry<String>>> parseJsonForOpeningHours(String jsonBody);
 }

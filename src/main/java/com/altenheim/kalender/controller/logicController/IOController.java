@@ -14,33 +14,20 @@ import java.util.List;
 public class IOController implements IIOController 
 {
     protected SettingsModel settings;
-    private ContactModel contacts;
-    private String hashedPassword;
-    private IExportController exportCt;
-    private IImportController importCt;
-    private IEntryFactory entryFactory;
+    //private ContactModel contacts;
+    //private String hashedPassword;
+    //private IExportController exportCt;
+    //private IImportController importCt;
+    //private IEntryFactory entryFactory;
+    //private String hashedPassword;
 
-    public IOController(SettingsModel settings, ContactModel contacts, 
-        IExportController exportCt, IImportController importCt, IEntryFactory entryFactory) 
+    public IOController(SettingsModel settings)
     {
         this.settings = settings;
-        this.contacts = contacts;
-        this.exportCt = exportCt;
-        this.importCt = importCt;
-        this.entryFactory = entryFactory;
     }
-
-    public void addEntryFactory(IEntryFactory entryFactory)
-    {
-        this.entryFactory = entryFactory;
-    }
-
-    public void saveDecryptedPasswordHash(String hashedPassword) 
-    {
-        this.hashedPassword = hashedPassword;
-    }
-
-    public String getDecryptedPasswordHash() { return hashedPassword; }    
+    
+    //public void saveDecryptedPasswordHash(String hashedPassword) { this.hashedPassword = hashedPassword; }
+    //public String getDecryptedPasswordHash() { return hashedPassword; }
 
     public void createUserPath() 
     {
@@ -55,7 +42,7 @@ public class IOController implements IIOController
         }
     }
 
-    public void saveCalendar(Calendar calendar) 
+    public void saveCalendar(Calendar calendar, IExportController exportCt) 
     {        
         try 
         {
@@ -68,7 +55,7 @@ public class IOController implements IIOController
         } 
     }
 
-    public void loadCalendarsFromFile() 
+    public void loadCalendarsFromFile(IEntryFactory entryFactory, IImportController importCt) 
     {
         entryFactory.clearCalendarSourceList();
         var allCalendarFiles = new File(settings.getPathToUserDirectory() + "calendars").listFiles();
@@ -83,102 +70,116 @@ public class IOController implements IIOController
         }  
     }
 
-    public void saveContactsToFile() {
+    public void saveContactsToFile(ContactModel contacts) 
+    {
         var path = settings.getPathToUserDirectory() + "/contacts/contacts.file";
-        try {
+        try 
+        {
             var writeToFile = new FileOutputStream(path);
             var convert = new ObjectOutputStream(writeToFile);
             convert.writeObject(contacts.getDataToSerialize());
             convert.close();
             writeToFile.close();
-        } catch (IOException e) {
+        } 
+        catch (IOException e) 
+        {
             e.printStackTrace();
         }
     }
 
-    public void loadContactsFromFile() {
-
+    public void loadContactsFromFile(ContactModel contacts) 
+    {
         var file = new File(settings.getPathToUserDirectory() + "/contacts/contacts.file");
         if (file.exists() == false)
             return;
 
-        try {
+        try 
+        {
             var loadFile = new FileInputStream(file);
             var inputStream = new ObjectInputStream(loadFile);
             var loadedContacts = (List<ContactModel>) inputStream.readObject();
-            contacts.rebuildObservablaListFromSerializedData(loadedContacts);
+            contacts.rebuildObservableListFromSerializedData(loadedContacts);
             inputStream.close();
             loadFile.close();
-        } catch (ClassNotFoundException | IOException e) {
+        } 
+        catch (ClassNotFoundException | IOException e) 
+        {
             e.printStackTrace();
         }
-
     }
 
-    public void saveHashedPassword(String passwordHash) {
+    public void saveMailTemplatesToFile(MailTemplateModel templates) 
+    {
+        var path = settings.getPathToUserDirectory() + "/mailTemplates/templates.file";
+        try 
+        {
+            var writeToFile = new FileOutputStream(path);
+            var convert = new ObjectOutputStream(writeToFile);
+            convert.writeObject(templates);
+            convert.close();
+            writeToFile.close();
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public MailTemplateModel loadMailTemplatesFromFile() 
+    {
+        var file = new File(settings.getPathToUserDirectory() + "/mailTemplates/templates.file");
+        if (!file.exists())
+            return new MailTemplateModel();
+        try 
+        {
+            var loadFile = new FileInputStream(file);
+            var inputStream = new ObjectInputStream(loadFile);
+            var mailTemplates = (MailTemplateModel) inputStream.readObject();
+            inputStream.close();
+            loadFile.close();
+            return mailTemplates;
+        } 
+        catch (IOException | ClassNotFoundException e) 
+        {
+            e.printStackTrace();
+            return new MailTemplateModel();
+        }
+    }
+
+    public void saveHashedPassword(String passwordHash) 
+    {
         var path = settings.getPathToUserDirectory() + "savedHash";
-        try {
+        try 
+        {
             var writeToFile = new FileOutputStream(path);
             var convert = new ObjectOutputStream(writeToFile);
             convert.writeObject(passwordHash);
             convert.close();
-        } catch (IOException e) {
+        } 
+        catch (IOException e) 
+        {
             e.printStackTrace();
         }
     }
 
-    public String loadHashedPassword() {
+    public String loadHashedPassword() 
+    {
         var file = settings.getPasswordhashFile();
         if (!file.exists())
             return "";
-        try {
+        try 
+        {
             var loadFile = new FileInputStream(settings.getPathToUserDirectory() + "savedHash");
             var inputStream = new ObjectInputStream(loadFile);
             var passwordHash = (String) inputStream.readObject();
             inputStream.close();
             loadFile.close();
             return passwordHash;
-        } catch (IOException | ClassNotFoundException e) {
+        } 
+        catch (IOException | ClassNotFoundException e) 
+        {
             e.printStackTrace();
             return "";
         }
     }
-
-    public void writeSettings(SettingsModel settings) {
-        var path = settings.getPathToUserDirectory() + "settings";
-        try {
-            var writeToFile = new FileOutputStream(path);
-            var convert = new ObjectOutputStream(writeToFile);
-            convert.writeObject(settings);
-            convert.close();
-            writeToFile.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public SettingsModel restoreSettings() {
-        var file = new File("userFiles/settings");
-        if (!file.exists())
-            return null;
-        try {
-            var loadFile = new FileInputStream("userFiles/settings");
-            var inputStream = new ObjectInputStream(loadFile);
-            var settings = (SettingsModel) inputStream.readObject();
-            inputStream.close();
-            loadFile.close();
-            return settings;
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public void writeMailTemplates(MailTemplateModel templates) {
-    }
-
-    public MailTemplateModel restoreMailTemplates() {
-        return null;
-    }
-
 }

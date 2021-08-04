@@ -4,16 +4,18 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.altenheim.kalender.controller.viewController.CustomViewOverride;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.calendarfx.model.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 
 public class CalendarEntriesModel implements ICalendarEntriesModel 
 {
     private List<Calendar> calendarsSelectedByUser;
     private CustomViewOverride calendarView;
+    public static ObservableList<String> calendarsComboBox = FXCollections.observableArrayList();
 
     public CalendarEntriesModel(CustomViewOverride calendarView) 
     {
@@ -35,6 +37,17 @@ public class CalendarEntriesModel implements ICalendarEntriesModel
         }
 
         return allCalendars; 
+    }
+
+    public String[] getAllCalendarNames()
+    {
+        var allCalendars = getAllCalendars();
+        String[] names = new String[allCalendars.size()];
+        for (int i = 0; i < allCalendars.size(); i++) 
+        {
+            names[i] = allCalendars.get(i).getName();            
+        }
+        return names;
     }
 
     public void addEntryToCalendarWithName(String name, Entry<String> entry)

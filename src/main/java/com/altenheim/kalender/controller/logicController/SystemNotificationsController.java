@@ -64,19 +64,11 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
         for (Entry<String> entry : entries) {
             trayIcon.displayMessage(messageTitle, entry.getTitle(), MessageType.INFO);
         }
-        trayIcon.displayMessage(messageTitle, "test", MessageType.INFO);
     }
     
     public boolean initializeSystemTrayAccess() {
         if (SystemTray.isSupported()) {
-            Image image;
-            
-            try {
-                image = ImageIO.read(new File("src/main/resources/Penaut.png"));
-            } catch (IOException e1) {
-                image = null;
-                e1.printStackTrace();
-            }
+            Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Penaut.png"));
 
             var listener = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {

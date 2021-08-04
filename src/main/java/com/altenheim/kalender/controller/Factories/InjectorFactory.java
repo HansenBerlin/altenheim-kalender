@@ -1,6 +1,5 @@
 package com.altenheim.kalender.controller.Factories;
 
-import java.io.File;
 import jfxtras.styles.jmetro.JMetro;
 import com.altenheim.kalender.controller.logicController.*;
 import com.altenheim.kalender.controller.viewController.*;
@@ -9,60 +8,51 @@ import com.altenheim.kalender.models.*;
 
 public class InjectorFactory
 {    
-    private IViewRootsModel allViews;
+    
     private GuiUpdateController guiSetup;
-    private JMetro jMetroStyle;
+    private MainWindowController mainWindowController;
     private InitialSetupController initialSettingsLoader;
-    private CustomViewOverride customCalendarView;
-    private SettingsModel settings;
-    private IIOController ioCt;
-    public IIOController getIOController() { return ioCt; }
-    public CustomViewOverride getCustomCalendarView() { return customCalendarView; }
+    private SettingsModel settings;    
     public GuiUpdateController getGuiController() { return guiSetup; }
-    public IViewRootsModel getAllViews() { return allViews; }
-    public JMetro getJMetroSetup() { return jMetroStyle; }
     public InitialSetupController getInitialSettingsLoader() { return initialSettingsLoader; }
-    public SettingsModel getSettingsModel() {return settings; }
+    public SettingsModel getSettingsModel() { return settings; }
+    public MainWindowController getMainWindowController() { return mainWindowController; }
 
     public void createServices() 
     {     
-        jMetroStyle = new JMetro();   
         var jsonParser = new JsonParser();
-        
         settings = new SettingsModel();
-        var mailTemplates = new MailTemplateModel();
+        settings.loadSettings();
+        var jMetroStyle = new JMetro();
+        jMetroStyle.setStyle(settings.getCssStyle());
+        
+        var customCalendarView = new CustomViewOverride(settings);         
         var contacts = new ContactModel();
-
-        var settingsFile = new File("userFiles/settingsTest.file");    
-        if (settingsFile.exists())        
-            settings.readSimpleProperties();
-        customCalendarView = new CustomViewOverride(settings.cssMode);
-                
-
+        IIOController ioCt = new IOController(settings);
+        var mailTemplates = ioCt.loadMailTemplatesFromFile();
+        IExportController exportCt = new ExportController(settings);
+        IImportController importCt = new ImportController();
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
         IAnimationController animationController = new AnimationController();
-        IPopupViewController popupViewController = new PopupViewsController();
+        IPopupViewController popupViewController = new PopupViewsController(settings);
         IGoogleAPIController apiCt = new GoogleAPIController(settings, jsonParser);
-        //IMailCreationController mailCreationCt = new MailCreationController(mailTemplates);       
+        IMailCreationController mailCreationCt = new MailCreationController(mailTemplates);       
         ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel(customCalendarView);
         IDateSuggestionController dateSuggestionController = new DateSuggestionController();
-        IImportController importCt = new ImportController(settings);
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
-        IExportController exportCt = new ExportController(settings);
-        ioCt = new IOController(settings, contacts, exportCt, importCt, null);
-        IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, ioCt, settings);
-        ioCt.addEntryFactory(entryFactory);
+        IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, ioCt, settings, exportCt);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt, entryFactory);
         
-        var plannerVCt = new PlannerViewController(customCalendarView, ioCt, entryFactory, popupViewController);
-        var contactsVCt = new ContactsViewController(ioCt);
-        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, comboBoxFactory, popupViewController, ioCt);
-        var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory);
-        var searchVCt = new SearchViewController(smartSearch, entryFactory, mailTemplates, settings, apiCt, ioCt, animationController, comboBoxFactory, dateSuggestionController, calendarEntriesModel);
+        var plannerVCt = new PlannerViewController(customCalendarView, ioCt, entryFactory, popupViewController, importCt, calendarEntriesModel, exportCt);
+        var contactsVCt = new ContactsViewController(ioCt, contacts);
+        var settingsVCt = new SettingsViewController(settings, importCt, entryFactory, exportCt, calendarEntriesModel, comboBoxFactory, popupViewController);
+        var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory, ioCt);
+        var searchVCt = new SearchViewController(smartSearch, entryFactory, mailCreationCt, settings, apiCt, animationController, comboBoxFactory, popupViewController, dateSuggestionController, calendarEntriesModel);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
-        allViews = new ViewRootsModel(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
-        guiSetup = new GuiUpdateController(jMetroStyle, allViews);
-        initialSettingsLoader = new InitialSetupController(settings, ioCt, popupViewController, websiteCt, systemNotificationsCt);
-    }
-    
+        var allViews = new ViewRootsModel(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
+        mainWindowController = new MainWindowController(allViews, customCalendarView, settings);
+        allViews.setMainWindowController(mainWindowController);
+        guiSetup = new GuiUpdateController(jMetroStyle, allViews, settings);
+        initialSettingsLoader = new InitialSetupController(settings, ioCt, popupViewController, websiteCt, systemNotificationsCt, entryFactory, importCt, contacts);
+    }    
 }

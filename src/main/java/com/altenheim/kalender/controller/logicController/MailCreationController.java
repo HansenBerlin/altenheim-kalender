@@ -18,20 +18,35 @@ public class MailCreationController implements IMailCreationController
         this.mailTemplates = mailTemplates;
     }
 
-    public void sendMail(String recipient, String subject, String body) throws IOException, URISyntaxException 
+    public void processMailWrapper(String templateName, String date, String time, String recipient)
     {
-        String uriStr = String.format("mailto:%s?subject=%s&body=%s", recipient, encodeUrl(subject), encodeUrl(body));
-        Desktop.getDesktop().browse(new URI(uriStr));
+        String subject = "Terminanfrage";
+        String mailBody = getMailTemplate(templateName);
+        String processedBody = processPlaceholders(mailBody, date, time);
+        String uriStr = String.format("mailto:%s?subject=%s&body=%s", recipient, encodeUrl(subject), encodeUrl(processedBody));
+        try 
+        {
+            Desktop.getDesktop().browse(new URI(uriStr));
+        } 
+        catch (IOException | URISyntaxException e) 
+        {
+            e.printStackTrace();    
+        }
+    }    
+
+    private String getMailTemplate(String templateName)
+    {
+        for (var template : mailTemplates.getTemplates().entrySet()) 
+        {
+            if (template.getKey().equals(templateName))
+                return template.getValue();            
+        }
+        return mailTemplates.getDefaultTemplate();
+
     }
 
-    public String processPlaceholders(String body, String date, String time, int template) 
+    private String processPlaceholders(String body, String date, String time) 
     {
-        var templates = new MailTemplateModel();
-        if (template == 1)
-            body = templates.getTemplateOne();
-        else if (template == 2)
-            body = templates.getTemplateTwo();
-
         body = body.replace("[Datum]", date);
         body = body.replace("[Uhrzeit]", time);
 
