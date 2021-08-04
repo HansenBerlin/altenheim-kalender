@@ -68,14 +68,7 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
     
     public boolean initializeSystemTrayAccess() {
         if (SystemTray.isSupported()) {
-            Image image;
-            
-            try {
-                image = ImageIO.read(new File("src/main/resources/Penaut.png"));
-            } catch (IOException e1) {
-                image = null;
-                e1.printStackTrace();
-            }
+            Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Penaut.png"));
 
             var listener = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
