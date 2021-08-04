@@ -15,6 +15,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
+import com.altenheim.kalender.resourceClasses.DateFormatConverter;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -346,8 +348,8 @@ public class SearchViewController extends ResponsiveController
             {                
                 String templateName = dropdownMailTemplates.getValue();
                 String recipient = validateRecipient();
-                String date = currentSuggestion.getStartDate().toString();
-                String time = currentSuggestion.getStartTime().toString();
+                String date = DateFormatConverter.formatDate(currentSuggestion.getStartDate());
+                String time = DateFormatConverter.formatTime(currentSuggestion.getStartTime());
                 mailCreationController.processMailWrapper(templateName, date, time, recipient);                               
             }
         });
