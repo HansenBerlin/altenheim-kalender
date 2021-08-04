@@ -1,26 +1,23 @@
 package com.altenheim.kalender.resourceClasses;
 
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class DateFormatConverter {
+    private DateFormatConverter() {}
+
     public static String formatDate(LocalDate date) {
-        var dateFormat = new SimpleDateFormat("dd.mm.yyyy");
-        dateFormat.format(date);
-        return dateFormat.toString();
+        return date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     public static String formatTime(LocalTime time) {
-        var timeFormat = new SimpleDateFormat("hh.mm.ss");
-        timeFormat.format(time);
-        return timeFormat.toString();        
+        return time.format(DateTimeFormatter.ofPattern("HH:mm"));        
     }
 
     public static String formatDateTime(LocalDateTime dateTime) {
-        var dateTimeFormat = new SimpleDateFormat("hh.mm.ss dd.mm.yyyy");
-        dateTimeFormat.format(dateTime);
-        return dateTimeFormat.toString();
+        return dateTime.format(DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy"));
     }
 }
