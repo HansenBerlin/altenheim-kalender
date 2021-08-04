@@ -1,8 +1,6 @@
 package com.altenheim.kalender.controller.logicController;
 
 import java.io.IOException;
-
-import com.altenheim.kalender.controller.viewController.CustomViewOverride;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
 
