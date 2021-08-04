@@ -1,7 +1,6 @@
 package com.altenheim.kalender.controller.viewController;
 
-import com.altenheim.kalender.interfaces.IAnimationController;
-import com.altenheim.kalender.interfaces.IIOController;
+
 import com.altenheim.kalender.interfaces.IViewRootsModel;
 import com.altenheim.kalender.models.SettingsModel;
 import com.altenheim.kalender.resourceClasses.StylePresets;
@@ -9,21 +8,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
-import com.calendarfx.model.CalendarSource;
-import com.calendarfx.view.CalendarView;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -75,10 +65,7 @@ public class MainWindowController extends ResponsiveController
     {
         ((PlannerViewController)allViewsInformation.getAllViewControllers()[0]).updateCustomCalendarView(null);
         viewsRoot.getChildren().addAll(allViewsInformation.getAllViews());
-        setupMenuButtons();
-        //switchCssMode();
-        //bindWindowSize();
-        //initilizationDone = true;
+        setupMenuButtons();        
     }
 
     @FXML
@@ -134,16 +121,13 @@ public class MainWindowController extends ResponsiveController
         viewsRoot.setBackground(background);
         topButtonRow.setBackground(primary);
         btnLogo.setStyle(secondaryCSS);
+        jMetro.getOverridingStylesheets().clear();
+        jMetro.getOverridingStylesheets().add(appCssFile);             
+        customCalendar.updateCss();
+        settings.saveSettings(); 
         
         for (var view : allViewsInformation.getAllViews())
-            view.setBackground(background);
-        //if (initilizationDone) 
-        //{
-            jMetro.getOverridingStylesheets().clear();
-            jMetro.getOverridingStylesheets().add(appCssFile);             
-            customCalendar.updateCss();
-            settings.saveSettings();             
-        //}
+            view.setBackground(background);  
     }
   
     public void updateViewOnButtonClicked(Button pressed) 
@@ -168,9 +152,9 @@ public class MainWindowController extends ResponsiveController
         allButtonsWithBackgrounds = createMainMenuButtons(buttonsList, buttonBackgrounds);
         currentlyActive = menuBtnPlanner;
         if (settings.isDarkmodeActive)
-            menuBtnPanePlanner.setBackground(StylePresets.DARK_SECONDARY);
-        else
             menuBtnPanePlanner.setBackground(StylePresets.LIGHT_SECONDARY);
+        else
+            menuBtnPanePlanner.setBackground(StylePresets.DARK_SECONDARY);
     }
 
     private void bindWindowSize() 
@@ -248,15 +232,10 @@ public class MainWindowController extends ResponsiveController
         var iconCal = new MDL2IconFont("\uE787");
         var iconSearch = new MDL2IconFont("\uE99A");
         var iconContacts = new MDL2IconFont("\uE779");
-        // var iconStats = new MDL2IconFont("\uE776");
         var iconMail = new MDL2IconFont("\uE715");
         var iconSettings = new MDL2IconFont("\uE713");
         var iconPlus = new MDL2IconFont("\uE710");
-        var iconMode = new MDL2IconFont("\uE793");
-        // var iconLanguage = new MDL2IconFont("\uE774");
-        // var iconUser = new MDL2IconFont("\uE748");
-        // var iconClosePane = new MDL2IconFont("\uE8A0");
-        // var iconOpenPane= new MDL2IconFont("\uE89F");
+        var iconMode = new MDL2IconFont("\uE793");        
 
         MDL2IconFont[] iconListMenuButtons = { iconCal, iconSearch, iconContacts, iconMail, iconSettings, iconPlus,
                 iconMode };
