@@ -319,10 +319,10 @@ public class SearchViewController extends ResponsiveController
     private Button createAddEntryButton(Entry<String> currSug)
     {
         var button = new Button("EINTRAGEN");
-        String startDate = currSug.getStartDate().toString();
-        String endDate = currSug.getEndDate().toString();
-        String startTime = currSug.getStartTime().toString();
-        String endTime = currSug.getEndTime().toString();
+        String startDate = DateFormatConverter.formatDate(currSug.getStartDate());
+        String endDate = DateFormatConverter.formatDate(currSug.getEndDate());
+        String startTime = DateFormatConverter.formatTime(currSug.getStartTime());
+        String endTime = DateFormatConverter.formatTime(currSug.getEndTime());
         String title = currSug.getTitle();
         var sendMailButton = createSendMailButton();
 
