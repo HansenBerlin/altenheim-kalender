@@ -13,17 +13,15 @@ public class InitialSetupController
     private IPopupViewController popup;
     private IWebsiteScraperController websiteScraper;
     private ISystemNotificationsController systemNotifications;
-    private CustomViewOverride customViewOverride;
 
     public InitialSetupController(SettingsModel settings, IIOController ioController, IPopupViewController popup,
-            IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications, CustomViewOverride customViewOverride) 
+            IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications) 
     {
         this.settings = settings;
         this.ioController = ioController;
         this.popup = popup;
         this.websiteScraper = websiteScraper;
         this.systemNotifications = systemNotifications;
-        this.customViewOverride = customViewOverride;
     }
 
     public void initializeSettings() 
@@ -43,7 +41,6 @@ public class InitialSetupController
         {
             systemNotifications.startNotificationTask();
         }
-        customViewOverride.registerTimeUpdate();
     }
 
     public void initialValidationCheck() 

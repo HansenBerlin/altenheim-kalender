@@ -19,7 +19,7 @@ public class CustomViewOverride extends CalendarView {
                 getStylesheets().add(StylePresets.LIGHT_CALENDAR_CSS_FILE);
                 break;
         }
-
+        registerTimeUpdate();
     }
 
     public void updateCss(String oldPath, String newPath) {
