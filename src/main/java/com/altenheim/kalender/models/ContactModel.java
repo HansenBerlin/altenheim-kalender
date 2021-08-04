@@ -9,9 +9,11 @@ import javafx.event.EventHandler;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 
-public class ContactModel implements Serializable {
-    final static public ObservableList<ContactModel> data = FXCollections.observableArrayList();
+public class ContactModel implements Serializable 
+{
+    public static ObservableList<ContactModel> data = FXCollections.observableArrayList();
     public static ObservableList<String> destinations = FXCollections.observableArrayList();
+    public static ObservableList<String> mailadresses = FXCollections.observableArrayList();
 
     private static int globalId = 1;
     private int iD;
@@ -26,11 +28,12 @@ public class ContactModel implements Serializable {
     private String address; 
     private transient Button button;
 
-    public ContactModel() {
-    }
+    
+    public ContactModel() {}
 
     public ContactModel(String firstName, String surName, String mail, String streetAndNumber, String city,
-            String postalCode, String phone) {
+            String postalCode, String phone) 
+    {
         globalId++;
         this.iD = ContactModel.globalId;
         this.firstName = firstName;
@@ -44,8 +47,16 @@ public class ContactModel implements Serializable {
         fullName = "%s %s".formatted(firstName, surName);
         address = "%s, %s %s".formatted(streetAndNumber, postalCode, city);
         destinations.add(address);
+        mailadresses.add(mail);
         registerButtonEvent();
     }
+
+    public int getContactId() { return iD; }
+    public String getFullName() { return fullName; }
+    public String getAddress() { return address; }
+    public String getMail() { return mail; }
+    public String getPhone() { return phone; }
+    public Button getButton() { return button; }
 
     public void registerButtonEvent()
     {
@@ -61,14 +72,7 @@ public class ContactModel implements Serializable {
     private void removeContactModel()
     {
         data.remove(this);
-    }
-
-    public int getContactId() { return iD; }
-    public String getFullName() { return fullName; }
-    public String getAddress() { return address; }
-    public String getMail() { return mail; }
-    public String getPhone() { return phone; }
-    public Button getButton() { return button; }
+    }    
 
     public List<ContactModel> getDataToSerialize() 
     { 
@@ -80,7 +84,7 @@ public class ContactModel implements Serializable {
         return listFromObservable; 
     } 
 
-    public void rebuildObservablaListFromSerializedData(List<ContactModel> serialized) 
+    public void rebuildObservableListFromSerializedData(List<ContactModel> serialized) 
     { 
         for (var contactModel : serialized) 
         {
@@ -88,6 +92,7 @@ public class ContactModel implements Serializable {
             contactModel.registerButtonEvent();
             ContactModel.data.add(contactModel);
             ContactModel.destinations.add(contactModel.address);
+            ContactModel.mailadresses.add(contactModel.mail);
         }
     } 
 }

@@ -16,7 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class SettingsViewController extends ResponsiveController {
+public class SettingsViewController extends ResponsiveController 
+{
     private SettingsModel settings;
     private IImportController importController;
     private IExportController exportController;
@@ -24,9 +25,8 @@ public class SettingsViewController extends ResponsiveController {
     private IEntryFactory calendarFactory;
     private IPopupViewController popupViewController;
     private IComboBoxFactory comboBoxFactory;
-    private IIOController iOController;
     private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse,
-            comboBoxSelectionSemester;
+            comboBoxSelectionSemester, comboBoxDefaultCalendar;
 
     @FXML private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
     @FXML private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
@@ -35,11 +35,11 @@ public class SettingsViewController extends ResponsiveController {
     @FXML private HBox containerComboBoxSelectorScrapping;
     @FXML private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
     @FXML private CheckBox cBToolTips;
-    @FXML private VBox topContainer, bottomContainer, containerComboBoxNotificationMin;
+    @FXML private VBox topContainer, bottomContainer, containerComboBoxNotificationMin, containerComboBoxDefaultCalendar;
 
     public SettingsViewController(SettingsModel settings, IImportController importController,
             IEntryFactory calendarFactory, IExportController exportController, ICalendarEntriesModel allCalendars,
-            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, IIOController iOController) 
+            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController) 
     {
         this.settings = settings;
         this.importController = importController;
@@ -48,29 +48,32 @@ public class SettingsViewController extends ResponsiveController {
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
         this.comboBoxFactory = comboBoxFactory;
-        this.iOController = iOController;
     }
 
     @FXML
-    private void initialize() {
+    private void initialize() 
+    {
         createComboBoxes();
         bindInputFieldsToSerializable();
     }
 
-    private void bindInputFieldsToSerializable() {
+    private void bindInputFieldsToSerializable() 
+    {
         Text[] stringPropertiesCollectionText = { txtStreet, txtHouseNumber, txtZipCode, txtCity, txtMail };
-        TextField[] stringPropertiesCollectionTextField = { txtTFStreet, txtTFHouseNumber, txtTFZipCode, txtTFCity,
-                txtTFMail };
+        TextField[] stringPropertiesCollectionTextField = { txtTFStreet, txtTFHouseNumber, txtTFZipCode, txtTFCity, txtTFMail };
 
-        for (int i = 0; i < stringPropertiesCollectionTextField.length; i++) {
+        for (int i = 0; i < stringPropertiesCollectionTextField.length; i++) 
+        {
             stringPropertiesCollectionTextField[i].textProperty()
                     .bindBidirectional(settings.getSettingsInputFieldsContainer()[i]);
             stringPropertiesCollectionText[i].textProperty()
                     .bindBidirectional(settings.getSettingsInputFieldsContainer()[i]);
         }
+        cBToolTips.selectedProperty().bindBidirectional(settings.getToolTipEnabled());
     }
 
-    private void createComboBoxes() {
+    private void createComboBoxes() 
+    {
         comboBoxNotificationMin = comboBoxFactory.create(ComboBoxCreate.MENUNOTIFICATIONMIN);
         comboBoxSelectionSpecialField = comboBoxFactory.create(ComboBoxCreate.SELECTIONSPECIALFIELD);
         comboBoxSelectionCourse = comboBoxFactory.create(ComboBoxCreate.SELECTIONCOURSE);
@@ -80,15 +83,20 @@ public class SettingsViewController extends ResponsiveController {
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSpecialField);
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionCourse);
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSemester);
-
+        
         comboBoxNotificationMin.getSelectionModel().select(String.valueOf(settings.notificationTimeBeforeEntryInMinutes));
         comboBoxSelectionSpecialField.getSelectionModel().select(settings.specialField.getValue());
         comboBoxSelectionSemester.getSelectionModel().select(settings.semester.getValue());
         comboBoxSelectionCourse.getSelectionModel().select(settings.course.getValue());
+
+        comboBoxDefaultCalendar = comboBoxFactory.create(ComboBoxCreate.CALENDERNAMES);
+        containerComboBoxDefaultCalendar.getChildren().add(comboBoxDefaultCalendar);
+        comboBoxDefaultCalendar.getSelectionModel().select(settings.defaultCalendarForSearchView);
     }
 
     @FXML
-    void buttonClicked(ActionEvent event) throws IOException, InterruptedException {
+    void buttonClicked(ActionEvent event) throws IOException, InterruptedException 
+    {
         var button = (Button) event.getSource();
 
         if (button.equals(btnImport)) {
@@ -103,7 +111,8 @@ public class SettingsViewController extends ResponsiveController {
     }
 
     @FXML
-    void saveSettings(ActionEvent event) {
+    void saveSettings(ActionEvent event) 
+    {
         if (comboBoxSelectionSpecialField.getValue() == null || comboBoxSelectionCourse.getValue() == null
                 || comboBoxSelectionSemester.getValue() == null) {
             txtError.setText("Nicht alle HWR Komponenten ausgewählt!");
@@ -117,16 +126,21 @@ public class SettingsViewController extends ResponsiveController {
                     comboBoxSelectionCourse.getValue().replaceFirst("keine Kurse", ""));
             settings.specialField.set(comboBoxSelectionSpecialField.getValue());
             settings.course.set(comboBoxSelectionCourse.getValue());
-            settings.semester.set(comboBoxSelectionSemester.getValue());
-            settings.setCalendarParser(resultURL);
+            settings.semester.set(comboBoxSelectionSemester.getValue());            
+            settings.hwrWebsiteUrl = resultURL;
         }
-        cBToolTips.setTooltip(cBToolTips.getTooltip());
+        //cBToolTips.setTooltip(cBToolTips.getTooltip());
         settings.notificationTimeBeforeEntryInMinutes = (long) Long.valueOf(comboBoxNotificationMin.getValue());
-        settings.writeSimpleProperties();
+        settings.defaultCalendarForSearchView = comboBoxDefaultCalendar.getValue();
+        settings.entrySystemMessageIntervalInMinutes = 1;
+        //settings.toolTip = cBToolTips.selectedProperty();
+        settings.saveSettings();
     }
 
-    public void changeContentPosition(double width, double height) {
+   
+
+    public void changeContentPosition(double width, double height) 
+    {
         //
-    }
-    
+    }    
 }

@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 
 public class UserModel 
 {
-  	final static public ObservableList<UserModel> data = FXCollections.observableArrayList();
+  	static public ObservableList<UserModel> data = FXCollections.observableArrayList();
   	private String name;
   	private String street;
 
@@ -19,7 +19,8 @@ public class UserModel
   	public String getStreet() { return street; }
   	public void setName(String name) { this.name = name; }
   	public void setStreet(String street) { this.street = street; }
-  	final static public void addToList(String name, String street) 
+
+  	static public void addToList(String name, String street) 
 	{
     	UserModel.data.add(new UserModel(name, street));
   	}  

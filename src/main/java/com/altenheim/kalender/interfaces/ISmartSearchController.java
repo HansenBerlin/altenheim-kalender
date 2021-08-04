@@ -7,7 +7,8 @@ import java.util.List;
 
 import com.calendarfx.model.Entry;
 
-public interface ISmartSearchController {
+public interface ISmartSearchController 
+{
 	ArrayList<Entry<String>> findPossibleTimeSlots(Entry<String> input, int duration, boolean[] weekdays,
 			HashMap<DayOfWeek, List<Entry<String>>> openingHours, int timeBefore, int timeAfter, int intervalDays);
 }

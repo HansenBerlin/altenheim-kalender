@@ -3,6 +3,7 @@ package com.altenheim.kalender.controller.viewController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
@@ -14,7 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
-import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,7 +22,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import com.altenheim.kalender.controller.Factories.EntryFactory;
 import com.altenheim.kalender.controller.Factories.SplitMenuButtonFactory;
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.model.Entry;
@@ -31,26 +30,24 @@ import org.controlsfx.control.ToggleSwitch;
 
 public class SearchViewController extends ResponsiveController
 {
-    @FXML private RowConstraints firstRow;
     @FXML private Text txtHeaderStep, txtFirstStep, txtSecondStep, txtThirdStep;
     @FXML private TextField tfAppointmentName, tfDurationMinutes, tfDurationHours;
-    @FXML private Button btnBack, btnConfirm, btnReset;    
-    @FXML private VBox stepOneUserInput, stepTwoUserInput, stepThreeUserInput;
-    @FXML private DatePicker startDate, endDate;    
-    @FXML private CheckBox tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday;  
-    @FXML private TimeField timeStart, timeEnd; 
     @FXML private ToggleSwitch toggleDateRange, toggleTimeRange, toggleWeekdays, toggleCalendars;   
-    @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays, containerCalendars;
-    @FXML private HBox containerTravel, containerOpeningHours, containerMargin, containerReccurrence;
-    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleAddAutomatically; 
+    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleAddAutomatically, toggleUseMailTemplate; 
+    @FXML private Button btnBack, btnConfirm, btnReset;
+    @FXML private CheckBox tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday;  
     @FXML private Slider sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment;
+    @FXML private TimeField timeStart, timeEnd; 
+    @FXML private DatePicker startDate, endDate;    
+    @FXML private VBox stepOneUserInput, stepTwoUserInput, stepThreeUserInput;
+    @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays, containerCalendars, containerMailTemplate;
+    @FXML private HBox containerTravel, containerOpeningHours, containerMargin, containerReccurrence;
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
-    @FXML private Text infoName, infoDuration, infoBetweenDate, infoBetweenTime, infoWeekdays, infoTravelTime, infoTimeBefore, infoTimeAfter, infoReccurrences, infoInterval;   
+    @FXML private RowConstraints firstRow;
     
-    private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening;
-    private int userStep = 1;
-    private Button dummyButton = new Button();
+    private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening, dropdownMailTemplates, dropDownContact;
     private SplitMenuButton calendarSelection = new SplitMenuButton();
+    private int userStep = 1;
     private int recurrences = 1;   
     private int timeAfterGlobal = 0;
     private int travelTimeTo = 0;
@@ -60,44 +57,42 @@ public class SearchViewController extends ResponsiveController
     private ISmartSearchController smartSearch;
     private IEntryFactory entryFactory;
     private IGoogleAPIController api;
-    private IIOController iOController;
     private IAnimationController animationController;
     private IComboBoxFactory comboBoxFactory;
     private IDateSuggestionController dateSuggestionController;
     private ICalendarEntriesModel allCalendars;
-    private MailTemplateModel mailTemplates;
+    private IMailCreationController mailCreationController;
+    private IPopupViewController popupViewController;
     private SettingsModel settings;
-    private ArrayList<Entry<String>> currentSuggestions;
-    
+    private ArrayList<Entry<String>> currentSuggestions;    
 
     public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory,
-            MailTemplateModel mailTemplates, SettingsModel settings, IGoogleAPIController api,
-            IIOController iOController, IAnimationController animationController, IComboBoxFactory comboBoxFactory,
+            IMailCreationController mailCreationController, SettingsModel settings, IGoogleAPIController api,
+            IAnimationController animationController, IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController,
             IDateSuggestionController dateSuggestionController, ICalendarEntriesModel allCalendars) 
     {
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
-        this.mailTemplates = mailTemplates;
+        this.mailCreationController = mailCreationController;
         this.settings = settings;
         this.api = api;
-        this.iOController = iOController;
         this.animationController = animationController;
         this.comboBoxFactory = comboBoxFactory;
         this.dateSuggestionController = dateSuggestionController;
         this.allCalendars = allCalendars;
-        dummyButton.setVisible(false);
+        this.popupViewController = popupViewController;
     }
 
     @FXML
-    private void initialize() {
+    private void initialize() 
+    {
         TableView<SuggestionsModel> tableSuggestions = createTable();
         stepThreeUserInput.getChildren().add(tableSuggestions);
         setupInitialContainerStates();
         setupToggleBindings();
         setupTextboxInputValidation();
         createComboBoxes();
-        // setupSliderBindings();
-        btnReset.setVisible(false);
+        setDateAndTimeFields();
     }
 
     @FXML
@@ -115,26 +110,30 @@ public class SearchViewController extends ResponsiveController
     }
 
     @FXML
-    private void updateUserStepView(ActionEvent event) {
+    private void updateUserStepView(ActionEvent event) 
+    {
         String[] headings = { "Basisinformationen", "Optionale Informationen", "Vorschlagsauswahl" };
         Circle[] images = { imgFirstStep, imgSecondStep, imgThirdStep };
         VBox[] allSteps = { stepOneUserInput, stepTwoUserInput, stepThreeUserInput };
         int incrementor = 0;
         var button = (Button) event.getSource();
 
-        if (button.equals(btnReset)) {
+        if (button.equals(btnReset)) 
+        {
             clearFields();
             return;
         }
-        if (button.equals(btnConfirm)) {
-            btnReset.setVisible(true);
-            if (userStep == 2) {
+        if (button.equals(btnConfirm)) 
+        {
+            if (userStep == 2) 
+            {
+                btnReset.setVisible(false);
                 SuggestionsModel.data.clear();
                 startRequest();
                 iterateThroughSuggestions();
                 btnConfirm.setText("NÄCHSTE 20 VORSCHLÄGE"); 
                 if (toggleAddAutomatically.isSelected())
-                    btnConfirm.setVisible(false);
+                    btnConfirm.setVisible(false);                
             }   
             if (userStep == 3)
             {                
@@ -142,12 +141,14 @@ public class SearchViewController extends ResponsiveController
                 return;
             }
             incrementor = 1;
-        } else if (button.equals(btnBack)) {
+        } 
+        else if (button.equals(btnBack)) 
+        {
             if (userStep == 1)
                 return;
             if (userStep == 3)
             {
-                btnReset.setVisible(false);
+                btnReset.setVisible(true);
                 btnConfirm.setVisible(true);
                 btnConfirm.setText("WEITER");
             }
@@ -159,7 +160,7 @@ public class SearchViewController extends ResponsiveController
         changeViewState(allSteps[currentIndex], allSteps[requestedIndex], images[currentIndex], images[requestedIndex]);
         userStep += incrementor;
         txtHeaderStep.setText(headings[currentIndex]);
-    }
+    }    
 
     private void createComboBoxes() 
     {
@@ -168,10 +169,14 @@ public class SearchViewController extends ResponsiveController
         dropdownEndAtDest = comboBoxFactory.create(ComboBoxCreate.DESTINATION);
         dropdownDestinationOpening = comboBoxFactory.create(ComboBoxCreate.DESTINATION);
         dropdownInterval = comboBoxFactory.create(ComboBoxCreate.RECCURENCEOPTIONS);
-        dropdownInterval.setValue(dropdownInterval.getItems().get(0));        
+        dropdownInterval.setValue(dropdownInterval.getItems().get(0)); 
+        dropdownMailTemplates = comboBoxFactory.create(ComboBoxCreate.MAILTEMPLATESELECTORTEMPLATE);
+        dropDownContact = comboBoxFactory.create(ComboBoxCreate.MAILADRESSES);
+
         containerTravel.getChildren().addAll(dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest);  
         containerOpeningHours.getChildren().add(dropdownDestinationOpening);
         containerReccurrence.getChildren().add(dropdownInterval);
+        containerMailTemplate.getChildren().addAll(dropdownMailTemplates, dropDownContact);
         dropdownEndAtDest.getEditor().textProperty().bindBidirectional(dropdownDestinationOpening.getEditor().textProperty());
         startDate.setEditable(false);
         endDate.setEditable(false);
@@ -180,7 +185,7 @@ public class SearchViewController extends ResponsiveController
     private void setupInitialContainerStates() 
     {
         HBox[] containers = { containerDateRange, containerTimeRange, containerWeekdays, containerTravel,
-                containerOpeningHours, containerMargin, containerReccurrence };
+                containerOpeningHours, containerMargin, containerReccurrence, containerCalendars, containerMailTemplate };
 
         for (var hBox : containers) 
         {
@@ -240,11 +245,14 @@ public class SearchViewController extends ResponsiveController
             currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
             
             if (currentSuggestion == null)
-                return;        
+                return; 
             
+            var buttonAdd = createAddEntryButton(currentSuggestion);
             timeToStartSearch = currentSuggestion.getEndAsLocalDateTime(); 
-            SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
-                currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), new Button("EINTRAGEN"), tfAppointmentName.getText());
+            SuggestionsModel.addToList(currentSuggestion.getStartTime(), 
+                currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
+                currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), 
+                buttonAdd, tfAppointmentName.getText());
         } 
     } 
     
@@ -255,7 +263,8 @@ public class SearchViewController extends ResponsiveController
         if (interval == 0)
             interval = 1;
         LocalDateTime tempDate = timeToStartSearch.minusMinutes(1);
-        LocalTime startAt = timeToStartSearch.toLocalTime();
+        LocalTime startAt = timeToStartSearch.toLocalTime();                
+
         while (recurrences > 0) 
         {
             currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
@@ -266,15 +275,18 @@ public class SearchViewController extends ResponsiveController
 
             if (currentSuggestion.getStartAsLocalDateTime().isAfter(tempDate))
             {
+                var sendMailButton = createSendMailButton();
                 createEntryIncludingTravelTimes(currentSuggestion);                
-                SuggestionsModel.addToList(currentSuggestion.getStartTime(), currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
-                    currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), dummyButton, tfAppointmentName.getText());
+                SuggestionsModel.addToList(currentSuggestion.getStartTime(), 
+                    currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
+                    currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), 
+                    sendMailButton, tfAppointmentName.getText());
                 timeToStartSearch = LocalDateTime.of(timeToStartSearch.toLocalDate(), startAt);
                 tempDate = timeToStartSearch.plusDays(interval);
                 recurrences--;
             }
         } 
-    }
+    }    
 
     private void createEntryIncludingTravelTimes(Entry<String> currentSuggestion) 
     {
@@ -287,6 +299,59 @@ public class SearchViewController extends ResponsiveController
                 currentSuggestion.getEndDate(), currentSuggestion.getStartTime(),
                 currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), tfAppointmentName.getText(), traveltime);
     }
+
+    private Button createSendMailButton()
+    {
+        var button = new Button("Mailanfrage");
+        if (toggleUseMailTemplate.isSelected())  
+        {
+            button.setVisible(true); 
+            registerButtonSendMailEvent(button);
+        }      
+        else
+            button.setVisible(false);
+
+        return button;
+    }
+
+    private Button createAddEntryButton(Entry<String> currSug)
+    {
+        var button = new Button("EINTRAGEN");
+        String startDate = currSug.getStartDate().toString();
+        String endDate = currSug.getEndDate().toString();
+        String startTime = currSug.getStartTime().toString();
+        String endTime = currSug.getEndTime().toString();
+        String title = currSug.getTitle();
+        var sendMailButton = createSendMailButton();
+
+        button.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            public void handle(ActionEvent e) 
+            {
+                if (toggleUseTravelDuration.isSelected() == false)
+                    travelTimeTo = 0; 
+                createEntryIncludingTravelTimes(currSug);                           
+                                  
+                popupViewController.showEntryAddedDialogWithMailOption(startDate, endDate, startTime, endTime, title, sendMailButton);
+            }
+        }); 
+        return button;      
+    }
+
+    private void registerButtonSendMailEvent(Button button)
+    {
+        button.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            public void handle(ActionEvent e) 
+            {                
+                String templateName = dropdownMailTemplates.getValue();
+                String recipient = validateRecipient();
+                String date = currentSuggestion.getStartDate().toString();
+                String time = currentSuggestion.getStartTime().toString();
+                mailCreationController.processMailWrapper(templateName, date, time, recipient);                               
+            }
+        });
+    } 
     
     private void clearFields()
     {
@@ -298,6 +363,13 @@ public class SearchViewController extends ResponsiveController
         travelTimeTo = 0;   
         SuggestionsModel.data.clear();
         resetToggleStates();
+        resetSliderStates();
+        setDateAndTimeFields();
+        containerCalendars.getChildren().clear(); 
+        dropdownStartAtDest.getEditor().setText("");
+        dropdownEndAtDest.getEditor().setText("");
+        dropdownDestinationOpening.getEditor().setText("");
+         
     }
 
     private void resetToggleStates()
@@ -310,7 +382,12 @@ public class SearchViewController extends ResponsiveController
         toggleDateRange.setSelected(true);
         toggleTimeRange.setSelected(true);
         toggleWeekdays.setSelected(true);
+        toggleUseMailTemplate.setSelected(false);
+        toggleCalendars.setSelected(true);        
+    }
 
+    private void resetSliderStates()
+    {
         Slider[] allSliders = { sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment };
         CheckBox[] allTicks = { tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday };
 
@@ -323,6 +400,14 @@ public class SearchViewController extends ResponsiveController
         {
             slider.setValue(0);
         }
+    }
+
+    private void setDateAndTimeFields()
+    {
+        timeStart.setValue(LocalTime.of(0, 0));
+        timeEnd.setValue(LocalTime.of(23, 59)); 
+        startDate.setValue(LocalDate.now());
+        endDate.setValue(LocalDate.now().plusDays(365));
     }
 
     private void startRequest() 
@@ -356,8 +441,8 @@ public class SearchViewController extends ResponsiveController
     private int validateDuration() 
     {
         int duration = (int) sliderDurationMinutes.getValue() + (int) sliderDurationHours.getValue() * 60;
-        if (duration < 5)
-            duration = 5;
+        if (duration < 15)
+            duration = 15;
         return duration;
     }
 
@@ -471,15 +556,7 @@ public class SearchViewController extends ResponsiveController
             default -> 0;
         };
         return returnValue;
-    }
-
-    private int validateSuggestionsCount() 
-    {
-        if (toggleRecurringDate.isSelected() == false && toggleAddAutomatically.isSelected())
-            return 1;
-        else
-            return 1000;
-    }
+    }    
 
     private int validateReccurrences() 
     {
@@ -489,14 +566,16 @@ public class SearchViewController extends ResponsiveController
             return 1;
     }
 
-    private LocalTime validateStartSearchTime(LocalTime startTimeInput) 
+    private String validateRecipient()
     {
-        var currentTime = LocalDateTime.now().toLocalTime();
-        if (startTimeInput.isBefore(currentTime))
-            return currentTime;
-        else
-            return startTimeInput;
-    }
+        String selectedContact = dropDownContact.getValue();
+        for (var contact : ContactModel.data) 
+        {
+            if (contact.getFullName().equals(selectedContact));
+                return contact.getMail();            
+        }
+        return "";
+    }   
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC) 
     {
@@ -506,34 +585,6 @@ public class SearchViewController extends ResponsiveController
         activate.setVisible(true);
         currentC.setId("customCircleInactive");
         nextC.setId("customCircleActive");
-    }
-
-    @FXML
-    private void testUpdate(ActionEvent event) throws IOException, ClassNotFoundException 
-    {
-        // entryFactory.createRandomContactsList(100);
-        // iOController.saveContactsToFile();
-    }
-
-    @FXML
-    private void resetTest(ActionEvent event) throws IOException, ClassNotFoundException 
-    {
-        SuggestionsModel.data.clear();
-    }
-
-    final void changeContentPosition(double width, double height) 
-    {
-        Text[] headers = { txtFirstStep, txtSecondStep, txtThirdStep };
-        Circle[] circles = { imgFirstStep, imgSecondStep, imgThirdStep };
-        boolean isWindowSmall = false;
-        int rowHeight = 80;
-        if (height < 700) {
-            isWindowSmall = true;
-            rowHeight = 30;
-        }
-        firstRow.setPrefHeight(rowHeight);
-        firstRow.setMaxHeight(rowHeight);
-        animationController.growAndShrinkCircle(circles, headers, isWindowSmall);
     }
 
     private TableView<SuggestionsModel> createTable() 
@@ -551,10 +602,10 @@ public class SearchViewController extends ResponsiveController
         dateColumnEnd.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("dayEnd"));
         button.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("button"));
 
-        startTimeColumn.setPrefWidth(150);
-        endTimeColumn.setPrefWidth(150);
-        dateColumnStart.setPrefWidth(150);
-        dateColumnEnd.setPrefWidth(150);
+        startTimeColumn.setPrefWidth(100);
+        endTimeColumn.setPrefWidth(100);
+        dateColumnStart.setPrefWidth(100);
+        dateColumnEnd.setPrefWidth(100);
         button.setPrefWidth(150);
         table.getColumns().add(startTimeColumn);
         table.getColumns().add(endTimeColumn);
@@ -567,10 +618,10 @@ public class SearchViewController extends ResponsiveController
 
     private void setupToggleBindings()
     {
-        ToggleSwitch[] toggles = { toggleDateRange, toggleTimeRange, toggleWeekdays, toggleUseTravelDuration, 
-            toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate };
-        HBox[] containers = { containerDateRange, containerTimeRange, containerWeekdays, containerTravel, 
-            containerOpeningHours, containerMargin, containerReccurrence };
+        ToggleSwitch[] toggles = { toggleDateRange, toggleTimeRange, toggleWeekdays, toggleCalendars, toggleUseTravelDuration, 
+            toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleUseMailTemplate };
+        HBox[] containers = { containerDateRange, containerTimeRange, containerWeekdays, containerCalendars, containerTravel, 
+            containerOpeningHours, containerMargin, containerReccurrence, containerMailTemplate };
 
         int i = 0;
 
@@ -581,7 +632,7 @@ public class SearchViewController extends ResponsiveController
             {
                 Boolean valueToSet;
                 {
-                    if (j > 2 && j < 7)
+                    if (j > 3 && j < 9)
                         valueToSet = newValue;
                     else
                         valueToSet = oldValue;
@@ -620,5 +671,20 @@ public class SearchViewController extends ResponsiveController
             });
         i++;            
         };
+    }
+
+    final void changeContentPosition(double width, double height) 
+    {
+        Text[] headers = { txtFirstStep, txtSecondStep, txtThirdStep };
+        Circle[] circles = { imgFirstStep, imgSecondStep, imgThirdStep };
+        boolean isWindowSmall = false;
+        int rowHeight = 80;
+        if (height < 700) {
+            isWindowSmall = true;
+            rowHeight = 30;
+        }
+        firstRow.setPrefHeight(rowHeight);
+        firstRow.setMaxHeight(rowHeight);
+        animationController.growAndShrinkCircle(circles, headers, isWindowSmall);
     }
 }

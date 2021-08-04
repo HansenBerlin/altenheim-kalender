@@ -3,13 +3,15 @@ package com.altenheim.kalender.controller.Factories;
 import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.interfaces.IComboBoxFactory;
+import com.altenheim.kalender.models.CalendarEntriesModel;
 import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 
-public class ComboBoxFactory implements IComboBoxFactory {
+public class ComboBoxFactory implements IComboBoxFactory 
+{
     private ObservableList<String> vehicles = FXCollections.observableArrayList();
     private ObservableList<String> destinations = FXCollections.observableArrayList();
     private ObservableList<String> recurrenceOptions = FXCollections.observableArrayList();
@@ -17,18 +19,19 @@ public class ComboBoxFactory implements IComboBoxFactory {
     private ObservableList<String> selectionSpecialField = FXCollections.observableArrayList();
     private ObservableList<String> selectionCourse = FXCollections.observableArrayList();
     private ObservableList<String> selectionSemester = FXCollections.observableArrayList();
-    public ObservableList<String> mailTemplateSelectorTemplate = FXCollections.observableArrayList();
-    public List<ObservableList<String>> content = new ArrayList<ObservableList<String>>();
-    private String[] headers = { "Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs", "Semester",
-            "MailTemplate" };
+    private ObservableList<String> mailTemplateSelectorTemplate = FXCollections.observableArrayList();
+    private List<ObservableList<String>> content = new ArrayList<ObservableList<String>>();
+    private ObservableList<String> calendars = FXCollections.observableArrayList();
+    private ObservableList<String> mailAdresses = FXCollections.observableArrayList();
+    private String[] headers = { "Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs", 
+        "Semester", "MailTemplate", "Standardkalender", "Mailadressen" };    
 
-    public void addToDestinations(String address) {
-        destinations.add(address);
-    }
-
-    public ComboBoxFactory() {
+    public ComboBoxFactory() 
+    {
         vehicles.addAll("zu Fuß", "Fahrrad", "Öffis", "Auto");
         destinations = ContactModel.destinations;
+        calendars = CalendarEntriesModel.calendarsComboBox;
+        mailAdresses = ContactModel.mailadresses;
         recurrenceOptions.addAll("täglich", "wöchentlich", "monatlich", "halbjährlich", "jährlich");
         notificationMin.addAll("5", "15", "30", "60");
         selectionSpecialField.addAll("IP", "Bank", "Bauwesen", "DL", "Elektrotechnik", "FM", "Handel", "IBA",
@@ -46,9 +49,14 @@ public class ComboBoxFactory implements IComboBoxFactory {
         content.add(selectionCourse);
         content.add(selectionSemester);
         content.add(mailTemplateSelectorTemplate);
+        content.add(calendars);
+        content.add(mailAdresses);
     }
 
-    public ComboBox<String> create(ComboBoxCreate type) {
+    public ObservableList<String> getMailTemplateSelectorTemplate() { return mailTemplateSelectorTemplate; }
+
+    public ComboBox<String> create(ComboBoxCreate type) 
+    {
         int typeOrdinal = type.ordinal();
         var comboBox = new ComboBox<String>();
         comboBox.setPrefWidth(140);
@@ -58,13 +66,4 @@ public class ComboBoxFactory implements IComboBoxFactory {
             comboBox.setEditable(true);
         return comboBox;
     }
-
-    public ObservableList<String> getMailTemplateSelectorTemplate() {
-        return mailTemplateSelectorTemplate;
-    }
-
-    public List<ObservableList<String>> getContent() {
-        return content;
-    }
-
 }

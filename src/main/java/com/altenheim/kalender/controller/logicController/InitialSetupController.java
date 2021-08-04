@@ -1,8 +1,7 @@
 package com.altenheim.kalender.controller.logicController;
 
-import java.io.IOException;
-
 import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.models.ContactModel;
 import com.altenheim.kalender.models.SettingsModel;
 
 public class InitialSetupController 
@@ -12,26 +11,33 @@ public class InitialSetupController
     private IPopupViewController popup;
     private IWebsiteScraperController websiteScraper;
     private ISystemNotificationsController systemNotifications;
+    private IEntryFactory entryFactory;
+    private IImportController importController;
+    private ContactModel contacts;
 
     public InitialSetupController(SettingsModel settings, IIOController ioController, IPopupViewController popup,
-            IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications) 
+            IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications,
+            IEntryFactory entryFactory, IImportController importController, ContactModel contacts)
     {
         this.settings = settings;
         this.ioController = ioController;
         this.popup = popup;
         this.websiteScraper = websiteScraper;
         this.systemNotifications = systemNotifications;
+        this.entryFactory = entryFactory;
+        this.importController = importController;
+        this.contacts = contacts;
     }
 
     public void initializeSettings() 
     {
         ioController.createUserPath();
-        ioController.loadCalendarsFromFile();
         try 
         {
-            ioController.loadContactsFromFile();
+            ioController.loadCalendarsFromFile(entryFactory, importController);
+            ioController.loadContactsFromFile(contacts);
         } 
-        catch (ClassNotFoundException | IOException e) 
+        catch (Exception e) 
         {
             e.printStackTrace();
         }
@@ -49,12 +55,12 @@ public class InitialSetupController
             var userValidationPassed = validateUserPassword();
             if (!userValidationPassed) 
             {
-                settings.setAdvancedFeaturesFlag(false);
+                settings.useAdvancedFeatures = false;
                 return;
             }
         }
-        settings.setDecryptedPasswordHash(ioController.loadHashedPassword());
-        settings.setAdvancedFeaturesFlag(true);
+        settings.decryptedPassword = ioController.loadHashedPassword();
+        settings.useAdvancedFeatures = true;
 
     }
 

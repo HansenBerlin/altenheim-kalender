@@ -10,33 +10,37 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
-public class ContactsViewController extends ResponsiveController {
+public class ContactsViewController extends ResponsiveController 
+{
 
     @FXML private TextField txtFieldFirstName, txtFieldSurName, txtFieldMail, txtFieldStreet, txtFieldPostalCode, txtFieldCity, txtFieldPhone;
     @FXML private Button btnAddContact;
     @FXML private VBox tableContainer;
 
     private IIOController ioController;
+    private ContactModel contacts;
 
-    public ContactsViewController(IIOController ioController) 
+    public ContactsViewController(IIOController ioController, ContactModel contacts) 
     {
         this.ioController = ioController;
+        this.contacts = contacts;
     }
 
     @FXML
-    private void initialize() {
+    private void initialize() 
+    {
         TableView<ContactModel> contactsTable = createTable();
         tableContainer.getChildren().add(contactsTable);
         saveChangesToContacts();
     }
 
     @FXML
-    private void buttonClicked(ActionEvent event) {
+    private void buttonClicked(ActionEvent event) 
+    {
         var newContact = new ContactModel(txtFieldFirstName.getText(), txtFieldSurName.getText(),
                 txtFieldMail.getText(), txtFieldStreet.getText(), txtFieldCity.getText(), txtFieldPostalCode.getText(),
                 txtFieldPhone.getText());
-        ContactModel.data.add(newContact);
-        
+        ContactModel.data.add(newContact);        
     }
 
     private void saveChangesToContacts()
@@ -47,9 +51,9 @@ public class ContactsViewController extends ResponsiveController {
             {
                 try 
                 {
-                    ioController.saveContactsToFile();
+                    ioController.saveContactsToFile(contacts);
                 } 
-                catch (IOException e) 
+                catch (Exception e) 
                 {
                     e.printStackTrace();
                 }               
@@ -57,7 +61,8 @@ public class ContactsViewController extends ResponsiveController {
         });
     }
 
-    private TableView<ContactModel> createTable() {
+    private TableView<ContactModel> createTable() 
+    {
         TableColumn<ContactModel, String> name = new TableColumn<>("Name");
         TableColumn<ContactModel, String> address = new TableColumn<>("Adresse");
         TableColumn<ContactModel, String> mail = new TableColumn<>("Mailadresse");
@@ -87,8 +92,8 @@ public class ContactsViewController extends ResponsiveController {
     }
 
     @Override
-    void changeContentPosition(double width, double height) {
+    void changeContentPosition(double width, double height) 
+    {
         
-    }
-    
+    }    
 }
