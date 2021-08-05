@@ -14,44 +14,30 @@ public class ContactModel implements Serializable
     public static ObservableList<ContactModel> data = FXCollections.observableArrayList();
     public static ObservableList<String> destinations = FXCollections.observableArrayList();
     public static ObservableList<String> mailadresses = FXCollections.observableArrayList();
-
-    private static int globalId = 1;
-    private int iD;
-    private String firstName;
-    private String surName;
-    private String streetAndNumber;
-    private String city;
-    private String postalCode;
+    
     private String mail;
     private String phone;
     private String fullName;
     private String address; 
     private transient Button button;
-
     
     public ContactModel() {}
 
     public ContactModel(String firstName, String surName, String mail, String streetAndNumber, String city,
             String postalCode, String phone) 
-    {
-        globalId++;
-        this.iD = ContactModel.globalId;
-        this.firstName = firstName;
-        this.surName = surName;
-        this.streetAndNumber = streetAndNumber;
-        this.city = city;
-        this.postalCode = postalCode;
+    {        
         this.mail = mail;
         this.phone = phone;
         this.button = new Button("LÖSCHEN");
         fullName = "%s %s".formatted(firstName, surName);
         address = "%s, %s %s".formatted(streetAndNumber, postalCode, city);
-        destinations.add(address);
-        mailadresses.add(mail);
+        if (address.isBlank() == false)
+            destinations.add(address);
+        if (mail.isBlank() == false)
+            mailadresses.add(mail);
         registerButtonEvent();
     }
 
-    public int getContactId() { return iD; }
     public String getFullName() { return fullName; }
     public String getAddress() { return address; }
     public String getMail() { return mail; }
@@ -72,6 +58,8 @@ public class ContactModel implements Serializable
     private void removeContactModel()
     {
         data.remove(this);
+        mailadresses.remove(mail);
+        destinations.remove(address);
     }    
 
     public List<ContactModel> getDataToSerialize() 
