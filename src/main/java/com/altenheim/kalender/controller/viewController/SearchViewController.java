@@ -15,6 +15,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
+import com.altenheim.kalender.resourceClasses.DateFormatConverter;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -50,6 +52,7 @@ public class SearchViewController extends ResponsiveController
     private int userStep = 1;
     private int recurrences = 1;   
     private int timeAfterGlobal = 0;
+    private int timeBeforeGlobal = 0;
     private int travelTimeTo = 0;
     private LocalDateTime timeToStartSearch;
     private Entry<String> currentSuggestion;
@@ -230,14 +233,9 @@ public class SearchViewController extends ResponsiveController
         {
             automaticEntryCreation();
             return;
-        } 
-        else 
-        {
-            SuggestionsModel.toggleTravelTime = toggleUseTravelDuration.isSelected();
-            SuggestionsModel.travelTime = travelTimeTo;
-        }
+        }        
 
-        int duration = validateDuration() + timeAfterGlobal;
+        int duration = validateDuration() + timeBeforeGlobal + timeAfterGlobal;
         SuggestionsModel.data.clear();
 
         for (int i = 0; i < 20; i++)         
@@ -248,8 +246,8 @@ public class SearchViewController extends ResponsiveController
                 return; 
             
             var buttonAdd = createAddEntryButton(currentSuggestion);
-            timeToStartSearch = currentSuggestion.getEndAsLocalDateTime(); 
-            SuggestionsModel.addToList(currentSuggestion.getStartTime(), 
+            timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().minusMinutes(timeAfterGlobal); 
+            SuggestionsModel.addToList(currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal), 
                 currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
                 currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), 
                 buttonAdd, tfAppointmentName.getText());
@@ -258,11 +256,10 @@ public class SearchViewController extends ResponsiveController
     
     private void automaticEntryCreation()
     {
-        int duration = validateDuration() + timeAfterGlobal;
+        int duration = validateDuration() + timeBeforeGlobal + timeAfterGlobal;
         int interval = calculateInterval();
         if (interval == 0)
-            interval = 1;
-        LocalDateTime tempDate = timeToStartSearch.minusMinutes(1);
+            interval = 1;        
         LocalTime startAt = timeToStartSearch.toLocalTime();                
 
         while (recurrences > 0) 
@@ -271,20 +268,17 @@ public class SearchViewController extends ResponsiveController
             if (currentSuggestion == null)
                 return;
             
-            timeToStartSearch = currentSuggestion.getEndAsLocalDateTime(); 
-
-            if (currentSuggestion.getStartAsLocalDateTime().isAfter(tempDate))
-            {
-                var sendMailButton = createSendMailButton();
-                createEntryIncludingTravelTimes(currentSuggestion);                
-                SuggestionsModel.addToList(currentSuggestion.getStartTime(), 
-                    currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
-                    currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), 
-                    sendMailButton, tfAppointmentName.getText());
-                timeToStartSearch = LocalDateTime.of(timeToStartSearch.toLocalDate(), startAt);
-                tempDate = timeToStartSearch.plusDays(interval);
-                recurrences--;
-            }
+            if (interval > 0)            
+                timeToStartSearch = LocalDateTime.of(timeToStartSearch.toLocalDate().plusDays(interval), startAt);            
+            else            
+                timeToStartSearch = currentSuggestion.getEndAsLocalDateTime();
+            
+            var sendMailButton = createSendMailButton();
+            createEntryIncludingTravelTimes(currentSuggestion);                
+            SuggestionsModel.addToList(currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal), 
+                currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), currentSuggestion.getStartDate(), 
+                currentSuggestion.getEndDate(), sendMailButton, tfAppointmentName.getText());                
+            recurrences--;            
         } 
     }    
 
@@ -317,10 +311,10 @@ public class SearchViewController extends ResponsiveController
     private Button createAddEntryButton(Entry<String> currSug)
     {
         var button = new Button("EINTRAGEN");
-        String startDate = currSug.getStartDate().toString();
-        String endDate = currSug.getEndDate().toString();
-        String startTime = currSug.getStartTime().toString();
-        String endTime = currSug.getEndTime().toString();
+        String startDate = DateFormatConverter.formatDate(currSug.getStartDate());
+        String endDate = DateFormatConverter.formatDate(currSug.getEndDate());
+        String startTime = DateFormatConverter.formatTime(currSug.getStartTime());
+        String endTime = DateFormatConverter.formatTime(currSug.getEndTime());
         String title = currSug.getTitle();
         var sendMailButton = createSendMailButton();
 
@@ -346,8 +340,8 @@ public class SearchViewController extends ResponsiveController
             {                
                 String templateName = dropdownMailTemplates.getValue();
                 String recipient = validateRecipient();
-                String date = currentSuggestion.getStartDate().toString();
-                String time = currentSuggestion.getStartTime().toString();
+                String date = DateFormatConverter.formatDate(currentSuggestion.getStartDate());
+                String time = DateFormatConverter.formatTime(currentSuggestion.getStartTime());
                 mailCreationController.processMailWrapper(templateName, date, time, recipient);                               
             }
         });
@@ -360,6 +354,7 @@ public class SearchViewController extends ResponsiveController
         timeToStartSearch = null;
         recurrences = 1;
         timeAfterGlobal = 0;
+        timeBeforeGlobal = 0;
         travelTimeTo = 0;   
         SuggestionsModel.data.clear();
         resetToggleStates();
@@ -432,7 +427,8 @@ public class SearchViewController extends ResponsiveController
         currentSuggestions = smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, 
             openingHours, updatedTimes[0], updatedTimes[1], intervalDays);
         
-        recurrences = validateReccurrences();         
+        recurrences = validateReccurrences();  
+        timeBeforeGlobal = updatedTimes[0];      
         timeAfterGlobal = updatedTimes[1];
         timeToStartSearch = LocalDateTime.of(startDateInput, startTimeInput); 
         travelTimeTo = travelTime;
@@ -440,7 +436,7 @@ public class SearchViewController extends ResponsiveController
 
     private int validateDuration() 
     {
-        int duration = (int) sliderDurationMinutes.getValue() + (int) sliderDurationHours.getValue() * 60;
+        int duration = (int)sliderDurationMinutes.getValue() + (int)sliderDurationHours.getValue() * 60;
         if (duration < 15)
             duration = 15;
         return duration;

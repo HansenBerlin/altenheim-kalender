@@ -25,7 +25,6 @@ public class InjectorFactory
         settings.loadSettings();
         var jMetroStyle = new JMetro();
         jMetroStyle.setStyle(settings.getCssStyle());
-        System.out.println(settings.getCssStyle().toString());       
         
         var customCalendarView = new CustomViewOverride(settings);         
         var contacts = new ContactModel();

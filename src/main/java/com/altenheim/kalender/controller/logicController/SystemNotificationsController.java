@@ -2,11 +2,16 @@ package com.altenheim.kalender.controller.logicController;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.imageio.ImageIO;
+
 import java.awt.TrayIcon.MessageType;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISystemNotificationsController;
@@ -52,7 +57,7 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
             if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1))
                     && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1)))
                 currentEntries.add((Entry<String>) entry);
-        outputSystemMessageForEntryList("Termin beginnt in " + (int) timeToAdd / 60 + " Minuten", currentEntries);
+        outputSystemMessageForEntryList("Termin beginnt in " + (int) timeToAdd  + " Minuten", currentEntries);
     }
 
     private void outputSystemMessageForEntryList(String messageTitle, List<Entry<String>> entries) {
@@ -60,10 +65,10 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
             trayIcon.displayMessage(messageTitle, entry.getTitle(), MessageType.INFO);
         }
     }
-
+    
     public boolean initializeSystemTrayAccess() {
         if (SystemTray.isSupported()) {
-            Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Penaut.ico"));
+            Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Penaut.png"));
 
             var listener = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
