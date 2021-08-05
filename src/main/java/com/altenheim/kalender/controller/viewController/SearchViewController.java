@@ -290,7 +290,7 @@ public class SearchViewController extends ResponsiveController
             traveltime = travelTimeTo;
         }
         entryFactory.createNewUserEntryIncludingTravelTimes(currentSuggestion.getStartDate(),
-                currentSuggestion.getEndDate(), currentSuggestion.getStartTime(),
+                currentSuggestion.getEndDate(), currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal),
                 currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), tfAppointmentName.getText(), traveltime);
     }
 
