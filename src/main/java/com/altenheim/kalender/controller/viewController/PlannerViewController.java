@@ -71,7 +71,6 @@ public class PlannerViewController extends ResponsiveController
                     return;
                 entryFactory.addCalendarToView(calendar, calName);
                 iOController.saveCalendar(calendar, exportController); 
-
             }
         });  
     }
