@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
+import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -88,10 +89,12 @@ public class SmartSearchController implements ISmartSearchController {
 	private ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, int before, int after) 
 	{
 		var result = new LinkedList<List<Entry<?>>>();
+		var cal = new Calendar();
 		for (var calendar : administrateEntries.getAllCalendarsSelectedByUser()) 
-		{
-			result.addAll(calendar.findEntries(input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values());
-		}
+			for (var list : calendar.findEntries(input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values()) 
+				cal.addEntries(list);
+		result.addAll(cal.findEntries(input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values());
+
 		var output = new ArrayList<Entry<String>>();
 
 		long start = input.getStartMillis() + before * 60000;
