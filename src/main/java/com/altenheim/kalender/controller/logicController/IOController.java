@@ -68,6 +68,8 @@ public class IOController implements IIOController
                     entryFactory.addCalendarToView(calendar, calendar.getName());                
             }
         }  
+        if (allCalendarFiles.length == 0)
+            entryFactory.addCalendarToView(new Calendar(), "Standardkalender");
     }
 
     public void saveContactsToFile(ContactModel contacts) 
