@@ -442,7 +442,7 @@
 }
 
 .year-month-view > .container > .selected-month-date {
-    -fx-background-color: rgb(35, 66, 27);
+    -fx-background-color: rgb(75, 51, 125);
     -fx-text-fill: rgb(255, 255, 255);
     -fx-font-weight: bold;
 }
@@ -467,7 +467,7 @@
 }
 
 .month-view > .container > .day:selected {
-    -fx-background-color: rgb(204, 204, 204);
+    -fx-background-color: rgb(74, 56, 110);
 }
 
 .month-view > .container > .today,
@@ -481,7 +481,7 @@
 }
 
 .month-view > .container > .today {
-    -fx-background-color: rgb(204, 205, 205);
+    -fx-background-color: rgb(49, 40, 68);
     -fx-text-fill: rgb(51, 51, 48);
     -fx-border-color: rgb(40, 27, 66) transparent transparent transparent;
 }
