@@ -2,13 +2,16 @@ package com.altenheim.kalender.controller.logicController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import com.altenheim.kalender.interfaces.IDateSuggestionController;
 import com.calendarfx.model.Entry;
+import com.altenheim.kalender.interfaces.IDateSuggestionController;
 
 public class DateSuggestionController implements IDateSuggestionController 
 {
-    public Entry<String> getDateSuggestionFromEntryList(ArrayList<Entry<?>> input, LocalDateTime startSearchDateTimeInput, int dateLenght) 
+    public Entry<String> getDateSuggestionFromEntryList(ArrayList<Entry<String>> input, LocalDateTime startSearchDateTimeInput, int dateLenght) 
     {
+        if (input.isEmpty())
+            return null;
+            
         var startSearchDateTime  = LocalDateTime.of(startSearchDateTimeInput.toLocalDate(), startSearchDateTimeInput.toLocalTime());
         
         if (input.get(input.size()-1).getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes((long) dateLenght + 1))) 
@@ -19,9 +22,9 @@ public class DateSuggestionController implements IDateSuggestionController
                 if (entryStart.isAfter(startSearchDateTime))
                     startSearchDateTime = input.get(runNumber).getStartAsLocalDateTime();
 
-                if (entryStart.isBefore(startSearchDateTime.plusSeconds(1))
-                    && input.get(runNumber).getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes(dateLenght).minusSeconds(1)))
-                    return createEntry(startSearchDateTime, dateLenght);   
+                if (entryStart.isBefore(startSearchDateTime.plusSeconds(1)) && input.get(runNumber)
+                        .getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes(dateLenght).minusSeconds(1)))
+                    return createEntry(startSearchDateTime, dateLenght);
             }
         return null;
     }
@@ -33,5 +36,5 @@ public class DateSuggestionController implements IDateSuggestionController
         output.changeEndTime(startDateTime.plusMinutes(dateLenght).toLocalTime());
         output.changeStartTime(startDateTime.toLocalTime());
         return output;
-    }
+    }    
 }

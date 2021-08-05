@@ -2,73 +2,46 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.VBox?>
 
 <GridPane fx:id="childContainerView" alignment="CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
    </rowConstraints>
    <padding>
-      <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
    </padding>
    <children>
-      <Label text="Kontakte" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <TableView editable="true" tableMenuButtonVisible="true" GridPane.rowIndex="1">
-        <columns>
-          <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="Basisdaten">
-               <columns>
-                  <TableColumn minWidth="80.0" prefWidth="150.0" text="Name" />
-                  <TableColumn maxWidth="300.0" minWidth="100.0" prefWidth="200.0" text="Mail" />
-               </columns>
-            </TableColumn>
-          <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="Adresse">
-               <columns>
-                  <TableColumn maxWidth="300.0" minWidth="100.0" prefWidth="150.0" text="Straße" />
-                  <TableColumn maxWidth="80.0" minWidth="40.0" text="PLZ" />
-                  <TableColumn maxWidth="140.0" minWidth="80.0" prefWidth="140.0" text="Ort" />
-               </columns>
-            </TableColumn>
-            <TableColumn maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="Öffnungszeiten">
-               <columns>
-                  <TableColumn maxWidth="100.0" minWidth="30.0" prefWidth="75.0" text="Mo" />
-                  <TableColumn maxWidth="100.0" minWidth="30.0" prefWidth="75.0" text="Di" />
-                  <TableColumn maxWidth="100.0" minWidth="30.0" prefWidth="75.0" text="Mi" />
-                  <TableColumn maxWidth="100.0" minWidth="30.0" prefWidth="75.0" text="Do" />
-                  <TableColumn maxWidth="100.0" minWidth="30.0" prefWidth="75.0" text="Fr" />
-                  <TableColumn maxWidth="100.0" minWidth="30.0" prefWidth="75.0" text="Sa" />
-                  <TableColumn maxWidth="100.0" minWidth="30.0" prefWidth="75.0" text="So" />
-               </columns>
-            </TableColumn>
-        </columns>
-      </TableView>
-      <HBox alignment="CENTER" spacing="20.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+      <VBox fx:id="tableContainer" prefHeight="200.0" prefWidth="100.0" />
+      <VBox alignment="CENTER" spacing="20.0" GridPane.rowIndex="1">
          <children>
-            <TextField promptText="Name" />
-            <TextField promptText="Mail" />
-            <TextField promptText="Straße" />
-            <TextField promptText="PLZ" />
-            <TextField promptText="Ort" />
-            <Button mnemonicParsing="false" text="Öffnungszeiten hinzufügen" />
-            <Button mnemonicParsing="false" text="EINFÜGEN" />
+            <HBox alignment="CENTER" spacing="20.0">
+               <children>
+                  <TextField fx:id="txtFieldFirstName" promptText="Vorname/Firma" />
+                  <TextField fx:id="txtFieldSurName" promptText="Nachname" />
+                  <TextField fx:id="txtFieldMail" promptText="Mail" />
+                  <TextField fx:id="txtFieldPhone" promptText="Telefon" />
+                  <TextField fx:id="txtFieldStreet" promptText="Straße" />
+                  <TextField fx:id="txtFieldPostalCode" promptText="PLZ" />
+                  <TextField fx:id="txtFieldCity" promptText="Ort" />
+               </children>
+            </HBox>
+            <Button fx:id="btnAddContact" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="300.0" text="EINFÜGEN">
+               <tooltip>
+                  <Tooltip fx:id="ttBtnAddContact" text="Einfügen ins bestehende Adressbuch" />
+               </tooltip></Button>
          </children>
-      </HBox>
+      </VBox>
    </children>
   
 </GridPane>

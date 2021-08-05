@@ -1,9 +1,15 @@
 package com.altenheim.kalender.controller.Factories;
 
-import com.altenheim.kalender.interfaces.IEntryFactory;
-import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
-import com.altenheim.kalender.models.ContactModel;
+import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.models.CalendarEntriesModel;
+import com.altenheim.kalender.models.SettingsModel;
+import com.calendarfx.model.*;
+import javafx.event.EventHandler;
+import com.altenheim.kalender.controller.viewController.CustomViewOverride;
+
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -11,84 +17,102 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.CalendarSource;
-import com.calendarfx.model.Entry;
-import com.calendarfx.view.CalendarView;
 
-
-public class EntryFactory extends ContactFactory implements IEntryFactory
-{    
+public class EntryFactory implements IEntryFactory 
+{
     private ICalendarEntriesModel allCalendars;
-    private CalendarView calendarView;
+    private CustomViewOverride calendarView;
+    private IIOController ioController;
+    private SettingsModel settings;
+    private IExportController exportController;
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CalendarView calendarView, List<ContactModel> contacts)
+    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView, 
+        IIOController ioController, SettingsModel settings, IExportController exportController) 
     {
-        super(contacts);
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
-    }    
-
-    public ICalendarEntriesModel getEntriesModel()
-    {
-        return allCalendars;
+        this.ioController = ioController;
+        this.exportController = exportController;
+        this.settings = settings;
     }
 
-    public HashMap<String, List<Entry<?>>> createEntryListForEachCalendar() 
-	{			
-		var result = allCalendars.getAllCalendars();		
-		var output = new HashMap<String, List<Entry<?>>>();
+    public static Entry<String> createCalendarFXEntryFromMillis(long start, long end) 
+    {
+        var entry = new Entry<String>();
+        var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
+        var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());
+        entry.changeStartTime(dateStart.toLocalTime());
+        entry.changeStartDate(dateStart.toLocalDate());
+        entry.changeEndTime(dateEnd.toLocalTime());
+        entry.changeEndDate(dateEnd.toLocalDate());
+        return entry;
+    } 
+
+    public HashMap<String, List<Entry<String>>> createEntryListForEachCalendar() 
+    {
+        var result = allCalendars.getAllCalendars();
+        var output = new HashMap<String, List<Entry<String>>>();
         var zoneId = ZoneId.systemDefault();
 
-		for (var calendar : result) 		
-		{	
-            var tempList = new ArrayList<Entry<?>>();
+        for (var calendar : result) 
+        {
+            var tempList = new ArrayList<Entry<String>>();
             var firstEntry = LocalDate.ofInstant(calendar.getEarliestTimeUsed(), zoneId);
             var lastEntry = LocalDate.ofInstant(calendar.getLatestTimeUsed(), zoneId);
             var entries = calendar.findEntries(firstEntry, lastEntry, zoneId);
 
-			for (var entry : entries.values())
-			{		
+            for (var entry : entries.values()) {
                 for (var singleEntry : entry)
-                    tempList.add(singleEntry);					
-			}	
-            output.put(calendar.getName(), tempList);	
-		}			
-		return output;
-	}
-    
-    public void createRandomCalendarList()
+                    tempList.add((Entry<String>) singleEntry);
+            }
+            output.put(calendar.getName(), tempList);
+        }
+        return output;
+    }
+
+    public void createRandomCalendarList() 
     {
         int dayOfMonth;
         var calendar = new Calendar("TestKalender");
         calendar.setName(calendar.getName());
-        for (int i = 1; i <= 12; i++) 
-        {
-            if (Arrays.asList(new int[]{1, 3, 5, 7, 8, 10, 12}).contains(i))
+        for (int i = 1; i <= 12; i++) {
+            if (Arrays.asList(new int[] { 1, 3, 5, 7, 8, 10, 12 }).contains(i))
                 dayOfMonth = 31;
-            else if (Arrays.asList(new int[]{4, 6, 9, 11}).contains(i))
+            else if (Arrays.asList(new int[] { 4, 6, 9, 11 }).contains(i))
                 dayOfMonth = 30;
             else
                 dayOfMonth = 28;
-            
-            for (int j = 1; j <= dayOfMonth; j += rG(1,4)) 
-            {   
-                for (int k = 8; k < 20 ; k+=2) 
-                {
-                    var entry = createRandomEntry(j, i, k, k+rG(1, 3));
-                    calendar.addEntries(entry);                   
+
+            for (int j = 1; j <= dayOfMonth; j += rG(1, 4)) {
+                for (int k = 8; k < 20; k += 2) {
+                    var entry = createRandomEntry(j, i, k, k + rG(1, 3));
+                    calendar.addEntries(entry);
                 }
-            }            
+            }
         }
-        addCalendarToView(calendar);
+        addCalendarToView(calendar, "TestKalender");
+        ioController.saveCalendar(calendar, exportController);
     }
 
-    public void addCalendarToView(Calendar calendar)
+    public void addCalendarToView(Calendar calendar, String name) 
     {
-        allCalendars.addCalendar(calendar);
-        var calendarSource = new CalendarSource("Saved Calendars");
-        calendarSource.getCalendars().addAll(calendar);
-        calendarView.getCalendarSources().addAll(calendarSource);
+        calendar.setName(name);       
+        EventHandler<CalendarEvent> eventHandler = event -> handleEvent(event);
+        calendar.addEventHandler(eventHandler);
+        calendarView.getCalendarSources().get(0).getCalendars().add(calendar);  
+        CalendarEntriesModel.calendarsComboBox.add(calendar.getName());
+    }  
+
+    public void clearCalendarSourceList()
+    {
+        calendarView.getCalendarSources().clear();
+        var calSource = new CalendarSource("Alle Kalender");
+        calendarView.getCalendarSources().add(calSource);
+    }
+    
+    public void handleEvent(CalendarEvent event)
+    {
+        ioController.saveCalendar(event.getCalendar(), exportController);
     }
 
     private Entry<String> createRandomEntry(int day, int month, int startT, int endT)
@@ -104,7 +128,7 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
         return entry;
     }
 
-    public Entry<String> createUserEntry (LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd)
+    public Entry<String> createUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd) 
     {
         var entry = new Entry<String>();
         entry.changeStartTime(timeStart);
@@ -113,41 +137,36 @@ public class EntryFactory extends ContactFactory implements IEntryFactory
         entry.changeEndDate(dateEnd);
         return entry;
     }
-
-    public ArrayList<ArrayList<Entry<?>>> createOpeningHoursWithLunchBreak() {
-        ArrayList<ArrayList<Entry<?>>> openingHours = new ArrayList<ArrayList<Entry<?>>>();
-        for (int i = 0; i < 6; i++) {
-            var day1 = new ArrayList<Entry<?>>();
-            if (i%2==0) {
-                day1.add(createEntryDummy(10, 13, 1, 1));
-                day1.add(createEntryDummy(16, 22, 1, 1));
-            }else{
-                day1.add(createEntryDummy(10, 22, 1, 1));
-            }
-
-            openingHours.add(day1);
-        }
-        openingHours.add(new ArrayList<Entry<?>>());
-        return openingHours;
-    }
-
-
-    private Entry<?> createEntryDummy(int startTime, int EndTime, int startDay, int endDay)
-    {
-        var entryUser = new Entry("User Preference");
-        var startDate = LocalDate.of(2021, 1, startDay);
-        var endDate = LocalDate.of(2021, 1, endDay);
-        entryUser.changeStartDate(startDate);
-        entryUser.changeEndDate(endDate);
-        entryUser.changeStartTime(LocalTime.of(startTime, 00, 00));
-        entryUser.changeEndTime(LocalTime.of(EndTime, 00, 00));
-        return entryUser;
-    }
-
-
-
-    private int rG(int startInclusive, int endInclusive)
+    
+    private int rG(int startInclusive, int endInclusive) 
     {
         return ThreadLocalRandom.current().nextInt(startInclusive, endInclusive + 1);
+    }
+
+    public void createNewUserEntryIncludingTravelTimes(LocalDate dateStart, LocalDate dateEnd,
+            LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel) 
+    {
+        String calName = settings.defaultCalendarForSearchView;
+        if (timeTravel > 0) 
+        {
+            var startAt = LocalDateTime.of(dateStart, timeStart);
+            startAt = startAt.minusMinutes(timeTravel);
+            var endAt = LocalDateTime.of(dateStart, timeStart);
+            var entry = createUserEntry(startAt.toLocalDate(), endAt.toLocalDate(), startAt.toLocalTime(), endAt.toLocalTime());          
+            entry.setTitle("Anfahrtzeit für " + title);
+            allCalendars.addEntryToCalendarWithName(calName, entry);
+        }
+        if (timeTravel > 0) 
+        {
+            var startAt = LocalDateTime.of(dateEnd, timeEnd);
+            var endAt = LocalDateTime.of(dateEnd, timeEnd);
+            endAt = endAt.plusMinutes(timeTravel);            
+            var entry = createUserEntry(startAt.toLocalDate(), endAt.toLocalDate(), startAt.toLocalTime(), endAt.toLocalTime()); 
+            entry.setTitle("Anfahrtzeit für " + title);
+            allCalendars.addEntryToCalendarWithName(calName, entry);
+        }
+        var entry = createUserEntry(dateStart, dateEnd,timeStart, timeEnd); 
+        entry.setTitle(title);
+        allCalendars.addEntryToCalendarWithName(calName, entry);
     }    
 }

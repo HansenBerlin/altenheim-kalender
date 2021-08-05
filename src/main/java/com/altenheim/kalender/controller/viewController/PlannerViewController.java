@@ -1,65 +1,51 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
-import com.calendarfx.view.CalendarView;
+import com.calendarfx.model.Calendar;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 
-import java.io.IOException;
-
-public class PlannerViewController extends ResponsiveController
+public class PlannerViewController extends ResponsiveController 
 {
+
     @FXML private Button btnImport, btnExport;
-    private CalendarView customCalendar;
-    private ICalendarEntriesModel allEntries;
+
+    private CustomViewOverride customCalendar;
+    private IIOController iOController;
     private IEntryFactory entryFactory;
+    private IPopupViewController popups;
     private IImportController importController;
+    private ICalendarEntriesModel calendars;
     private IExportController exportController;
 
-    public PlannerViewController(ICalendarEntriesModel allEntries, IEntryFactory entryFactory, 
-        IImportController importController, IExportController exportController, CalendarView custumCalendar)
+    public PlannerViewController(CustomViewOverride custumCalendar, IIOController iOController, IEntryFactory entryFactory, 
+        IPopupViewController popups, IImportController importController, ICalendarEntriesModel calendars, IExportController exportController) 
     {
-        this.allEntries = allEntries;
-        this.entryFactory = entryFactory;
-        this.importController = importController;
-        this.exportController = exportController;
         this.customCalendar = custumCalendar;
+        this.iOController = iOController;
+        this.entryFactory = entryFactory;
+        this.popups = popups;
+        this.importController = importController;
+        this.calendars = calendars;
+        this.exportController = exportController;
+    }  
+    
+    @FXML
+    void openFilePicker(ActionEvent event) 
+    {
+        var button = (Button)event.getSource();        
+        var stage = button.getScene().getWindow();
+        if (button.equals(btnImport))        
+            popups.importDialog(importController, entryFactory, stage);        
+        else        
+            popups.exportDialog(exportController, calendars, stage);  
     }
 
-    @FXML
-    private void openFilePicker(ActionEvent event) throws IOException
+    public void updateCustomCalendarView(CustomViewOverride calendarView) 
     {
-        var button = (Button)event.getSource();
-        var stage = button.getScene().getWindow();
-        if (button.equals(btnImport))
-        {
-            var filePicker = new FileChooser();
-            var file = filePicker.showOpenDialog(stage);
-            if (file == null)
-                return;
-            var importedCalendar = importController.importFile(file.getAbsolutePath());
-            entryFactory.addCalendarToView(importedCalendar);
-        }
-        else
-        {
-            var calendars = allEntries.getAllCalendars();
-            var directoryChooser = new DirectoryChooser();
-            var path = directoryChooser.showDialog(stage);
-            if (path == null)
-                return;
-            for (var calendar: calendars)
-            {
-                exportController.exportCalendarAsFile(calendar, path.getAbsolutePath());
-            }
-        }
-    }
-    
-    public void updateCustomCalendarView(CalendarView calendarView)
-    {
-        if (childContainer.getChildren().contains(this.customCalendar))
+        if (childContainer.getChildren().contains(this.customCalendar)) 
         {
             childContainer.getChildren().remove(this.customCalendar);
             this.customCalendar = calendarView;
@@ -67,9 +53,26 @@ public class PlannerViewController extends ResponsiveController
         childContainer.add(this.customCalendar, 0, 0, 1, 1);
     }
 
-    public void changeContentPosition() 
+    public void changeContentPosition(double width, double height) 
     {
-    }    
+        //
+    } 
+    
+    public void registerButtonEvents()
+    {
+        Button addButton = (Button)childContainer.lookup("#add-calendar-button");
+        addButton.setOnAction(new EventHandler<ActionEvent>()
+        { 
+            public void handle(ActionEvent event) 
+            {
+                var calendar = new Calendar();
+                String calName = popups.showChooseCalendarNameDialog();
+                if (calName.isBlank())
+                    return;
+                entryFactory.addCalendarToView(calendar, calName);
+                iOController.saveCalendar(calendar, exportController); 
+
+            }
+        });  
+    }
 }
-
-

@@ -1,106 +1,117 @@
 package com.altenheim.kalender.models;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.io.File;
-import java.io.Serializable;
-import javafx.beans.property.BooleanProperty;
+import java.io.*;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import jfxtras.styles.jmetro.Style;
 
-
-public class SettingsModel implements Serializable
+public class SettingsModel
 {
     public final static String APICYPHERTEXT = "apCg/0Odtz1r9kYuh011M4sur5xv5UU0hYJQcymI9gpAfMWP1eJWOtgpXu/lawR+";
     public final static String PASSWORDHASH = "54fvHpgroWTcl6h/4SxMEiwchYBcYzqtrXX4eMySjf94gqHjPhjPCPl4d2IH7jg0";
 
-    private String icsExportedFile = "userFiles/exportedCalendars/TestKalender.ics";
-    private String hwrScrapedFile = "userFiles/crawledCalendarFiles/1415872094.ics";
     private String userDirectory = "userfiles/";
-    private String decryptedPassword = "";
-    private String pathToSaveBackupFiles = null;
-    public Long scrapingIntervalInMillis = (long) 2000;
-    private String scrappingURL; 
-    private SimpleStringProperty street = new SimpleStringProperty();
-    private SimpleStringProperty houseNumber = new SimpleStringProperty();
-    private SimpleStringProperty zipCode = new SimpleStringProperty();
-    private SimpleStringProperty city = new SimpleStringProperty();
-    private SimpleStringProperty mail = new SimpleStringProperty();
-    private SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
-    private SimpleStringProperty course = new SimpleStringProperty("Kurs");  
-    private SimpleStringProperty semester = new SimpleStringProperty("Sem.");
-    private BooleanProperty toolTip = new SimpleBooleanProperty(false);
+    public String decryptedPassword = "";
+    public String hwrWebsiteUrl = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
+    //public String cssMode = "Light";
+    public String defaultCalendarForSearchView = "";
+    public long entrySystemMessageIntervalInMinutes = 1;
+    public long notificationTimeBeforeEntryInMinutes = 15;
+    public long hwrRequestIntervalInMinutes = (long) 1440;    
+    public boolean useAdvancedFeatures = false;
+    public boolean isDarkmodeActive = false;
 
-
-    private PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
-    public Long scrapingIntervalInMinutes = (long) 60000;
-    private String url = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
-
-    private long entrySystemMessageIntervalInMinutes = 1;
-    private long notificationTimeBeforeEntryInMinutes = 15;
-
-    private boolean useAdvancedFeatures = false; // je nachdem ob der pw hash erfolgreich geladen wird an oder aus, wegesuche und ÖZ dann ausgrauen
-
-    public void addPropertyChangeListener(PropertyChangeListener listener)
-    {
-        propertyChange.addPropertyChangeListener(listener);
-    }
-
-    public void setPathToIcsExportedFile(String path) { icsExportedFile = path; }
-    public String getPathToIcsExportedFile() { return icsExportedFile; }
-    public String getPathToHwrScrapedFile() { return hwrScrapedFile; }
+    public transient SimpleStringProperty street = new SimpleStringProperty();
+    public transient SimpleStringProperty houseNumber = new SimpleStringProperty();
+    public transient SimpleStringProperty zipCode = new SimpleStringProperty();
+    public transient SimpleStringProperty city = new SimpleStringProperty();
+    public transient SimpleStringProperty mail = new SimpleStringProperty();
+    public transient SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
+    public transient SimpleStringProperty course = new SimpleStringProperty("Kurs");
+    public transient SimpleStringProperty semester = new SimpleStringProperty("Sem.");
+    public transient SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
+    private transient SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
+    private transient SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
+    public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
+    public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer; }  
+    public SimpleBooleanProperty getToolTipEnabled() { return toolTip; } 
     public String getPathToUserDirectory() { return userDirectory; }
     public File getPasswordhashFile() { return new File(userDirectory + "savedHash"); }
-    public String getDecryptedPasswordHash() { return decryptedPassword; }
-    public void setDecryptedPasswordHash(String decryptedHash) { decryptedPassword = decryptedHash; }
-    public void setAdvancedFeaturesFlag(boolean useAdvancedFeatures) { this.useAdvancedFeatures = useAdvancedFeatures; }
 
-    public String getUrl() { return url; }
-    public long getScrapingInterval() { return scrapingIntervalInMinutes; }
-    public void setScrapingInterval(long interval)
+    public Style getCssStyle() 
     {
-        propertyChange.firePropertyChange("scrapingIntervalInMillis", scrapingIntervalInMinutes, interval);
-        scrapingIntervalInMinutes = interval;
+        if (isDarkmodeActive)
+            return Style.DARK;
+        else
+            return Style.LIGHT;
     }
 
+    public void saveSettings() 
+    {
+        String path = "userFiles/userSettings/settings.file";
+        try 
+        {
+            var writeToFile = new FileOutputStream(path);
+            var streamOut = new ObjectOutputStream(writeToFile);
 
-    public void setCustomPathToSavedFiles(String pathToSaveBackupFiles) {this.pathToSaveBackupFiles=pathToSaveBackupFiles;}
-    public String getCustomPathToSavedFiles() {return pathToSaveBackupFiles;}
-
-    public void setCalendarParser(String scrappingURL) {this.scrappingURL = scrappingURL;}
-    public String getCalendarParser() {return scrappingURL;}
-    
-    public void setStreet (String street) {this.street.set(street);}
-    public SimpleStringProperty getStreet() {return street;}
-    
-    public void setHouseNumber (String houseNumber) {this.houseNumber.set(houseNumber);}
-    public SimpleStringProperty getHouseNumber() {return houseNumber;}
-    
-    public void setZipCode (String zipCode) {this.zipCode.set(zipCode);}
-    public SimpleStringProperty getZipCOde() {return zipCode;}
-
-    public void setCity (String city) {this.city.set(city);}
-    public SimpleStringProperty getCity() {return city;}
-    
-    public void setMail(String mail) { this.mail.set(mail);}
-    public SimpleStringProperty getMail() {return mail;}
-
-    public void setSpecialField (String specialField) {this.specialField.set(specialField);}
-    public SimpleStringProperty getSpecialField() {return specialField;}
-
-    public void setCourse (String course) {this.course.set(course);}
-    public SimpleStringProperty getCourse() {return course;}
-
-    public void setSemester (String semester) {this.semester.set(semester);}
-    public SimpleStringProperty getSemester() {return semester;}
-
-    public void setToolTip(BooleanProperty toolTip) {this.toolTip = toolTip;}
-    public BooleanProperty getToolTip() {return toolTip;}
-
-    public long getEntrySystemMessageIntervalInMinutes() { return entrySystemMessageIntervalInMinutes;}
-    public long getnotificationTimeBeforeEntryInMinutes() { return notificationTimeBeforeEntryInMinutes;}
-    public void setnotificationTimeBeforeEntryInMinutes(long notificationTimeBeforeEntryInMinutes) {
-        this.notificationTimeBeforeEntryInMinutes = notificationTimeBeforeEntryInMinutes;
+            for (var simpleStringProperty : settingsInputFieldsContainer) 
+            {
+                streamOut.writeUTF(simpleStringProperty.getValueSafe());
+            }
+            for (var simpleStringProperty : settingsDropdownTitlesContainer) 
+            {
+                streamOut.writeUTF(simpleStringProperty.getValueSafe());
+            }
+            streamOut.writeBoolean(toolTip.getValue());
+            streamOut.writeLong(hwrRequestIntervalInMinutes);
+            streamOut.writeLong(notificationTimeBeforeEntryInMinutes);
+            streamOut.writeLong(entrySystemMessageIntervalInMinutes);
+            streamOut.writeBoolean(useAdvancedFeatures);
+            streamOut.writeBoolean(isDarkmodeActive);
+            streamOut.writeUTF(defaultCalendarForSearchView);
+            streamOut.writeUTF(hwrWebsiteUrl);
+            streamOut.close();
+            writeToFile.close();
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
     }
 
+    public void loadSettings() 
+    {
+        String path = "userFiles/userSettings/settings.file";
+        var file = new File(path);
+        if (file.exists() == false)
+            return;
+        try 
+        {
+            var loadFile = new FileInputStream(path);
+            var inputStream = new ObjectInputStream(loadFile);
+
+            for (var simpleStringProperty : settingsInputFieldsContainer) 
+            {
+                simpleStringProperty.set(inputStream.readUTF());
+            }
+            for (var simpleStringProperty : settingsDropdownTitlesContainer) 
+            {
+                simpleStringProperty.set(inputStream.readUTF());
+            }
+            toolTip.set(inputStream.readBoolean());
+            hwrRequestIntervalInMinutes = inputStream.readLong();
+            notificationTimeBeforeEntryInMinutes = inputStream.readLong();
+            entrySystemMessageIntervalInMinutes = inputStream.readLong();
+            useAdvancedFeatures = inputStream.readBoolean();
+            isDarkmodeActive = inputStream.readBoolean();
+            defaultCalendarForSearchView = inputStream.readUTF();
+            hwrWebsiteUrl = inputStream.readUTF();
+            inputStream.close();
+            loadFile.close();
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }    
 }

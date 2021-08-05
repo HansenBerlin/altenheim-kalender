@@ -2,136 +2,145 @@ package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
+import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import java.io.IOException;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.MenuButton;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class SettingsViewController extends ResponsiveController
+public class SettingsViewController extends ResponsiveController 
 {
     private SettingsModel settings;
     private IImportController importController;
     private IExportController exportController;
     private ICalendarEntriesModel allCalendars;
-    private IWebsiteScraperController websiteScraper;
     private IEntryFactory calendarFactory;
-    private IGoogleAPIController googleApis;
+    private IPopupViewController popupViewController;
+    private IComboBoxFactory comboBoxFactory;
+    private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse,
+            comboBoxSelectionSemester, comboBoxDefaultCalendar;
 
-    @FXML
-    private MenuButton btnMenuSpecialField, btnMenuCourse, btnMenuSemester, btnMenuImportColour,
-        btnMenuCheckEvent, btnMenuNotificationMin, btnMenuNotificationHour;
-    @FXML
-    private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
-    @FXML
-    private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
-    @FXML
-    private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail, 
-        txtNotifocationMin, txtNotificationHour;
-    @FXML
-    private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
-    @FXML
-    private CheckBox cBToolTips = new CheckBox();
+    @FXML private Button btnImport, btnExport, btnSave, btnCrawl, btnGenerate;
+    @FXML private TextField txtTFStreet, txtTFCity, txtTFZipCode, txtTFHouseNumber, txtTFMail;
+    @FXML private Text txtScrappingURL, txtAdressTitle, txtStreet, txtHouseNumber, txtCity, txtZipCode, txtMail,
+            txtNotifocationMin, txtNotificationHour, txtError;
+    @FXML private HBox containerComboBoxSelectorScrapping;
+    @FXML private MenuItem menuItSpecialFieldInsurance, selectionSpecialFieldWi;
+    @FXML private CheckBox cBToolTips;
+    @FXML private VBox topContainer, bottomContainer, containerComboBoxNotificationMin, containerComboBoxDefaultCalendar;
 
-    public SettingsViewController(SettingsModel settings, IImportController importController, IEntryFactory calendarFactory,
-                                  IExportController exportController, ICalendarEntriesModel allCalendars,
-                                  IWebsiteScraperController websiteScraper, IGoogleAPIController googleApis)
+    public SettingsViewController(SettingsModel settings, IImportController importController,
+            IEntryFactory calendarFactory, IExportController exportController, ICalendarEntriesModel allCalendars,
+            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController) 
     {
         this.settings = settings;
         this.importController = importController;
         this.exportController = exportController;
         this.allCalendars = allCalendars;
-        this.websiteScraper = websiteScraper;
         this.calendarFactory = calendarFactory;
-        this.googleApis = googleApis;
+        this.popupViewController = popupViewController;
+        this.comboBoxFactory = comboBoxFactory;
     }
-    
+
     @FXML
-    void buttonClicked(ActionEvent event) throws IOException, InterruptedException {
-        var button = (Button)event.getSource();
-        if(button.equals(btnExport))
+    private void initialize() 
+    {
+        createComboBoxes();
+        bindInputFieldsToSerializable();
+    }
+
+    private void bindInputFieldsToSerializable() 
+    {
+        Text[] stringPropertiesCollectionText = { txtStreet, txtHouseNumber, txtZipCode, txtCity, txtMail };
+        TextField[] stringPropertiesCollectionTextField = { txtTFStreet, txtTFHouseNumber, txtTFZipCode, txtTFCity, txtTFMail };
+
+        for (int i = 0; i < stringPropertiesCollectionTextField.length; i++) 
         {
-            var returnValue = googleApis.getOpeningHours("Casablanca, 10247 Berlin, Rigaer Straße");
-            var reise = googleApis.searchForDestinationDistance("Ring Center, Potsdam, Germany", "Berlin Hauptbahnhof");
-            for (var entry : reise)
-            {
-                System.out.println(entry);
-            }
-            System.out.println(returnValue);
+            stringPropertiesCollectionTextField[i].textProperty()
+                    .bindBidirectional(settings.getSettingsInputFieldsContainer()[i]);
+            stringPropertiesCollectionText[i].textProperty()
+                    .bindBidirectional(settings.getSettingsInputFieldsContainer()[i]);
         }
-        else if (button.equals(btnImport))
-        {
-            var calendar = importController.importFile(settings.getPathToIcsExportedFile());
-            calendarFactory.addCalendarToView(calendar);
-        }
-        else if (button.equals(btnCrawl))
-        {
-            var calendar = importController.importFile(settings.getPathToHwrScrapedFile());
-            calendarFactory.addCalendarToView(calendar);
-        }
-        else if (button.equals(btnGenerate))
-        {
+        cBToolTips.selectedProperty().bindBidirectional(settings.getToolTipEnabled());
+    }
+
+    private void createComboBoxes() 
+    {
+        comboBoxNotificationMin = comboBoxFactory.create(ComboBoxCreate.MENUNOTIFICATIONMIN);
+        comboBoxSelectionSpecialField = comboBoxFactory.create(ComboBoxCreate.SELECTIONSPECIALFIELD);
+        comboBoxSelectionCourse = comboBoxFactory.create(ComboBoxCreate.SELECTIONCOURSE);
+        comboBoxSelectionSemester = comboBoxFactory.create(ComboBoxCreate.SELECTIONSEMESTER);
+
+        containerComboBoxNotificationMin.getChildren().add(comboBoxNotificationMin);
+        containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSpecialField);
+        containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionCourse);
+        containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSemester);
+        
+        comboBoxNotificationMin.getSelectionModel().select(String.valueOf(settings.notificationTimeBeforeEntryInMinutes));
+        comboBoxSelectionSpecialField.getSelectionModel().select(settings.specialField.getValue());
+        comboBoxSelectionSemester.getSelectionModel().select(settings.semester.getValue());
+        comboBoxSelectionCourse.getSelectionModel().select(settings.course.getValue());
+
+        comboBoxDefaultCalendar = comboBoxFactory.create(ComboBoxCreate.CALENDERNAMES);
+        containerComboBoxDefaultCalendar.getChildren().add(comboBoxDefaultCalendar);
+        comboBoxDefaultCalendar.getSelectionModel().select(settings.defaultCalendarForSearchView);
+    }
+
+    @FXML
+    void buttonClicked(ActionEvent event) throws IOException, InterruptedException 
+    {
+        var button = (Button) event.getSource();
+
+        if (button.equals(btnImport)) {
+            var stage = button.getScene().getWindow();
+            popupViewController.importDialog(importController, calendarFactory, stage);
+        } else if (button.equals(btnExport)) {
+            var stage = button.getScene().getWindow();
+            popupViewController.exportDialog(exportController, allCalendars, stage);
+        } else if (button.equals(btnGenerate)) {
             calendarFactory.createRandomCalendarList();
         }
     }
+
     @FXML
     void saveSettings(ActionEvent event) 
     {
-        settings.setStreet(txtStreet.getText());
-        settings.setHouseNumber(txtHouseNumber.getText());
-        settings.setZipCode(txtZipCode.getText());
-        settings.setCity(txtCity.getText());
-        settings.setMail(txtMail.getText());
-        String resultURL = String.format("https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%c/kurs%s", 
-            btnMenuSpecialField.getText(), btnMenuSemester.getText().charAt(5), btnMenuCourse.getText().replaceFirst("keine Kurse", ""));
-        settings.setCalendarParser(resultURL);
-        settings.setSpecialField(btnMenuSpecialField.getText());
-        settings.setCourse(btnMenuCourse.getText());
-        settings.setSemester(btnMenuSemester.getText());
-        //kann später entfernt werden
-        txtScrappingURL.setText(settings.getCalendarParser());
-        cBToolTips.setTooltip(cBToolTips.getTooltip());
+        if (comboBoxSelectionSpecialField.getValue() == null || comboBoxSelectionCourse.getValue() == null
+                || comboBoxSelectionSemester.getValue() == null) {
+            txtError.setText("Nicht alle HWR Komponenten ausgewählt!");
+            txtError.setVisible(true);
+            txtError.setFill(Color.RED);
+        } else {
+            txtError.setVisible(false);
+            String resultURL = String.format(
+                    "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%s/kurs%s",
+                    comboBoxSelectionSpecialField.getValue(), comboBoxSelectionSemester.getValue(),
+                    comboBoxSelectionCourse.getValue().replaceFirst("keine Kurse", ""));
+            settings.specialField.set(comboBoxSelectionSpecialField.getValue());
+            settings.course.set(comboBoxSelectionCourse.getValue());
+            settings.semester.set(comboBoxSelectionSemester.getValue());            
+            settings.hwrWebsiteUrl = resultURL;
+        }
+        //cBToolTips.setTooltip(cBToolTips.getTooltip());
+        settings.notificationTimeBeforeEntryInMinutes = (long) Long.valueOf(comboBoxNotificationMin.getValue());
+        settings.defaultCalendarForSearchView = comboBoxDefaultCalendar.getValue();
+        settings.entrySystemMessageIntervalInMinutes = 1;
+        //settings.toolTip = cBToolTips.selectedProperty();
+        settings.saveSettings();
     }
-    public void changeContentPosition() {}
 
-    @FXML 
-    void selectionScrapper(ActionEvent event)
+   
+
+    public void changeContentPosition(double width, double height) 
     {
-        var item = (MenuItem)event.getSource();
-     if (item.getId().contains("selection_AuswahlFB_")) 
-     {
-        btnMenuSpecialField.setText(item.getText());
-     } 
-     else if (item.getId().contains("selection_AuswahlKurs_"))
-     {
-        btnMenuCourse.setText(item.getText());
-     } 
-     else if (item.getId().contains("selection_AuswahlSemester_"))
-     {
-        btnMenuSemester.setText(item.getText());
-     }
-    }
-    
-    @FXML
-    private void initialize ()
-    {
-        txtStreet.textProperty().bind(settings.getStreet());
-        txtHouseNumber.textProperty().bind(settings.getHouseNumber());
-        txtZipCode.textProperty().bind(settings.getZipCOde());
-        txtCity.textProperty().bind(settings.getCity());
-        txtMail.textProperty().bind(settings.getMail());
-        btnMenuSpecialField.idProperty().bind(settings.getSpecialField());
-        btnMenuCourse.idProperty().bind(settings.getCourse());
-        btnMenuSemester.idProperty().bind(settings.getSemester());
-        cBToolTips.selectedProperty().bindBidirectional(settings.getToolTip());
-        //entfernen sobald es funktioniert
-        txtScrappingURL.setText(settings.getUrl());
-    }
-    
+        //
+    }    
 }
-
-

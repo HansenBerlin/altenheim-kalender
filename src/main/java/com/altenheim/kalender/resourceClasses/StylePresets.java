@@ -6,8 +6,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.geometry.Insets;
 
-
-public class StylePresets
+public class StylePresets 
 {
     public static final Background DARK_PRIMARY = getPreset(1);
     public static final Background DARK_SECONDARY = getPreset(2);
@@ -28,8 +27,7 @@ public class StylePresets
     private static Background getPreset(int presetNumber) 
     {
         String stylesheet = null;
-        switch (presetNumber) 
-        {
+        switch (presetNumber) {
             case 1:
                 stylesheet = "#4b337d";
                 break;
@@ -45,7 +43,7 @@ public class StylePresets
             case 5:
                 stylesheet = "#5ddd8a";
                 break;
-            case 6:       
+            case 6:
                 stylesheet = "#4fba74";
                 break;
             case 7:
@@ -61,33 +59,30 @@ public class StylePresets
                 break;
         }
         return new Background(new BackgroundFill(Color.web(stylesheet), CornerRadii.EMPTY, Insets.EMPTY));
-    }   
-    
-    private static String getApplicationCssFile(boolean isDark)
-    {
+    }
+
+    private static String getApplicationCssFile(boolean isDark) {
         var thisClass = new StylePresets();
         return thisClass.getApplicationTemplate(isDark);
     }
 
-    private static String getCalendarCssFile(boolean isDark)
-    {
+    private static String getCalendarCssFile(boolean isDark) {
         var thisClass = new StylePresets();
         return thisClass.getCalendarTemplate(isDark);
     }
 
-    private String getApplicationTemplate(boolean isDark)
-    {
+    private String getApplicationTemplate(boolean isDark) {
         if (isDark)
             return getClass().getResource("/darkMode.css").toExternalForm();
         else
             return getClass().getResource("/lightMode.css").toExternalForm();
     }
 
-    private String getCalendarTemplate(boolean isDark)
-    {
+    private String getCalendarTemplate(boolean isDark) {
         if (isDark)
-            return getClass().getResource( "/calendarDark.css").toExternalForm();
+            return getClass().getResource("/calendarDark.css").toExternalForm();
         else
-            return getClass().getResource( "/calendarLight.css").toExternalForm();
+            return getClass().getResource("/calendarLight.css").toExternalForm();
     }
+    
 }

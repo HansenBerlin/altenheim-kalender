@@ -1,24 +1,62 @@
 package com.altenheim.kalender.controller.viewController;
 
-import java.util.List;
 import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
-import com.altenheim.kalender.models.ContactModel;
+import com.altenheim.kalender.models.StatsModel;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 
 public class StatsViewController extends ResponsiveController
 {    
-    private List<ContactModel> contacts;
+    @FXML private PieChart typesOfAddedEntries;
+    @FXML private Button testbutton;
+    @FXML private Pane addedEntriesContainer;
+
+    private StatsModel statsData;
+
+    
     private ICalendarEntriesModel allEntries;
 
-    public StatsViewController(List<ContactModel> contacts, ICalendarEntriesModel allEntries)
+    public StatsViewController(ICalendarEntriesModel allEntries)
     {
-        this.contacts = contacts;
         this.allEntries = allEntries;
+        
     }
 
-    public void changeContentPosition() 
+    @FXML
+    private void initialize()
+    {
+        statsData = new StatsModel();
+        initializeTypeOfAddedEntries();
+
+    }
+
+    @FXML
+    void testclick(ActionEvent event) 
+    {
+        statsData.automaticAddedEntriesSmart++;
+        statsData.importedEntries++;
+
+    }
+
+    private void initializeTypeOfAddedEntries()
+    {
+        
+        typesOfAddedEntries = new PieChart(statsData.pieChartData);
+        typesOfAddedEntries.setTitle("Anzahl der erstellten Kalendereinträge");
+        //addedEntriesContainer.getChildren().add(typesOfAddedEntries);
+
+    }
+
+    public void changeContentPosition(double width, double height) 
     {
         
     }    
 }
+
+
 
 

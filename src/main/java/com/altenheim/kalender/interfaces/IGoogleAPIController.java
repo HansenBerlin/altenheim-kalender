@@ -1,9 +1,14 @@
 package com.altenheim.kalender.interfaces;
 
-import java.io.IOException;
+import java.time.DayOfWeek;
+import java.util.HashMap;
+import java.util.List;
+
+import com.calendarfx.model.Entry;
 
 public interface IGoogleAPIController 
 {
-    String getOpeningHours(String locationSearchUserInput) throws IOException, InterruptedException;
-    int[] searchForDestinationDistance(String startAt, String destination) throws IOException, InterruptedException;
+    HashMap<DayOfWeek, List<Entry<String>>> getOpeningHours(String locationSearchUserInput);
+    int[] searchForDestinationDistance(String startAt, String destination);
+    int[] searchForDestinationDistance(String origin, String destination, String travelMode);
 }
