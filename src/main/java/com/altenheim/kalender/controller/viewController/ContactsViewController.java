@@ -1,6 +1,5 @@
 package com.altenheim.kalender.controller.viewController;
 
-import java.io.IOException;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.models.ContactModel;
 import javafx.collections.ListChangeListener;
@@ -40,7 +39,18 @@ public class ContactsViewController extends ResponsiveController
         var newContact = new ContactModel(txtFieldFirstName.getText(), txtFieldSurName.getText(),
                 txtFieldMail.getText(), txtFieldStreet.getText(), txtFieldCity.getText(), txtFieldPostalCode.getText(),
                 txtFieldPhone.getText());
-        ContactModel.data.add(newContact);        
+        ContactModel.data.add(newContact);   
+        clearFields();     
+    }
+
+    private void clearFields()
+    {
+        TextField[] allTextFields = { txtFieldFirstName, txtFieldSurName, txtFieldMail, 
+            txtFieldStreet, txtFieldPostalCode, txtFieldCity, txtFieldPhone };
+        for (var textField : allTextFields) 
+        {
+            textField.clear();            
+        }        
     }
 
     private void saveChangesToContacts()
