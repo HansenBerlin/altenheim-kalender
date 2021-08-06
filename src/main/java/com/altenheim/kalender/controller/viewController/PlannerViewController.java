@@ -12,24 +12,17 @@ public class PlannerViewController extends ResponsiveController
 
     @FXML private Button btnImport, btnExport;
 
-    private CustomViewOverride customCalendar;
     private IIOController iOController;
     private IEntryFactory entryFactory;
     private IPopupViewController popups;
-    private IImportController importController;
     private ICalendarEntriesModel calendars;
-    private IExportController exportController;
 
-    public PlannerViewController(CustomViewOverride custumCalendar, IIOController iOController, IEntryFactory entryFactory, 
-        IPopupViewController popups, IImportController importController, ICalendarEntriesModel calendars, IExportController exportController) 
+    public PlannerViewController(IIOController iOController, IEntryFactory entryFactory, IPopupViewController popups, ICalendarEntriesModel calendars) 
     {
-        this.customCalendar = custumCalendar;
         this.iOController = iOController;
         this.entryFactory = entryFactory;
         this.popups = popups;
-        this.importController = importController;
         this.calendars = calendars;
-        this.exportController = exportController;
     }  
     
     @FXML
@@ -38,19 +31,18 @@ public class PlannerViewController extends ResponsiveController
         var button = (Button)event.getSource();        
         var stage = button.getScene().getWindow();
         if (button.equals(btnImport))        
-            popups.importDialog(importController, entryFactory, stage);        
+            popups.importDialog(entryFactory, stage);        
         else        
-            popups.exportDialog(exportController, calendars, stage);  
+            popups.exportDialog(calendars, stage);  
     }
 
     public void updateCustomCalendarView(CustomViewOverride calendarView) 
     {
-        if (childContainer.getChildren().contains(this.customCalendar)) 
+        if (childContainer.getChildren().contains(calendarView)) 
         {
-            childContainer.getChildren().remove(this.customCalendar);
-            this.customCalendar = calendarView;
+            childContainer.getChildren().remove(calendarView);
         }
-        childContainer.add(this.customCalendar, 0, 0, 1, 1);
+        childContainer.add(calendarView, 0, 0, 1, 1);
     }
 
     public void changeContentPosition(double width, double height) 
@@ -70,7 +62,7 @@ public class PlannerViewController extends ResponsiveController
                 if (calName.isBlank())
                     return;
                 entryFactory.addCalendarToView(calendar, calName);
-                iOController.saveCalendar(calendar, exportController); 
+                iOController.saveCalendar(calendar); 
             }
         });  
     }

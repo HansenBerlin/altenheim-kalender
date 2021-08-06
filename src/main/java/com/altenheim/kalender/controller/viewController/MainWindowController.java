@@ -63,7 +63,7 @@ public class MainWindowController extends ResponsiveController
     @FXML
     private void initialize() throws IOException 
     {
-        ((PlannerViewController)allViewsInformation.getAllViewControllers()[0]).updateCustomCalendarView(null);
+        ((PlannerViewController)allViewsInformation.getAllViewControllers()[0]).updateCustomCalendarView(customCalendar);
         viewsRoot.getChildren().addAll(allViewsInformation.getAllViews());
         setupMenuButtons();        
     }
@@ -180,7 +180,7 @@ public class MainWindowController extends ResponsiveController
         allViewsInformation.getAllViewControllers()[currentView].changeContentPosition(width, height);
     }
 
-    final void changeContentPosition(double width, double height) 
+    protected void changeContentPosition(double width, double height) 
     {
         if (width < 1280) {
             currentMenuWidth = 70;

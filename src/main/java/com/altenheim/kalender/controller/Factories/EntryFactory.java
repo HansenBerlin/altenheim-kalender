@@ -2,7 +2,6 @@ package com.altenheim.kalender.controller.Factories;
 
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.CalendarEntriesModel;
-import com.altenheim.kalender.models.SettingsModel;
 import com.calendarfx.model.*;
 import javafx.event.EventHandler;
 import com.altenheim.kalender.controller.viewController.CustomViewOverride;
@@ -22,18 +21,13 @@ public class EntryFactory implements IEntryFactory
 {
     private ICalendarEntriesModel allCalendars;
     private CustomViewOverride calendarView;
-    private IIOController ioController;
-    private SettingsModel settings;
-    private IExportController exportController;
+    private IIOController ioController;    
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView, 
-        IIOController ioController, SettingsModel settings, IExportController exportController) 
+    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView, IIOController ioController) 
     {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
         this.ioController = ioController;
-        this.exportController = exportController;
-        this.settings = settings;
     }
 
     public static Entry<String> createCalendarFXEntryFromMillis(long start, long end) 
@@ -91,7 +85,7 @@ public class EntryFactory implements IEntryFactory
             }
         }
         addCalendarToView(calendar, "TestKalender");
-        ioController.saveCalendar(calendar, exportController);
+        ioController.saveCalendar(calendar);
     }
 
     public void addCalendarToView(Calendar calendar, String name) 
@@ -112,7 +106,7 @@ public class EntryFactory implements IEntryFactory
     
     public void handleEvent(CalendarEvent event)
     {
-        ioController.saveCalendar(event.getCalendar(), exportController);
+        ioController.saveCalendar(event.getCalendar());
     }
 
     private Entry<String> createRandomEntry(int day, int month, int startT, int endT)
@@ -144,9 +138,8 @@ public class EntryFactory implements IEntryFactory
     }
 
     public void createNewUserEntryIncludingTravelTimes(LocalDate dateStart, LocalDate dateEnd,
-            LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel) 
+            LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel, String calName) 
     {
-        String calName = settings.defaultCalendarForSearchView;
         if (timeTravel > 0) 
         {
             var startAt = LocalDateTime.of(dateStart, timeStart);

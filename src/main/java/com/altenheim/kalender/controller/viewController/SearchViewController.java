@@ -16,73 +16,46 @@ import javafx.scene.input.MouseEvent;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import com.altenheim.kalender.resourceClasses.DateFormatConverter;
-
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import com.altenheim.kalender.controller.Factories.SplitMenuButtonFactory;
+import com.altenheim.kalender.controller.logicController.SearchViewValidationController;
 import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.model.Entry;
-import com.calendarfx.view.TimeField;
 import org.controlsfx.control.ToggleSwitch;
 
-public class SearchViewController extends ResponsiveController
+public class SearchViewController extends SearchViewValidationController
 {
     @FXML private Text txtHeaderStep, txtFirstStep, txtSecondStep, txtThirdStep;
-    @FXML private TextField tfAppointmentName, tfDurationMinutes, tfDurationHours;
-    @FXML private ToggleSwitch toggleDateRange, toggleTimeRange, toggleWeekdays, toggleCalendars;   
-    @FXML private ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleAddAutomatically, toggleUseMailTemplate; 
-    @FXML private Button btnBack, btnConfirm, btnReset;
-    @FXML private CheckBox tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday;  
-    @FXML private Slider sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment;
-    @FXML private TimeField timeStart, timeEnd; 
-    @FXML private DatePicker startDate, endDate;    
+    @FXML private TextField tfAppointmentName, tfDurationMinutes, tfDurationHours;    
+    @FXML private Button btnBack, btnConfirm, btnReset;     
     @FXML private VBox stepOneUserInput, stepTwoUserInput, stepThreeUserInput;
-    @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays, containerCalendars, containerMailTemplate;
+    @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays, containerMailTemplate;
     @FXML private HBox containerTravel, containerOpeningHours, containerMargin, containerReccurrence;
     @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
-    @FXML private RowConstraints firstRow;
+    @FXML private RowConstraints firstRow;    
     
-    private ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening, dropdownMailTemplates, dropDownContact;
-    private SplitMenuButton calendarSelection = new SplitMenuButton();
-    private int userStep = 1;
-    private int recurrences = 1;   
-    private int timeAfterGlobal = 0;
-    private int timeBeforeGlobal = 0;
-    private int travelTimeTo = 0;
-    private LocalDateTime timeToStartSearch;
-    private Entry<String> currentSuggestion;
-
     private ISmartSearchController smartSearch;
     private IEntryFactory entryFactory;
-    private IGoogleAPIController api;
     private IAnimationController animationController;
     private IComboBoxFactory comboBoxFactory;
     private IDateSuggestionController dateSuggestionController;
-    private ICalendarEntriesModel allCalendars;
     private IMailCreationController mailCreationController;
     private IPopupViewController popupViewController;
-    private SettingsModel settings;
-    private ArrayList<Entry<String>> currentSuggestions;    
+    
+    private int userStep = 1;     
 
-    public SearchViewController(ISmartSearchController smartSearch, IEntryFactory entryFactory,
-            IMailCreationController mailCreationController, SettingsModel settings, IGoogleAPIController api,
-            IAnimationController animationController, IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController,
-            IDateSuggestionController dateSuggestionController, ICalendarEntriesModel allCalendars) 
+    public SearchViewController(IGoogleAPIController api, ICalendarEntriesModel allCalendars, ISmartSearchController smartSearch, 
+        IEntryFactory entryFactory, IMailCreationController mailCreationController, IAnimationController animationController, 
+        IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, IDateSuggestionController dateSuggestionController) 
     {
+        super(api, allCalendars);
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
         this.mailCreationController = mailCreationController;
-        this.settings = settings;
-        this.api = api;
         this.animationController = animationController;
         this.comboBoxFactory = comboBoxFactory;
         this.dateSuggestionController = dateSuggestionController;
-        this.allCalendars = allCalendars;
         this.popupViewController = popupViewController;
     }
 
@@ -197,36 +170,6 @@ public class SearchViewController extends ResponsiveController
         }
     } 
 
-    private void validateCalendarSelectionInput()
-    {
-        allCalendars.clearCalendarsSelectedByUser();
-        if (toggleCalendars.isSelected())
-        {
-            var allAvailaibleCalendars = allCalendars.getAllCalendars();
-            for (var calendar : allAvailaibleCalendars)
-            {
-                if (calendar.getName().equals(settings.defaultCalendarForSearchView))
-                {
-                    allCalendars.addToAllCalendarsSelectedByUser(calendar);
-                    return;
-                }
-                allCalendars.addToAllCalendarsSelectedByUser(allAvailaibleCalendars.get(0));
-            }            
-        }
-        else
-        {
-            var tickBoxesCalendar = calendarSelection.getItems();
-            for (var menuItem : tickBoxesCalendar) 
-            {
-                var checkbox = (CheckBox)menuItem.getGraphic();
-                if (checkbox.isSelected())
-                {
-                    allCalendars.addToAllCalendarsSelectedByUserByCalendarName(checkbox.getText());
-                }                
-            }
-        }
-    }
-
     private void iterateThroughSuggestions() 
     {
         if (toggleAddAutomatically.isSelected()) 
@@ -289,9 +232,11 @@ public class SearchViewController extends ResponsiveController
         {
             traveltime = travelTimeTo;
         }
+        String defaultCalendarName = SettingsModel.defaultCalendarForSearchView;
         entryFactory.createNewUserEntryIncludingTravelTimes(currentSuggestion.getStartDate(),
                 currentSuggestion.getEndDate(), currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal),
-                currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), tfAppointmentName.getText(), traveltime);
+                currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), tfAppointmentName.getText(),
+                 traveltime, defaultCalendarName);
     }
 
     private Button createSendMailButton()
@@ -345,65 +290,7 @@ public class SearchViewController extends ResponsiveController
                 mailCreationController.processMailWrapper(templateName, date, time, recipient);                               
             }
         });
-    } 
-    
-    private void clearFields()
-    {
-        currentSuggestion = null;
-        currentSuggestions = null;
-        timeToStartSearch = null;
-        recurrences = 1;
-        timeAfterGlobal = 0;
-        timeBeforeGlobal = 0;
-        travelTimeTo = 0;   
-        SuggestionsModel.data.clear();
-        resetToggleStates();
-        resetSliderStates();
-        setDateAndTimeFields();
-        containerCalendars.getChildren().clear(); 
-        dropdownStartAtDest.getEditor().setText("");
-        dropdownEndAtDest.getEditor().setText("");
-        dropdownDestinationOpening.getEditor().setText("");
-         
-    }
-
-    private void resetToggleStates()
-    {
-        toggleUseTravelDuration.setSelected(false);
-        toggleUseOpeningHours.setSelected(false);
-        toggleUseMargin.setSelected(false);
-        toggleRecurringDate.setSelected(false);
-        toggleAddAutomatically.setSelected(true); 
-        toggleDateRange.setSelected(true);
-        toggleTimeRange.setSelected(true);
-        toggleWeekdays.setSelected(true);
-        toggleUseMailTemplate.setSelected(false);
-        toggleCalendars.setSelected(true);        
-    }
-
-    private void resetSliderStates()
-    {
-        Slider[] allSliders = { sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment };
-        CheckBox[] allTicks = { tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday };
-
-        for (var checkBox : allTicks) 
-        {
-            checkBox.setSelected(false);            
-        }
-
-        for (var slider : allSliders)
-        {
-            slider.setValue(0);
-        }
-    }
-
-    private void setDateAndTimeFields()
-    {
-        timeStart.setValue(LocalTime.of(0, 0));
-        timeEnd.setValue(LocalTime.of(23, 59)); 
-        startDate.setValue(LocalDate.now());
-        endDate.setValue(LocalDate.now().plusDays(365));
-    }
+    }    
 
     private void startRequest() 
     {
@@ -433,145 +320,6 @@ public class SearchViewController extends ResponsiveController
         timeToStartSearch = LocalDateTime.of(startDateInput, startTimeInput); 
         travelTimeTo = travelTime;
     }
-
-    private int validateDuration() 
-    {
-        int duration = (int)sliderDurationMinutes.getValue() + (int)sliderDurationHours.getValue() * 60;
-        if (duration < 15)
-            duration = 15;
-        return duration;
-    }
-
-    private LocalDate[] validateDateInput() 
-    {
-        var startDateInput = startDate.getValue();
-        var endDateDateInput = endDate.getValue();
-
-        if (startDateInput == null || toggleDateRange.isSelected())
-            startDateInput = LocalDate.now();
-        if (endDateDateInput == null || toggleDateRange.isSelected())
-            endDateDateInput = LocalDate.now().plusDays(1500);
-        return new LocalDate[] { startDateInput, endDateDateInput };         
-    }
-
-    private LocalTime[] validateTimeInput() 
-    {
-        var startTimeInput = timeStart.getValue();
-        var endTimeInput = timeEnd.getValue();
-
-        if (toggleTimeRange.isSelected()) {
-            startTimeInput = LocalTime.of(0, 0, 0);
-            endTimeInput = LocalTime.of(23, 59, 59);
-        }
-        return new LocalTime[] { startTimeInput, endTimeInput };
-    }
-
-    private boolean[] validateWeekdays() 
-    {
-        if (toggleWeekdays.isSelected() == false) 
-        {
-            return new boolean[] { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),
-                    tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(),
-                    tickSunday.isSelected() };
-        } else
-            return new boolean[] { true, true, true, true, true, true, true };
-    } 
-    
-    private int validateTravelTime()
-    {
-        var origin = dropdownStartAtDest.getSelectionModel().getSelectedItem();
-        var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
-        int travelTime = 0;
-
-        if (toggleUseTravelDuration.isSelected() && origin.isEmpty() == false && destination.isEmpty() == false) {
-            var response = api.searchForDestinationDistance(origin, destination, getApiStringFromInput());
-            travelTime = updateTravelTimeToMinutes(response[0]);
-        }
-        return travelTime;
-    }
-
-    private String getApiStringFromInput() 
-    {
-        String input = dropdownVehicle.getSelectionModel().getSelectedItem();
-        if (input == null)
-            return "";
-
-        String returnValue = switch (dropdownVehicle.getSelectionModel().getSelectedItem()) {
-            case "Fußgänger" -> "walking";
-            case "Fahrrad" -> "bicycling";
-            case "Öffis" -> "transit";
-            case "Auto" -> "driving";
-            default -> "";
-        };
-        return returnValue;
-    }
-
-    private int updateTravelTimeToMinutes(int travelTime) 
-    {
-        if (travelTime != 0)
-            travelTime = travelTime / 60;
-        return travelTime;
-    }
-
-    private HashMap<DayOfWeek, List<Entry<String>>> validateOpeningHours() 
-    {
-        var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
-        var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
-
-        if (toggleUseOpeningHours.isSelected() && destination.isEmpty() == false)
-            openingHours = api.getOpeningHours(destination);
-
-        return openingHours;
-    }
-
-    private int[] compareTimes(int timeBefore, int timeAfter, int travelTime) 
-    {
-        int[] updatedTimes = new int[2];
-        if (timeBefore > travelTime)
-            updatedTimes[0] = timeBefore;
-        else
-            updatedTimes[0] = travelTime;
-        if (timeAfter > travelTime)
-            updatedTimes[1] = timeAfter;
-        else
-            updatedTimes[1] = travelTime;
-        return updatedTimes;
-    }
-
-    private int calculateInterval() 
-    {
-        var userInput = dropdownInterval.getSelectionModel().getSelectedItem();
-        if (userInput == null)
-            return 0;
-        int returnValue = switch (userInput) {
-            case "täglich" -> 1;
-            case "wöchentlich" -> 7;
-            case "monatlich" -> 30;
-            case "halbjährlich" -> 182;
-            case "jährlich" -> 365;
-            default -> 0;
-        };
-        return returnValue;
-    }    
-
-    private int validateReccurrences() 
-    {
-        if (toggleRecurringDate.isSelected())
-            return sliderRecurrences.valueProperty().intValue();
-        else
-            return 1;
-    }
-
-    private String validateRecipient()
-    {
-        String selectedContact = dropDownContact.getValue();
-        for (var contact : ContactModel.data) 
-        {
-            if (contact.getFullName().equals(selectedContact));
-                return contact.getMail();            
-        }
-        return "";
-    }   
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC) 
     {
@@ -669,7 +417,7 @@ public class SearchViewController extends ResponsiveController
         };
     }
 
-    final void changeContentPosition(double width, double height) 
+    protected void changeContentPosition(double width, double height) 
     {
         Text[] headers = { txtFirstStep, txtSecondStep, txtThirdStep };
         Circle[] circles = { imgFirstStep, imgSecondStep, imgThirdStep };

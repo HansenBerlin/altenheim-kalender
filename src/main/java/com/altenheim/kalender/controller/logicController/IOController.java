@@ -14,20 +14,15 @@ import java.util.List;
 public class IOController implements IIOController 
 {
     protected SettingsModel settings;
-    //private ContactModel contacts;
-    //private String hashedPassword;
-    //private IExportController exportCt;
-    //private IImportController importCt;
-    //private IEntryFactory entryFactory;
-    //private String hashedPassword;
+    private IExportController exportController;
+    private IImportController importController;    
 
-    public IOController(SettingsModel settings)
+    public IOController(SettingsModel settings, IExportController exportController, IImportController importController)
     {
         this.settings = settings;
+        this.importController = importController;
+        this.exportController = exportController;
     }
-    
-    //public void saveDecryptedPasswordHash(String hashedPassword) { this.hashedPassword = hashedPassword; }
-    //public String getDecryptedPasswordHash() { return hashedPassword; }
 
     public void createUserPath() 
     {
@@ -42,12 +37,12 @@ public class IOController implements IIOController
         }
     }
 
-    public void saveCalendar(Calendar calendar, IExportController exportCt) 
+    public void saveCalendar(Calendar calendar) 
     {        
         try 
         {
             String path = settings.getPathToUserDirectory() + "calendars";
-            exportCt.exportCalendarAsFile(calendar, path);
+            exportController.exportCalendarAsFile(calendar, path);
         } 
         catch (Exception e) 
         {
@@ -55,7 +50,7 @@ public class IOController implements IIOController
         } 
     }
 
-    public void loadCalendarsFromFile(IEntryFactory entryFactory, IImportController importCt) 
+    public void loadCalendarsFromFile(IEntryFactory entryFactory) 
     {
         entryFactory.clearCalendarSourceList();
         var allCalendarFiles = new File(settings.getPathToUserDirectory() + "calendars").listFiles();
@@ -63,7 +58,7 @@ public class IOController implements IIOController
         {
             if (calendarFile.getAbsolutePath().contains(".ics")) 
             {
-                var calendar = importCt.importFile(calendarFile.getAbsolutePath());
+                var calendar = importController.importFile(calendarFile.getAbsolutePath());
                 if (calendar != null)                 
                     entryFactory.addCalendarToView(calendar, calendar.getName());                
             }

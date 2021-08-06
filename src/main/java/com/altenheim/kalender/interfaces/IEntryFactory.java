@@ -13,7 +13,7 @@ public interface IEntryFactory
     void createRandomCalendarList();
     void addCalendarToView(Calendar calendar, String name);
     void createNewUserEntryIncludingTravelTimes(LocalDate dateStart, LocalDate dateEnd,
-    LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel);
+        LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel, String calName);
     HashMap<String, List<Entry<String>>> createEntryListForEachCalendar();
     Entry<String> createUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
 }

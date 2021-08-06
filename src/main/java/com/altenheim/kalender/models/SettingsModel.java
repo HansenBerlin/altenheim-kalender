@@ -14,7 +14,7 @@ public class SettingsModel
     public String decryptedPassword = "";
     public String hwrWebsiteUrl = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
     //public String cssMode = "Light";
-    public String defaultCalendarForSearchView = "";
+    public static String defaultCalendarForSearchView = "";
     public long entrySystemMessageIntervalInMinutes = 1;
     public long notificationTimeBeforeEntryInMinutes = 15;
     public long hwrRequestIntervalInMinutes = (long) 1440;    

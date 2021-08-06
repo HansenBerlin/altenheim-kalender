@@ -101,8 +101,7 @@ public class ContactsViewController extends ResponsiveController
         return table;
     }
 
-    @Override
-    void changeContentPosition(double width, double height) 
+    protected void changeContentPosition(double width, double height) 
     {
         
     }    

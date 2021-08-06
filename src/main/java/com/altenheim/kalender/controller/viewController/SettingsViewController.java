@@ -19,8 +19,6 @@ import javafx.scene.text.Text;
 public class SettingsViewController extends ResponsiveController 
 {
     private SettingsModel settings;
-    private IImportController importController;
-    private IExportController exportController;
     private ICalendarEntriesModel allCalendars;
     private IEntryFactory calendarFactory;
     private IPopupViewController popupViewController;
@@ -37,13 +35,10 @@ public class SettingsViewController extends ResponsiveController
     @FXML private CheckBox cBToolTips;
     @FXML private VBox topContainer, bottomContainer, containerComboBoxNotificationMin, containerComboBoxDefaultCalendar;
 
-    public SettingsViewController(SettingsModel settings, IImportController importController,
-            IEntryFactory calendarFactory, IExportController exportController, ICalendarEntriesModel allCalendars,
+    public SettingsViewController(SettingsModel settings, IEntryFactory calendarFactory, ICalendarEntriesModel allCalendars,
             IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController) 
     {
         this.settings = settings;
-        this.importController = importController;
-        this.exportController = exportController;
         this.allCalendars = allCalendars;
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
@@ -95,23 +90,23 @@ public class SettingsViewController extends ResponsiveController
     }
 
     @FXML
-    void buttonClicked(ActionEvent event) throws IOException, InterruptedException 
+    private void buttonClicked(ActionEvent event) throws IOException, InterruptedException 
     {
         var button = (Button) event.getSource();
 
         if (button.equals(btnImport)) {
             var stage = button.getScene().getWindow();
-            popupViewController.importDialog(importController, calendarFactory, stage);
+            popupViewController.importDialog(calendarFactory, stage);
         } else if (button.equals(btnExport)) {
             var stage = button.getScene().getWindow();
-            popupViewController.exportDialog(exportController, allCalendars, stage);
+            popupViewController.exportDialog(allCalendars, stage);
         } else if (button.equals(btnGenerate)) {
             calendarFactory.createRandomCalendarList();
         }
     }
 
     @FXML
-    void saveSettings(ActionEvent event) 
+    private void saveSettings(ActionEvent event) 
     {
         if (comboBoxSelectionSpecialField.getValue() == null || comboBoxSelectionCourse.getValue() == null
                 || comboBoxSelectionSemester.getValue() == null) {

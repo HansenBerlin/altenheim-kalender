@@ -5,14 +5,12 @@ import com.calendarfx.model.Calendar;
 
 public interface IIOController 
 {
-    void saveCalendar(Calendar calendar, IExportController exportCt);
-    void loadCalendarsFromFile(IEntryFactory entryFactory, IImportController importCt);
+    void saveCalendar(Calendar calendar);
+    void loadCalendarsFromFile(IEntryFactory entryFactory);
     void saveMailTemplatesToFile(MailTemplateModel templates);
     void createUserPath();
     void saveContactsToFile(ContactModel contacts);
     void loadContactsFromFile(ContactModel contacts);
-    //void saveDecryptedPasswordHash(String hashedPassword);  
-    //String getDecryptedPasswordHash();
     void saveHashedPassword(String passwordHash);
     String loadHashedPassword();
     MailTemplateModel loadMailTemplatesFromFile();

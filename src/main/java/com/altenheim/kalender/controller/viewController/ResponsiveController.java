@@ -7,7 +7,7 @@ public abstract class ResponsiveController
 {
     protected GridPane childContainer;
 
-    abstract void changeContentPosition(double width, double height);
+    protected abstract void changeContentPosition(double width, double height);
 
     protected void setChildContainer(GridPane childContainer) 
     {

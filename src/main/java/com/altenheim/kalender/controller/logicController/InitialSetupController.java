@@ -6,18 +6,17 @@ import com.altenheim.kalender.models.SettingsModel;
 
 public class InitialSetupController 
 {
-    private SettingsModel settings;
     private IIOController ioController;
     private IPopupViewController popup;
     private IWebsiteScraperController websiteScraper;
     private ISystemNotificationsController systemNotifications;
     private IEntryFactory entryFactory;
-    private IImportController importController;
+    private SettingsModel settings;
     private ContactModel contacts;
 
     public InitialSetupController(SettingsModel settings, IIOController ioController, IPopupViewController popup,
             IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications,
-            IEntryFactory entryFactory, IImportController importController, ContactModel contacts)
+            IEntryFactory entryFactory, ContactModel contacts)
     {
         this.settings = settings;
         this.ioController = ioController;
@@ -25,7 +24,6 @@ public class InitialSetupController
         this.websiteScraper = websiteScraper;
         this.systemNotifications = systemNotifications;
         this.entryFactory = entryFactory;
-        this.importController = importController;
         this.contacts = contacts;
     }
 
@@ -34,7 +32,7 @@ public class InitialSetupController
         ioController.createUserPath();
         try 
         {
-            ioController.loadCalendarsFromFile(entryFactory, importController);
+            ioController.loadCalendarsFromFile(entryFactory);
             ioController.loadContactsFromFile(contacts);
         } 
         catch (Exception e) 

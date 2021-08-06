@@ -2,8 +2,6 @@ package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
-import com.calendarfx.model.Calendar;
-
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -13,15 +11,18 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import jfxtras.styles.jmetro.JMetro;
-import jfxtras.styles.jmetro.Style;
 
 public class PopupViewsController implements IPopupViewController 
 {
     private SettingsModel settings;
+    private IImportController importController; 
+    private IExportController exportController;
 
-    public PopupViewsController(SettingsModel settings)
+    public PopupViewsController(SettingsModel settings, IImportController importController, IExportController exportController)
     {
         this.settings = settings;
+        this.importController = importController;
+        this.exportController = exportController;
     }
 
     public void showEntryAddedDialogWithMailOption(String date, String dateEnd, String start, String end, String title, Button sendMailButton) 
@@ -151,7 +152,7 @@ public class PopupViewsController implements IPopupViewController
             return "";
     }
 
-    public void importDialog(IImportController importController, IEntryFactory entryFactory, Window stage) 
+    public void importDialog(IEntryFactory entryFactory, Window stage) 
     {
         var filePicker = new FileChooser();
         var file = filePicker.showOpenDialog(stage);
@@ -178,7 +179,7 @@ public class PopupViewsController implements IPopupViewController
         alert.showAndWait();
     }
 
-    public void exportDialog(IExportController exportController, ICalendarEntriesModel allEntries, Window stage) 
+    public void exportDialog(ICalendarEntriesModel allEntries, Window stage) 
     {
         var calendars = allEntries.getAllCalendars();
         
