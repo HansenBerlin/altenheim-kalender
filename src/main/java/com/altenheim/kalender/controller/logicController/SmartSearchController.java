@@ -50,7 +50,7 @@ public class SmartSearchController implements ISmartSearchController {
 		var date = input.getStartDate();
 
 		int i = -1;
-		while (date.isBefore(input.getEndDate()) && output.size() < 1000) {
+		while ((date.isBefore(input.getEndDate()) || date.equals(input.getEndDate())) && output.size() < 1000) {
 			i++;	
 			
 			int index = date.getDayOfWeek().getValue()-1;
