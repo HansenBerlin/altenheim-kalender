@@ -101,7 +101,33 @@ public class EntryFactory implements IEntryFactory
         calendar.addEventHandler(eventHandler);
         calendarView.getCalendarSources().get(0).getCalendars().add(calendar);  
         CalendarEntriesModel.calendarsComboBox.add(calendar.getName());
-    }  
+    } 
+    public void replaceCalendar (Calendar calendar, String name) {
+        calendar.setName(name);       
+        EventHandler<CalendarEvent> eventHandler = event -> handleEvent(event);
+        calendar.addEventHandler(eventHandler);
+        boolean notFindCalendar = true;
+        for (var cal : calendarView.getCalendarSources().get(0).getCalendars()) {
+            if (cal.getName().equals(name)) {
+                calendarView.getCalendarSources().get(0).getCalendars().remove(cal);
+                calendarView.getCalendarSources().get(0).getCalendars().add(calendar);
+                notFindCalendar = false;  
+            }
+        }
+        
+        if (notFindCalendar) {
+            calendarView.getCalendarSources().get(0).getCalendars().add(calendar);  
+            CalendarEntriesModel.calendarsComboBox.add(calendar.getName());
+            return;
+        }
+
+        for (var  cal : CalendarEntriesModel.calendarsComboBox) {
+            if (cal.equals(name)) {  
+                CalendarEntriesModel.calendarsComboBox.remove(cal);
+                CalendarEntriesModel.calendarsComboBox.add(calendar.getName());
+            }
+        }
+    } 
 
     public void clearCalendarSourceList()
     {

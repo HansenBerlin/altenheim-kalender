@@ -3,7 +3,6 @@ package com.altenheim.kalender.controller.logicController;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.util.Timer;
@@ -34,13 +33,13 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
     }
 
     public void scrapeCalendar() 
-    {/*
+    {
         if (isDownloadIcsSuccessful())
         {
             var calendarFile = settings.getPathToUserDirectory() + "calendars/hwrFile.ics";
             var calendar = importController.importFile(calendarFile);            
-            entryFactory.addCalendarToView(calendar, "HWR Calendar");
-        }*/
+            entryFactory.replaceCalendar(calendar, "HWR Calendar");
+        }
     }    
 
     private boolean isDownloadIcsSuccessful() 
@@ -55,7 +54,7 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
             rbc.close();
             return true;
         } 
-        catch (IOException e) 
+        catch (Exception e) 
         {
             e.printStackTrace();
             return false;

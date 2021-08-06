@@ -25,6 +25,7 @@ public class SettingsViewController extends ResponsiveController
     private IEntryFactory calendarFactory;
     private IPopupViewController popupViewController;
     private IComboBoxFactory comboBoxFactory;
+    private IWebsiteScraperController websiteScraper;
     private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse,
             comboBoxSelectionSemester, comboBoxDefaultCalendar;
 
@@ -39,7 +40,7 @@ public class SettingsViewController extends ResponsiveController
 
     public SettingsViewController(SettingsModel settings, IImportController importController,
             IEntryFactory calendarFactory, IExportController exportController, ICalendarEntriesModel allCalendars,
-            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController) 
+            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, IWebsiteScraperController websiteScraper) 
     {
         this.settings = settings;
         this.importController = importController;
@@ -48,6 +49,7 @@ public class SettingsViewController extends ResponsiveController
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
         this.comboBoxFactory = comboBoxFactory;
+        this.websiteScraper = websiteScraper;
     }
 
     @FXML
@@ -122,12 +124,14 @@ public class SettingsViewController extends ResponsiveController
             txtError.setVisible(false);
             String resultURL = String.format(
                     "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%s/kurs%s",
-                    comboBoxSelectionSpecialField.getValue(), comboBoxSelectionSemester.getValue(),
-                    comboBoxSelectionCourse.getValue().replaceFirst("keine Kurse", ""));
+                    comboBoxSelectionSpecialField.getValue().toLowerCase(), comboBoxSelectionSemester.getValue().replace("Sem. ", ""),
+                    comboBoxSelectionCourse.getValue().toLowerCase().replaceFirst("keine kurse", ""));
             settings.specialField.set(comboBoxSelectionSpecialField.getValue());
             settings.course.set(comboBoxSelectionCourse.getValue());
             settings.semester.set(comboBoxSelectionSemester.getValue());            
             settings.hwrWebsiteUrl = resultURL;
+            websiteScraper.scrapeCalendar();
+
         }
         //cBToolTips.setTooltip(cBToolTips.getTooltip());
         settings.notificationTimeBeforeEntryInMinutes = (long) Long.valueOf(comboBoxNotificationMin.getValue());
@@ -142,5 +146,5 @@ public class SettingsViewController extends ResponsiveController
     public void changeContentPosition(double width, double height) 
     {
         //
-    }    
+    }
 }
