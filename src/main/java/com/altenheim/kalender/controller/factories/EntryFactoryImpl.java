@@ -22,9 +22,9 @@ public class EntryFactoryImpl implements EntryFactory
 {
     private CalendarEntriesModel allCalendars;
     private CustomViewOverride calendarView;
-    private IIOController ioController;    
+    private IOController ioController;
 
-    public EntryFactoryImpl(CalendarEntriesModel allCalendars, CustomViewOverride calendarView, IIOController ioController)
+    public EntryFactoryImpl(CalendarEntriesModel allCalendars, CustomViewOverride calendarView, IOController ioController)
     {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;

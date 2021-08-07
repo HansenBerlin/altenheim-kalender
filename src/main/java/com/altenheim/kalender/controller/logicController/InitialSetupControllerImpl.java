@@ -1,12 +1,13 @@
 package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.interfaces.factorys.InitialSetupController;
 import com.altenheim.kalender.interfaces.models.ContactModel;
 import com.altenheim.kalender.models.SettingsModelImpl;
 
-public class InitialSetupController 
+public class InitialSetupControllerImpl implements InitialSetupController
 {
-    private IIOController ioController;
+    private IOController ioController;
     private IPopupViewController popup;
     private IWebsiteScraperController websiteScraper;
     private ISystemNotificationsController systemNotifications;
@@ -14,9 +15,9 @@ public class InitialSetupController
     private SettingsModel settings;
     private ContactModel contacts;
 
-    public InitialSetupController(SettingsModel settings, IIOController ioController, IPopupViewController popup,
-                                  IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications,
-                                  EntryFactory entryFactory, ContactModel contacts)
+    public InitialSetupControllerImpl(SettingsModel settings, IOController ioController, IPopupViewController popup,
+                                      IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications,
+                                      EntryFactory entryFactory, ContactModel contacts)
     {
         this.settings = settings;
         this.ioController = ioController;
@@ -65,7 +66,7 @@ public class InitialSetupController
     private boolean validateUserPassword() 
     {
         var password = popup.showPasswordInputDialog();
-        var security = new SecureAesController();
+        var security = new EncryptionControllerImpl();
         var hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_",
                 SettingsModelImpl.PASSWORDHASH);
         while (hashedPasswordAfterUserValidation.isBlank()) 

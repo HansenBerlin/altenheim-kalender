@@ -12,10 +12,10 @@ import java.util.TimerTask;
 public class WebsiteScraperController extends TimerTask implements IWebsiteScraperController 
 {
     private SettingsModel settings;
-    private IImportController importController;
+    private ImportController importController;
     private EntryFactory entryFactory;
 
-    public WebsiteScraperController(SettingsModel settings, IImportController importController, EntryFactory entryFactory)
+    public WebsiteScraperController(SettingsModel settings, ImportController importController, EntryFactory entryFactory)
     {
         this.settings = settings;
         this.importController = importController;

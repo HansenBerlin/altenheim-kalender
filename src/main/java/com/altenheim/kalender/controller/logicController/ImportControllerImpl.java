@@ -10,7 +10,7 @@ import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.property.DtEnd;
 import net.fortuna.ical4j.model.property.DtStart;
 
-public class ImportController implements IImportController 
+public class ImportControllerImpl implements ImportController
 {
     public com.calendarfx.model.Calendar importFile(String path) 
     {

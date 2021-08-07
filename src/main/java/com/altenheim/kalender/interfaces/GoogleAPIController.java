@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.calendarfx.model.Entry;
 
-public interface IGoogleAPIController 
+public interface GoogleAPIController
 {
     HashMap<DayOfWeek, List<Entry<String>>> getOpeningHours(String locationSearchUserInput);
     int[] searchForDestinationDistance(String startAt, String destination);

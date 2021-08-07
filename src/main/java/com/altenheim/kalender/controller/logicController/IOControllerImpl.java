@@ -12,13 +12,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
-public class IOController implements IIOController 
+public class IOControllerImpl implements IOController
 {
     protected SettingsModel settings;
-    private IExportController exportController;
-    private IImportController importController;    
+    private ExportController exportController;
+    private ImportController importController;
 
-    public IOController(SettingsModel settings, IExportController exportController, IImportController importController)
+    public IOControllerImpl(SettingsModel settings, ExportController exportController, ImportController importController)
     {
         this.settings = settings;
         this.importController = importController;

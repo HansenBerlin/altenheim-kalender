@@ -1,6 +1,6 @@
 package com.altenheim.kalender.interfaces;
 
-public interface IImportController 
+public interface ImportController
 {
     com.calendarfx.model.Calendar importFile(String path);
 }

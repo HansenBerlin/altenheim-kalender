@@ -25,9 +25,9 @@ public class SearchViewController extends SearchViewRequestHandlerController
 
     private int userStep = 1;     
 
-    public SearchViewController(IGoogleAPIController api, CalendarEntriesModel allCalendars, AnimationController animationController,
-                                ComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, IMailCreationController mailCreationController,
-                                EntryFactory entryFactory, ISmartSearchController smartSearch, IDateSuggestionController dateSuggestionController)
+    public SearchViewController(GoogleAPIController api, CalendarEntriesModel allCalendars, AnimationController animationController,
+                                ComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, MailClientAccessController mailCreationController,
+                                EntryFactory entryFactory, ISmartSearchController smartSearch, DateSuggestionController dateSuggestionController)
     {
         super(api, allCalendars, popupViewController, mailCreationController, entryFactory, smartSearch, dateSuggestionController);        
         this.animationController = animationController;

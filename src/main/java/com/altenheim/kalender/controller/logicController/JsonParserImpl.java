@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.altenheim.kalender.interfaces.IJsonParser;
+import com.altenheim.kalender.interfaces.JsonParser;
 import com.calendarfx.model.Entry;
 
 import org.json.JSONObject;
 
-public class JsonParser implements IJsonParser {
+public class JsonParserImpl implements JsonParser {
     public String parseJsonForLocationId(String jsonBody) {
         if (jsonBody.isEmpty())
             return jsonBody;

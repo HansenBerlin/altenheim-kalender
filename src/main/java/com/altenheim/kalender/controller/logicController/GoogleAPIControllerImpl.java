@@ -8,38 +8,38 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.List;
-import com.altenheim.kalender.interfaces.IGoogleAPIController;
-import com.altenheim.kalender.interfaces.SettingsModel;
+import com.altenheim.kalender.interfaces.GoogleAPIController;
+import com.altenheim.kalender.interfaces.logicController.EncryptionController;
 import com.altenheim.kalender.models.SettingsModelImpl;
 import com.calendarfx.model.Entry;
 
 import org.json.*;
 
-public class GoogleAPIController implements IGoogleAPIController {
+public class GoogleAPIControllerImpl implements GoogleAPIController {
     private static final String FINDPLACEQUERY = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=%s&inputtype=textquery&fields=place_id&key=%s";
     private static final String OPENINGHOURSQUERY = "https://maps.googleapis.com/maps/api/place/details/json?place_id=%s&fields=opening_hours&key=%s";
     private static final String FINDDESTINATIONSQUERY = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=%s";
     private static final String SALT = "e]<J3Grct{~'HJv-";
 
-    //private SettingsModel settings;
-    private JsonParser jsonParser;
+    private JsonParserImpl jsonParserImpl;
+    private EncryptionController encryptionController;
 
-    public GoogleAPIController(JsonParser jsonParser)
+    public GoogleAPIControllerImpl(JsonParserImpl jsonParserImpl, EncryptionController encryptionController)
     {
-        //this.settings = settings;
-        this.jsonParser = jsonParser;
+        this.jsonParserImpl = jsonParserImpl;
+        this.encryptionController = encryptionController;
     }
 
     public HashMap<DayOfWeek, List<Entry<String>>> getOpeningHours(String locationSearchUserInput) {
-        var security = new SecureAesController();
+        var security = new EncryptionControllerImpl();
         var apiKey = security.decrypt(SettingsModelImpl.decryptedPassword, SALT, SettingsModelImpl.APICYPHERTEXT);
         String input = locationSearchUserInput.replace(" ", "%20");
 
         try {
             var jsonResponse = makeHttpRequest(String.format(FINDPLACEQUERY, input, apiKey));
-            var id = jsonParser.parseJsonForLocationId(jsonResponse);
+            var id = jsonParserImpl.parseJsonForLocationId(jsonResponse);
             var jsonResponseDetail = makeHttpRequest(String.format(OPENINGHOURSQUERY, id, apiKey));
-            return jsonParser.parseJsonForOpeningHours(jsonResponseDetail);
+            return jsonParserImpl.parseJsonForOpeningHours(jsonResponseDetail);
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -50,8 +50,7 @@ public class GoogleAPIController implements IGoogleAPIController {
 
     public int[] searchForDestinationDistance(String startAt, String destination) {
 
-        var security = new SecureAesController();
-        var apiKey = security.decrypt(SettingsModelImpl.decryptedPassword, SALT, SettingsModelImpl.APICYPHERTEXT);
+        var apiKey = encryptionController.decrypt(SettingsModelImpl.decryptedPassword, SALT, SettingsModelImpl.APICYPHERTEXT);
 
         int[] returnValues = new int[2];
         var start = startAt.replace(" ", "%20");
@@ -71,8 +70,7 @@ public class GoogleAPIController implements IGoogleAPIController {
     }
 
     public int[] searchForDestinationDistance(String origin, String destination, String travelMode) {
-        var security = new SecureAesController();
-        var apiKey = security.decrypt(SettingsModelImpl.decryptedPassword, SALT, SettingsModelImpl.APICYPHERTEXT);
+        var apiKey = encryptionController.decrypt(SettingsModelImpl.decryptedPassword, SALT, SettingsModelImpl.APICYPHERTEXT);
 
         int[] returnValues = new int[2];
         var start = origin.replace(" ", "%20");

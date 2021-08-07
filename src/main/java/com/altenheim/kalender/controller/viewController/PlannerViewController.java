@@ -13,12 +13,12 @@ public class PlannerViewController extends ResponsiveController
 
     @FXML private Button btnImport, btnExport;
 
-    private IIOController iOController;
+    private IOController iOController;
     private EntryFactory entryFactory;
     private IPopupViewController popups;
     private CalendarEntriesModel calendars;
 
-    public PlannerViewController(IIOController iOController, EntryFactory entryFactory, IPopupViewController popups, CalendarEntriesModel calendars)
+    public PlannerViewController(IOController iOController, EntryFactory entryFactory, IPopupViewController popups, CalendarEntriesModel calendars)
     {
         this.iOController = iOController;
         this.entryFactory = entryFactory;

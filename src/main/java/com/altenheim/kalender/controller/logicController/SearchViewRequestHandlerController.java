@@ -9,11 +9,11 @@ import com.altenheim.kalender.models.SuggestionsModel;
 public class SearchViewRequestHandlerController extends SearchViewValidationController
 {
     private ISmartSearchController smartSearch;
-    private IDateSuggestionController dateSuggestionController;
+    private DateSuggestionController dateSuggestionController;
     
-    public SearchViewRequestHandlerController(IGoogleAPIController api, CalendarEntriesModel allCalendars,
-                                              IPopupViewController popupViewController, IMailCreationController mailCreationController,
-                                              EntryFactory entryFactory, ISmartSearchController smartSearch, IDateSuggestionController dateSuggestionController)
+    public SearchViewRequestHandlerController(GoogleAPIController api, CalendarEntriesModel allCalendars,
+                                              IPopupViewController popupViewController, MailClientAccessController mailCreationController,
+                                              EntryFactory entryFactory, ISmartSearchController smartSearch, DateSuggestionController dateSuggestionController)
     {
         super(api, allCalendars, popupViewController, mailCreationController, entryFactory);
         this.smartSearch = smartSearch;

@@ -3,9 +3,9 @@ package com.altenheim.kalender.controller.logicController;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import com.calendarfx.model.Entry;
-import com.altenheim.kalender.interfaces.IDateSuggestionController;
+import com.altenheim.kalender.interfaces.DateSuggestionController;
 
-public class DateSuggestionController implements IDateSuggestionController 
+public class DateSuggestionControllerImpl implements DateSuggestionController
 {
     public Entry<String> getDateSuggestionFromEntryList(ArrayList<Entry<String>> input, LocalDateTime startSearchDateTimeInput, int dateLenght) 
     {

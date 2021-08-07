@@ -6,12 +6,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import com.altenheim.kalender.controller.logicController.DateSuggestionController;
+import com.altenheim.kalender.controller.logicController.DateSuggestionControllerImpl;
 import com.calendarfx.model.Entry;
 
 import org.junit.jupiter.api.Test;
 
-public class DateSuggestionControllerTest {
+public class DateSuggestionControllerImplTest {
     @Test
     void getDateSuggestionFromEntryList_ThreePossibleDays_ShouldReturnDateOnFirstDay() {
         var entryOne = createEntryDummy(10, 18, 1, 1, 1, 1);
@@ -24,7 +24,7 @@ public class DateSuggestionControllerTest {
 
         var startSearchDateTime = LocalDateTime.of(2021, 1, 1, 10, 0);
 
-        var controller = new DateSuggestionController();
+        var controller = new DateSuggestionControllerImpl();
         var result = controller.getDateSuggestionFromEntryList(input, startSearchDateTime, 60);
 
         var finalResult1 = result.getStartAsLocalDateTime().equals(LocalDateTime.of(2021, 1, 1, 10, 0));
@@ -45,7 +45,7 @@ public class DateSuggestionControllerTest {
 
         var startSearchDateTime = LocalDateTime.of(2021, 1, 1, 8, 0);
 
-        var controller = new DateSuggestionController();
+        var controller = new DateSuggestionControllerImpl();
         var result = controller.getDateSuggestionFromEntryList(input, startSearchDateTime, 60);
 
         var finalResult1 = result.getStartAsLocalDateTime().equals(LocalDateTime.of(2021, 1, 1, 10, 0));
@@ -66,7 +66,7 @@ public class DateSuggestionControllerTest {
 
         var startSearchDateTime = LocalDateTime.of(2020, 1, 1, 8, 0);
 
-        var controller = new DateSuggestionController();
+        var controller = new DateSuggestionControllerImpl();
         var result = controller.getDateSuggestionFromEntryList(input, startSearchDateTime, 60);
 
         var finalResult1 = result.getStartAsLocalDateTime().equals(LocalDateTime.of(2021, 1, 1, 10, 0));
@@ -87,7 +87,7 @@ public class DateSuggestionControllerTest {
 
         var startSearchDateTime = LocalDateTime.of(2021, 1, 1, 13, 0);
 
-        var controller = new DateSuggestionController();
+        var controller = new DateSuggestionControllerImpl();
         var result = controller.getDateSuggestionFromEntryList(input, startSearchDateTime, 60);
 
         var finalResult1 = result.getStartAsLocalDateTime().equals(LocalDateTime.of(2021, 1, 1, 13, 0));
@@ -108,7 +108,7 @@ public class DateSuggestionControllerTest {
 
         var startSearchDateTime = LocalDateTime.of(2022, 1, 1, 8, 0);
 
-        var controller = new DateSuggestionController();
+        var controller = new DateSuggestionControllerImpl();
         var result = controller.getDateSuggestionFromEntryList(input, startSearchDateTime, 60);
         assertEquals(null, result);
     }
@@ -125,7 +125,7 @@ public class DateSuggestionControllerTest {
 
         var startSearchDateTime = LocalDateTime.of(2021, 1, 3, 17, 30);
 
-        var controller = new DateSuggestionController();
+        var controller = new DateSuggestionControllerImpl();
         var result = controller.getDateSuggestionFromEntryList(input, startSearchDateTime, 60);
         assertEquals(null, result);
     }
@@ -142,7 +142,7 @@ public class DateSuggestionControllerTest {
 
         var startSearchDateTime = LocalDateTime.of(2021, 1, 2, 10, 0);
 
-        var controller = new DateSuggestionController();
+        var controller = new DateSuggestionControllerImpl();
         var result = controller.getDateSuggestionFromEntryList(input, startSearchDateTime, 60);
 
         var finalResult1 = result.getStartAsLocalDateTime().equals(LocalDateTime.of(2021, 1, 2, 10, 0));
@@ -163,7 +163,7 @@ public class DateSuggestionControllerTest {
 
         var startSearchDateTime = LocalDateTime.of(2021, 1, 1, 18, 0);
 
-        var controller = new DateSuggestionController();
+        var controller = new DateSuggestionControllerImpl();
         var result = controller.getDateSuggestionFromEntryList(input, startSearchDateTime, 60);
 
         var finalResult = result.getStartAsLocalDateTime().equals(LocalDateTime.of(2021, 1, 1, 18, 0));
@@ -182,7 +182,7 @@ public class DateSuggestionControllerTest {
 
         var startSearchDateTime = LocalDateTime.of(2021, 1, 1, 17, 0);
 
-        var controller = new DateSuggestionController();
+        var controller = new DateSuggestionControllerImpl();
         var result = controller.getDateSuggestionFromEntryList(input, startSearchDateTime, 60);
 
         var finalResult = result.getStartAsLocalDateTime().equals(LocalDateTime.of(2021, 1, 1, 18, 0));

@@ -1,5 +1,7 @@
 package com.altenheim.kalender.controller.factories;
+import com.altenheim.kalender.interfaces.factorys.InitialSetupController;
 import com.altenheim.kalender.interfaces.factorys.InjectorFactory;
+import com.altenheim.kalender.interfaces.logicController.EncryptionController;
 import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.altenheim.kalender.interfaces.models.ContactModel;
 import jfxtras.styles.jmetro.JMetro;
@@ -22,7 +24,7 @@ public class InjectorFactoryImpl implements InjectorFactory
 
     public void createServices() 
     {     
-        var jsonParser = new JsonParser();
+        var jsonParser = new JsonParserImpl();
         SettingsModel settings = new SettingsModelImpl();
         settings.loadSettings();
         var jMetroStyle = new JMetro();
@@ -30,36 +32,34 @@ public class InjectorFactoryImpl implements InjectorFactory
         
         var customCalendarView = new CustomViewOverride(settings);         
         ContactModel contacts = new ContactModelImpl();
-        IExportController exportCt = new ExportController(settings);
-        IImportController importCt = new ImportController();
-        IIOController ioCt = new IOController(settings, exportCt, importCt);
+        EncryptionController encryptionController = new EncryptionControllerImpl();
+        ExportController exportCt = new ExportControllerImpl(settings);
+        ImportController importCt = new ImportControllerImpl();
+        IOController ioCt = new IOControllerImpl(settings, exportCt, importCt);
         MailTemplateModel mailTemplates = ioCt.loadMailTemplatesFromFile();
         ComboBoxFactory comboBoxFactory = new ComboBoxFactoryImpl();
         AnimationController animationController = new AnimationControllerImpl();
         IPopupViewController popupViewController = new PopupViewsController(settings, importCt, exportCt);
-        IGoogleAPIController apiCt = new GoogleAPIController(jsonParser);
-        IMailCreationController mailCreationCt = new MailCreationController(mailTemplates);       
+        GoogleAPIController apiCt = new GoogleAPIControllerImpl(jsonParser, encryptionController);
+        MailClientAccessController mailCreationCt = new MailClientAccessControllerImpl(mailTemplates);
         CalendarEntriesModel calendarEntriesModel = new CalendarEntriesModelImpl(customCalendarView);
-        IDateSuggestionController dateSuggestionController = new DateSuggestionController();
+        DateSuggestionController dateSuggestionController = new DateSuggestionControllerImpl();
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
         EntryFactory entryFactory = new EntryFactoryImpl(calendarEntriesModel, customCalendarView, ioCt);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt, entryFactory);
-        //SearchViewRequestHandlerController requestHandler = new SearchViewRequestHandlerController(apiCt, calendarEntriesModel, 
-          //  dateSuggestionController, smartSearch, entryFactory, popupViewController, mailCreationCt);
 
         var plannerVCt = new PlannerViewController(ioCt, entryFactory, popupViewController, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(ioCt, contacts);
         var settingsVCt = new SettingsViewController(settings, entryFactory, calendarEntriesModel, comboBoxFactory, popupViewController);
         var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory, ioCt);
-        //var searchTest = new SearchViewValidationController(apiCt, calendarEntriesModel, popupViewController, mailCreationCt, entryFactory);
-        var searchVCt = new SearchViewController(apiCt, calendarEntriesModel, animationController, comboBoxFactory, popupViewController, 
+        var searchVCt = new SearchViewController(apiCt, calendarEntriesModel, animationController, comboBoxFactory, popupViewController,
             mailCreationCt, entryFactory, smartSearch, dateSuggestionController);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
         var allViews = new ViewRootsModelImpl(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
         mainWindowController = new MainWindowController(allViews, customCalendarView, settings);
         allViews.setMainWindowController(mainWindowController);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews, settings);
-        initialSettingsLoader = new InitialSetupController(settings, ioCt, popupViewController, websiteCt,
+        initialSettingsLoader = new InitialSetupControllerImpl(settings, ioCt, popupViewController, websiteCt,
                 systemNotificationsCt, entryFactory, contacts);
     }    
 }

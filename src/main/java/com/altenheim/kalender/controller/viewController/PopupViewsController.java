@@ -15,10 +15,10 @@ import jfxtras.styles.jmetro.JMetro;
 public class PopupViewsController implements IPopupViewController 
 {
     private SettingsModel settings;
-    private IImportController importController; 
-    private IExportController exportController;
+    private ImportController importController;
+    private ExportController exportController;
 
-    public PopupViewsController(SettingsModel settings, IImportController importController, IExportController exportController)
+    public PopupViewsController(SettingsModel settings, ImportController importController, ExportController exportController)
     {
         this.settings = settings;
         this.importController = importController;

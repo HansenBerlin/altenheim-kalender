@@ -3,7 +3,7 @@ package com.altenheim.kalender.interfaces;
 import com.altenheim.kalender.interfaces.models.ContactModel;
 import com.calendarfx.model.Calendar;
 
-public interface IIOController 
+public interface IOController
 {
     void saveCalendar(Calendar calendar);
     void loadCalendarsFromFile(EntryFactory entryFactory);

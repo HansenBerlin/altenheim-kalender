@@ -4,9 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.GregorianCalendar;
-import com.altenheim.kalender.interfaces.IExportController;
+import com.altenheim.kalender.interfaces.ExportController;
 import com.altenheim.kalender.interfaces.SettingsModel;
-import com.altenheim.kalender.models.SettingsModelImpl;
 import com.calendarfx.model.Entry;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
@@ -16,11 +15,11 @@ import net.fortuna.ical4j.model.property.*;
 import net.fortuna.ical4j.util.RandomUidGenerator;
 import net.fortuna.ical4j.validate.ValidationException;
 
-public class ExportController implements IExportController 
+public class ExportControllerImpl implements ExportController
 {
     protected SettingsModel settings;
 
-    public ExportController(SettingsModel settings) {
+    public ExportControllerImpl(SettingsModel settings) {
         this.settings = settings;
     }
 

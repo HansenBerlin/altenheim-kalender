@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.calendarfx.model.Entry;
 
-public interface IJsonParser 
+public interface JsonParser
 {
     String parseJsonForLocationId(String jsonBody);
     HashMap<DayOfWeek, List<Entry<String>>> parseJsonForOpeningHours(String jsonBody);

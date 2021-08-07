@@ -1,7 +1,7 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.models.ContactModel;
-import com.altenheim.kalender.interfaces.IIOController;
+import com.altenheim.kalender.interfaces.IOController;
 import com.altenheim.kalender.models.ContactModelImpl;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -17,10 +17,10 @@ public class ContactsViewController extends ResponsiveController
     @FXML private Button btnAddContact;
     @FXML private VBox tableContainer;
 
-    private IIOController ioController;
+    private IOController ioController;
     private ContactModel contacts;
 
-    public ContactsViewController(IIOController ioController, ContactModel contacts)
+    public ContactsViewController(IOController ioController, ContactModel contacts)
     {
         this.ioController = ioController;
         this.contacts = contacts;

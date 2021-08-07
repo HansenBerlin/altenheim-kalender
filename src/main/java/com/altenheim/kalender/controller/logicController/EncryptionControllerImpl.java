@@ -1,5 +1,6 @@
 package com.altenheim.kalender.controller.logicController;
 
+import com.altenheim.kalender.interfaces.logicController.EncryptionController;
 import javafx.util.Pair;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -10,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-public class SecureAesController 
+public class EncryptionControllerImpl implements EncryptionController
 {
     public String encrypt(String password, String salt, String plainText) 
     {
