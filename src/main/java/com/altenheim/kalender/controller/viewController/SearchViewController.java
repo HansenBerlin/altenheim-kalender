@@ -3,7 +3,9 @@ package com.altenheim.kalender.controller.viewController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -12,40 +14,34 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
+import com.altenheim.kalender.resourceClasses.DateFormatConverter;
+import com.altenheim.kalender.resourceClasses.FxmlFiles;
+import com.calendarfx.model.Entry;
 import com.altenheim.kalender.controller.logicController.*;
 import com.altenheim.kalender.controller.Factories.*;
 import com.altenheim.kalender.interfaces.*;
 import org.controlsfx.control.ToggleSwitch;
 
-public class SearchViewController extends SearchViewValidationController
+public class SearchViewController extends SearchViewRequestHandlerController
 {
-    @FXML private Text txtHeaderStep, txtFirstStep, txtSecondStep, txtThirdStep;
-    @FXML private TextField tfDurationMinutes, tfDurationHours;    
-    @FXML private Button btnBack, btnConfirm, btnReset;     
-    @FXML private VBox stepOneUserInput, stepTwoUserInput, stepThreeUserInput;
-    @FXML private HBox containerDateRange, containerTimeRange, containerWeekdays, containerMailTemplate;
-    @FXML private HBox containerTravel, containerOpeningHours, containerMargin, containerReccurrence;
-    @FXML private Circle imgFirstStep, imgSecondStep, imgThirdStep;
-    @FXML private RowConstraints firstRow; 
-    
     private IAnimationController animationController;
-    private IComboBoxFactory comboBoxFactory;  
-    private SearchViewRequestHandlerController requestHandler;  
+    private IComboBoxFactory comboBoxFactory;    
 
     private int userStep = 1;     
 
     public SearchViewController(IGoogleAPIController api, ICalendarEntriesModel allCalendars, IAnimationController animationController, 
-        IComboBoxFactory comboBoxFactory, SearchViewRequestHandlerController requestHandler) 
+        IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, IMailCreationController mailCreationController, 
+        IEntryFactory entryFactory, ISmartSearchController smartSearch, IDateSuggestionController dateSuggestionController) 
     {
-        super(api, allCalendars);        
+        super(api, allCalendars, popupViewController, mailCreationController, entryFactory, smartSearch, dateSuggestionController);        
         this.animationController = animationController;
         this.comboBoxFactory = comboBoxFactory;
-        this.requestHandler = requestHandler;
-    }
+    }      
 
     @FXML
-    private void initialize() 
-    {
+    public void initialize() 
+    {    
+        super.initialize();
         TableView<SuggestionsModel> tableSuggestions = createTable();
         stepThreeUserInput.getChildren().add(tableSuggestions);
         setupInitialContainerStates();
@@ -53,11 +49,12 @@ public class SearchViewController extends SearchViewValidationController
         setupTextboxInputValidation();
         createComboBoxes();
         setDateAndTimeFields();
+        registerButtonEvents();
     }
 
-    @FXML
-    private void calendarToggleClicked(MouseEvent event) 
-    {
+       
+    public void calendarToggleClicked(MouseEvent event) 
+    {        
         if (toggleCalendars.isSelected())
         {
             containerCalendars.getChildren().remove(calendarSelection);
@@ -69,8 +66,16 @@ public class SearchViewController extends SearchViewValidationController
         }
     }
 
-    @FXML
-    private void updateUserStepView(ActionEvent event) 
+    private void registerButtonEvents()
+    {
+        btnConfirm.setOnAction(event -> updateUserStepView(event));
+        btnBack.setOnAction(event -> updateUserStepView(event));
+        btnReset.setOnAction(event -> updateUserStepView(event));
+        toggleCalendars.setOnMouseReleased(event -> calendarToggleClicked(event));
+    }
+    
+
+    protected void updateUserStepView(ActionEvent event) 
     {
         String[] headings = { "Basisinformationen", "Optionale Informationen", "Vorschlagsauswahl" };
         Circle[] images = { imgFirstStep, imgSecondStep, imgThirdStep };
@@ -89,15 +94,15 @@ public class SearchViewController extends SearchViewValidationController
             {
                 btnReset.setVisible(false);
                 SuggestionsModel.data.clear();
-                requestHandler.startRequest();
-                requestHandler.iterateThroughSuggestions();
+                startRequest();
+                iterateThroughSuggestions();
                 btnConfirm.setText("NÄCHSTE 20 VORSCHLÄGE"); 
                 if (toggleAddAutomatically.isSelected())
                     btnConfirm.setVisible(false);                
             }   
             if (userStep == 3)
             {                
-                requestHandler.iterateThroughSuggestions();  
+                iterateThroughSuggestions();  
                 return;
             }
             incrementor = 1;
@@ -163,59 +168,8 @@ public class SearchViewController extends SearchViewValidationController
             hBox.setScaleY(0);
         }
     } 
-/*
-    private Button createSendMailButton()
-    {
-        var button = new Button("Mailanfrage");
-        if (toggleUseMailTemplate.isSelected())  
-        {
-            button.setVisible(true); 
-            registerButtonSendMailEvent(button);
-        }      
-        else
-            button.setVisible(false);
+    
 
-        return button;
-    }
-
-    private Button createAddEntryButton(Entry<String> currSug)
-    {
-        var button = new Button("EINTRAGEN");
-        String startDate = DateFormatConverter.formatDate(currSug.getStartDate());
-        String endDate = DateFormatConverter.formatDate(currSug.getEndDate());
-        String startTime = DateFormatConverter.formatTime(currSug.getStartTime());
-        String endTime = DateFormatConverter.formatTime(currSug.getEndTime());
-        String title = currSug.getTitle();
-        var sendMailButton = createSendMailButton();
-
-        button.setOnAction(new EventHandler<ActionEvent>() 
-        {
-            public void handle(ActionEvent e) 
-            {
-                if (toggleUseTravelDuration.isSelected() == false)
-                    travelTimeTo = 0; 
-                createEntryIncludingTravelTimes(currSug);                           
-                                  
-                popupViewController.showEntryAddedDialogWithMailOption(startDate, endDate, startTime, endTime, title, sendMailButton);
-            }
-        }); 
-        return button;      
-    }
-
-    private void registerButtonSendMailEvent(Button button)
-    {
-        button.setOnAction(new EventHandler<ActionEvent>() 
-        {
-            public void handle(ActionEvent e) 
-            {                
-                String templateName = dropdownMailTemplates.getValue();
-                String recipient = validateRecipient();
-                String date = DateFormatConverter.formatDate(currentSuggestion.getStartDate());
-                String time = DateFormatConverter.formatTime(currentSuggestion.getStartTime());
-                mailCreationController.processMailWrapper(templateName, date, time, recipient);                               
-            }
-        });
-    }*/
 
 /*
     private void iterateThroughSuggestions() 

@@ -1,5 +1,6 @@
 package com.altenheim.kalender.models;
 
+import com.altenheim.kalender.controller.logicController.SearchViewValidationController;
 import com.altenheim.kalender.controller.viewController.*;
 import com.altenheim.kalender.interfaces.IViewRootsModel;
 import javafx.scene.layout.GridPane;

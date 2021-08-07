@@ -1,30 +1,33 @@
-﻿package com.altenheim.kalender.controller.logicController;
+package com.altenheim.kalender.controller.logicController;
 
 import java.time.LocalTime;
 import java.time.LocalDateTime;
-
 import com.altenheim.kalender.interfaces.*;
-import com.altenheim.kalender.models.SettingsModel;
 import com.altenheim.kalender.models.SuggestionsModel;
-import com.calendarfx.model.Entry;
 
 public class SearchViewRequestHandlerController extends SearchViewValidationController
 {
     private ISmartSearchController smartSearch;
-    private IEntryFactory entryFactory;
     private IDateSuggestionController dateSuggestionController;
-    private SearchViewButtonEventHandler buttonHandler;
-
+/*
     public SearchViewRequestHandlerController(IGoogleAPIController api, ICalendarEntriesModel allCalendars, IDateSuggestionController dateSuggestionController,
-        ISmartSearchController smartSearch, IEntryFactory entryFactory, SearchViewButtonEventHandler buttonHandler) 
+        ISmartSearchController smartSearch, IEntryFactory entryFactory, IPopupViewController popupViewController, IMailCreationController mailCreationController) 
     {
-        super(api, allCalendars);
+        super(api, allCalendars, popupViewController, mailCreationController, entryFactory);
         this.smartSearch = smartSearch;
         this.entryFactory = entryFactory;
         this.dateSuggestionController = dateSuggestionController;
-        this.buttonHandler = buttonHandler;
-    }
+    }*/
     
+    public SearchViewRequestHandlerController(IGoogleAPIController api, ICalendarEntriesModel allCalendars,
+            IPopupViewController popupViewController, IMailCreationController mailCreationController,
+            IEntryFactory entryFactory, ISmartSearchController smartSearch, IDateSuggestionController dateSuggestionController) 
+    {
+        super(api, allCalendars, popupViewController, mailCreationController, entryFactory);
+        this.smartSearch = smartSearch;
+        this.dateSuggestionController = dateSuggestionController;
+    }
+
     public void iterateThroughSuggestions() 
     {
         if (toggleAddAutomatically.isSelected()) 
@@ -43,7 +46,7 @@ public class SearchViewRequestHandlerController extends SearchViewValidationCont
             if (currentSuggestion == null)
                 return; 
             
-            var buttonAdd = buttonHandler.createAddEntryButton(currentSuggestion);
+            var buttonAdd = createAddEntryButton(currentSuggestion);
             timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().minusMinutes(timeAfterGlobal); 
             SuggestionsModel.addToList(currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal), 
                 currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
@@ -71,8 +74,8 @@ public class SearchViewRequestHandlerController extends SearchViewValidationCont
             else            
                 timeToStartSearch = currentSuggestion.getEndAsLocalDateTime();
             
-            var sendMailButton = buttonHandler.createSendMailButton();
-            buttonHandler.createEntryIncludingTravelTimes(currentSuggestion);                
+            var sendMailButton = createSendMailButton();
+            createEntryIncludingTravelTimes(currentSuggestion);                
             SuggestionsModel.addToList(currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal), 
                 currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), currentSuggestion.getStartDate(), 
                 currentSuggestion.getEndDate(), sendMailButton, tfAppointmentName.getText());                

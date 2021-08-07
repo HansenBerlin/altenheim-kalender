@@ -3,23 +3,15 @@ package com.altenheim.kalender.controller.viewController;
 import com.altenheim.kalender.interfaces.IViewRootsModel;
 import com.altenheim.kalender.models.SettingsModel;
 import com.altenheim.kalender.resourceClasses.*;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Map;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
-import javafx.util.Pair;
 import jfxtras.styles.jmetro.JMetro;
-import jfxtras.styles.jmetro.MDL2IconFont;
 import jfxtras.styles.jmetro.Style;
 
 public class GuiUpdateController 
 {
     private JMetro jMetroStyle;
     private IViewRootsModel viewsInformation;
-    //private boolean isDarkmodeActive = true;
     private SettingsModel settings;
 
     public JMetro getJMetroStyle() 

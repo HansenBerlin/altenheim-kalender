@@ -51,9 +51,13 @@ public class JavaFXLauncher extends Application
 
         var image = new Image(getClass().getResource("/Penaut.png").toString());
         primaryStage.getIcons().add(image);
+
+        //objectFactory.searchVCt.initialize2();
         
         primaryStage.show();
         guiSetup.registerCalendars();
+
+        
     }
 
     public static void main(String[] args) 

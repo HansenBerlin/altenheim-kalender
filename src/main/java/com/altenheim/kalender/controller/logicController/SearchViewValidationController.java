@@ -1,12 +1,24 @@
-﻿package com.altenheim.kalender.controller.logicController;
+package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.models.*;
+import com.altenheim.kalender.resourceClasses.DateFormatConverter;
+import com.altenheim.kalender.resourceClasses.FxmlFiles;
+
 import org.controlsfx.control.ToggleSwitch;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -25,11 +37,18 @@ public class SearchViewValidationController extends ResponsiveController
 {
     private IGoogleAPIController api;
     protected ICalendarEntriesModel allCalendars;
+    private IPopupViewController popupViewController;
+    private IMailCreationController mailCreationController;
+    protected IEntryFactory entryFactory;
 
-    public SearchViewValidationController(IGoogleAPIController api, ICalendarEntriesModel allCalendars)
+    public SearchViewValidationController(IGoogleAPIController api, ICalendarEntriesModel allCalendars, IPopupViewController popupViewController,
+        IMailCreationController mailCreationController, IEntryFactory entryFactory)
     {
         this.api = api;
         this.allCalendars = allCalendars;
+        this.popupViewController = popupViewController;
+        this.mailCreationController = mailCreationController;
+        this.entryFactory = entryFactory;
     }
 
     @FXML protected ToggleSwitch toggleDateRange, toggleTimeRange, toggleWeekdays, toggleCalendars;   
@@ -40,6 +59,15 @@ public class SearchViewValidationController extends ResponsiveController
     @FXML protected TimeField timeStart, timeEnd; 
     @FXML protected DatePicker startDate, endDate;
     @FXML protected TextField tfAppointmentName;
+    @FXML protected Text txtHeaderStep, txtFirstStep, txtSecondStep, txtThirdStep;
+    @FXML protected TextField tfDurationMinutes, tfDurationHours;    
+    @FXML protected Button btnBack, btnConfirm, btnReset;     
+    @FXML protected VBox stepOneUserInput, stepTwoUserInput, stepThreeUserInput;
+    @FXML protected HBox containerDateRange, containerTimeRange, containerWeekdays, containerMailTemplate;
+    @FXML protected HBox containerTravel, containerOpeningHours, containerMargin, containerReccurrence;
+    @FXML protected Circle imgFirstStep, imgSecondStep, imgThirdStep;
+    @FXML protected RowConstraints firstRow; 
+    
 
     protected ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening, dropdownMailTemplates, dropDownContact;
     protected SplitMenuButton calendarSelection = new SplitMenuButton();
@@ -50,8 +78,20 @@ public class SearchViewValidationController extends ResponsiveController
     protected LocalDateTime timeToStartSearch;
     protected Entry<String> currentSuggestion;
     protected ArrayList<Entry<String>> currentSuggestions; 
+
+    @FXML
+    public void initialize()
+    {
+        //stepThreeUserInput = new VBox();
+        /*
+        var loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(FxmlFiles.SEARCH_VIEW));
+        loader.setController(this); */
+
+    }
     
-    protected final void validateCalendarSelectionInput()
+    
+    protected void validateCalendarSelectionInput()
     {
         allCalendars.clearCalendarsSelectedByUser();
         if (toggleCalendars.isSelected())
@@ -282,4 +322,72 @@ public class SearchViewValidationController extends ResponsiveController
             travelTime = travelTime / 60;
         return travelTime;
     }
+
+    
+    public Button createSendMailButton()
+    {
+        var button = new Button("Mailanfrage");
+        if (toggleUseMailTemplate.isSelected())  
+        {
+            button.setVisible(true); 
+            registerButtonSendMailEvent(button);
+        }      
+        else
+            button.setVisible(false);
+
+        return button;
+    }
+
+    public Button createAddEntryButton(Entry<String> currSug)
+    {
+        var button = new Button("EINTRAGEN");
+        String startDate = DateFormatConverter.formatDate(currSug.getStartDate());
+        String endDate = DateFormatConverter.formatDate(currSug.getEndDate());
+        String startTime = DateFormatConverter.formatTime(currSug.getStartTime());
+        String endTime = DateFormatConverter.formatTime(currSug.getEndTime());
+        String title = currSug.getTitle();
+        var sendMailButton = createSendMailButton();
+
+        button.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            public void handle(ActionEvent e) 
+            {
+                if (toggleUseTravelDuration.isSelected() == false)
+                    travelTimeTo = 0; 
+                createEntryIncludingTravelTimes(currSug);                           
+                                  
+                popupViewController.showEntryAddedDialogWithMailOption(startDate, endDate, startTime, endTime, title, sendMailButton);
+            }
+        }); 
+        return button;      
+    }
+
+    public void registerButtonSendMailEvent(Button button)
+    {
+        button.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            public void handle(ActionEvent e) 
+            {                
+                String templateName = dropdownMailTemplates.getValue();
+                String recipient = validateRecipient();
+                String date = DateFormatConverter.formatDate(currentSuggestion.getStartDate());
+                String time = DateFormatConverter.formatTime(currentSuggestion.getStartTime());
+                mailCreationController.processMailWrapper(templateName, date, time, recipient);                               
+            }
+        });
+    }
+
+    public void createEntryIncludingTravelTimes(Entry<String> currentSuggestion) 
+    {
+        int traveltime = 0;
+        if (toggleUseTravelDuration.isSelected()) 
+        {
+            traveltime = travelTimeTo;
+        }
+        String defaultCalendarName = SettingsModel.defaultCalendarForSearchView;
+        entryFactory.createNewUserEntryIncludingTravelTimes(currentSuggestion.getStartDate(),
+                currentSuggestion.getEndDate(), currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal),
+                currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), tfAppointmentName.getText(),
+                 traveltime, defaultCalendarName);
+    } 
 }
