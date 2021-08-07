@@ -430,7 +430,9 @@ public class SearchViewController extends ResponsiveController
         recurrences = validateReccurrences();  
         timeBeforeGlobal = updatedTimes[0];      
         timeAfterGlobal = updatedTimes[1];
-        timeToStartSearch = LocalDateTime.of(startDateInput, startTimeInput); 
+        timeToStartSearch = LocalDateTime.of(startDateInput, startTimeInput);
+        if (timeToStartSearch.toLocalDate().equals(LocalDate.now()) && timeToStartSearch.toLocalTime().isBefore(LocalTime.now()))
+            timeToStartSearch = LocalDateTime.now();
         travelTimeTo = travelTime;
     }
 
