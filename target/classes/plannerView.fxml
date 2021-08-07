@@ -8,22 +8,18 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <GridPane alignment="CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-   </rowConstraints>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-   <children>
-      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
-         <children>
-            <Button fx:id="btnImport" mnemonicParsing="false" onAction="#openFilePicker" text="IMPORT" />
-            <Button fx:id="btnExport" mnemonicParsing="false" onAction="#openFilePicker" text="EXPORT" />
-         </children>
-      </HBox>
-   </children>
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
+        <Button fx:id="btnImport" mnemonicParsing="false" onAction="#openFilePicker" text="IMPORT"/>
+        <Button fx:id="btnExport" mnemonicParsing="false" onAction="#openFilePicker" text="EXPORT"/>
+    </HBox>
 </GridPane>

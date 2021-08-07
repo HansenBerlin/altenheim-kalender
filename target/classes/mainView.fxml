@@ -13,156 +13,163 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane fx:id="rootContainer" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-   <columnConstraints>
-      <ColumnConstraints fx:id="columnLeftMenu" halignment="LEFT" hgrow="ALWAYS" maxWidth="240.0" minWidth="240.0" prefWidth="240.0" />
-      <ColumnConstraints hgrow="SOMETIMES" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints fx:id="topRow" maxHeight="100.0" minHeight="50.0" prefHeight="100.0" vgrow="SOMETIMES" />
-      <RowConstraints vgrow="SOMETIMES" />
-   </rowConstraints>
-   <children>
-      <Button fx:id="btnLogo" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="70.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="100.0" prefWidth="240.0" style="-fx-font-size: 20;" text="SMART PLANNER" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
-      <HBox fx:id="topButtonRow" alignment="TOP_CENTER" minHeight="50.0" prefHeight="100.0" GridPane.columnIndex="1">
-         <children>
-            <VBox alignment="CENTER">
-               <children>
-                  <Text fx:id="txtBreadcrumb" cache="true" cacheHint="SPEED" fill="#2c2c2c" strokeType="OUTSIDE" strokeWidth="0.0" text="&gt; Terminübersicht">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Text>
-               </children>
-               <HBox.margin>
-                  <Insets left="20.0" />
-               </HBox.margin>
-            </VBox>
-            <HBox alignment="CENTER_RIGHT" spacing="15.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Button fx:id="btnAddAppointment" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;">
-                     <tooltip>
-                        <Tooltip fx:id="ttBtnAddAppointment" text="Hinzufügen von Kalendereinträgen" />
-                     </tooltip></Button>
-                  <Button fx:id="btnSwitchModes" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0" minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#switchMode" prefHeight="32.0" prefWidth="32.0" style="-fx-background-radius: 200; -fx-background-color: transparent;">
-                     <tooltip>
-                        <Tooltip fx:id="ttBtnSwitchModes" text="Wechsel Dark-/ Lightmode" />
-                     </tooltip></Button>
-               </children>
-               <HBox.margin>
-                  <Insets right="50.0" />
-               </HBox.margin>
-            </HBox>
-         </children>
-      </HBox>
-      <VBox fx:id="vboxLeftPane" cache="true" cacheHint="SPEED" maxWidth="240.0" minWidth="70.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
-         <children>
-            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
-               <children>
-                  <Pane fx:id="menuBtnPanePlanner" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
-                  <Button fx:id="menuBtnPlanner" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Planner">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                     <tooltip>
-                        <Tooltip fx:id="ttMenuBtnPlanner" text="Kalenderansichten" />
-                     </tooltip>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
-               <children>
-                  <Pane fx:id="menuBtnPaneSmartSearch" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
-                  <Button fx:id="menuBtnSearch" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Smart Search">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip fx:id="ttMenuBtnSearch" text="Terminsuche mit auswählbaren Kriterien" />
-                     </tooltip>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
-               <children>
-                  <Pane fx:id="menuBtnPaneContacts" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
-                  <Button fx:id="menuBtnContacts" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Addressbuch">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip fx:id="ttMenuBtnContacts" text="Hinzufügen/ Ändern/ Löschen von Adressbucheinträgen" />
-                     </tooltip>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
-               <children>
-                  <Pane fx:id="menuBtnPaneMail" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
-                  <Button fx:id="menuBtnMail" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Mailtemplates">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip fx:id="ttMenuBtnMail" text="Hinzufügen/ Ändern/ Löschen von E-Mail Vorlagen" />
-                     </tooltip>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
-               <children>
-                  <Pane fx:id="menuBtnPaneSettings" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0" />
-                  <Button fx:id="menuBtnSettings" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0" style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Settings">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip fx:id="ttMenuBtnSettings" text="individuelle Einstellungen" />
-                     </tooltip>
-                  </Button>
-               </children>
-            </HBox>
-            <Text fx:id="txtVersion" cache="true" cacheHint="SPEED" fill="#dadada" strokeType="OUTSIDE" strokeWidth="0.0" text="v. 0.3.18 HWR WI Gr. C">
-               <font>
-                  <Font name="Consolas" size="8.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="20.0" top="20.0" />
-               </VBox.margin>
+<GridPane fx:id="rootContainer" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16"
+          xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints fx:id="columnLeftMenu" halignment="LEFT" hgrow="ALWAYS" maxWidth="240.0" minWidth="240.0"
+                           prefWidth="240.0"/>
+        <ColumnConstraints hgrow="SOMETIMES"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints fx:id="topRow" maxHeight="100.0" minHeight="50.0" prefHeight="100.0" vgrow="SOMETIMES"/>
+        <RowConstraints vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <Button fx:id="btnLogo" alignment="CENTER" contentDisplay="CENTER" minHeight="50.0" minWidth="70.0"
+            mnemonicParsing="false" onMouseClicked="#changeScene" prefHeight="100.0" prefWidth="240.0"
+            style="-fx-font-size: 20;" text="SMART PLANNER" textAlignment="CENTER" GridPane.halignment="CENTER"
+            GridPane.valignment="CENTER">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Button>
+    <HBox fx:id="topButtonRow" alignment="TOP_CENTER" minHeight="50.0" prefHeight="100.0" GridPane.columnIndex="1">
+        <VBox alignment="CENTER">
+            <HBox.margin>
+                <Insets left="20.0"/>
+            </HBox.margin>
+            <Text fx:id="txtBreadcrumb" cache="true" cacheHint="SPEED" fill="#2c2c2c" strokeType="OUTSIDE"
+                  strokeWidth="0.0" text="&gt; Terminübersicht">
+                <font>
+                    <Font size="14.0"/>
+                </font>
             </Text>
-         </children>
-      </VBox>
-      <AnchorPane fx:id="viewsRoot" cache="true" cacheHint="SPEED" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-   </children>
+        </VBox>
+        <HBox alignment="CENTER_RIGHT" spacing="15.0" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+                <Insets right="50.0"/>
+            </HBox.margin>
+            <Button fx:id="btnAddAppointment" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0"
+                    minHeight="32.0" minWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0"
+                    style="-fx-background-radius: 200; -fx-background-color: transparent;">
+                <tooltip>
+                    <Tooltip fx:id="ttBtnAddAppointment" text="Hinzufügen von Kalendereinträgen"/>
+                </tooltip>
+            </Button>
+            <Button fx:id="btnSwitchModes" alignment="CENTER_RIGHT" maxHeight="32.0" maxWidth="32.0"
+                    minHeight="32.0" minWidth="32.0" mnemonicParsing="false" onAction="#switchMode"
+                    prefHeight="32.0" prefWidth="32.0"
+                    style="-fx-background-radius: 200; -fx-background-color: transparent;">
+                <tooltip>
+                    <Tooltip fx:id="ttBtnSwitchModes" text="Wechsel Dark-/ Lightmode"/>
+                </tooltip>
+            </Button>
+        </HBox>
+    </HBox>
+    <VBox fx:id="vboxLeftPane" cache="true" cacheHint="SPEED" maxWidth="240.0" minWidth="70.0"
+          GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+        <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
+            <Pane fx:id="menuBtnPanePlanner" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0"/>
+            <Button fx:id="menuBtnPlanner" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false"
+                    onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0"
+                    style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Planner">
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+                <padding>
+                    <Insets left="20.0"/>
+                </padding>
+                <tooltip>
+                    <Tooltip fx:id="ttMenuBtnPlanner" text="Kalenderansichten"/>
+                </tooltip>
+            </Button>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
+            <Pane fx:id="menuBtnPaneSmartSearch" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0"/>
+            <Button fx:id="menuBtnSearch" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false"
+                    onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0"
+                    style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Smart Search">
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+                <padding>
+                    <Insets left="20.0"/>
+                </padding>
+                <font>
+                    <Font size="14.0"/>
+                </font>
+                <tooltip>
+                    <Tooltip fx:id="ttMenuBtnSearch" text="Terminsuche mit auswählbaren Kriterien"/>
+                </tooltip>
+            </Button>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
+            <Pane fx:id="menuBtnPaneContacts" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0"/>
+            <Button fx:id="menuBtnContacts" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false"
+                    onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0"
+                    style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Addressbuch">
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+                <padding>
+                    <Insets left="20.0"/>
+                </padding>
+                <font>
+                    <Font size="14.0"/>
+                </font>
+                <tooltip>
+                    <Tooltip fx:id="ttMenuBtnContacts" text="Hinzufügen/ Ändern/ Löschen von Adressbucheinträgen"/>
+                </tooltip>
+            </Button>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
+            <Pane fx:id="menuBtnPaneMail" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0"/>
+            <Button fx:id="menuBtnMail" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false"
+                    onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0"
+                    style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Mailtemplates">
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+                <padding>
+                    <Insets left="20.0"/>
+                </padding>
+                <font>
+                    <Font size="14.0"/>
+                </font>
+                <tooltip>
+                    <Tooltip fx:id="ttMenuBtnMail" text="Hinzufügen/ Ändern/ Löschen von E-Mail Vorlagen"/>
+                </tooltip>
+            </Button>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" cache="true" cacheHint="SPEED" prefHeight="70.0">
+            <Pane fx:id="menuBtnPaneSettings" cache="true" cacheHint="SPEED" minWidth="2.0" prefWidth="2.0"/>
+            <Button fx:id="menuBtnSettings" alignment="BASELINE_LEFT" minWidth="68.0" mnemonicParsing="false"
+                    onMouseClicked="#changeScene" prefHeight="70.0" prefWidth="238.0"
+                    style="-fx-font-size: 16; -fx-graphic-text-gap: 8;" text="Settings">
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+                <padding>
+                    <Insets left="20.0"/>
+                </padding>
+                <font>
+                    <Font size="14.0"/>
+                </font>
+                <tooltip>
+                    <Tooltip fx:id="ttMenuBtnSettings" text="individuelle Einstellungen"/>
+                </tooltip>
+            </Button>
+        </HBox>
+        <Text fx:id="txtVersion" cache="true" cacheHint="SPEED" fill="#dadada" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="v. 0.3.18 HWR WI Gr. C">
+            <font>
+                <Font name="Consolas" size="8.0"/>
+            </font>
+            <VBox.margin>
+                <Insets left="20.0" top="20.0"/>
+            </VBox.margin>
+        </Text>
+    </VBox>
+    <AnchorPane fx:id="viewsRoot" cache="true" cacheHint="SPEED" nodeOrientation="LEFT_TO_RIGHT"
+                style="-fx-background-color: transparent;" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS"/>
 </GridPane>
