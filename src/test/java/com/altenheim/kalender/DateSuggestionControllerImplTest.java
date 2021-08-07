@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import com.altenheim.kalender.controller.logicController.DateSuggestionControllerImpl;
+import com.altenheim.kalender.implementations.controller.logicController.DateSuggestionControllerImpl;
 import com.calendarfx.model.Entry;
 
 import org.junit.jupiter.api.Test;

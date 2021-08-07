@@ -1,6 +1,6 @@
 package com.altenheim.kalender;
 
-import com.altenheim.kalender.controller.factories.InjectorFactoryImpl;
+import com.altenheim.kalender.implementations.controller.factories.InjectorFactoryImpl;
 import com.altenheim.kalender.interfaces.factorys.InjectorFactory;
 import javafx.application.Application;
 import javafx.event.EventHandler;

@@ -1,6 +1,6 @@
 package com.altenheim.kalender.interfaces.models;
 
-import com.altenheim.kalender.models.ContactModelImpl;
+import com.altenheim.kalender.implementations.controller.models.ContactModelImpl;
 
 import java.io.Serializable;
 import java.util.List;
