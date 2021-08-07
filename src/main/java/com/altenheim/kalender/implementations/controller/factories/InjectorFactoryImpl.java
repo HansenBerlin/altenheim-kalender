@@ -50,12 +50,12 @@ public class InjectorFactoryImpl implements InjectorFactory
         MailClientAccessController mailCreationCt = new MailClientAccessControllerImpl(mailTemplates);
         DateSuggestionController dateSuggestionController = new DateSuggestionControllerImpl();
         SmartSearchController smartSearch = new SmartSearchControllerImpl(calendarEntriesModel, entryFactory);
-        UrlRequestController websiteCt = new UrlRequestControllerImpl(settings, importCt, entryFactory);
+        UrlRequestController urlRequestController = new UrlRequestControllerImpl(settings, importCt, entryFactory);
         PopupViewController popupViewController = new PopupViewsControllerImpl(settings, importCt, exportCt);
 
         var plannerVCt = new PlannerViewController(ioCt, entryFactory, popupViewController, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(ioCt, contacts);
-        var settingsVCt = new SettingsViewController(settings, entryFactory, calendarEntriesModel, comboBoxFactory, popupViewController);
+        var settingsVCt = new SettingsViewController(settings, entryFactory, calendarEntriesModel, comboBoxFactory, popupViewController, urlRequestController);
         var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory, ioCt);
         var searchVCt = new SearchViewController(apiCt, calendarEntriesModel, animationController, comboBoxFactory, popupViewController,
             mailCreationCt, entryFactory, smartSearch, dateSuggestionController);
@@ -64,7 +64,7 @@ public class InjectorFactoryImpl implements InjectorFactory
         mainWindowController = new MainWindowController(allViews, customCalendarView, settings);
         allViews.setMainWindowController(mainWindowController);
         guiSetup = new GuiUpdateControllerImpl(jMetroStyle, allViews);
-        initialSettingsLoader = new InitialSetupControllerImpl(ioCt, popupViewController, websiteCt,
+        initialSettingsLoader = new InitialSetupControllerImpl(ioCt, popupViewController, urlRequestController,
                 systemNotificationsCt, entryFactory, contacts);
     }    
 }

@@ -60,7 +60,7 @@ public record PopupViewsControllerImpl(SettingsModel settings,
         return result.get() == ButtonType.OK;
     }
 
-    public void showConfirmationDialog() {
+    public void showPasswordCorrectConfirmationDialog() {
         var alert = new Alert(Alert.AlertType.INFORMATION);
         var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
@@ -73,7 +73,7 @@ public record PopupViewsControllerImpl(SettingsModel settings,
         alert.showAndWait();
     }
 
-    public void showCancelDialog() {
+    public void showPasswordWrongDialog() {
         var alert = new Alert(Alert.AlertType.WARNING);
         var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
@@ -162,15 +162,21 @@ public record PopupViewsControllerImpl(SettingsModel settings,
 
     private void showCalendarExportedDialog(int exportedCount, boolean isSuccessful) {
         String message;
+        Alert.AlertType alert;
         if (isSuccessful)
+        {
             message = "Es wurden " + exportedCount + " Kalenderdateien exportiert.";
+            alert = Alert.AlertType.CONFIRMATION;
+        }
         else
+        {
             message = "Aufrund eines Fehlers wurde kein Kalender exportiert.";
-
-        showDefaultDialog(message, Alert.AlertType.INFORMATION);
+            alert = Alert.AlertType.ERROR;
+        }
+        showDefaultDialog(message, alert);
     }
 
-    private void showCalendarImportedError()
+    public void showCalendarImportedError()
     {
         var message = ("""
             Es gab einen Fehler beim Importieren der Kalender. 
@@ -178,6 +184,15 @@ public record PopupViewsControllerImpl(SettingsModel settings,
             der Webseite der HWR runtergeladen werden.""");
 
         showDefaultDialog(message, Alert.AlertType.ERROR);
+    }
+
+    public void showCalendarImportedSuccess()
+    {
+        var message = ("""
+            Der gewünschte HWR Kalender wurde erfolgreich
+            importiert.""");
+
+        showDefaultDialog(message, Alert.AlertType.CONFIRMATION);
     }
 
     private void showDefaultDialog(String message, Alert.AlertType alertType)
@@ -190,9 +205,6 @@ public record PopupViewsControllerImpl(SettingsModel settings,
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-
-
 
     public void exportDialog(CalendarEntriesModel allEntries, Window stage)
     {

@@ -25,9 +25,10 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
         this.settings = settings;
         this.importController = importController;
         this.entryFactory = entryFactory;
+        startScraperTask();
     }
 
-    public void startScraperTask() 
+    public void startScraperTask()
     {
         var timer = new Timer();
         timer.schedule(this, 0, settings.getHwrRequestIntervalInMinutes()*60*1000);
@@ -35,30 +36,31 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
 
     public void run() 
     {
-        scrapeCalendar();
+        if(!isCalendarImportedSuccesfully());
+            System.err.println("ERROR: Kalender konnte nicht heruntergeladen werden.");
     }
 
-    private void scrapeCalendar()
+    public boolean isCalendarImportedSuccesfully()
     {
+        clearHwrCalendarFiles();
         if (isDownloadIcsSuccessful())
         {
-            updateFile();
-            var calendarFilesPath = settings.getPathToUserDirectory() + "/calendars/HWR-Kalender.ics";
+            var calendarFilesPath = settings.getPathToUserDirectory() + "hwr-calendars/HWR-Kalender.ics";
             if (!importController.canCalendarFileBeImported(calendarFilesPath))
-                return;
-            if (importController.canCalendarFileBeParsed())
-                importController.importCalendar("HWR-Kalender");
+                return false;
+            if (!importController.canCalendarFileBeParsed())
+                return false;
+            importController.importCalendar("HWR-Kalender");
+            return true;
         }
-        var file = new File(settings.getPathToUserDirectory() + "/calendars/HWR-Kalendertemp.ics");
-        file.delete();
-
+        return false;
     }    
 
     private boolean isDownloadIcsSuccessful() 
     {
         try 
         {
-            var fos = new FileOutputStream(settings.getPathToUserDirectory() + "/calendars/HWR-Kalendertemp.ics");
+            var fos = new FileOutputStream(settings.getPathToUserDirectory() + "hwr-calendars/HWR-Kalender.ics");
             var url = new URL(SettingsModelImpl.hwrWebsiteUrl);
             var rbc = Channels.newChannel(url.openStream());
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -68,20 +70,15 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
         } 
         catch (IOException e) 
         {
-            e.printStackTrace();
-            var fileToDelete = new File(settings.getPathToUserDirectory() + "/calendars/HWR-Kalendertemp.ics");
-            fileToDelete.delete();
+            System.err.println(e.getMessage());
             return false;
         }
     }
 
-    private void updateFile()
+    private void clearHwrCalendarFiles()
     {
-        String path = settings.getPathToUserDirectory();
-        var file = new File(path + "/calendars/HWR-Kalender.ics");
-        if (file.exists())
+        var directory = new File(settings.getPathToUserDirectory() + "hwr-calendars");
+        for (var file: directory.listFiles())
             file.delete();
-        var fileToRename = new File(path+ "/calendars/HWR-Kalendertemp.ics");
-        fileToRename.renameTo(file);
     }
 }

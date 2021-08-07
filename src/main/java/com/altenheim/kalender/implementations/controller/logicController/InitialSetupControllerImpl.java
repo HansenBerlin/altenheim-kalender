@@ -54,12 +54,12 @@ public record InitialSetupControllerImpl(IOController ioController,
                 hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_",
                         SettingsModelImpl.PASSWORDHASH);
             } else {
-                popup.showCancelDialog();
+                popup.showPasswordWrongDialog();
                 return false;
             }
         }
         ioController.saveHashedPassword(hashedPasswordAfterUserValidation);
-        popup.showConfirmationDialog();
+        popup.showPasswordCorrectConfirmationDialog();
         return true;
     }
 }

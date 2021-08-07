@@ -28,7 +28,7 @@ public record IOControllerImpl(SettingsModel settings,
         var parentFolder = new File("userFiles");
         if (!parentFolder.exists())
             parentFolder.mkdir();
-        String[] folderNames = {"contacts", "calendars", "userSettings", "mailTemplates"};
+        String[] folderNames = {"contacts", "calendars", "userSettings", "mailTemplates", "hwr-calendars"};
         for (var folderName : folderNames) {
             var newFolder = new File("userFiles/" + folderName);
             if (!newFolder.exists())
@@ -47,7 +47,7 @@ public record IOControllerImpl(SettingsModel settings,
 
     public void loadCalendarsFromFile(EntryFactory entryFactory) {
         entryFactory.clearCalendarSourceList();
-        var allCalendarFiles = new File(settings.getPathToUserDirectory() + "/calendars").listFiles();
+        var allCalendarFiles = new File(settings.getPathToUserDirectory() + "calendars").listFiles();
         for (var calendarFile : Objects.requireNonNull(allCalendarFiles)) {
             if (calendarFile.getAbsolutePath().contains(".ics")) {
                 if (!importController.canCalendarFileBeImported(calendarFile.getAbsolutePath()))
@@ -61,7 +61,7 @@ public record IOControllerImpl(SettingsModel settings,
     }
 
     public void saveContactsToFile(ContactModel contacts) {
-        var path = settings.getPathToUserDirectory() + "/contacts/contacts.file";
+        var path = settings.getPathToUserDirectory() + "contacts/contacts.file";
         try {
             var writeToFile = new FileOutputStream(path);
             var convert = new ObjectOutputStream(writeToFile);
@@ -75,7 +75,7 @@ public record IOControllerImpl(SettingsModel settings,
 
     @SuppressWarnings("unchecked")
     public void loadContactsFromFile(ContactModel contacts) {
-        var file = new File(settings.getPathToUserDirectory() + "/contacts/contacts.file");
+        var file = new File(settings.getPathToUserDirectory() + "contacts/contacts.file");
         if (!file.exists())
             return;
 
@@ -92,7 +92,7 @@ public record IOControllerImpl(SettingsModel settings,
     }
 
     public void saveMailTemplatesToFile(MailTemplateModel templates) {
-        var path = settings.getPathToUserDirectory() + "/mailTemplates/templates.file";
+        var path = settings.getPathToUserDirectory() + "mailTemplates/templates.file";
         try {
             var writeToFile = new FileOutputStream(path);
             var convert = new ObjectOutputStream(writeToFile);
@@ -105,7 +105,7 @@ public record IOControllerImpl(SettingsModel settings,
     }
 
     public MailTemplateModel loadMailTemplatesFromFile() {
-        var file = new File(settings.getPathToUserDirectory() + "/mailTemplates/templates.file");
+        var file = new File(settings.getPathToUserDirectory() + "mailTemplates/templates.file");
         if (!file.exists())
             return new MailTemplateModelImpl();
         try {

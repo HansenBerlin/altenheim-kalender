@@ -53,7 +53,7 @@ public class SettingsModelImpl implements SettingsModel
 
     public void saveSettings()
     {
-        String path = "userFiles/userSettings/settings.file";
+        String path = userDirectory + "userSettings/settings.file";
         try 
         {
             var writeToFile = new FileOutputStream(path);
@@ -86,7 +86,7 @@ public class SettingsModelImpl implements SettingsModel
 
     public void loadSettings() 
     {
-        String path = "userFiles/userSettings/settings.file";
+        String path = userDirectory + "userSettings/settings.file";
         var file = new File(path);
         if (!file.exists())
             return;

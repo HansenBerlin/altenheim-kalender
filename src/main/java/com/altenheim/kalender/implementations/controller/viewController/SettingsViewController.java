@@ -2,6 +2,7 @@ package com.altenheim.kalender.implementations.controller.viewController;
 
 import com.altenheim.kalender.interfaces.factorys.ComboBoxFactory;
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
+import com.altenheim.kalender.interfaces.logicController.UrlRequestController;
 import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
@@ -26,6 +27,7 @@ public class SettingsViewController extends ResponsiveController
     private final EntryFactory calendarFactory;
     private final PopupViewController popupViewController;
     private final ComboBoxFactory comboBoxFactory;
+    private final UrlRequestController urlRequestController;
     private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse,
             comboBoxSelectionSemester, comboBoxDefaultCalendar;
 
@@ -39,13 +41,14 @@ public class SettingsViewController extends ResponsiveController
     @FXML private VBox topContainer, bottomContainer, containerComboBoxNotificationMin, containerComboBoxDefaultCalendar;
 
     public SettingsViewController(SettingsModel settings, EntryFactory calendarFactory, CalendarEntriesModel allCalendars,
-                                  ComboBoxFactory comboBoxFactory, PopupViewController popupViewController)
+                                  ComboBoxFactory comboBoxFactory, PopupViewController popupViewController, UrlRequestController urlRequestController)
     {
         this.settings = settings;
         this.allCalendars = allCalendars;
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
         this.comboBoxFactory = comboBoxFactory;
+        this.urlRequestController = urlRequestController;
     }
 
     @FXML
@@ -125,6 +128,11 @@ public class SettingsViewController extends ResponsiveController
             settings.course.set(comboBoxSelectionCourse.getValue());
             settings.semester.set(comboBoxSelectionSemester.getValue());            
             settings.setHwrWebsiteUrl(resultURL);
+            if (urlRequestController.isCalendarImportedSuccesfully())
+                popupViewController.showCalendarImportedSuccess();
+            else
+                popupViewController.showCalendarImportedError();
+
         }
         //cBToolTips.setTooltip(cBToolTips.getTooltip());
         settings.setNotificationTimeBeforeEntryInMinutes(Long.parseLong(comboBoxNotificationMin.getValue()));
