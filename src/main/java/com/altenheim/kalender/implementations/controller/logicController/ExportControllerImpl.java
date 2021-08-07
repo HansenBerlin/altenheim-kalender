@@ -35,7 +35,6 @@ public record ExportControllerImpl(SettingsModel settings) implements ExportCont
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         fout.close();
     }
 
@@ -59,5 +58,4 @@ public record ExportControllerImpl(SettingsModel settings) implements ExportCont
         event.getProperties().add(uid);
         return event;
     }
-
 }

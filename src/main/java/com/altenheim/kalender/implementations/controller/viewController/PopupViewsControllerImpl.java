@@ -152,8 +152,12 @@ public record PopupViewsControllerImpl(SettingsModel settings,
         var file = filePicker.showOpenDialog(stage);
         if (file == null)
             return;
-        var importedCalendar = importController.importFile(file.getAbsolutePath());
-        entryFactory.addCalendarToView(importedCalendar, file.getName());
+        if (!importController.canCalendarFileBeImported(file.getAbsolutePath()))
+            showCalendarImportedError();
+        if (importController.canCalendarFileBeParsed())
+            importController.importCalendar(file.getName());
+        else
+            showCalendarImportedError();
     }
 
     private void showCalendarExportedDialog(int exportedCount, boolean isSuccessful) {
@@ -163,7 +167,22 @@ public record PopupViewsControllerImpl(SettingsModel settings,
         else
             message = "Aufrund eines Fehlers wurde kein Kalender exportiert.";
 
-        var alert = new Alert(Alert.AlertType.INFORMATION);
+        showDefaultDialog(message, Alert.AlertType.INFORMATION);
+    }
+
+    private void showCalendarImportedError()
+    {
+        var message = ("""
+            Es gab einen Fehler beim Importieren der Kalender. 
+            Eventuell ist die Datei nicht vorhanden oder er konnte nicht von 
+            der Webseite der HWR runtergeladen werden.""");
+
+        showDefaultDialog(message, Alert.AlertType.ERROR);
+    }
+
+    private void showDefaultDialog(String message, Alert.AlertType alertType)
+    {
+        var alert = new Alert(alertType);
         var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
         alert.setTitle("Kalender erfolgreich exportiert");
@@ -172,7 +191,11 @@ public record PopupViewsControllerImpl(SettingsModel settings,
         alert.showAndWait();
     }
 
-    public void exportDialog(CalendarEntriesModel allEntries, Window stage) {
+
+
+
+    public void exportDialog(CalendarEntriesModel allEntries, Window stage)
+    {
         var calendars = allEntries.getAllCalendars();
 
         for (var calendar : calendars) {

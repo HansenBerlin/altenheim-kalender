@@ -5,6 +5,8 @@ import com.altenheim.kalender.interfaces.logicController.ImportController;
 import com.altenheim.kalender.interfaces.logicController.UrlRequestController;
 import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
+
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -40,17 +42,23 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
     {
         if (isDownloadIcsSuccessful())
         {
-            var calendarFile = settings.getPathToUserDirectory() + "calendars/hwrFile.ics";
-            var calendar = importController.importFile(calendarFile);            
-            entryFactory.addCalendarToView(calendar, "HWR Calendar");
+            updateFile();
+            var calendarFilesPath = settings.getPathToUserDirectory() + "/calendars/HWR-Kalender.ics";
+            if (!importController.canCalendarFileBeImported(calendarFilesPath))
+                return;
+            if (importController.canCalendarFileBeParsed())
+                importController.importCalendar("HWR-Kalender");
         }
+        var file = new File(settings.getPathToUserDirectory() + "/calendars/HWR-Kalendertemp.ics");
+        file.delete();
+
     }    
 
     private boolean isDownloadIcsSuccessful() 
     {
         try 
         {
-            var fos = new FileOutputStream(settings.getPathToUserDirectory() + "calendars/hwrFile.ics");
+            var fos = new FileOutputStream(settings.getPathToUserDirectory() + "/calendars/HWR-Kalendertemp.ics");
             var url = new URL(SettingsModelImpl.hwrWebsiteUrl);
             var rbc = Channels.newChannel(url.openStream());
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -61,7 +69,19 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
         catch (IOException e) 
         {
             e.printStackTrace();
+            var fileToDelete = new File(settings.getPathToUserDirectory() + "/calendars/HWR-Kalendertemp.ics");
+            fileToDelete.delete();
             return false;
         }
-    }    
+    }
+
+    private void updateFile()
+    {
+        String path = settings.getPathToUserDirectory();
+        var file = new File(path + "/calendars/HWR-Kalender.ics");
+        if (file.exists())
+            file.delete();
+        var fileToRename = new File(path+ "/calendars/HWR-Kalendertemp.ics");
+        fileToRename.renameTo(file);
+    }
 }

@@ -47,12 +47,13 @@ public record IOControllerImpl(SettingsModel settings,
 
     public void loadCalendarsFromFile(EntryFactory entryFactory) {
         entryFactory.clearCalendarSourceList();
-        var allCalendarFiles = new File(settings.getPathToUserDirectory() + "calendars").listFiles();
+        var allCalendarFiles = new File(settings.getPathToUserDirectory() + "/calendars").listFiles();
         for (var calendarFile : Objects.requireNonNull(allCalendarFiles)) {
             if (calendarFile.getAbsolutePath().contains(".ics")) {
-                var calendar = importController.importFile(calendarFile.getAbsolutePath());
-                if (calendar != null)
-                    entryFactory.addCalendarToView(calendar, calendar.getName());
+                if (!importController.canCalendarFileBeImported(calendarFile.getAbsolutePath()))
+                    continue;
+                if (importController.canCalendarFileBeParsed())
+                    importController.importCalendar("");
             }
         }
         if (allCalendarFiles.length == 0)

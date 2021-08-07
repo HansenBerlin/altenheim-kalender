@@ -2,5 +2,7 @@ package com.altenheim.kalender.interfaces.logicController;
 
 public interface ImportController
 {
-    com.calendarfx.model.Calendar importFile(String path);
+    void importCalendar(String name);
+    boolean canCalendarFileBeParsed();
+    boolean canCalendarFileBeImported (String path);
 }
