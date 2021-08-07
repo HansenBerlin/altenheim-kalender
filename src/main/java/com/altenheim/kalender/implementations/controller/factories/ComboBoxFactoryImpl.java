@@ -12,32 +12,29 @@ import javafx.scene.control.ComboBox;
 
 public class ComboBoxFactoryImpl implements ComboBoxFactory
 {
-    private ObservableList<String> vehicles = FXCollections.observableArrayList();
-    private ObservableList<String> destinations = FXCollections.observableArrayList();
-    private ObservableList<String> recurrenceOptions = FXCollections.observableArrayList();
-    private ObservableList<String> notificationMin = FXCollections.observableArrayList();
-    private ObservableList<String> selectionSpecialField = FXCollections.observableArrayList();
-    private ObservableList<String> selectionCourse = FXCollections.observableArrayList();
-    private ObservableList<String> selectionSemester = FXCollections.observableArrayList();
-    private ObservableList<String> mailTemplateSelectorTemplate = FXCollections.observableArrayList();
-    private List<ObservableList<String>> content = new ArrayList<ObservableList<String>>();
-    private ObservableList<String> calendars = FXCollections.observableArrayList();
-    private ObservableList<String> mailAdresses = FXCollections.observableArrayList();
-    private String[] headers = { "Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs", 
+    private final ObservableList<String> mailTemplateSelectorTemplate = FXCollections.observableArrayList();
+    private final List<ObservableList<String>> content = new ArrayList<ObservableList<String>>();
+    private final String[] headers = { "Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs",
         "Semester", "MailTemplate", "Standardkalender", "Mailadressen" };    
 
     public ComboBoxFactoryImpl()
     {
+        ObservableList<String> vehicles = FXCollections.observableArrayList();
         vehicles.addAll("zu Fuß", "Fahrrad", "Öffis", "Auto");
-        destinations = ContactModelImpl.destinations;
-        calendars = CalendarEntriesModelImpl.calendarsComboBox;
-        mailAdresses = ContactModelImpl.mailadresses;
+        ObservableList<String> destinations = ContactModelImpl.destinations;
+        ObservableList<String> calendars = CalendarEntriesModelImpl.calendarsComboBox;
+        ObservableList<String> mailAdresses = ContactModelImpl.mailadresses;
+        ObservableList<String> recurrenceOptions = FXCollections.observableArrayList();
         recurrenceOptions.addAll("täglich", "wöchentlich", "monatlich", "halbjährlich", "jährlich");
+        ObservableList<String> notificationMin = FXCollections.observableArrayList();
         notificationMin.addAll("5", "15", "30", "60");
+        ObservableList<String> selectionSpecialField = FXCollections.observableArrayList();
         selectionSpecialField.addAll("IP", "Bank", "Bauwesen", "DL", "Elektrotechnik", "FM", "Handel", "IBA",
                 "Immobilien", "Industrie", "Informatik", "Maschinenbau", "PPM", "Spedition", "Steuern", "Tourismus",
                 "Versicherung", "WI");
+        ObservableList<String> selectionCourse = FXCollections.observableArrayList();
         selectionCourse.addAll("A", "B", "C", "keine Kurse");
+        ObservableList<String> selectionSemester = FXCollections.observableArrayList();
         selectionSemester.addAll("Sem. 1", "Sem. 2", "Sem. 3", "Sem. 4", "Sem. 5", "Sem. 6");
         mailTemplateSelectorTemplate.add("test");
         content.add(vehicles);

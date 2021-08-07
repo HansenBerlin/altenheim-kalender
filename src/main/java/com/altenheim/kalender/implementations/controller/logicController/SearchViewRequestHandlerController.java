@@ -14,8 +14,8 @@ import com.altenheim.kalender.implementations.controller.models.SuggestionsModel
 
 public class SearchViewRequestHandlerController extends SearchViewValidationController
 {
-    private SmartSearchController smartSearch;
-    private DateSuggestionController dateSuggestionController;
+    private final SmartSearchController smartSearch;
+    private final DateSuggestionController dateSuggestionController;
     
     public SearchViewRequestHandlerController(GoogleAPIController api, CalendarEntriesModel allCalendars,
                                               PopupViewController popupViewController, MailClientAccessController mailCreationController,

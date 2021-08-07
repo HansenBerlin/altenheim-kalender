@@ -4,7 +4,6 @@ import com.altenheim.kalender.interfaces.factorys.ComboBoxFactory;
 import com.altenheim.kalender.interfaces.logicController.IOController;
 import com.altenheim.kalender.interfaces.models.MailTemplateModel;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -16,9 +15,9 @@ import javafx.scene.text.Text;
 
 public class MailTemplateViewController extends ResponsiveController 
 {
-    private MailTemplateModel mailTemplatesModel;
-    private ComboBoxFactory comboBoxFactory;
-    private IOController iOController;
+    private final MailTemplateModel mailTemplatesModel;
+    private final ComboBoxFactory comboBoxFactory;
+    private final IOController iOController;
 
     private String templateKey;
     private ComboBox<String> comboBoxTemplates;
@@ -46,7 +45,7 @@ public class MailTemplateViewController extends ResponsiveController
     }
 
     @FXML
-    private void removeTemplate(ActionEvent event) {
+    private void removeTemplate() {
         var templateName = comboBoxTemplates.getValue();
 
         if (mailTemplatesModel.getTemplates().get(templateName) != null) {
@@ -59,7 +58,7 @@ public class MailTemplateViewController extends ResponsiveController
 
 
     @FXML
-    private void saveMailTemplate(ActionEvent event) {
+    private void saveMailTemplate() {
         updateComboBoxTemplates();
         var templateName = txtFieldNameTemplate.getText();
         var templateValue = mailTemplatetxtArea.getText();
@@ -103,19 +102,19 @@ public class MailTemplateViewController extends ResponsiveController
     }
 
     @FXML
-    private void createNewTemplate(ActionEvent event) {
+    private void createNewTemplate() {
         updateTextArea("");
         txtFieldNameTemplate.setText("");
         templateKey = "";
     }
 
     @FXML
-    private void insertDateMailTemplate(ActionEvent event) {
+    private void insertDateMailTemplate() {
         insertSomethingInMailTemplateTxtArea("Datum");
     }
 
     @FXML
-    private void insertTimeMailTemplate(ActionEvent event) {
+    private void insertTimeMailTemplate() {
         insertSomethingInMailTemplateTxtArea("Uhrzeit");
     }
 
@@ -131,7 +130,7 @@ public class MailTemplateViewController extends ResponsiveController
     }
 
     @FXML
-    private void loadTemplate(ActionEvent event) {
+    private void loadTemplate() {
         var value = comboBoxTemplates.getValue();
         updateTextArea(mailTemplatesModel.getTemplates().get(value));
         txtFieldNameTemplate.setText(value);

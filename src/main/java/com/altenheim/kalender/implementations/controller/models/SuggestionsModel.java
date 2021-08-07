@@ -12,13 +12,13 @@ import javafx.scene.control.Button;
 public class SuggestionsModel 
 {
     final static public ObservableList<SuggestionsModel> data = FXCollections.observableArrayList();
-    private String startTime;
-    private String endTime;
-    private String dayStart;
-    private String dayEnd;
-    private Button button;
+    private final String startTime;
+    private final String endTime;
+    private final String dayStart;
+    private final String dayEnd;
+    private final Button button;
 
-    public SuggestionsModel(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, Button button, String title) 
+    public SuggestionsModel(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, Button button)
     {
         this.startTime = DateFormatConverter.formatTime(startTime);
         this.endTime = DateFormatConverter.formatTime(endTime);
@@ -35,6 +35,6 @@ public class SuggestionsModel
 
     static public void addToList(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, Button button, String title) 
     {
-        SuggestionsModel.data.add(new SuggestionsModel(startTime, endTime, startDate, endDate, button, title));
+        SuggestionsModel.data.add(new SuggestionsModel(startTime, endTime, startDate, endDate, button));
     } 
 }

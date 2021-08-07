@@ -11,12 +11,10 @@ import com.altenheim.kalender.resourceClasses.StylePresets;
 public class CustomViewOverride extends CalendarView 
 {
     private String currentPath;
-    private SettingsModel settings;
 
     public CustomViewOverride(SettingsModel settings)
     {
-        this.settings = settings;
-        initCss();   
+        initCss();
         registerTimeUpdate();     
     }
 
@@ -41,7 +39,8 @@ public class CustomViewOverride extends CalendarView
 
         Thread updateTimeThread = new Thread("Calendar: Update Time Thread") 
         {
-            public void run() 
+            @SuppressWarnings("InfiniteLoopStatement")
+            public void run()
             {
                 while (true) 
                 {
@@ -59,7 +58,7 @@ public class CustomViewOverride extends CalendarView
                         e.printStackTrace();
                     }
                 }
-            };
+            }
         };
 
         updateTimeThread.setPriority(Thread.MIN_PRIORITY);

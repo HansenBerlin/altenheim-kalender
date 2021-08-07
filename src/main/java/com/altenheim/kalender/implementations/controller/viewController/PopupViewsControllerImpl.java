@@ -18,9 +18,9 @@ import jfxtras.styles.jmetro.JMetro;
 
 public class PopupViewsControllerImpl implements PopupViewController
 {
-    private SettingsModel settings;
-    private ImportController importController;
-    private ExportController exportController;
+    private final SettingsModel settings;
+    private final ImportController importController;
+    private final ExportController exportController;
 
     public PopupViewsControllerImpl(SettingsModel settings, ImportController importController, ExportController exportController)
     {
@@ -29,7 +29,7 @@ public class PopupViewsControllerImpl implements PopupViewController
         this.exportController = exportController;
     }
 
-    public void showEntryAddedDialogWithMailOption(String date, String dateEnd, String start, String end, String title, Button sendMailButton) 
+    public void showEntryAddedDialogWithMailOption(String date, String dateEnd, String start, String end, Button sendMailButton)
     {
         var dialog = new Dialog<String>();
         var jmetro = new JMetro(settings.getCssStyle());

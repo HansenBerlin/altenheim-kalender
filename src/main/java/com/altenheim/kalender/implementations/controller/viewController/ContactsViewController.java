@@ -4,7 +4,6 @@ import com.altenheim.kalender.interfaces.models.ContactModel;
 import com.altenheim.kalender.interfaces.logicController.IOController;
 import com.altenheim.kalender.implementations.controller.models.ContactModelImpl;
 import javafx.collections.ListChangeListener;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,8 +16,8 @@ public class ContactsViewController extends ResponsiveController
     @FXML private Button btnAddContact;
     @FXML private VBox tableContainer;
 
-    private IOController ioController;
-    private ContactModel contacts;
+    private final IOController ioController;
+    private final ContactModel contacts;
 
     public ContactsViewController(IOController ioController, ContactModel contacts)
     {
@@ -35,7 +34,7 @@ public class ContactsViewController extends ResponsiveController
     }
 
     @FXML
-    private void buttonClicked(ActionEvent event) 
+    private void buttonClicked()
     {
         var newContact = new ContactModelImpl(txtFieldFirstName.getText(), txtFieldSurName.getText(),
                 txtFieldMail.getText(), txtFieldStreet.getText(), txtFieldCity.getText(), txtFieldPostalCode.getText(),

@@ -18,7 +18,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import com.altenheim.kalender.implementations.controller.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import com.altenheim.kalender.implementations.controller.logicController.*;
@@ -27,8 +26,8 @@ import org.controlsfx.control.ToggleSwitch;
 
 public class SearchViewController extends SearchViewRequestHandlerController
 {
-    private AnimationController animationController;
-    private ComboBoxFactory comboBoxFactory;
+    private final AnimationController animationController;
+    private final ComboBoxFactory comboBoxFactory;
 
     private int userStep = 1;     
 
@@ -56,7 +55,7 @@ public class SearchViewController extends SearchViewRequestHandlerController
     }
 
        
-    public void calendarToggleClicked(MouseEvent event) 
+    public void calendarToggleClicked()
     {        
         if (toggleCalendars.isSelected())
         {
@@ -74,7 +73,7 @@ public class SearchViewController extends SearchViewRequestHandlerController
         btnConfirm.setOnAction(event -> updateUserStepView(event));
         btnBack.setOnAction(event -> updateUserStepView(event));
         btnReset.setOnAction(event -> updateUserStepView(event));
-        toggleCalendars.setOnMouseReleased(event -> calendarToggleClicked(event));
+        toggleCalendars.setOnMouseReleased(event -> calendarToggleClicked());
     }
     
 
@@ -255,7 +254,7 @@ public class SearchViewController extends SearchViewRequestHandlerController
                 }
             });
         i++;            
-        };
+        }
     }
 
     protected void changeContentPosition(double width, double height) 

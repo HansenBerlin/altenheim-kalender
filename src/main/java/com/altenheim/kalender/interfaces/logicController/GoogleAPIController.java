@@ -9,6 +9,6 @@ import com.calendarfx.model.Entry;
 public interface GoogleAPIController
 {
     HashMap<DayOfWeek, List<Entry<String>>> getOpeningHours(String locationSearchUserInput);
-    int[] searchForDestinationDistance(String startAt, String destination);
+
     int[] searchForDestinationDistance(String origin, String destination, String travelMode);
 }

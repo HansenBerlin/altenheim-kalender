@@ -10,7 +10,6 @@ import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import java.io.IOException;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
@@ -22,11 +21,11 @@ import javafx.scene.text.Text;
 
 public class SettingsViewController extends ResponsiveController 
 {
-    private SettingsModel settings;
-    private CalendarEntriesModel allCalendars;
-    private EntryFactory calendarFactory;
-    private PopupViewController popupViewController;
-    private ComboBoxFactory comboBoxFactory;
+    private final SettingsModel settings;
+    private final CalendarEntriesModel allCalendars;
+    private final EntryFactory calendarFactory;
+    private final PopupViewController popupViewController;
+    private final ComboBoxFactory comboBoxFactory;
     private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse,
             comboBoxSelectionSemester, comboBoxDefaultCalendar;
 
@@ -94,8 +93,7 @@ public class SettingsViewController extends ResponsiveController
     }
 
     @FXML
-    private void buttonClicked(ActionEvent event) throws IOException, InterruptedException 
-    {
+    private void buttonClicked(ActionEvent event) {
         var button = (Button) event.getSource();
 
         if (button.equals(btnImport)) {
@@ -110,7 +108,7 @@ public class SettingsViewController extends ResponsiveController
     }
 
     @FXML
-    private void saveSettings(ActionEvent event) 
+    private void saveSettings()
     {
         if (comboBoxSelectionSpecialField.getValue() == null || comboBoxSelectionCourse.getValue() == null
                 || comboBoxSelectionSemester.getValue() == null) {

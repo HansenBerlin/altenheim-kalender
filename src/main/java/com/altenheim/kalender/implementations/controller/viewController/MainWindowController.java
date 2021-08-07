@@ -24,8 +24,8 @@ import jfxtras.styles.jmetro.Style;
 
 public class MainWindowController extends ResponsiveController 
 {
-    private ViewRootsModel allViewsInformation;
-    private CustomViewOverride customCalendar;
+    private final ViewRootsModel allViewsInformation;
+    private final CustomViewOverride customCalendar;
     private Stage stage;
     private JMetro jMetro;
     private Map<String, Pair<Button, Pane>> allButtonsWithBackgrounds;
@@ -34,7 +34,7 @@ public class MainWindowController extends ResponsiveController
     private int topMenuHeight = 100;
     private Button currentlyActive;
     private Background currentSecondaryColor;
-    private SettingsModel settings;
+    private final SettingsModel settings;
 
     @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, menuBtnPaneMail, menuBtnPaneContacts;
     @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnMail;
@@ -97,25 +97,25 @@ public class MainWindowController extends ResponsiveController
 
     public void switchCssMode() 
     {
-        if (SettingsModelImpl.isDarkmodeActive == false)
+        if (!SettingsModelImpl.isDarkmodeActive)
         {
             setColorsForDarkAndLightMode(Style.DARK, StylePresets.DARK_MENU_BACKGROUND,
-                    StylePresets.DARK_MAIN_BACKGROUND, StylePresets.DARK_PRIMARY, StylePresets.DARK_SECONDARY,
+                    StylePresets.DARK_MAIN_BACKGROUND, StylePresets.DARK_PRIMARY,
                     StylePresets.DARK_SECONDARY_CSS, StylePresets.DARK_APPLICATION_CSS_FILE);
             currentSecondaryColor = StylePresets.DARK_SECONDARY;
         } 
         else 
         {
             setColorsForDarkAndLightMode(Style.LIGHT, StylePresets.LIGHT_MENU_BACKGROUND,
-                    StylePresets.LIGHT_MAIN_BACKGROUND, StylePresets.LIGHT_PRIMARY, StylePresets.LIGHT_SECONDARY,
+                    StylePresets.LIGHT_MAIN_BACKGROUND, StylePresets.LIGHT_PRIMARY,
                     StylePresets.LIGHT_SECONDARY_CSS, StylePresets.LIGHT_APPLICATION_CSS_FILE);
             currentSecondaryColor = StylePresets.LIGHT_SECONDARY;
         }    
         SettingsModelImpl.isDarkmodeActive ^= true;
     }
 
-    private void setColorsForDarkAndLightMode(Style style, Background menu, Background background, 
-        Background primary, Background secondary, String secondaryCSS, String appCssFile) 
+    private void setColorsForDarkAndLightMode(Style style, Background menu, Background background,
+                                              Background primary, String secondaryCSS, String appCssFile)
     {        
         jMetro.setStyle(style);
         vboxLeftPane.setBackground(menu);
@@ -211,8 +211,7 @@ public class MainWindowController extends ResponsiveController
         topRow.setPrefHeight(topMenuHeight);
     }  
 
-    public Map<String, Pair<Button, Pane>> createMainMenuButtons(Button[] buttons, Pane[] buttonBackgrounds) throws FileNotFoundException 
-    {
+    public Map<String, Pair<Button, Pane>> createMainMenuButtons(Button[] buttons, Pane[] buttonBackgrounds) {
         setImages(buttons);
 
         String[] buttonCaptions = { "Planer", "Smart Search", "Kontakte", "Mailtemplates", "Einstellungen", "", "" };
@@ -228,8 +227,7 @@ public class MainWindowController extends ResponsiveController
         return buttonsMap;
     }
 
-    private void setImages(Button[] buttonsList) throws FileNotFoundException 
-    {
+    private void setImages(Button[] buttonsList) {
         var iconCal = new MDL2IconFont("\uE787");
         var iconSearch = new MDL2IconFont("\uE99A");
         var iconContacts = new MDL2IconFont("\uE779");

@@ -21,18 +21,22 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class EntryFactoryImpl implements EntryFactory
 {
-    private CalendarEntriesModel allCalendars;
-    private CustomViewOverride calendarView;
+    private final CalendarEntriesModel allCalendars;
+    private final CustomViewOverride calendarView;
     private IOController ioController;
 
-    public EntryFactoryImpl(CalendarEntriesModel allCalendars, CustomViewOverride calendarView, IOController ioController)
+    public EntryFactoryImpl(CalendarEntriesModel allCalendars, CustomViewOverride calendarView)
     {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
+    }
+
+    public void addIOController(IOController ioController)
+    {
         this.ioController = ioController;
     }
 
-    public static Entry<String> createCalendarFXEntryFromMillis(long start, long end) 
+    public Entry<String> createCalendarFXEntryFromMillis(long start, long end)
     {
         var entry = new Entry<String>();
         var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
@@ -42,31 +46,9 @@ public class EntryFactoryImpl implements EntryFactory
         entry.changeEndTime(dateEnd.toLocalTime());
         entry.changeEndDate(dateEnd.toLocalDate());
         return entry;
-    } 
-
-    public HashMap<String, List<Entry<String>>> createEntryListForEachCalendar() 
-    {
-        var result = allCalendars.getAllCalendars();
-        var output = new HashMap<String, List<Entry<String>>>();
-        var zoneId = ZoneId.systemDefault();
-
-        for (var calendar : result) 
-        {
-            var tempList = new ArrayList<Entry<String>>();
-            var firstEntry = LocalDate.ofInstant(calendar.getEarliestTimeUsed(), zoneId);
-            var lastEntry = LocalDate.ofInstant(calendar.getLatestTimeUsed(), zoneId);
-            var entries = calendar.findEntries(firstEntry, lastEntry, zoneId);
-
-            for (var entry : entries.values()) {
-                for (var singleEntry : entry)
-                    tempList.add((Entry<String>) singleEntry);
-            }
-            output.put(calendar.getName(), tempList);
-        }
-        return output;
     }
 
-    public void createRandomCalendarList() 
+    public void createRandomCalendarList()
     {
         int dayOfMonth;
         var calendar = new Calendar("TestKalender");
@@ -79,9 +61,9 @@ public class EntryFactoryImpl implements EntryFactory
             else
                 dayOfMonth = 28;
 
-            for (int j = 1; j <= dayOfMonth; j += rG(1, 4)) {
+            for (int j = 1; j <= dayOfMonth; j += rG(4)) {
                 for (int k = 8; k < 20; k += 2) {
-                    var entry = createRandomEntry(j, i, k, k + rG(1, 3));
+                    var entry = createRandomEntry(j, i, k, k + rG(3));
                     calendar.addEntries(entry);
                 }
             }
@@ -135,9 +117,9 @@ public class EntryFactoryImpl implements EntryFactory
         return entry;
     }
     
-    private int rG(int startInclusive, int endInclusive) 
+    private int rG(int endInclusive)
     {
-        return ThreadLocalRandom.current().nextInt(startInclusive, endInclusive + 1);
+        return ThreadLocalRandom.current().nextInt(1, endInclusive + 1);
     }
 
     public void createNewUserEntryIncludingTravelTimes(LocalDate dateStart, LocalDate dateEnd,

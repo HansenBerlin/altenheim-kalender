@@ -29,11 +29,11 @@ import com.calendarfx.view.TimeField;
 
 public class SearchViewValidationController extends ResponsiveController
 {
-    private GoogleAPIController api;
-    protected CalendarEntriesModel allCalendars;
-    private PopupViewController popupViewController;
-    private MailClientAccessController mailCreationController;
-    protected EntryFactory entryFactory;
+    private final GoogleAPIController api;
+    protected final CalendarEntriesModel allCalendars;
+    private final PopupViewController popupViewController;
+    private final MailClientAccessController mailCreationController;
+    protected final EntryFactory entryFactory;
 
     public SearchViewValidationController(GoogleAPIController api, CalendarEntriesModel allCalendars, PopupViewController popupViewController,
                                           MailClientAccessController mailCreationController, EntryFactory entryFactory)
@@ -201,7 +201,7 @@ public class SearchViewValidationController extends ResponsiveController
 
     protected boolean[] validateWeekdays() 
     {
-        if (toggleWeekdays.isSelected() == false) 
+        if (!toggleWeekdays.isSelected())
         {
             return new boolean[] { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),
                     tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(),
@@ -216,7 +216,7 @@ public class SearchViewValidationController extends ResponsiveController
         var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
         int travelTime = 0;
 
-        if (toggleUseTravelDuration.isSelected() && origin.isEmpty() == false && destination.isEmpty() == false) {
+        if (toggleUseTravelDuration.isSelected() && !origin.isEmpty() && !destination.isEmpty()) {
             var response = api.searchForDestinationDistance(origin, destination, getApiStringFromInput());
             travelTime = updateTravelTimeToMinutes(response[0]);
         }
@@ -228,7 +228,7 @@ public class SearchViewValidationController extends ResponsiveController
         var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
         var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
 
-        if (toggleUseOpeningHours.isSelected() && destination.isEmpty() == false)
+        if (toggleUseOpeningHours.isSelected() && !destination.isEmpty())
             openingHours = api.getOpeningHours(destination);
 
         return openingHours;
@@ -253,7 +253,7 @@ public class SearchViewValidationController extends ResponsiveController
         var userInput = dropdownInterval.getSelectionModel().getSelectedItem();
         if (userInput == null)
             return 0;
-        int returnValue = switch (userInput) {
+        return switch (userInput) {
             case "täglich" -> 1;
             case "wöchentlich" -> 7;
             case "monatlich" -> 30;
@@ -261,7 +261,6 @@ public class SearchViewValidationController extends ResponsiveController
             case "jährlich" -> 365;
             default -> 0;
         };
-        return returnValue;
     }    
 
     protected int validateReccurrences() 
@@ -294,14 +293,13 @@ public class SearchViewValidationController extends ResponsiveController
         if (input == null)
             return "";
 
-        String returnValue = switch (dropdownVehicle.getSelectionModel().getSelectedItem()) {
+        return switch (dropdownVehicle.getSelectionModel().getSelectedItem()) {
             case "Fußgänger" -> "walking";
             case "Fahrrad" -> "bicycling";
             case "Öffis" -> "transit";
             case "Auto" -> "driving";
             default -> "";
         };
-        return returnValue;
     }
 
     private int updateTravelTimeToMinutes(int travelTime) 
@@ -340,11 +338,11 @@ public class SearchViewValidationController extends ResponsiveController
         {
             public void handle(ActionEvent e) 
             {
-                if (toggleUseTravelDuration.isSelected() == false)
+                if (!toggleUseTravelDuration.isSelected())
                     travelTimeTo = 0; 
                 createEntryIncludingTravelTimes(currSug);                           
                                   
-                popupViewController.showEntryAddedDialogWithMailOption(startDate, endDate, startTime, endTime, title, sendMailButton);
+                popupViewController.showEntryAddedDialogWithMailOption(startDate, endDate, startTime, endTime, sendMailButton);
             }
         }); 
         return button;      

@@ -17,7 +17,4 @@ public class DateFormatConverter {
         return time.format(DateTimeFormatter.ofPattern("HH:mm"));        
     }
 
-    public static String formatDateTime(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy"));
-    }
 }

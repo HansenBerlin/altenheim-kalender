@@ -21,10 +21,10 @@ public class InjectorFactoryImpl implements InjectorFactory
     private GuiUpdateController guiSetup;
     private MainWindowController mainWindowController;
     private InitialSetupController initialSettingsLoader;
-    private SettingsModel settings;
+    //private SettingsModel settings;
     public GuiUpdateController getGuiController() { return guiSetup; }
     public InitialSetupController getInitialSettingsLoader() { return initialSettingsLoader; }
-    public SettingsModel getSettingsModel() { return settings; }
+    //public SettingsModel getSettingsModel() { return settings; }
     public MainWindowController getMainWindowController() { return mainWindowController; }
 
 
@@ -35,24 +35,25 @@ public class InjectorFactoryImpl implements InjectorFactory
         settings.loadSettings();
         var jMetroStyle = new JMetro();
         jMetroStyle.setStyle(settings.getCssStyle());
-        
-        var customCalendarView = new CustomViewOverride(settings);         
+
+        var customCalendarView = new CustomViewOverride(settings);
+        CalendarEntriesModel calendarEntriesModel = new CalendarEntriesModelImpl(customCalendarView);
         ContactModel contacts = new ContactModelImpl();
+        ComboBoxFactory comboBoxFactory = new ComboBoxFactoryImpl();
         EncryptionController encryptionController = new EncryptionControllerImpl();
         ExportController exportCt = new ExportControllerImpl(settings);
-        ImportController importCt = new ImportControllerImpl();
+        EntryFactory entryFactory = new EntryFactoryImpl(calendarEntriesModel, customCalendarView);
+        ImportController importCt = new ImportControllerImpl(entryFactory);
         IOController ioCt = new IOControllerImpl(settings, exportCt, importCt);
-        MailTemplateModel mailTemplates = ioCt.loadMailTemplatesFromFile();
-        ComboBoxFactory comboBoxFactory = new ComboBoxFactoryImpl();
+        entryFactory.addIOController(ioCt);
         AnimationController animationController = new AnimationControllerImpl();
-        PopupViewController popupViewController = new PopupViewsControllerImpl(settings, importCt, exportCt);
         GoogleAPIController apiCt = new GoogleAPIControllerImpl(jsonParser, encryptionController);
+        MailTemplateModel mailTemplates = ioCt.loadMailTemplatesFromFile();
         MailClientAccessController mailCreationCt = new MailClientAccessControllerImpl(mailTemplates);
-        CalendarEntriesModel calendarEntriesModel = new CalendarEntriesModelImpl(customCalendarView);
         DateSuggestionController dateSuggestionController = new DateSuggestionControllerImpl();
-        SmartSearchController smartSearch = new SmartSearchControllerImpl(calendarEntriesModel);
-        EntryFactory entryFactory = new EntryFactoryImpl(calendarEntriesModel, customCalendarView, ioCt);
+        SmartSearchController smartSearch = new SmartSearchControllerImpl(calendarEntriesModel, entryFactory);
         UrlRequestController websiteCt = new UrlRequestControllerImpl(settings, importCt, entryFactory);
+        PopupViewController popupViewController = new PopupViewsControllerImpl(settings, importCt, exportCt);
 
         var plannerVCt = new PlannerViewController(ioCt, entryFactory, popupViewController, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(ioCt, contacts);

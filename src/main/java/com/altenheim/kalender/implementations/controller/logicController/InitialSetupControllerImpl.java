@@ -12,19 +12,17 @@ import com.altenheim.kalender.implementations.controller.models.SettingsModelImp
 
 public class InitialSetupControllerImpl implements InitialSetupController
 {
-    private IOController ioController;
-    private PopupViewController popup;
-    private UrlRequestController websiteScraper;
-    private SystemTrayNotificationsController systemNotifications;
-    private EntryFactory entryFactory;
-    private SettingsModel settings;
-    private ContactModel contacts;
+    private final IOController ioController;
+    private final PopupViewController popup;
+    private final UrlRequestController websiteScraper;
+    private final SystemTrayNotificationsController systemNotifications;
+    private final EntryFactory entryFactory;
+    private final ContactModel contacts;
 
     public InitialSetupControllerImpl(SettingsModel settings, IOController ioController, PopupViewController popup,
                                       UrlRequestController websiteScraper, SystemTrayNotificationsController systemNotifications,
                                       EntryFactory entryFactory, ContactModel contacts)
     {
-        this.settings = settings;
         this.ioController = ioController;
         this.popup = popup;
         this.websiteScraper = websiteScraper;

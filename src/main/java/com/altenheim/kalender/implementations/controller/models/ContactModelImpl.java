@@ -12,9 +12,9 @@ import javafx.collections.FXCollections;
 
 public class ContactModelImpl implements ContactModel
 {
-    public static ObservableList<ContactModelImpl> data = FXCollections.observableArrayList();
-    public static ObservableList<String> destinations = FXCollections.observableArrayList();
-    public static ObservableList<String> mailadresses = FXCollections.observableArrayList();
+    public static final ObservableList<ContactModelImpl> data = FXCollections.observableArrayList();
+    public static final ObservableList<String> destinations = FXCollections.observableArrayList();
+    public static final ObservableList<String> mailadresses = FXCollections.observableArrayList();
     
     private String mail;
     private String phone;
@@ -32,9 +32,9 @@ public class ContactModelImpl implements ContactModel
         this.button = new Button("LÖSCHEN");
         fullName = "%s %s".formatted(firstName, surName);
         address = "%s, %s %s".formatted(streetAndNumber, postalCode, city);
-        if (address.isBlank() == false)
+        if (!address.isBlank())
             destinations.add(address);
-        if (mail.isBlank() == false)
+        if (!mail.isBlank())
             mailadresses.add(mail);
         registerButtonEvent();
     }
@@ -45,7 +45,7 @@ public class ContactModelImpl implements ContactModel
     public String getPhone() { return phone; }
     public Button getButton() { return button; }
 
-    public void registerButtonEvent()
+    private void registerButtonEvent()
     {
         button.setOnAction(new EventHandler<ActionEvent>() 
         {

@@ -15,17 +15,10 @@ import net.fortuna.ical4j.model.property.*;
 import net.fortuna.ical4j.util.RandomUidGenerator;
 import net.fortuna.ical4j.validate.ValidationException;
 
-public class ExportControllerImpl implements ExportController
+public record ExportControllerImpl(SettingsModel settings) implements ExportController
 {
-    protected SettingsModel settings;
-
-    public ExportControllerImpl(SettingsModel settings) {
-        this.settings = settings;
-    }
-
     public void exportCalendarAsFile(com.calendarfx.model.Calendar fxCalendar, String path)
-            throws ValidationException, IOException 
-    {
+            throws ValidationException, IOException {
         var entries = fxCalendar.findEntries("");
         if (entries.size() == 0)
             return;
@@ -33,23 +26,19 @@ public class ExportControllerImpl implements ExportController
         var fout = new FileOutputStream(new File(path + "/" + fxCalendarName + ".ics"));
         var iCalCalendar = initICalCalendar();
         iCalCalendar.getProperties().add(new XProperty("X-WR-CALNAME", fxCalendarName));
-        for (int i = 0; i < entries.size(); i++) 
-        {
+        for (int i = 0; i < entries.size(); i++) {
             var entry = entries.get(i);
             iCalCalendar.getComponents().add(createIcalEntryFromCalFXEntry((Entry<String>) entry));
         }
         var outputter = new CalendarOutputter();
-        try 
-        {
+        try {
             outputter.output(iCalCalendar, fout);
-        } 
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         fout.close();
-    }    
+    }
 
     private Calendar initICalCalendar() {
         var iCalCalendar = new Calendar();
@@ -72,13 +61,4 @@ public class ExportControllerImpl implements ExportController
         return event;
     }
 
-    public void exportEntryAsFile(Entry<String> entry) throws ValidationException, IOException {
-        var iCalCalendar = initICalCalendar();
-        iCalCalendar.getComponents().add(createIcalEntryFromCalFXEntry(entry));
-        var fout = new FileOutputStream(new File(entry.getTitle() + ".ics"));
-        var outputter = new CalendarOutputter();
-        outputter.output(iCalCalendar, fout);
-        fout.close();
-    }
-    
 }

@@ -11,11 +11,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 
+@SuppressWarnings("unchecked")
 public class CalendarEntriesModelImpl implements CalendarEntriesModel
 {
-    private List<Calendar> calendarsSelectedByUser;
-    private CustomViewOverride calendarView;
-    public static ObservableList<String> calendarsComboBox = FXCollections.observableArrayList();
+    private final List<Calendar> calendarsSelectedByUser;
+    private final CustomViewOverride calendarView;
+    public static final ObservableList<String> calendarsComboBox = FXCollections.observableArrayList();
 
     public CalendarEntriesModelImpl(CustomViewOverride calendarView)
     {

@@ -6,8 +6,8 @@ import javafx.scene.layout.GridPane;
 
 public class ViewRootsModelImpl implements ViewRootsModel
 {
-    private GridPane[] allViews;
-    private ResponsiveController[] allControllers;
+    private final GridPane[] allViews;
+    private final ResponsiveController[] allControllers;
     private MainWindowController mainWindowController;
 
     public ViewRootsModelImpl(PlannerViewController plannerCt, SearchViewController searchViewCt, ContactsViewController contactsCt,

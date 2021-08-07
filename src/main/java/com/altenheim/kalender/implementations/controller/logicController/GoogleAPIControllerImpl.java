@@ -21,8 +21,8 @@ public class GoogleAPIControllerImpl implements GoogleAPIController {
     private static final String FINDDESTINATIONSQUERY = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=%s";
     private static final String SALT = "e]<J3Grct{~'HJv-";
 
-    private JsonParserImpl jsonParserImpl;
-    private EncryptionController encryptionController;
+    private final JsonParserImpl jsonParserImpl;
+    private final EncryptionController encryptionController;
 
     public GoogleAPIControllerImpl(JsonParserImpl jsonParserImpl, EncryptionController encryptionController)
     {
@@ -46,27 +46,6 @@ public class GoogleAPIControllerImpl implements GoogleAPIController {
             // ungültige Ortsangabe
             return null;
         }
-    }
-
-    public int[] searchForDestinationDistance(String startAt, String destination) {
-
-        var apiKey = encryptionController.decrypt(SettingsModelImpl.decryptedPassword, SALT, SettingsModelImpl.APICYPHERTEXT);
-
-        int[] returnValues = new int[2];
-        var start = startAt.replace(" ", "%20");
-        var end = destination.replace(" ", "%20");
-        try {
-            var jsonBody = makeHttpRequest(String.format(FINDDESTINATIONSQUERY, start, end, apiKey));
-            var json = new JSONObject(jsonBody);
-            var elements = json.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
-            returnValues[0] = elements.getJSONObject("duration").getInt("value");
-            returnValues[1] = elements.getJSONObject("distance").getInt("value");
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            returnValues[0] = -1;
-            returnValues[1] = -1;
-        }
-        return returnValues;
     }
 
     public int[] searchForDestinationDistance(String origin, String destination, String travelMode) {

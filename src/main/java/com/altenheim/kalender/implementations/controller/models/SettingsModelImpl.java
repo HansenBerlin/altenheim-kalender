@@ -9,8 +9,8 @@ import jfxtras.styles.jmetro.Style;
 
 public class SettingsModelImpl implements SettingsModel
 {
-    public static String APICYPHERTEXT = "apCg/0Odtz1r9kYuh011M4sur5xv5UU0hYJQcymI9gpAfMWP1eJWOtgpXu/lawR+";
-    public static String PASSWORDHASH = "54fvHpgroWTcl6h/4SxMEiwchYBcYzqtrXX4eMySjf94gqHjPhjPCPl4d2IH7jg0";
+    public static final String APICYPHERTEXT = "apCg/0Odtz1r9kYuh011M4sur5xv5UU0hYJQcymI9gpAfMWP1eJWOtgpXu/lawR+";
+    public static final String PASSWORDHASH = "54fvHpgroWTcl6h/4SxMEiwchYBcYzqtrXX4eMySjf94gqHjPhjPCPl4d2IH7jg0";
     public static String defaultCalendarForSearchView = "";
     public static String decryptedPassword = "";
     public static String hwrWebsiteUrl = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
@@ -20,15 +20,15 @@ public class SettingsModelImpl implements SettingsModel
     public long entrySystemMessageIntervalInMinutes = 1;
     public long notificationTimeBeforeEntryInMinutes = 15;
     public long hwrRequestIntervalInMinutes = (long) 1440;    
-    public transient SimpleStringProperty street = new SimpleStringProperty();
-    public transient SimpleStringProperty houseNumber = new SimpleStringProperty();
-    public transient SimpleStringProperty zipCode = new SimpleStringProperty();
-    public transient SimpleStringProperty city = new SimpleStringProperty();
-    public transient SimpleStringProperty mail = new SimpleStringProperty();
-    public transient SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
-    public transient SimpleStringProperty course = new SimpleStringProperty("Kurs");
-    public transient SimpleStringProperty semester = new SimpleStringProperty("Sem.");
-    public transient SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
+    public final transient SimpleStringProperty street = new SimpleStringProperty();
+    public final transient SimpleStringProperty houseNumber = new SimpleStringProperty();
+    public final transient SimpleStringProperty zipCode = new SimpleStringProperty();
+    public final transient SimpleStringProperty city = new SimpleStringProperty();
+    public final transient SimpleStringProperty mail = new SimpleStringProperty();
+    public final transient SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
+    public final transient SimpleStringProperty course = new SimpleStringProperty("Kurs");
+    public final transient SimpleStringProperty semester = new SimpleStringProperty("Sem.");
+    public final transient SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
     public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
     //public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer; }
     public SimpleBooleanProperty getToolTipEnabled() { return toolTip; }
@@ -41,9 +41,9 @@ public class SettingsModelImpl implements SettingsModel
     public long getHwrRequestIntervalInMinutes() { return hwrRequestIntervalInMinutes; }
     public String getPathToUserDirectory() { return userDirectory; }
     public File getPasswordhashFile() { return new File(userDirectory + "savedHash"); }
-    private transient SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
-    private transient SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
-    private String userDirectory = "userfiles/";
+    private final transient SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
+    private final transient SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
+    private final String userDirectory = "userfiles/";
 
     public Style getCssStyle() 
     {
@@ -94,7 +94,7 @@ public class SettingsModelImpl implements SettingsModel
     {
         String path = "userFiles/userSettings/settings.file";
         var file = new File(path);
-        if (file.exists() == false)
+        if (!file.exists())
             return;
         try 
         {

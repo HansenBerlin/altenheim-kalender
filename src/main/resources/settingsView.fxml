@@ -124,7 +124,7 @@
 
                   <HBox alignment="TOP_CENTER">
                <children>
-                  <Button fx:id="btnSave" alignment="CENTER" minWidth="300.0" mnemonicParsing="false" onAction="#saveSettings" prefWidth="300.0" style="-fx-background-color: ;" text="Speichern" />
+                  <Button fx:id="btnSave" alignment="CENTER" minWidth="300.0" mnemonicParsing="false" onAction="#saveSettings" prefWidth="300.0" text="Speichern" />
                </children>
             </HBox>
          </children>

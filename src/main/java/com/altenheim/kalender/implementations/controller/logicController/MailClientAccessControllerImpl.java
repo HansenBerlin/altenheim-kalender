@@ -9,10 +9,11 @@ import com.altenheim.kalender.interfaces.models.MailTemplateModel;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 public class MailClientAccessControllerImpl implements MailClientAccessController
 {
-    private MailTemplateModel mailTemplates;
+    private final MailTemplateModel mailTemplates;
 
     public MailClientAccessControllerImpl(MailTemplateModel mailTemplates)
     {
@@ -56,13 +57,6 @@ public class MailClientAccessControllerImpl implements MailClientAccessControlle
 
     private String encodeUrl(String uri) 
     {
-        try 
-        {
-            return URLEncoder.encode(uri, "UTF-8").replace("+", "%20");
-        } 
-        catch (UnsupportedEncodingException e) 
-        {
-            throw new RuntimeException(e);
-        }
-    }    
+        return URLEncoder.encode(uri, StandardCharsets.UTF_8).replace("+", "%20");
+    }
 }

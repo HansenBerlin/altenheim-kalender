@@ -15,8 +15,8 @@ import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.calendarfx.model.Entry;
 
 public class SystemTrayTrayNotificationControllerImpl extends TimerTask implements SystemTrayNotificationsController {
-    private SettingsModel settings;
-    private CalendarEntriesModel administrateEntries;
+    private final SettingsModel settings;
+    private final CalendarEntriesModel administrateEntries;
 
     private TrayIcon trayIcon;
 

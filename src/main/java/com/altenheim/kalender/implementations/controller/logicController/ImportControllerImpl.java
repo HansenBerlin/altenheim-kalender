@@ -1,8 +1,7 @@
 package com.altenheim.kalender.implementations.controller.logicController;
 
 import java.io.FileInputStream;
-
-import com.altenheim.kalender.implementations.controller.factories.EntryFactoryImpl;
+import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.logicController.ImportController;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.model.Calendar;
@@ -12,6 +11,11 @@ import net.fortuna.ical4j.model.property.DtStart;
 
 public class ImportControllerImpl implements ImportController
 {
+    private final EntryFactory entryFactory;
+    public ImportControllerImpl(EntryFactory entryFactory)
+    {
+        this.entryFactory = entryFactory;
+    }
     public com.calendarfx.model.Calendar importFile(String path) 
     {
         Calendar iCalCalendar;
@@ -50,7 +54,7 @@ public class ImportControllerImpl implements ImportController
             var end = (DtEnd) ((Property) components.get(i).getProperties().getProperty("DTEND"));
             var startMilli = start.getDate().toInstant().toEpochMilli();
             var endMilli = end.getDate().toInstant().toEpochMilli();
-            var entry = EntryFactoryImpl.createCalendarFXEntryFromMillis(startMilli, endMilli);
+            var entry = entryFactory.createCalendarFXEntryFromMillis(startMilli, endMilli);
             var summary = ((Property) components.get(i).getProperties().getProperty("SUMMARY")).getValue();
             entry.setTitle(summary);
             var locationProp = (Property) components.get(i).getProperties().getProperty("LOCATION");

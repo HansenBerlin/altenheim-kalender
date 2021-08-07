@@ -8,6 +8,8 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.altenheim.kalender.interfaces.logicController.SmartSearchController;
 import com.calendarfx.model.Entry;
@@ -16,10 +18,12 @@ import java.util.LinkedList;
 
 
 public class SmartSearchControllerImpl implements SmartSearchController {
-	private CalendarEntriesModel administrateEntries;
+	private final CalendarEntriesModel administrateEntries;
+	private final EntryFactory entryFactory;
 
-	public SmartSearchControllerImpl(CalendarEntriesModel administrateEntries) {
+	public SmartSearchControllerImpl(CalendarEntriesModel administrateEntries, EntryFactory entryFactory) {
 		this.administrateEntries = administrateEntries;
+		this.entryFactory = entryFactory;
 	}
 
 	public ArrayList<Entry<String>> findPossibleTimeSlots(Entry<String> input, int duration, boolean[] allowedWeekdays, 
@@ -35,7 +39,7 @@ public class SmartSearchControllerImpl implements SmartSearchController {
 			i++;	
 			
 			int index = date.getDayOfWeek().getValue()-1;
-			if(allowedWeekdays[index] == false)	
+			if(!allowedWeekdays[index])
 			{
 				date = date.plusDays(1);
 				continue;			
@@ -92,7 +96,7 @@ public class SmartSearchControllerImpl implements SmartSearchController {
 					continue;
 				if ((end - start) / 60000 >= duration
 						&& !((end - userStart) / 60000 <= duration || (userEnd - start) / 60000 < duration))
-					output.add(createEntryFromMillis(start, end));
+					output.add(entryFactory.createCalendarFXEntryFromMillis(start, end));
 				if (checkForDuplicates(output))
 					output.remove(output.size() - 1);
 			}
@@ -109,17 +113,6 @@ public class SmartSearchControllerImpl implements SmartSearchController {
 		entry.changeEndTime(end);
 		entry.changeStartDate(startAndEnd);
 		entry.changeEndDate(startAndEnd);
-		return entry;
-	}
-
-	private Entry<String> createEntryFromMillis(long start, long end) {
-		var entry = new Entry<String>();
-		var dateStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(start), ZoneId.systemDefault());
-		var dateEnd = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());
-		entry.changeStartTime(dateStart.toLocalTime());
-		entry.changeStartDate(dateStart.toLocalDate());
-		entry.changeEndTime(dateEnd.toLocalTime());
-		entry.changeEndDate(dateEnd.toLocalDate());
 		return entry;
 	}
 

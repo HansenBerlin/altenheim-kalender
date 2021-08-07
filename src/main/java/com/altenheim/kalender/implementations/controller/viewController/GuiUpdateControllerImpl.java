@@ -12,15 +12,13 @@ import jfxtras.styles.jmetro.Style;
 
 public class GuiUpdateControllerImpl implements GuiUpdateController
 {
-    private JMetro jMetroStyle;
-    private ViewRootsModel viewsInformation;
-    private SettingsModel settings;
+    private final JMetro jMetroStyle;
+    private final ViewRootsModel viewsInformation;
 
     public GuiUpdateControllerImpl(JMetro jMetroStyle, ViewRootsModel viewsInformation, SettingsModel settings)
     {
         this.jMetroStyle = jMetroStyle;
         this.viewsInformation = viewsInformation;
-        this.settings = settings;
     }
 
     public JMetro getJMetroStyle()

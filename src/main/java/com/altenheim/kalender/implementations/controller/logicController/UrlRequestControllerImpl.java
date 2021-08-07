@@ -14,15 +14,11 @@ import java.util.TimerTask;
 
 public class UrlRequestControllerImpl extends TimerTask implements UrlRequestController
 {
-    private SettingsModel settings;
-    private ImportController importController;
-    private EntryFactory entryFactory;
+    private final SettingsModel settings;
 
     public UrlRequestControllerImpl(SettingsModel settings, ImportController importController, EntryFactory entryFactory)
     {
         this.settings = settings;
-        this.importController = importController;
-        this.entryFactory = entryFactory;
     }
 
     public void startScraperTask() 

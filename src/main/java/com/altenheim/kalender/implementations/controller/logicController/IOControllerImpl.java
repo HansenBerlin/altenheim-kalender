@@ -20,9 +20,9 @@ import java.util.List;
 
 public class IOControllerImpl implements IOController
 {
-    protected SettingsModel settings;
-    private ExportController exportController;
-    private ImportController importController;
+    protected final SettingsModel settings;
+    private final ExportController exportController;
+    private final ImportController importController;
 
     public IOControllerImpl(SettingsModel settings, ExportController exportController, ImportController importController)
     {
@@ -91,10 +91,11 @@ public class IOControllerImpl implements IOController
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void loadContactsFromFile(ContactModel contacts)
     {
         var file = new File(settings.getPathToUserDirectory() + "/contacts/contacts.file");
-        if (file.exists() == false)
+        if (!file.exists())
             return;
 
         try 
