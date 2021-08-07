@@ -25,7 +25,6 @@ public class SettingsViewController extends ResponsiveController
     private IEntryFactory calendarFactory;
     private IPopupViewController popupViewController;
     private IComboBoxFactory comboBoxFactory;
-    private IWebsiteScraperController websiteScraper;
     private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse,
             comboBoxSelectionSemester, comboBoxDefaultCalendar;
 
@@ -40,7 +39,7 @@ public class SettingsViewController extends ResponsiveController
 
     public SettingsViewController(SettingsModel settings, IImportController importController,
             IEntryFactory calendarFactory, IExportController exportController, ICalendarEntriesModel allCalendars,
-            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, IWebsiteScraperController websiteScraper) 
+            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController) 
     {
         this.settings = settings;
         this.importController = importController;
@@ -49,7 +48,6 @@ public class SettingsViewController extends ResponsiveController
         this.calendarFactory = calendarFactory;
         this.popupViewController = popupViewController;
         this.comboBoxFactory = comboBoxFactory;
-        this.websiteScraper = websiteScraper;
     }
 
     @FXML
@@ -130,7 +128,6 @@ public class SettingsViewController extends ResponsiveController
             settings.course.set(comboBoxSelectionCourse.getValue());
             settings.semester.set(comboBoxSelectionSemester.getValue());            
             settings.hwrWebsiteUrl = resultURL;
-            websiteScraper.scrapeCalendar();
 
         }
         //cBToolTips.setTooltip(cBToolTips.getTooltip());

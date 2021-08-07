@@ -1,9 +1,8 @@
 package com.altenheim.kalender.controller.logicController;
 
-import java.io.BufferedReader;
+
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.controller.Factories.EntryFactory;
@@ -22,15 +21,6 @@ public class ImportController implements IImportController
             var stream = new FileInputStream(path);
             var builder = new CalendarBuilder();
 
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(path), StandardCharsets.UTF_8));) {
-
-                if (br.readLine().equals("<script type=\"text/javascript\">alert(\"Fehlerhafter Pfad!\");</script>")) {
-                    stream.close();
-                    return new com.calendarfx.model.Calendar(); 
-                }
-            }
-
             if (stream.read() == -1 ) {
                 stream.close();
                 return new com.calendarfx.model.Calendar();
@@ -41,8 +31,8 @@ public class ImportController implements IImportController
                 stream.close();
                 return parseICal(iCalCalendar);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (net.fortuna.ical4j.data.ParserException | IOException e) {
+            System.out.println(e.getMessage());
             return new com.calendarfx.model.Calendar();
         }
     }

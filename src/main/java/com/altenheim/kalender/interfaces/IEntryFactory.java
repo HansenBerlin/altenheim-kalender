@@ -12,7 +12,6 @@ public interface IEntryFactory
     void clearCalendarSourceList();
     void createRandomCalendarList();
     void addCalendarToView(Calendar calendar, String name);
-    void replaceCalendar (Calendar calendar, String name);
     void createNewUserEntryIncludingTravelTimes(LocalDate dateStart, LocalDate dateEnd,
     LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel);
     HashMap<String, List<Entry<String>>> createEntryListForEachCalendar();

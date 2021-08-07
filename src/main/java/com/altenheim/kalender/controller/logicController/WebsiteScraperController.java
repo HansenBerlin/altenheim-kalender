@@ -1,5 +1,6 @@
 package com.altenheim.kalender.controller.logicController;
 
+import com.altenheim.kalender.controller.viewController.PopupViewsController;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.SettingsModel;
 import java.io.FileOutputStream;
@@ -37,8 +38,8 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
         if (isDownloadIcsSuccessful())
         {
             var calendarFile = settings.getPathToUserDirectory() + "calendars/hwrFile.ics";
-            var calendar = importController.importFile(calendarFile);            
-            entryFactory.replaceCalendar(calendar, "HWR Calendar");
+            var calendar = importController.importFile(calendarFile);       
+            entryFactory.addCalendarToView(calendar, "HWR Calendar");
         }
     }    
 

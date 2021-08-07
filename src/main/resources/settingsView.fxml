@@ -30,7 +30,7 @@
    <children>
       <VBox fx:id="topContainer" alignment="BOTTOM_CENTER" fillWidth="false" spacing="15.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="HWR Kalenderauswahl" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="HWR Kalenderauswahl (wird erst bei Programmstart übernommen)" />
             <HBox fx:id="containerComboBoxSelectorScrapping" alignment="TOP_CENTER" spacing="20.0" />
             <Separator maxWidth="550.0" />
             <HBox alignment="TOP_CENTER" spacing="30.0">
