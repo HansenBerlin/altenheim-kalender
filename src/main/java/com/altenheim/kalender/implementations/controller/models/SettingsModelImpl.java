@@ -51,7 +51,7 @@ public class SettingsModelImpl implements SettingsModel
             return Style.LIGHT;
     }
 
-    public void saveSettings(boolean isSettingsButtonSource)
+    public void saveSettings()
     {
         String path = "userFiles/userSettings/settings.file";
         try 
@@ -74,11 +74,12 @@ public class SettingsModelImpl implements SettingsModel
             streamOut.writeBoolean(useAdvancedFeatures);
             streamOut.writeUTF(defaultCalendarForSearchView);
             streamOut.writeUTF(hwrWebsiteUrl);
-            if (!isSettingsButtonSource)
-                streamOut.writeBoolean(isDarkmodeActive);
+            streamOut.writeBoolean(isDarkmodeActive);
+            System.out.println("Saved dark mode is active: " + isDarkmodeActive);
             streamOut.close();
             writeToFile.close();
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             System.err.println(e.getMessage());
         }
@@ -111,7 +112,7 @@ public class SettingsModelImpl implements SettingsModel
             defaultCalendarForSearchView = inputStream.readUTF();
             hwrWebsiteUrl = inputStream.readUTF();
             isDarkmodeActive = inputStream.readBoolean();
-
+            System.out.println("Loaded dark mode is active: " + isDarkmodeActive);
             inputStream.close();
             loadFile.close();
         } 

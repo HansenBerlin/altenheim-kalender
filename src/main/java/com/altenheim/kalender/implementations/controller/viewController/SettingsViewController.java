@@ -131,7 +131,7 @@ public class SettingsViewController extends ResponsiveController
         settings.setDefaultCalendarForSearchView(comboBoxDefaultCalendar.getValue());
         settings.setEntrySystemMessageIntervalInMinutes(1);
         //settings.toolTip = cBToolTips.selectedProperty();
-        settings.saveSettings(true);
+        settings.saveSettings();
     }
 
    

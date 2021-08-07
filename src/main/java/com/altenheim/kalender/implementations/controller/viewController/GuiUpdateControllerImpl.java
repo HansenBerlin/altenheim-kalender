@@ -21,16 +21,18 @@ public record GuiUpdateControllerImpl(JMetro jMetroStyle, ViewRootsModel viewsIn
         updateChildContainers();
     }
 
-    public void setupColorMode() {
+    public void setupColorMode()
+    {
+        /*
         jMetroStyle.getOverridingStylesheets().clear();
         if (SettingsModelImpl.isDarkmodeActive) {
-            jMetroStyle.setStyle(Style.LIGHT);
-            jMetroStyle.getOverridingStylesheets().add(StylePresets.LIGHT_APPLICATION_CSS_FILE);
-        } else {
             jMetroStyle.setStyle(Style.DARK);
             jMetroStyle.getOverridingStylesheets().add(StylePresets.DARK_APPLICATION_CSS_FILE);
-        }
-        viewsInformation.getMainWindowController().switchCssMode();
+        } else {
+            jMetroStyle.setStyle(Style.LIGHT);
+            jMetroStyle.getOverridingStylesheets().add(StylePresets.LIGHT_APPLICATION_CSS_FILE);
+        }*/
+        viewsInformation.getMainWindowController().setColorMode(SettingsModelImpl.isDarkmodeActive);
     }
 
     public void registerCalendars() {

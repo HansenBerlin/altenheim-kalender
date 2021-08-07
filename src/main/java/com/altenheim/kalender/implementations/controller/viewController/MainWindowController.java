@@ -26,16 +26,16 @@ public class MainWindowController extends ResponsiveController
 {
     private final ViewRootsModel allViewsInformation;
     private final CustomViewOverride customCalendar;
+    private final SettingsModel settings;
     private Stage stage;
     private JMetro jMetro;
     private Map<String, Pair<Button, Pane>> allButtonsWithBackgrounds;
     private int currentView = 0;
     private int currentMenuWidth = 240;
     private int topMenuHeight = 100;
+
     private Button currentlyActive;
     private Background currentSecondaryColor;
-    private final SettingsModel settings;
-
     @FXML private Pane menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneSettings, menuBtnPaneMail, menuBtnPaneContacts;
     @FXML private Button btnLogo, menuBtnPlanner, menuBtnSearch, menuBtnSettings, menuBtnContacts, menuBtnMail;
     @FXML private Button btnAddAppointment, btnSwitchModes;
@@ -65,7 +65,7 @@ public class MainWindowController extends ResponsiveController
     private void initialize() {
         ((PlannerViewController)allViewsInformation.getAllViewControllers()[0]).updateCustomCalendarView(customCalendar);
         viewsRoot.getChildren().addAll(allViewsInformation.getAllViews());
-        setupMenuButtons();        
+        setupMenuButtons();
     }
 
     @FXML
@@ -90,27 +90,33 @@ public class MainWindowController extends ResponsiveController
     private void switchMode(ActionEvent event) 
     {
         switchCssMode();
-        if (event != null)
-            updateViewOnButtonClicked(currentlyActive);
+        updateViewOnButtonClicked(currentlyActive);
     }
 
-    public void switchCssMode() 
+    private void switchCssMode()
     {
-        if (!SettingsModelImpl.isDarkmodeActive)
+        setColorMode(!SettingsModelImpl.isDarkmodeActive);
+        customCalendar.updateCss();
+        SettingsModelImpl.isDarkmodeActive ^= true;
+        settings.saveSettings();
+    }
+
+    public void setColorMode(boolean setToDarkMode)
+    {
+        if (setToDarkMode)
         {
             setColorsForDarkAndLightMode(Style.DARK, StylePresets.DARK_MENU_BACKGROUND,
                     StylePresets.DARK_MAIN_BACKGROUND, StylePresets.DARK_PRIMARY,
                     StylePresets.DARK_SECONDARY_CSS, StylePresets.DARK_APPLICATION_CSS_FILE);
             currentSecondaryColor = StylePresets.DARK_SECONDARY;
-        } 
-        else 
+        }
+        else
         {
             setColorsForDarkAndLightMode(Style.LIGHT, StylePresets.LIGHT_MENU_BACKGROUND,
                     StylePresets.LIGHT_MAIN_BACKGROUND, StylePresets.LIGHT_PRIMARY,
                     StylePresets.LIGHT_SECONDARY_CSS, StylePresets.LIGHT_APPLICATION_CSS_FILE);
             currentSecondaryColor = StylePresets.LIGHT_SECONDARY;
-        }    
-        SettingsModelImpl.isDarkmodeActive ^= true;
+        }
     }
 
     private void setColorsForDarkAndLightMode(Style style, Background menu, Background background,
@@ -122,12 +128,9 @@ public class MainWindowController extends ResponsiveController
         topButtonRow.setBackground(primary);
         btnLogo.setStyle(secondaryCSS);
         jMetro.getOverridingStylesheets().clear();
-        jMetro.getOverridingStylesheets().add(appCssFile);             
-        customCalendar.updateCss();
-        settings.saveSettings(false);
-        
+        jMetro.getOverridingStylesheets().add(appCssFile);
         for (var view : allViewsInformation.getAllViews())
-            view.setBackground(background);  
+            view.setBackground(background);
     }
   
     public void updateViewOnButtonClicked(Button pressed) 
@@ -151,9 +154,9 @@ public class MainWindowController extends ResponsiveController
         allButtonsWithBackgrounds = createMainMenuButtons(buttonsList, buttonBackgrounds);
         currentlyActive = menuBtnPlanner;
         if (SettingsModelImpl.isDarkmodeActive)
-            menuBtnPanePlanner.setBackground(StylePresets.LIGHT_SECONDARY);
-        else
             menuBtnPanePlanner.setBackground(StylePresets.DARK_SECONDARY);
+        else
+            menuBtnPanePlanner.setBackground(StylePresets.LIGHT_SECONDARY);
     }
 
     private void bindWindowSize() 

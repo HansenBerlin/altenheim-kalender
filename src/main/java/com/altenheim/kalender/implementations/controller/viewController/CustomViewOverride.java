@@ -14,23 +14,23 @@ public class CustomViewOverride extends CalendarView
 
     public CustomViewOverride(SettingsModel settings)
     {
-        initCss();
+        initCss(SettingsModelImpl.isDarkmodeActive);
         registerTimeUpdate();     
     }
 
-    private void initCss()
+    private void initCss(boolean isDarkModeActive)
     {
-        if (SettingsModelImpl.isDarkmodeActive)
-            currentPath = StylePresets.LIGHT_CALENDAR_CSS_FILE; 
+        if (isDarkModeActive)
+            currentPath = StylePresets.DARK_CALENDAR_CSS_FILE;
         else 
-            currentPath = StylePresets.DARK_CALENDAR_CSS_FILE;  
+            currentPath = StylePresets.LIGHT_CALENDAR_CSS_FILE;
         getStylesheets().add(currentPath); 
     }
 
     public void updateCss() 
     {
         getStylesheets().remove(currentPath);
-        initCss();
+        initCss(!SettingsModelImpl.isDarkmodeActive);
     }
 
     private void registerTimeUpdate()
