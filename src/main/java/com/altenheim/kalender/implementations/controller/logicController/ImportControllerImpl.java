@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.logicController.ImportController;
 import net.fortuna.ical4j.data.CalendarBuilder;
-import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.property.DtEnd;
@@ -38,7 +37,6 @@ public class ImportControllerImpl implements ImportController
         catch (net.fortuna.ical4j.data.ParserException | IOException e)
         {
             System.err.println(e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
@@ -55,7 +53,6 @@ public class ImportControllerImpl implements ImportController
         catch (Exception e)
         {
             System.err.println(e.getMessage());
-            e.printStackTrace();
             tempCalendar = null;
             return false;
         }

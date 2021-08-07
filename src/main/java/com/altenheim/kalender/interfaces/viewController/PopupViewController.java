@@ -1,7 +1,6 @@
 package com.altenheim.kalender.interfaces.viewController;
 
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
 import javafx.scene.control.Button;
 import javafx.stage.Window;
 

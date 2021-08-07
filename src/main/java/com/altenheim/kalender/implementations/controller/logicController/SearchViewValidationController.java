@@ -3,7 +3,7 @@ package com.altenheim.kalender.implementations.controller.logicController;
 import com.altenheim.kalender.interfaces.logicController.GoogleAPIController;
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.logicController.MailClientAccessController;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
+import com.altenheim.kalender.interfaces.viewController.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import com.altenheim.kalender.implementations.controller.models.*;
 import com.altenheim.kalender.resourceClasses.DateFormatConverter;

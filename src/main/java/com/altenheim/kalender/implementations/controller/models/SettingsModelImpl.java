@@ -13,23 +13,26 @@ public class SettingsModelImpl implements SettingsModel
     public static final String PASSWORDHASH = "54fvHpgroWTcl6h/4SxMEiwchYBcYzqtrXX4eMySjf94gqHjPhjPCPl4d2IH7jg0";
     public static String defaultCalendarForSearchView = "";
     public static String decryptedPassword = "";
-    public static String hwrWebsiteUrl = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester3/kursc";
+    public static String hwrWebsiteUrl = "";
     public static final String userDirectory = "userfiles/";
     public static boolean useAdvancedFeatures = false;
     public static boolean isDarkmodeActive = false;
     public long entrySystemMessageIntervalInMinutes = 1;
     public long notificationTimeBeforeEntryInMinutes = 15;
     public long hwrRequestIntervalInMinutes = 1440;
+    public final transient SimpleStringProperty notification = new SimpleStringProperty("Minuten");
+    public final transient SimpleStringProperty calendar = new SimpleStringProperty("");
     public final transient SimpleStringProperty street = new SimpleStringProperty();
     public final transient SimpleStringProperty houseNumber = new SimpleStringProperty();
     public final transient SimpleStringProperty zipCode = new SimpleStringProperty();
     public final transient SimpleStringProperty city = new SimpleStringProperty();
     public final transient SimpleStringProperty mail = new SimpleStringProperty();
-    public final transient SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
+    public final transient SimpleStringProperty specialField = new SimpleStringProperty("Fachbereich");
     public final transient SimpleStringProperty course = new SimpleStringProperty("Kurs");
-    public final transient SimpleStringProperty semester = new SimpleStringProperty("Sem.");
+    public final transient SimpleStringProperty semester = new SimpleStringProperty("Semester");
     public final transient SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
     public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
+    public SimpleStringProperty[] getSettingsDropdownTitlesContainer() { return settingsDropdownTitlesContainer; }
     public SimpleBooleanProperty getToolTipEnabled() { return toolTip; }
     public void setNotificationTimeBeforeEntryInMinutes(long value) { notificationTimeBeforeEntryInMinutes = value; }
     public long getNotificationTimeBeforeEntryInMinutes() { return notificationTimeBeforeEntryInMinutes; }
@@ -42,8 +45,10 @@ public class SettingsModelImpl implements SettingsModel
     public void setSelectedHwrCourseName(String value) { currentlySelectedFB = value; }
     public File getPasswordhashFile() { return new File(userDirectory + "savedHash"); }
     private final transient SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
-    private final transient SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
-    private String currentlySelectedFB = "WI - Kurs C";
+    private final transient SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester, notification, calendar };
+    private String currentlySelectedFB = "";
+
+
 
     public Style getCssStyle() 
     {
@@ -75,7 +80,6 @@ public class SettingsModelImpl implements SettingsModel
             streamOut.writeLong(entrySystemMessageIntervalInMinutes);
             streamOut.writeBoolean(useAdvancedFeatures);
             streamOut.writeUTF(defaultCalendarForSearchView);
-            streamOut.writeUTF(course.getValue());
             streamOut.writeUTF(hwrWebsiteUrl);
             streamOut.writeBoolean(isDarkmodeActive);
             streamOut.close();

@@ -8,10 +8,8 @@ import java.io.Serializable;
 
 public interface SettingsModel extends Serializable
 {
-    SimpleStringProperty specialField = new SimpleStringProperty("Auswahl FB");
-    SimpleStringProperty course = new SimpleStringProperty("Kurs");
-    SimpleStringProperty semester = new SimpleStringProperty("Sem.");
     SimpleStringProperty[] getSettingsInputFieldsContainer();
+    SimpleStringProperty[] getSettingsDropdownTitlesContainer();
     SimpleBooleanProperty getToolTipEnabled();
     String getSelectedHwrCourseName();
     File getPasswordhashFile();

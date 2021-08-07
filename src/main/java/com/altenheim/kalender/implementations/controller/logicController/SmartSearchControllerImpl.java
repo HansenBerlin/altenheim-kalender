@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
+import com.altenheim.kalender.interfaces.viewController.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.logicController.SmartSearchController;
 import com.calendarfx.model.Entry;
 import java.util.HashMap;

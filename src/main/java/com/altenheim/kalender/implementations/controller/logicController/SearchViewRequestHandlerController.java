@@ -8,7 +8,7 @@ import com.altenheim.kalender.interfaces.logicController.DateSuggestionControlle
 import com.altenheim.kalender.interfaces.logicController.GoogleAPIController;
 import com.altenheim.kalender.interfaces.logicController.MailClientAccessController;
 import com.altenheim.kalender.interfaces.logicController.SmartSearchController;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
+import com.altenheim.kalender.interfaces.viewController.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import com.altenheim.kalender.implementations.controller.models.SuggestionsModel;
 

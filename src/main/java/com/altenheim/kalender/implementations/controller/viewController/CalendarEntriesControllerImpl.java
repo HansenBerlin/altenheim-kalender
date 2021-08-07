@@ -1,11 +1,11 @@
-package com.altenheim.kalender.implementations.controller.models;
+package com.altenheim.kalender.implementations.controller.viewController;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import com.altenheim.kalender.implementations.controller.viewController.CustomViewOverride;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
+
+import com.altenheim.kalender.interfaces.viewController.CalendarEntriesController;
 import com.calendarfx.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

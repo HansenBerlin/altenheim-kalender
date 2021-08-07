@@ -9,7 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import java.awt.TrayIcon.MessageType;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
+import com.altenheim.kalender.interfaces.viewController.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.logicController.SystemTrayNotificationsController;
 import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.calendarfx.model.Entry;

@@ -3,10 +3,9 @@ package com.altenheim.kalender.implementations.controller.viewController;
 import com.altenheim.kalender.interfaces.factorys.ComboBoxFactory;
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.logicController.UrlRequestController;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
+import com.altenheim.kalender.interfaces.viewController.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
-import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -56,6 +55,9 @@ public class SettingsViewController extends ResponsiveController
     {
         createComboBoxes();
         bindInputFieldsToSerializable();
+        txtError.setText("Nicht alle HWR Komponenten ausgewählt!");
+        txtError.setVisible(false);
+        txtError.setFill(Color.RED);
     }
 
     private void bindInputFieldsToSerializable() 
@@ -79,20 +81,19 @@ public class SettingsViewController extends ResponsiveController
         comboBoxSelectionSpecialField = comboBoxFactory.create(ComboBoxCreate.SELECTIONSPECIALFIELD);
         comboBoxSelectionCourse = comboBoxFactory.create(ComboBoxCreate.SELECTIONCOURSE);
         comboBoxSelectionSemester = comboBoxFactory.create(ComboBoxCreate.SELECTIONSEMESTER);
+        comboBoxDefaultCalendar = comboBoxFactory.create(ComboBoxCreate.CALENDERNAMES);
 
         containerComboBoxNotificationMin.getChildren().add(comboBoxNotificationMin);
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSpecialField);
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionCourse);
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSemester);
-        
-        comboBoxNotificationMin.getSelectionModel().select(String.valueOf(settings.getNotificationTimeBeforeEntryInMinutes()));
-        comboBoxSelectionSpecialField.getSelectionModel().select(settings.specialField.getValue());
-        comboBoxSelectionSemester.getSelectionModel().select(settings.semester.getValue());
-        comboBoxSelectionCourse.getSelectionModel().select(settings.course.getValue());
-
-        comboBoxDefaultCalendar = comboBoxFactory.create(ComboBoxCreate.CALENDERNAMES);
         containerComboBoxDefaultCalendar.getChildren().add(comboBoxDefaultCalendar);
-        comboBoxDefaultCalendar.getSelectionModel().select(SettingsModelImpl.defaultCalendarForSearchView);
+
+        comboBoxSelectionSpecialField.getSelectionModel().select(String.valueOf(settings.getSettingsDropdownTitlesContainer()[0].getValue()));
+        comboBoxSelectionCourse.getSelectionModel().select(String.valueOf(settings.getSettingsDropdownTitlesContainer()[1].getValue()));
+        comboBoxSelectionSemester.getSelectionModel().select(String.valueOf(settings.getSettingsDropdownTitlesContainer()[2].getValue()));
+        comboBoxNotificationMin.getSelectionModel().select(String.valueOf(settings.getSettingsDropdownTitlesContainer()[3].getValue()));
+        comboBoxDefaultCalendar.getSelectionModel().select(String.valueOf(settings.getSettingsDropdownTitlesContainer()[4].getValue()));
     }
 
     @FXML
@@ -115,9 +116,7 @@ public class SettingsViewController extends ResponsiveController
     {
         if (comboBoxSelectionSpecialField.getValue() == null || comboBoxSelectionCourse.getValue() == null
                 || comboBoxSelectionSemester.getValue() == null) {
-            txtError.setText("Nicht alle HWR Komponenten ausgewählt!");
             txtError.setVisible(true);
-            txtError.setFill(Color.RED);
         } else {
             txtError.setVisible(false);
             String resultURL = String.format(
@@ -125,23 +124,22 @@ public class SettingsViewController extends ResponsiveController
                     comboBoxSelectionSpecialField.getValue().toLowerCase(),
                     comboBoxSelectionSemester.getValue().replace("Sem. ", ""),
                     comboBoxSelectionCourse.getValue().toLowerCase().replaceFirst("keine kurse", ""));
-            settings.specialField.set(comboBoxSelectionSpecialField.getValue());
-            settings.course.set(comboBoxSelectionCourse.getValue());
-            settings.semester.set(comboBoxSelectionSemester.getValue());            
             settings.setHwrWebsiteUrl(resultURL);
             settings.setSelectedHwrCourseName(comboBoxSelectionSpecialField.getSelectionModel().getSelectedItem());
+            settings.getSettingsDropdownTitlesContainer()[0].set(comboBoxSelectionSpecialField.getValue());
+            settings.getSettingsDropdownTitlesContainer()[1].set(comboBoxSelectionCourse.getValue());
+            settings.getSettingsDropdownTitlesContainer()[2].set(comboBoxSelectionSemester.getValue());
+            settings.getSettingsDropdownTitlesContainer()[3].set(comboBoxNotificationMin.getValue());
+            settings.getSettingsDropdownTitlesContainer()[4].set(comboBoxDefaultCalendar.getValue());
+            settings.setNotificationTimeBeforeEntryInMinutes(Long.parseLong(comboBoxNotificationMin.getValue()));
+            settings.setDefaultCalendarForSearchView(comboBoxDefaultCalendar.getValue());
+            settings.setEntrySystemMessageIntervalInMinutes(1);
+            settings.saveSettings();
             if (urlRequestController.isCalendarImportedSuccesfully())
                 popupViewController.showCalendarImportedSuccess();
             else
                 popupViewController.showCalendarImportedError();
-
         }
-        //cBToolTips.setTooltip(cBToolTips.getTooltip());
-        settings.setNotificationTimeBeforeEntryInMinutes(Long.parseLong(comboBoxNotificationMin.getValue()));
-        settings.setDefaultCalendarForSearchView(comboBoxDefaultCalendar.getValue());
-        settings.setEntrySystemMessageIntervalInMinutes(1);
-        //settings.toolTip = cBToolTips.selectedProperty();
-        settings.saveSettings();
     }
 
    

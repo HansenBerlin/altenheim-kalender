@@ -3,7 +3,7 @@ package com.altenheim.kalender.implementations.controller.factories;
 import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.interfaces.factorys.ComboBoxFactory;
-import com.altenheim.kalender.implementations.controller.models.CalendarEntriesControllerImpl;
+import com.altenheim.kalender.implementations.controller.viewController.CalendarEntriesControllerImpl;
 import com.altenheim.kalender.implementations.controller.models.ContactModelImpl;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.collections.FXCollections;
@@ -14,8 +14,8 @@ public class ComboBoxFactoryImpl implements ComboBoxFactory
 {
     private final ObservableList<String> mailTemplateSelectorTemplate = FXCollections.observableArrayList();
     private final List<ObservableList<String>> content = new ArrayList<>();
-    private final String[] headers = { "Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs",
-        "Semester", "MailTemplate", "Standardkalender", "Mailadressen" };    
+    private final String[] headers = { "Verkehrsmittel", "Start", "Ziel", "Intervall", "", "", "",
+        "", "MailTemplate", "", "Mailadressen" };
 
     public ComboBoxFactoryImpl()
     {

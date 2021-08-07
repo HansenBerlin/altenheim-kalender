@@ -2,8 +2,8 @@ package com.altenheim.kalender.implementations.controller.factories;
 
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.logicController.IOController;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
-import com.altenheim.kalender.implementations.controller.models.CalendarEntriesControllerImpl;
+import com.altenheim.kalender.interfaces.viewController.CalendarEntriesController;
+import com.altenheim.kalender.implementations.controller.viewController.CalendarEntriesControllerImpl;
 import com.calendarfx.model.*;
 import javafx.event.EventHandler;
 import com.altenheim.kalender.implementations.controller.viewController.CustomViewOverride;
@@ -164,7 +164,7 @@ public class EntryFactoryImpl implements EntryFactory
         for (var calendar : calendarView.getCalendarSources().get(0).getCalendars())
         {
             if (calendar.getName().equals(calendarName))
-                calendarView.getCalendars().remove(calendar);
+                calendarView.getCalendarSources().get(0).getCalendars().remove(calendar);
         }
     }
 

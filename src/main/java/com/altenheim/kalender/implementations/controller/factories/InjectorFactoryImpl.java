@@ -4,7 +4,7 @@ import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.factorys.InitialSetupController;
 import com.altenheim.kalender.interfaces.factorys.InjectorFactory;
 import com.altenheim.kalender.interfaces.logicController.*;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
+import com.altenheim.kalender.interfaces.viewController.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.models.ContactModel;
 import com.altenheim.kalender.interfaces.models.MailTemplateModel;
 import com.altenheim.kalender.interfaces.models.SettingsModel;

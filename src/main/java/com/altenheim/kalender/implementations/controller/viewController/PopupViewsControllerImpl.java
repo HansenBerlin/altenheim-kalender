@@ -3,7 +3,7 @@ package com.altenheim.kalender.implementations.controller.viewController;
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.logicController.ExportController;
 import com.altenheim.kalender.interfaces.logicController.ImportController;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
+import com.altenheim.kalender.interfaces.viewController.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import javafx.application.Platform;
