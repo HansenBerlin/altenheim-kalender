@@ -56,17 +56,13 @@ public class PlannerViewController extends ResponsiveController
     public void registerButtonEvents()
     {
         Button addButton = (Button)childContainer.lookup("#add-calendar-button");
-        addButton.setOnAction(new EventHandler<ActionEvent>()
-        { 
-            public void handle(ActionEvent event) 
-            {
-                var calendar = new Calendar();
-                String calName = popups.showChooseCalendarNameDialog();
-                if (calName.isBlank())
-                    return;
-                entryFactory.addCalendarToView(calendar, calName);
-                iOController.saveCalendar(calendar); 
-            }
-        });  
+        addButton.setOnAction(event -> {
+            var calendar = new Calendar();
+            String calName = popups.showChooseCalendarNameDialog();
+            if (calName.isBlank())
+                return;
+            entryFactory.addCalendarToView(calendar, calName);
+            iOController.saveCalendar(calendar);
+        });
     }
 }

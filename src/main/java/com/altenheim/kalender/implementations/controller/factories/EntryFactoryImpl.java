@@ -13,10 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class EntryFactoryImpl implements EntryFactory
@@ -75,7 +72,7 @@ public class EntryFactoryImpl implements EntryFactory
     public void addCalendarToView(Calendar calendar, String name) 
     {
         calendar.setName(name);       
-        EventHandler<CalendarEvent> eventHandler = event -> handleEvent(event);
+        EventHandler<CalendarEvent> eventHandler = this::handleEvent;
         calendar.addEventHandler(eventHandler);
         calendarView.getCalendarSources().get(0).getCalendars().add(calendar);  
         CalendarEntriesModelImpl.calendarsComboBox.add(calendar.getName());

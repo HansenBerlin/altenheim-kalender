@@ -58,21 +58,11 @@ public class GoogleAPIControllerImpl implements GoogleAPIController {
 
         String furtherAttributes = "&mode=";
         switch (travelMode) {
-            case "Auto":
-                furtherAttributes += "driving";
-                break;
-            case "Öffis":
-                furtherAttributes += "transit";
-                break;
-            case "Fahrrad":
-                furtherAttributes += "bicycling";
-                break;
-            case "Fußgänger":
-                furtherAttributes += "walking";
-                break;
-            default:
-                furtherAttributes = "";
-                break;
+            case "Auto" -> furtherAttributes += "driving";
+            case "Öffis" -> furtherAttributes += "transit";
+            case "Fahrrad" -> furtherAttributes += "bicycling";
+            case "Fußgänger" -> furtherAttributes += "walking";
+            default -> furtherAttributes = "";
         }
 
         try {

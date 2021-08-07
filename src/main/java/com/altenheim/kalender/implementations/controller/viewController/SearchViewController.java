@@ -70,9 +70,9 @@ public class SearchViewController extends SearchViewRequestHandlerController
 
     private void registerButtonEvents()
     {
-        btnConfirm.setOnAction(event -> updateUserStepView(event));
-        btnBack.setOnAction(event -> updateUserStepView(event));
-        btnReset.setOnAction(event -> updateUserStepView(event));
+        btnConfirm.setOnAction(this::updateUserStepView);
+        btnBack.setOnAction(this::updateUserStepView);
+        btnReset.setOnAction(this::updateUserStepView);
         toggleCalendars.setOnMouseReleased(event -> calendarToggleClicked());
     }
     
@@ -178,13 +178,13 @@ public class SearchViewController extends SearchViewRequestHandlerController
         TableColumn<SuggestionsModel, String> dateColumnStart = new TableColumn<>("Startdatum");
         TableColumn<SuggestionsModel, String> dateColumnEnd = new TableColumn<>("Enddatum");
         TableColumn<SuggestionsModel, String> button = new TableColumn<>("eintragen");
-        TableView<SuggestionsModel> table = new TableView<SuggestionsModel>(SuggestionsModel.data);
+        TableView<SuggestionsModel> table = new TableView<>(SuggestionsModel.data);
 
-        startTimeColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("startTime"));
-        endTimeColumn.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("endTime"));
-        dateColumnStart.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("dayStart"));
-        dateColumnEnd.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("dayEnd"));
-        button.setCellValueFactory(new PropertyValueFactory<SuggestionsModel, String>("button"));
+        startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+        endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+        dateColumnStart.setCellValueFactory(new PropertyValueFactory<>("dayStart"));
+        dateColumnEnd.setCellValueFactory(new PropertyValueFactory<>("dayEnd"));
+        button.setCellValueFactory(new PropertyValueFactory<>("button"));
 
         startTimeColumn.setPrefWidth(100);
         endTimeColumn.setPrefWidth(100);
@@ -238,19 +238,15 @@ public class SearchViewController extends SearchViewRequestHandlerController
         {
             final int j = i;            
 
-            textFieldsFirstView[j].textProperty().addListener(new ChangeListener<String>() 
-            {
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) 
+            textFieldsFirstView[j].textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!newValue.matches("\\d*"))
                 {
-                    if (!newValue.matches("\\d*"))
-                    {
-                        textFieldsFirstView[j].setText(newValue.replaceAll("[^\\d]", ""));                    
-                    }  
-                    else
-                    {
-                        double value = Double.parseDouble(textFieldsFirstView[j].getText());
-                        sliderFirstView[j].setValue(Double.valueOf(value));
-                    }               
+                    textFieldsFirstView[j].setText(newValue.replaceAll("[^\\d]", ""));
+                }
+                else
+                {
+                    double value = Double.parseDouble(textFieldsFirstView[j].getText());
+                    sliderFirstView[j].setValue(value);
                 }
             });
         i++;            

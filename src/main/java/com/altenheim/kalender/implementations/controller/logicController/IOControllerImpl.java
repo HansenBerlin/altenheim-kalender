@@ -18,25 +18,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
-public class IOControllerImpl implements IOController
+public record IOControllerImpl(SettingsModel settings,
+                               ExportController exportController,
+                               ImportController importController) implements IOController
 {
-    protected final SettingsModel settings;
-    private final ExportController exportController;
-    private final ImportController importController;
 
-    public IOControllerImpl(SettingsModel settings, ExportController exportController, ImportController importController)
-    {
-        this.settings = settings;
-        this.importController = importController;
-        this.exportController = exportController;
-    }
-
-    public void createUserPath() 
-    {
+    public void createUserPath() {
         var parentFolder = new File("userFiles");
         if (!parentFolder.exists())
             parentFolder.mkdir();
-        String[] folderNames = { "contacts", "calendars", "userSettings", "mailTemplates" };
+        String[] folderNames = {"contacts", "calendars", "userSettings", "mailTemplates"};
         for (var folderName : folderNames) {
             var newFolder = new File("userFiles/" + folderName);
             if (!newFolder.exists())
@@ -44,145 +35,114 @@ public class IOControllerImpl implements IOController
         }
     }
 
-    public void saveCalendar(Calendar calendar) 
-    {        
-        try 
-        {
+    public void saveCalendar(Calendar calendar) {
+        try {
             String path = settings.getPathToUserDirectory() + "calendars";
             exportController.exportCalendarAsFile(calendar, path);
-        } 
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-        } 
+        }
     }
 
-    public void loadCalendarsFromFile(EntryFactory entryFactory)
-    {
+    public void loadCalendarsFromFile(EntryFactory entryFactory) {
         entryFactory.clearCalendarSourceList();
         var allCalendarFiles = new File(settings.getPathToUserDirectory() + "calendars").listFiles();
-        for (var calendarFile : allCalendarFiles)
-        {
-            if (calendarFile.getAbsolutePath().contains(".ics")) 
-            {
+        for (var calendarFile : allCalendarFiles) {
+            if (calendarFile.getAbsolutePath().contains(".ics")) {
                 var calendar = importController.importFile(calendarFile.getAbsolutePath());
-                if (calendar != null)                 
-                    entryFactory.addCalendarToView(calendar, calendar.getName());                
+                if (calendar != null)
+                    entryFactory.addCalendarToView(calendar, calendar.getName());
             }
-        }  
+        }
         if (allCalendarFiles.length == 0)
             entryFactory.addCalendarToView(new Calendar(), "Standardkalender");
     }
 
-    public void saveContactsToFile(ContactModel contacts)
-    {
+    public void saveContactsToFile(ContactModel contacts) {
         var path = settings.getPathToUserDirectory() + "/contacts/contacts.file";
-        try 
-        {
+        try {
             var writeToFile = new FileOutputStream(path);
             var convert = new ObjectOutputStream(writeToFile);
             convert.writeObject(contacts.getDataToSerialize());
             convert.close();
             writeToFile.close();
-        } 
-        catch (IOException e) 
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void loadContactsFromFile(ContactModel contacts)
-    {
+    public void loadContactsFromFile(ContactModel contacts) {
         var file = new File(settings.getPathToUserDirectory() + "/contacts/contacts.file");
         if (!file.exists())
             return;
 
-        try 
-        {
+        try {
             var loadFile = new FileInputStream(file);
             var inputStream = new ObjectInputStream(loadFile);
             var loadedContacts = (List<ContactModelImpl>) inputStream.readObject();
             contacts.rebuildObservableListFromSerializedData(loadedContacts);
             inputStream.close();
             loadFile.close();
-        } 
-        catch (ClassNotFoundException | IOException e) 
-        {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void saveMailTemplatesToFile(MailTemplateModel templates)
-    {
+    public void saveMailTemplatesToFile(MailTemplateModel templates) {
         var path = settings.getPathToUserDirectory() + "/mailTemplates/templates.file";
-        try 
-        {
+        try {
             var writeToFile = new FileOutputStream(path);
             var convert = new ObjectOutputStream(writeToFile);
             convert.writeObject(templates);
             convert.close();
             writeToFile.close();
-        } 
-        catch (IOException e) 
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public MailTemplateModel loadMailTemplatesFromFile()
-    {
+    public MailTemplateModel loadMailTemplatesFromFile() {
         var file = new File(settings.getPathToUserDirectory() + "/mailTemplates/templates.file");
         if (!file.exists())
             return new MailTemplateModelImpl();
-        try 
-        {
+        try {
             var loadFile = new FileInputStream(file);
             var inputStream = new ObjectInputStream(loadFile);
             var mailTemplates = (MailTemplateModelImpl) inputStream.readObject();
             inputStream.close();
             loadFile.close();
             return mailTemplates;
-        } 
-        catch (IOException | ClassNotFoundException e) 
-        {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return new MailTemplateModelImpl();
         }
     }
 
-    public void saveHashedPassword(String passwordHash) 
-    {
+    public void saveHashedPassword(String passwordHash) {
         var path = settings.getPathToUserDirectory() + "savedHash";
-        try 
-        {
+        try {
             var writeToFile = new FileOutputStream(path);
             var convert = new ObjectOutputStream(writeToFile);
             convert.writeObject(passwordHash);
             convert.close();
-        } 
-        catch (IOException e) 
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public String loadHashedPassword() 
-    {
+    public String loadHashedPassword() {
         var file = settings.getPasswordhashFile();
         if (!file.exists())
             return "";
-        try 
-        {
+        try {
             var loadFile = new FileInputStream(settings.getPathToUserDirectory() + "savedHash");
             var inputStream = new ObjectInputStream(loadFile);
             var passwordHash = (String) inputStream.readObject();
             inputStream.close();
             loadFile.close();
             return passwordHash;
-        } 
-        catch (IOException | ClassNotFoundException e) 
-        {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return "";
         }

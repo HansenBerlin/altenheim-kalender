@@ -14,15 +14,14 @@ public class DateSuggestionControllerImpl implements DateSuggestionController
             
         var startSearchDateTime  = LocalDateTime.of(startSearchDateTimeInput.toLocalDate(), startSearchDateTimeInput.toLocalTime());
         
-        if (input.get(input.size()-1).getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes((long) dateLenght + 1))) 
-            for (int runNumber = 0; runNumber < input.size(); runNumber++) 
-            {
-                var entryStart = input.get(runNumber).getStartAsLocalDateTime();
+        if (input.get(input.size()-1).getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes((long) dateLenght + 1)))
+            for (Entry<String> stringEntry : input) {
+                var entryStart = stringEntry.getStartAsLocalDateTime();
 
                 if (entryStart.isAfter(startSearchDateTime))
-                    startSearchDateTime = input.get(runNumber).getStartAsLocalDateTime();
+                    startSearchDateTime = stringEntry.getStartAsLocalDateTime();
 
-                if (entryStart.isBefore(startSearchDateTime.plusSeconds(1)) && input.get(runNumber)
+                if (entryStart.isBefore(startSearchDateTime.plusSeconds(1)) && stringEntry
                         .getEndAsLocalDateTime().isAfter(startSearchDateTime.plusMinutes(dateLenght).minusSeconds(1)))
                     return createEntry(startSearchDateTime, dateLenght);
             }

@@ -55,18 +55,14 @@ public class ContactsViewController extends ResponsiveController
 
     private void saveChangesToContacts()
     {
-        ContactModelImpl.data.addListener(new ListChangeListener<ContactModelImpl>()
-        {
-            public void onChanged(Change<? extends ContactModelImpl> c)
+        ContactModelImpl.data.addListener((ListChangeListener<ContactModelImpl>) c -> {
+            try
             {
-                try 
-                {
-                    ioController.saveContactsToFile(contacts);
-                } 
-                catch (Exception e) 
-                {
-                    e.printStackTrace();
-                }               
+                ioController.saveContactsToFile(contacts);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
             }
         });
     }
@@ -78,13 +74,13 @@ public class ContactsViewController extends ResponsiveController
         TableColumn<ContactModelImpl, String> mail = new TableColumn<>("Mailadresse");
         TableColumn<ContactModelImpl, String> phone = new TableColumn<>("Telefon");
         TableColumn<ContactModelImpl, String> button = new TableColumn<>("");
-        TableView<ContactModelImpl> table = new TableView<ContactModelImpl>(ContactModelImpl.data);
+        TableView<ContactModelImpl> table = new TableView<>(ContactModelImpl.data);
 
-        name.setCellValueFactory(new PropertyValueFactory<ContactModelImpl, String>("fullName"));
-        address.setCellValueFactory(new PropertyValueFactory<ContactModelImpl, String>("address"));
-        mail.setCellValueFactory(new PropertyValueFactory<ContactModelImpl, String>("mail"));
-        phone.setCellValueFactory(new PropertyValueFactory<ContactModelImpl, String>("phone"));
-        button.setCellValueFactory(new PropertyValueFactory<ContactModelImpl, String>("button"));
+        name.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        address.setCellValueFactory(new PropertyValueFactory<>("address"));
+        mail.setCellValueFactory(new PropertyValueFactory<>("mail"));
+        phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        button.setCellValueFactory(new PropertyValueFactory<>("button"));
 
         name.setPrefWidth(200);
         address.setPrefWidth(400);

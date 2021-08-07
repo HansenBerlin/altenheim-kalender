@@ -14,8 +14,6 @@ import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
@@ -334,32 +332,24 @@ public class SearchViewValidationController extends ResponsiveController
         String title = currSug.getTitle();
         var sendMailButton = createSendMailButton();
 
-        button.setOnAction(new EventHandler<ActionEvent>() 
-        {
-            public void handle(ActionEvent e) 
-            {
-                if (!toggleUseTravelDuration.isSelected())
-                    travelTimeTo = 0; 
-                createEntryIncludingTravelTimes(currSug);                           
-                                  
-                popupViewController.showEntryAddedDialogWithMailOption(startDate, endDate, startTime, endTime, sendMailButton);
-            }
-        }); 
+        button.setOnAction(e -> {
+            if (!toggleUseTravelDuration.isSelected())
+                travelTimeTo = 0;
+            createEntryIncludingTravelTimes(currSug);
+
+            popupViewController.showEntryAddedDialogWithMailOption(startDate, endDate, startTime, endTime, sendMailButton);
+        });
         return button;      
     }
 
     public void registerButtonSendMailEvent(Button button)
     {
-        button.setOnAction(new EventHandler<ActionEvent>() 
-        {
-            public void handle(ActionEvent e) 
-            {                
-                String templateName = dropdownMailTemplates.getValue();
-                String recipient = validateRecipient();
-                String date = DateFormatConverter.formatDate(currentSuggestion.getStartDate());
-                String time = DateFormatConverter.formatTime(currentSuggestion.getStartTime());
-                mailCreationController.processMailWrapper(templateName, date, time, recipient);                               
-            }
+        button.setOnAction(e -> {
+            String templateName = dropdownMailTemplates.getValue();
+            String recipient = validateRecipient();
+            String date = DateFormatConverter.formatDate(currentSuggestion.getStartDate());
+            String time = DateFormatConverter.formatTime(currentSuggestion.getStartTime());
+            mailCreationController.processMailWrapper(templateName, date, time, recipient);
         });
     }
 

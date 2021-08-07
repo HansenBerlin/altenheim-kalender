@@ -47,13 +47,7 @@ public class ContactModelImpl implements ContactModel
 
     private void registerButtonEvent()
     {
-        button.setOnAction(new EventHandler<ActionEvent>() 
-        {
-            public void handle(ActionEvent e) 
-            {
-                removeContactModel();
-            }
-        });
+        button.setOnAction(e -> removeContactModel());
     }
 
     public List<ContactModelImpl> getDataToSerialize()

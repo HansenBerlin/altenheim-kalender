@@ -77,12 +77,7 @@ public class SettingsModelImpl implements SettingsModel
             streamOut.writeUTF(hwrWebsiteUrl);
             streamOut.close();
             writeToFile.close();
-        }
-        catch (FileNotFoundException e)
-        {
-            System.err.println(e.getMessage());
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             System.err.println(e.getMessage());
         }

@@ -21,10 +21,8 @@ public class InjectorFactoryImpl implements InjectorFactory
     private GuiUpdateController guiSetup;
     private MainWindowController mainWindowController;
     private InitialSetupController initialSettingsLoader;
-    //private SettingsModel settings;
     public GuiUpdateController getGuiController() { return guiSetup; }
     public InitialSetupController getInitialSettingsLoader() { return initialSettingsLoader; }
-    //public SettingsModel getSettingsModel() { return settings; }
     public MainWindowController getMainWindowController() { return mainWindowController; }
 
 
@@ -66,7 +64,7 @@ public class InjectorFactoryImpl implements InjectorFactory
         mainWindowController = new MainWindowController(allViews, customCalendarView, settings);
         allViews.setMainWindowController(mainWindowController);
         guiSetup = new GuiUpdateControllerImpl(jMetroStyle, allViews);
-        initialSettingsLoader = new InitialSetupControllerImpl(settings, ioCt, popupViewController, websiteCt,
+        initialSettingsLoader = new InitialSetupControllerImpl(ioCt, popupViewController, websiteCt,
                 systemNotificationsCt, entryFactory, contacts);
     }    
 }

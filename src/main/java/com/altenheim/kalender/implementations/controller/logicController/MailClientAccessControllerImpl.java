@@ -8,55 +8,41 @@ import com.altenheim.kalender.interfaces.logicController.MailClientAccessControl
 import com.altenheim.kalender.interfaces.models.MailTemplateModel;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-public class MailClientAccessControllerImpl implements MailClientAccessController
+public record MailClientAccessControllerImpl(
+        MailTemplateModel mailTemplates) implements MailClientAccessController
 {
-    private final MailTemplateModel mailTemplates;
 
-    public MailClientAccessControllerImpl(MailTemplateModel mailTemplates)
-    {
-        this.mailTemplates = mailTemplates;
-    }
-
-    public void processMailWrapper(String templateName, String date, String time, String recipient)
-    {
+    public void processMailWrapper(String templateName, String date, String time, String recipient) {
         String subject = "Terminanfrage";
         String mailBody = getMailTemplate(templateName);
         String processedBody = processPlaceholders(mailBody, date, time);
         String uriStr = String.format("mailto:%s?subject=%s&body=%s", recipient, encodeUrl(subject), encodeUrl(processedBody));
-        try 
-        {
+        try {
             Desktop.getDesktop().browse(new URI(uriStr));
-        } 
-        catch (IOException | URISyntaxException e) 
-        {
-            e.printStackTrace();    
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
         }
-    }    
+    }
 
-    private String getMailTemplate(String templateName)
-    {
-        for (var template : mailTemplates.getTemplates().entrySet()) 
-        {
+    private String getMailTemplate(String templateName) {
+        for (var template : mailTemplates.getTemplates().entrySet()) {
             if (template.getKey().equals(templateName))
-                return template.getValue();            
+                return template.getValue();
         }
         return mailTemplates.getDefaultTemplate();
 
     }
 
-    private String processPlaceholders(String body, String date, String time) 
-    {
+    private String processPlaceholders(String body, String date, String time) {
         body = body.replace("[Datum]", date);
         body = body.replace("[Uhrzeit]", time);
 
         return body;
     }
 
-    private String encodeUrl(String uri) 
-    {
+    private String encodeUrl(String uri) {
         return URLEncoder.encode(uri, StandardCharsets.UTF_8).replace("+", "%20");
     }
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class MailTemplateModelImpl implements MailTemplateModel
 {
-    Map<String, String> templates = new HashMap<String, String>();
+    Map<String, String> templates = new HashMap<>();
 
     public MailTemplateModelImpl()
     {
@@ -16,8 +16,11 @@ public class MailTemplateModelImpl implements MailTemplateModel
 
     public String getDefaultTemplate() 
     {
-        return "Sehr geehrte Damen und Herren, \nich hätte gerne einen Termin am "
-                + "[Datum] um [Uhrzeit].\nVielen Dank und mit freundlichem Gruß,\n";
+        return """
+                Sehr geehrte Damen und Herren,\s
+                ich hätte gerne einen Termin am [Datum] um [Uhrzeit].
+                Vielen Dank und mit freundlichem Gruß,
+                """;
     }
 
     public void addTemplate(String key, String value) 

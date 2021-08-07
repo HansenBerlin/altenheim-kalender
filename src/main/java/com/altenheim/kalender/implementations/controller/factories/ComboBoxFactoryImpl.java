@@ -13,7 +13,7 @@ import javafx.scene.control.ComboBox;
 public class ComboBoxFactoryImpl implements ComboBoxFactory
 {
     private final ObservableList<String> mailTemplateSelectorTemplate = FXCollections.observableArrayList();
-    private final List<ObservableList<String>> content = new ArrayList<ObservableList<String>>();
+    private final List<ObservableList<String>> content = new ArrayList<>();
     private final String[] headers = { "Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs",
         "Semester", "MailTemplate", "Standardkalender", "Mailadressen" };    
 

@@ -6,7 +6,6 @@ import com.altenheim.kalender.interfaces.logicController.IOController;
 import com.altenheim.kalender.interfaces.logicController.SystemTrayNotificationsController;
 import com.altenheim.kalender.interfaces.logicController.UrlRequestController;
 import com.altenheim.kalender.interfaces.models.ContactModel;
-import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
 
@@ -19,7 +18,7 @@ public class InitialSetupControllerImpl implements InitialSetupController
     private final EntryFactory entryFactory;
     private final ContactModel contacts;
 
-    public InitialSetupControllerImpl(SettingsModel settings, IOController ioController, PopupViewController popup,
+    public InitialSetupControllerImpl(IOController ioController, PopupViewController popup,
                                       UrlRequestController websiteScraper, SystemTrayNotificationsController systemNotifications,
                                       EntryFactory entryFactory, ContactModel contacts)
     {

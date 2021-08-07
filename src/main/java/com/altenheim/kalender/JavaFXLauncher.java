@@ -42,13 +42,7 @@ public class JavaFXLauncher extends Application
         initialSettingsLoader.initializeSettings();
         initialSettingsLoader.initialValidationCheck();
         
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() 
-        {
-            public void handle(WindowEvent we) 
-            {              
-                System.exit(0);
-            }
-        });
+        primaryStage.setOnCloseRequest(we -> System.exit(0));
 
         var image = new Image(getClass().getResource("/Penaut.png").toString());
         primaryStage.getIcons().add(image);

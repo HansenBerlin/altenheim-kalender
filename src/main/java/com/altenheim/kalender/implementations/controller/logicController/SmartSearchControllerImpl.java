@@ -1,9 +1,7 @@
 package com.altenheim.kalender.implementations.controller.logicController;
 
 import java.time.DayOfWeek;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -17,44 +15,35 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 
-public class SmartSearchControllerImpl implements SmartSearchController {
-	private final CalendarEntriesModel administrateEntries;
-	private final EntryFactory entryFactory;
+public record SmartSearchControllerImpl(
+		CalendarEntriesModel administrateEntries,
+		EntryFactory entryFactory) implements SmartSearchController
+{
 
-	public SmartSearchControllerImpl(CalendarEntriesModel administrateEntries, EntryFactory entryFactory) {
-		this.administrateEntries = administrateEntries;
-		this.entryFactory = entryFactory;
-	}
+	public ArrayList<Entry<String>> findPossibleTimeSlots(Entry<String> input, int duration, boolean[] allowedWeekdays,
+														  HashMap<DayOfWeek, List<Entry<String>>> openingHours, int timeBefore, int timeAfter, int intervalDays) {
 
-	public ArrayList<Entry<String>> findPossibleTimeSlots(Entry<String> input, int duration, boolean[] allowedWeekdays, 
-		HashMap<DayOfWeek, List<Entry<String>>> openingHours, int timeBefore, int timeAfter, int intervalDays){
-		
-		var output = new ArrayList<Entry<String>>(); 
+		var output = new ArrayList<Entry<String>>();
 		var startTime = input.getStartTime();
 		var endTime = input.getEndTime();
 		var date = input.getStartDate();
 
 		int i = -1;
 		while (date.isBefore(input.getEndDate()) && output.size() < 1000) {
-			i++;	
-			
-			int index = date.getDayOfWeek().getValue()-1;
-			if(!allowedWeekdays[index])
-			{
+			i++;
+
+			int index = date.getDayOfWeek().getValue() - 1;
+			if (!allowedWeekdays[index]) {
 				date = date.plusDays(1);
-				continue;			
-			}		
-				
-			if (openingHours.get(DayOfWeek.of((i%7)+1)) == null)
-			{
+				continue;
+			}
+
+			if (openingHours.get(DayOfWeek.of((i % 7) + 1)) == null) {
 				var entry = createEntry(date, startTime, endTime);
 				output.addAll(findAvailableTimeSlot(entry, duration, timeBefore, timeAfter));
-				date = date.plusDays(intervalDays);							
-			}
-			else
-			{
-				for (var day : openingHours.get(DayOfWeek.of((i%7)+1)))
-				{				
+				date = date.plusDays(intervalDays);
+			} else {
+				for (var day : openingHours.get(DayOfWeek.of((i % 7) + 1))) {
 					var entry = createEntry(date, startTime, endTime);
 					if (endTime.isBefore(day.getStartTime()) || startTime.isAfter(day.getEndTime()))
 						continue;
@@ -63,18 +52,16 @@ public class SmartSearchControllerImpl implements SmartSearchController {
 					if (endTime.isAfter(day.getEndTime()))
 						entry.changeEndTime(day.getEndTime());
 					output.addAll(findAvailableTimeSlot(entry, duration, timeBefore, timeAfter));
-					date = date.plusDays(intervalDays);					
+					date = date.plusDays(intervalDays);
 				}
-			}			
-		}			
+			}
+		}
 		return output;
 	}
 
-	private ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, int before, int after) 
-	{
+	private ArrayList<Entry<String>> findAvailableTimeSlot(Entry<String> input, int duration, int before, int after) {
 		var result = new LinkedList<List<Entry<?>>>();
-		for (var calendar : administrateEntries.getAllCalendarsSelectedByUser()) 
-		{
+		for (var calendar : administrateEntries.getAllCalendarsSelectedByUser()) {
 			result.addAll(calendar.findEntries(input.getStartDate(), input.getEndDate(), ZoneId.systemDefault()).values());
 		}
 		var output = new ArrayList<Entry<String>>();
@@ -121,5 +108,5 @@ public class SmartSearchControllerImpl implements SmartSearchController {
 			return false;
 		return (currentEntries.get(currentEntries.size() - 2).getStartMillis() == currentEntries
 				.get(currentEntries.size() - 1).getStartMillis());
-	}	
+	}
 }

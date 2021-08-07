@@ -5,7 +5,7 @@ import com.altenheim.kalender.interfaces.models.ViewRootsModel;
 import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
 import com.altenheim.kalender.resourceClasses.StylePresets;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
@@ -219,7 +219,7 @@ public class MainWindowController extends ResponsiveController
         for (int i = 0; i < buttons.length; i++) 
         {
             buttons[i].setAccessibleText(String.format("%d", i));
-            var buttonAndBackground = new Pair<Button, Pane>(buttons[i], buttonBackgrounds[i]);
+            var buttonAndBackground = new Pair<>(buttons[i], buttonBackgrounds[i]);
             buttonsMap.put(buttonCaptions[i], buttonAndBackground);
         }
 

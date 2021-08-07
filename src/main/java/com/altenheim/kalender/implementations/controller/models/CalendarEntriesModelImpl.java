@@ -20,7 +20,7 @@ public class CalendarEntriesModelImpl implements CalendarEntriesModel
 
     public CalendarEntriesModelImpl(CustomViewOverride calendarView)
     {
-        calendarsSelectedByUser = new ArrayList<Calendar>();
+        calendarsSelectedByUser = new ArrayList<>();
         this.calendarView = calendarView;
     }
     

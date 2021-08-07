@@ -61,8 +61,8 @@ public class JsonParserImpl implements JsonParser {
             if (openDay != closeDay) {
                 var dayList = openingHours.get(DayOfWeek.of(openDay));
                 var entry = new Entry<String>();
-                entry.changeStartTime(LocalTime.of(Integer.valueOf(openTime.substring(0, 2)),
-                        Integer.valueOf(openTime.substring(2, 4))));
+                entry.changeStartTime(LocalTime.of(Integer.parseInt(openTime.substring(0, 2)),
+                        Integer.parseInt(openTime.substring(2, 4))));
                 entry.changeEndTime(LocalTime.of(23, 59, 59));
                 dayList.add(entry);
                 openingHours.replace(DayOfWeek.of(openDay), dayList);
@@ -70,18 +70,18 @@ public class JsonParserImpl implements JsonParser {
                 var day2List = openingHours.get(DayOfWeek.of(closeDay));
                 var entry2 = new Entry<String>();
                 entry2.changeStartTime(LocalTime.of(0, 0));
-                entry2.changeEndTime(LocalTime.of(Integer.valueOf(closeTime.substring(0, 2)),
-                        Integer.valueOf(closeTime.substring(2, 4))));
+                entry2.changeEndTime(LocalTime.of(Integer.parseInt(closeTime.substring(0, 2)),
+                        Integer.parseInt(closeTime.substring(2, 4))));
                 day2List.add(entry2);
                 openingHours.replace(DayOfWeek.of(closeDay), day2List);
 
             } else {
                 var dayList = openingHours.get(DayOfWeek.of(openDay));
                 var entry = new Entry<String>();
-                entry.changeStartTime(LocalTime.of(Integer.valueOf(openTime.substring(0, 2)),
-                        Integer.valueOf(openTime.substring(2, 4))));
-                entry.changeEndTime(LocalTime.of(Integer.valueOf(closeTime.substring(0, 2)),
-                        Integer.valueOf(closeTime.substring(2, 4))));
+                entry.changeStartTime(LocalTime.of(Integer.parseInt(openTime.substring(0, 2)),
+                        Integer.parseInt(openTime.substring(2, 4))));
+                entry.changeEndTime(LocalTime.of(Integer.parseInt(closeTime.substring(0, 2)),
+                        Integer.parseInt(closeTime.substring(2, 4))));
                 dayList.add(entry);
                 openingHours.replace(DayOfWeek.of(openDay), dayList);
             }

@@ -26,8 +26,7 @@ public record ExportControllerImpl(SettingsModel settings) implements ExportCont
         var fout = new FileOutputStream(new File(path + "/" + fxCalendarName + ".ics"));
         var iCalCalendar = initICalCalendar();
         iCalCalendar.getProperties().add(new XProperty("X-WR-CALNAME", fxCalendarName));
-        for (int i = 0; i < entries.size(); i++) {
-            var entry = entries.get(i);
+        for (Entry<?> entry : entries) {
             iCalCalendar.getComponents().add(createIcalEntryFromCalFXEntry((Entry<String>) entry));
         }
         var outputter = new CalendarOutputter();

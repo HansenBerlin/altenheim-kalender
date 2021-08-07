@@ -9,15 +9,9 @@ import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.property.DtEnd;
 import net.fortuna.ical4j.model.property.DtStart;
 
-public class ImportControllerImpl implements ImportController
+public record ImportControllerImpl(EntryFactory entryFactory) implements ImportController
 {
-    private final EntryFactory entryFactory;
-    public ImportControllerImpl(EntryFactory entryFactory)
-    {
-        this.entryFactory = entryFactory;
-    }
-    public com.calendarfx.model.Calendar importFile(String path) 
-    {
+    public com.calendarfx.model.Calendar importFile(String path) {
         Calendar iCalCalendar;
         try {
             var stream = new FileInputStream(path);
@@ -38,8 +32,7 @@ public class ImportControllerImpl implements ImportController
         }
     }
 
-    private com.calendarfx.model.Calendar parseICal(Calendar iCalCalendar) 
-    {
+    private com.calendarfx.model.Calendar parseICal(Calendar iCalCalendar) {
         com.calendarfx.model.Calendar fxCalendar;
         if (iCalCalendar.getProperties().getProperty("X-WR-CALNAME") != null) {
             var iCalCalendarName = ((Property) iCalCalendar.getProperties().getProperty("X-WR-CALNAME")).getValue();
@@ -49,19 +42,19 @@ public class ImportControllerImpl implements ImportController
             fxCalendar = new com.calendarfx.model.Calendar("Standard-Kalender");
 
         var components = iCalCalendar.getComponents("VEVENT");
-        for (int i = 0; i < components.size(); i++) {
-            var start = (DtStart) (components.get(i).getProperties().getProperty("DTSTART"));
-            var end = (DtEnd) ((Property) components.get(i).getProperties().getProperty("DTEND"));
+        for (net.fortuna.ical4j.model.component.CalendarComponent component : components) {
+            var start = (DtStart) (component.getProperties().getProperty("DTSTART"));
+            var end = (DtEnd) ((Property) component.getProperties().getProperty("DTEND"));
             var startMilli = start.getDate().toInstant().toEpochMilli();
             var endMilli = end.getDate().toInstant().toEpochMilli();
             var entry = entryFactory.createCalendarFXEntryFromMillis(startMilli, endMilli);
-            var summary = ((Property) components.get(i).getProperties().getProperty("SUMMARY")).getValue();
+            var summary = ((Property) component.getProperties().getProperty("SUMMARY")).getValue();
             entry.setTitle(summary);
-            var locationProp = (Property) components.get(i).getProperties().getProperty("LOCATION");
+            var locationProp = (Property) component.getProperties().getProperty("LOCATION");
             if (locationProp != null)
                 entry.setLocation(locationProp.getValue());
             fxCalendar.addEntry(entry);
         }
         return fxCalendar;
-    }       
+    }
 }
