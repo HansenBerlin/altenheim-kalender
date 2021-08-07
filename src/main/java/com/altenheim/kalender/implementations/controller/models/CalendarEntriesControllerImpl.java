@@ -5,26 +5,27 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.implementations.controller.viewController.CustomViewOverride;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
 import com.calendarfx.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 
-@SuppressWarnings("unchecked")
-public class CalendarEntriesModelImpl implements CalendarEntriesModel
+public class CalendarEntriesControllerImpl implements CalendarEntriesController
 {
     private final List<Calendar> calendarsSelectedByUser;
     private final CustomViewOverride calendarView;
     public static final ObservableList<String> calendarsComboBox = FXCollections.observableArrayList();
 
-    public CalendarEntriesModelImpl(CustomViewOverride calendarView)
+    public CalendarEntriesControllerImpl(CustomViewOverride calendarView)
     {
         calendarsSelectedByUser = new ArrayList<>();
         this.calendarView = calendarView;
     }
     
     public List<Calendar> getAllCalendarsSelectedByUser() { return calendarsSelectedByUser; }
+    public void clearCalendarsSelectedByUser() { calendarsSelectedByUser.clear(); }
+    public void addToAllCalendarsSelectedByUser(Calendar calendar) { calendarsSelectedByUser.add(calendar); }
 
     public List<Calendar> getAllCalendars() 
     { 
@@ -33,7 +34,6 @@ public class CalendarEntriesModelImpl implements CalendarEntriesModel
         {
             allCalendars.addAll(source.getCalendars());
         }
-
         return allCalendars; 
     }
 
@@ -48,16 +48,6 @@ public class CalendarEntriesModelImpl implements CalendarEntriesModel
             }
         }
         calendarView.getCalendarSources().get(0).getCalendars().get(0).addEntry(entry);
-    }    
-    
-    public void clearCalendarsSelectedByUser()
-    {
-        calendarsSelectedByUser.clear();
-    }
-
-    public void addToAllCalendarsSelectedByUser(Calendar calendar)
-    {
-        calendarsSelectedByUser.add(calendar);
     }
 
     public void addToAllCalendarsSelectedByUserByCalendarName(String calendarName)

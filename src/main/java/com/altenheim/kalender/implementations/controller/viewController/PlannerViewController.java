@@ -2,7 +2,7 @@ package com.altenheim.kalender.implementations.controller.viewController;
 
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.logicController.IOController;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import com.calendarfx.model.Calendar;
 import javafx.event.ActionEvent;
@@ -17,9 +17,9 @@ public class PlannerViewController extends ResponsiveController
     private final IOController iOController;
     private final EntryFactory entryFactory;
     private final PopupViewController popups;
-    private final CalendarEntriesModel calendars;
+    private final CalendarEntriesController calendars;
 
-    public PlannerViewController(IOController iOController, EntryFactory entryFactory, PopupViewController popups, CalendarEntriesModel calendars)
+    public PlannerViewController(IOController iOController, EntryFactory entryFactory, PopupViewController popups, CalendarEntriesController calendars)
     {
         this.iOController = iOController;
         this.entryFactory = entryFactory;

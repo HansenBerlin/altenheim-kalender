@@ -82,7 +82,8 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
         finally
         {
             fos.close();
-            rbc.close();
+            if (rbc != null)
+                rbc.close();
         }
     }
 

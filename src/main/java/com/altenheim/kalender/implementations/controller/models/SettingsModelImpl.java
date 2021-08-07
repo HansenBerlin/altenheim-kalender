@@ -13,7 +13,7 @@ public class SettingsModelImpl implements SettingsModel
     public static final String PASSWORDHASH = "54fvHpgroWTcl6h/4SxMEiwchYBcYzqtrXX4eMySjf94gqHjPhjPCPl4d2IH7jg0";
     public static String defaultCalendarForSearchView = "";
     public static String decryptedPassword = "";
-    public static String hwrWebsiteUrl = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
+    public static String hwrWebsiteUrl = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester3/kursc";
     public static final String userDirectory = "userfiles/";
     public static boolean useAdvancedFeatures = false;
     public static boolean isDarkmodeActive = false;
@@ -38,10 +38,12 @@ public class SettingsModelImpl implements SettingsModel
     public long getEntrySystemMessageIntervalInMinutes() { return entrySystemMessageIntervalInMinutes; }
     public void setHwrWebsiteUrl(String value) { hwrWebsiteUrl = value; }
     public long getHwrRequestIntervalInMinutes() { return hwrRequestIntervalInMinutes; }
-    public String getSelectedHwrCourseName() { return course.getValue(); }
+    public String getSelectedHwrCourseName() { return currentlySelectedFB; }
+    public void setSelectedHwrCourseName(String value) { currentlySelectedFB = value; }
     public File getPasswordhashFile() { return new File(userDirectory + "savedHash"); }
     private final transient SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
     private final transient SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
+    private String currentlySelectedFB = "WI - Kurs C";
 
     public Style getCssStyle() 
     {
@@ -73,6 +75,7 @@ public class SettingsModelImpl implements SettingsModel
             streamOut.writeLong(entrySystemMessageIntervalInMinutes);
             streamOut.writeBoolean(useAdvancedFeatures);
             streamOut.writeUTF(defaultCalendarForSearchView);
+            streamOut.writeUTF(course.getValue());
             streamOut.writeUTF(hwrWebsiteUrl);
             streamOut.writeBoolean(isDarkmodeActive);
             streamOut.close();

@@ -3,7 +3,7 @@ package com.altenheim.kalender.implementations.controller.factories;
 import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.interfaces.factorys.ComboBoxFactory;
-import com.altenheim.kalender.implementations.controller.models.CalendarEntriesModelImpl;
+import com.altenheim.kalender.implementations.controller.models.CalendarEntriesControllerImpl;
 import com.altenheim.kalender.implementations.controller.models.ContactModelImpl;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.collections.FXCollections;
@@ -22,7 +22,7 @@ public class ComboBoxFactoryImpl implements ComboBoxFactory
         ObservableList<String> vehicles = FXCollections.observableArrayList();
         vehicles.addAll("zu Fuß", "Fahrrad", "Öffis", "Auto");
         ObservableList<String> destinations = ContactModelImpl.destinations;
-        ObservableList<String> calendars = CalendarEntriesModelImpl.calendarsComboBox;
+        ObservableList<String> calendars = CalendarEntriesControllerImpl.calendarsComboBox;
         ObservableList<String> mailAdresses = ContactModelImpl.mailadresses;
         ObservableList<String> recurrenceOptions = FXCollections.observableArrayList();
         recurrenceOptions.addAll("täglich", "wöchentlich", "monatlich", "halbjährlich", "jährlich");

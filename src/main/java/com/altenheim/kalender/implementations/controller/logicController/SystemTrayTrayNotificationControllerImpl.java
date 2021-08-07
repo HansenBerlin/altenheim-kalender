@@ -9,18 +9,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import java.awt.TrayIcon.MessageType;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.logicController.SystemTrayNotificationsController;
 import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.calendarfx.model.Entry;
 
 public class SystemTrayTrayNotificationControllerImpl extends TimerTask implements SystemTrayNotificationsController {
     private final SettingsModel settings;
-    private final CalendarEntriesModel administrateEntries;
+    private final CalendarEntriesController administrateEntries;
 
     private TrayIcon trayIcon;
 
-    public SystemTrayTrayNotificationControllerImpl(SettingsModel settings, CalendarEntriesModel administrateEntries) {
+    public SystemTrayTrayNotificationControllerImpl(SettingsModel settings, CalendarEntriesController administrateEntries) {
         this.settings = settings;
         this.administrateEntries = administrateEntries;
     }

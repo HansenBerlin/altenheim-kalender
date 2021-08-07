@@ -4,7 +4,7 @@ import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.factorys.InitialSetupController;
 import com.altenheim.kalender.interfaces.factorys.InjectorFactory;
 import com.altenheim.kalender.interfaces.logicController.*;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.models.ContactModel;
 import com.altenheim.kalender.interfaces.models.MailTemplateModel;
 import com.altenheim.kalender.interfaces.models.SettingsModel;
@@ -35,12 +35,12 @@ public class InjectorFactoryImpl implements InjectorFactory
         jMetroStyle.setStyle(settings.getCssStyle());
 
         var customCalendarView = new CustomViewOverride(settings);
-        CalendarEntriesModel calendarEntriesModel = new CalendarEntriesModelImpl(customCalendarView);
+        CalendarEntriesController calendarEntriesController = new CalendarEntriesControllerImpl(customCalendarView);
         ContactModel contacts = new ContactModelImpl();
         ComboBoxFactory comboBoxFactory = new ComboBoxFactoryImpl();
         DecryptionController encryptionController = new DecryptionControllerImpl();
         ExportController exportCt = new ExportControllerImpl(settings);
-        EntryFactory entryFactory = new EntryFactoryImpl(calendarEntriesModel, customCalendarView);
+        EntryFactory entryFactory = new EntryFactoryImpl(calendarEntriesController, customCalendarView);
         ImportController importCt = new ImportControllerImpl(entryFactory);
         IOController ioCt = new IOControllerImpl(settings, exportCt, importCt);
         entryFactory.addIOController(ioCt);
@@ -49,17 +49,17 @@ public class InjectorFactoryImpl implements InjectorFactory
         MailTemplateModel mailTemplates = ioCt.loadMailTemplatesFromFile();
         MailClientAccessController mailCreationCt = new MailClientAccessControllerImpl(mailTemplates);
         DateSuggestionController dateSuggestionController = new DateSuggestionControllerImpl();
-        SmartSearchController smartSearch = new SmartSearchControllerImpl(calendarEntriesModel, entryFactory);
+        SmartSearchController smartSearch = new SmartSearchControllerImpl(calendarEntriesController, entryFactory);
         UrlRequestController urlRequestController = new UrlRequestControllerImpl(settings, importCt, entryFactory);
         PopupViewController popupViewController = new PopupViewsControllerImpl(settings, importCt, exportCt);
 
-        var plannerVCt = new PlannerViewController(ioCt, entryFactory, popupViewController, calendarEntriesModel);
+        var plannerVCt = new PlannerViewController(ioCt, entryFactory, popupViewController, calendarEntriesController);
         var contactsVCt = new ContactsViewController(ioCt, contacts);
-        var settingsVCt = new SettingsViewController(settings, entryFactory, calendarEntriesModel, comboBoxFactory, popupViewController, urlRequestController);
+        var settingsVCt = new SettingsViewController(settings, entryFactory, calendarEntriesController, comboBoxFactory, popupViewController, urlRequestController);
         var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory, ioCt);
-        var searchVCt = new SearchViewController(apiCt, calendarEntriesModel, animationController, comboBoxFactory, popupViewController,
+        var searchVCt = new SearchViewController(apiCt, calendarEntriesController, animationController, comboBoxFactory, popupViewController,
             mailCreationCt, entryFactory, smartSearch, dateSuggestionController);
-        var systemNotificationsCt = new SystemTrayTrayNotificationControllerImpl(settings, calendarEntriesModel);
+        var systemNotificationsCt = new SystemTrayTrayNotificationControllerImpl(settings, calendarEntriesController);
         var allViews = new ViewRootsModelImpl(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
         mainWindowController = new MainWindowController(allViews, customCalendarView, settings);
         allViews.setMainWindowController(mainWindowController);

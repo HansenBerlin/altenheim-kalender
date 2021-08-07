@@ -2,8 +2,8 @@ package com.altenheim.kalender.implementations.controller.factories;
 
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.logicController.IOController;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
-import com.altenheim.kalender.implementations.controller.models.CalendarEntriesModelImpl;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
+import com.altenheim.kalender.implementations.controller.models.CalendarEntriesControllerImpl;
 import com.calendarfx.model.*;
 import javafx.event.EventHandler;
 import com.altenheim.kalender.implementations.controller.viewController.CustomViewOverride;
@@ -13,17 +13,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class EntryFactoryImpl implements EntryFactory
 {
-    private final CalendarEntriesModel allCalendars;
+    private final CalendarEntriesController allCalendars;
     private final CustomViewOverride calendarView;
     private IOController ioController;
 
-    public EntryFactoryImpl(CalendarEntriesModel allCalendars, CustomViewOverride calendarView)
+    public EntryFactoryImpl(CalendarEntriesController allCalendars, CustomViewOverride calendarView)
     {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
@@ -32,6 +31,10 @@ public class EntryFactoryImpl implements EntryFactory
     public void addIOController(IOController ioController)
     {
         this.ioController = ioController;
+    }
+    public void handleCalendarPropertyChangedEvent(CalendarEvent event)
+    {
+        ioController.saveCalendar(event.getCalendar());
     }
 
     public Entry<String> createCalendarFXEntryFromMillis(long start, long end)
@@ -72,24 +75,21 @@ public class EntryFactoryImpl implements EntryFactory
 
     public void addCalendarToView(Calendar calendar, String name) 
     {
+        if (shouldProcessBeInterrupted(calendar, name))
+            return;
         calendar.setName(name);       
-        EventHandler<CalendarEvent> eventHandler = this::handleEvent;
+        EventHandler<CalendarEvent> eventHandler = this::handleCalendarPropertyChangedEvent;
         calendar.addEventHandler(eventHandler);
         calendarView.getCalendarSources().get(0).getCalendars().add(calendar);  
-        CalendarEntriesModelImpl.calendarsComboBox.add(calendar.getName());
+        CalendarEntriesControllerImpl.calendarsComboBox.add(calendar.getName());
         ioController.saveCalendar(calendar);
-    }  
+    }
 
     public void clearCalendarSourceList()
     {
         calendarView.getCalendarSources().clear();
         var calSource = new CalendarSource("Alle Kalender");
         calendarView.getCalendarSources().add(calSource);
-    }
-    
-    public void handleEvent(CalendarEvent event)
-    {
-        ioController.saveCalendar(event.getCalendar());
     }
 
     private Entry<String> createRandomEntry(int day, int month, int startT, int endT)
@@ -144,5 +144,42 @@ public class EntryFactoryImpl implements EntryFactory
         var entry = createUserEntry(dateStart, dateEnd,timeStart, timeEnd); 
         entry.setTitle(title);
         allCalendars.addEntryToCalendarWithName(calName, entry);
-    }    
+    }
+
+    private boolean shouldProcessBeInterrupted(Calendar calendar, String name)
+    {
+        if (isHwrCalendar(name))
+        {
+            deleteCalendar(name, calendar);
+            return false;
+        }
+
+        if(isCalendarDuplicate(name))
+            return true;
+        return false;
+    }
+
+    private void deleteCalendar(String calendarName, Calendar calendarNew)
+    {
+        for (var calendar : calendarView.getCalendarSources().get(0).getCalendars())
+        {
+            if (calendar.getName().equals(calendarName))
+                calendarView.getCalendars().remove(calendar);
+        }
+    }
+
+    private boolean isCalendarDuplicate(String calendarName)
+    {
+        for (var calendar : calendarView.getCalendarSources().get(0).getCalendars())
+        {
+            if (calendar.getName().equals(calendarName))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isHwrCalendar(String name)
+    {
+        return name.contains("HWR-Kalender");
+    }
 }

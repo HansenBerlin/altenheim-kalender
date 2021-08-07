@@ -6,7 +6,7 @@ import com.altenheim.kalender.interfaces.logicController.DateSuggestionControlle
 import com.altenheim.kalender.interfaces.logicController.GoogleAPIController;
 import com.altenheim.kalender.interfaces.logicController.MailClientAccessController;
 import com.altenheim.kalender.interfaces.logicController.SmartSearchController;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.viewController.AnimationController;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import javafx.event.ActionEvent;
@@ -29,7 +29,7 @@ public class SearchViewController extends SearchViewRequestHandlerController
 
     private int userStep = 1;     
 
-    public SearchViewController(GoogleAPIController api, CalendarEntriesModel allCalendars, AnimationController animationController,
+    public SearchViewController(GoogleAPIController api, CalendarEntriesController allCalendars, AnimationController animationController,
                                 ComboBoxFactory comboBoxFactory, PopupViewController popupViewController, MailClientAccessController mailCreationController,
                                 EntryFactory entryFactory, SmartSearchController smartSearch, DateSuggestionController dateSuggestionController)
     {

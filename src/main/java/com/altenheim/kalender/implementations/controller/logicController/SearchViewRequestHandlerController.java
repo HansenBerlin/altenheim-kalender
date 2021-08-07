@@ -8,7 +8,7 @@ import com.altenheim.kalender.interfaces.logicController.DateSuggestionControlle
 import com.altenheim.kalender.interfaces.logicController.GoogleAPIController;
 import com.altenheim.kalender.interfaces.logicController.MailClientAccessController;
 import com.altenheim.kalender.interfaces.logicController.SmartSearchController;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import com.altenheim.kalender.implementations.controller.models.SuggestionsModel;
 
@@ -17,7 +17,7 @@ public class SearchViewRequestHandlerController extends SearchViewValidationCont
     private final SmartSearchController smartSearch;
     private final DateSuggestionController dateSuggestionController;
     
-    public SearchViewRequestHandlerController(GoogleAPIController api, CalendarEntriesModel allCalendars,
+    public SearchViewRequestHandlerController(GoogleAPIController api, CalendarEntriesController allCalendars,
                                               PopupViewController popupViewController, MailClientAccessController mailCreationController,
                                               EntryFactory entryFactory, SmartSearchController smartSearch, DateSuggestionController dateSuggestionController)
     {

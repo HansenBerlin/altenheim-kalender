@@ -35,7 +35,7 @@ public class ImportControllerImpl implements ImportController
             tempCalendar = iCalCalendar;
             return true;
         }
-        catch (ParserException | IOException e)
+        catch (net.fortuna.ical4j.data.ParserException | IOException e)
         {
             System.err.println(e.getMessage());
             e.printStackTrace();
@@ -63,14 +63,15 @@ public class ImportControllerImpl implements ImportController
 
     public void importCalendar(String name)
     {
-        if (name.equals("HWR-Kalender"))
+        if (name.contains("HWR-Kalender"))
             tempFxCalendar.setName(name);
         com.calendarfx.model.Calendar localCalendar = tempFxCalendar;
         entryFactory.addCalendarToView(localCalendar, localCalendar.getName());
         tempFxCalendar = null;
     }
 
-    private com.calendarfx.model.Calendar parseICal(Calendar iCalCalendar) {
+    private com.calendarfx.model.Calendar parseICal(Calendar iCalCalendar)
+    {
         com.calendarfx.model.Calendar fxCalendar;
         if (iCalCalendar.getProperties().getProperty("X-WR-CALNAME") != null) {
             var iCalCalendarName = ((Property) iCalCalendar.getProperties().getProperty("X-WR-CALNAME")).getValue();

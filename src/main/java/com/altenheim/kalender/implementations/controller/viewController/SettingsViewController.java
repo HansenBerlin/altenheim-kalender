@@ -3,7 +3,7 @@ package com.altenheim.kalender.implementations.controller.viewController;
 import com.altenheim.kalender.interfaces.factorys.ComboBoxFactory;
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.logicController.UrlRequestController;
-import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesController;
 import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
@@ -23,7 +23,7 @@ import javafx.scene.text.Text;
 public class SettingsViewController extends ResponsiveController 
 {
     private final SettingsModel settings;
-    private final CalendarEntriesModel allCalendars;
+    private final CalendarEntriesController allCalendars;
     private final EntryFactory calendarFactory;
     private final PopupViewController popupViewController;
     private final ComboBoxFactory comboBoxFactory;
@@ -40,7 +40,7 @@ public class SettingsViewController extends ResponsiveController
     @FXML private CheckBox cBToolTips;
     @FXML private VBox topContainer, bottomContainer, containerComboBoxNotificationMin, containerComboBoxDefaultCalendar;
 
-    public SettingsViewController(SettingsModel settings, EntryFactory calendarFactory, CalendarEntriesModel allCalendars,
+    public SettingsViewController(SettingsModel settings, EntryFactory calendarFactory, CalendarEntriesController allCalendars,
                                   ComboBoxFactory comboBoxFactory, PopupViewController popupViewController, UrlRequestController urlRequestController)
     {
         this.settings = settings;
@@ -129,6 +129,7 @@ public class SettingsViewController extends ResponsiveController
             settings.course.set(comboBoxSelectionCourse.getValue());
             settings.semester.set(comboBoxSelectionSemester.getValue());            
             settings.setHwrWebsiteUrl(resultURL);
+            settings.setSelectedHwrCourseName(comboBoxSelectionSpecialField.getSelectionModel().getSelectedItem());
             if (urlRequestController.isCalendarImportedSuccesfully())
                 popupViewController.showCalendarImportedSuccess();
             else

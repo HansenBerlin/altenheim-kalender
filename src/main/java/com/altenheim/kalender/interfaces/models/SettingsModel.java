@@ -14,15 +14,16 @@ public interface SettingsModel extends Serializable
     SimpleStringProperty[] getSettingsInputFieldsContainer();
     SimpleBooleanProperty getToolTipEnabled();
     String getSelectedHwrCourseName();
+    File getPasswordhashFile();
+    Style getCssStyle();
     long getNotificationTimeBeforeEntryInMinutes();
+    long getHwrRequestIntervalInMinutes();
+    long getEntrySystemMessageIntervalInMinutes();
+    void setSelectedHwrCourseName(String value);
     void setNotificationTimeBeforeEntryInMinutes(long value);
     void setDefaultCalendarForSearchView(String value);
     void setEntrySystemMessageIntervalInMinutes(int value);
-    long getEntrySystemMessageIntervalInMinutes();
     void setHwrWebsiteUrl(String value);
-    long getHwrRequestIntervalInMinutes();
-    File getPasswordhashFile();
-    Style getCssStyle();
     void loadSettings();
     void saveSettings();
 }
