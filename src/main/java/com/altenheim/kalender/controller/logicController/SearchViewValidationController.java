@@ -3,33 +3,24 @@ package com.altenheim.kalender.controller.logicController;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.DateFormatConverter;
-import com.altenheim.kalender.resourceClasses.FxmlFiles;
-
+import com.altenheim.kalender.controller.viewController.ResponsiveController;
+import com.altenheim.kalender.interfaces.*;
 import org.controlsfx.control.ToggleSwitch;
-
+import java.time.*;
+import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.scene.control.*;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import com.altenheim.kalender.controller.viewController.ResponsiveController;
-import com.altenheim.kalender.interfaces.*;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
 
@@ -82,12 +73,6 @@ public class SearchViewValidationController extends ResponsiveController
     @FXML
     public void initialize()
     {
-        //stepThreeUserInput = new VBox();
-        /*
-        var loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(FxmlFiles.SEARCH_VIEW));
-        loader.setController(this); */
-
     }
     
     

@@ -3,9 +3,7 @@ package com.altenheim.kalender.controller.viewController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -14,9 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
-import com.altenheim.kalender.resourceClasses.DateFormatConverter;
-import com.altenheim.kalender.resourceClasses.FxmlFiles;
-import com.calendarfx.model.Entry;
 import com.altenheim.kalender.controller.logicController.*;
 import com.altenheim.kalender.controller.Factories.*;
 import com.altenheim.kalender.interfaces.*;
@@ -167,108 +162,7 @@ public class SearchViewController extends SearchViewRequestHandlerController
             hBox.setScaleX(0);
             hBox.setScaleY(0);
         }
-    } 
-    
-
-
-/*
-    private void iterateThroughSuggestions() 
-    {
-        if (toggleAddAutomatically.isSelected()) 
-        {
-            automaticEntryCreation();
-            return;
-        }        
-
-        int duration = validateDuration() + timeBeforeGlobal + timeAfterGlobal;
-        SuggestionsModel.data.clear();
-
-        for (int i = 0; i < 20; i++)         
-        {
-            currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
-            
-            if (currentSuggestion == null)
-                return; 
-            
-            var buttonAdd = createAddEntryButton(currentSuggestion);
-            timeToStartSearch = currentSuggestion.getEndAsLocalDateTime().minusMinutes(timeAfterGlobal); 
-            SuggestionsModel.addToList(currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal), 
-                currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
-                currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), 
-                buttonAdd, tfAppointmentName.getText());
-        } 
-    } 
-    
-    private void automaticEntryCreation()
-    {
-        int duration = validateDuration() + timeBeforeGlobal + timeAfterGlobal;
-        int interval = calculateInterval();
-        if (interval == 0)
-            interval = 1;        
-        LocalTime startAt = timeToStartSearch.toLocalTime();                
-
-        while (recurrences > 0) 
-        {
-            currentSuggestion = dateSuggestionController.getDateSuggestionFromEntryList(currentSuggestions, timeToStartSearch, duration);
-            if (currentSuggestion == null)
-                return;
-            
-            if (interval > 0)            
-                timeToStartSearch = LocalDateTime.of(timeToStartSearch.toLocalDate().plusDays(interval), startAt);            
-            else            
-                timeToStartSearch = currentSuggestion.getEndAsLocalDateTime();
-            
-            var sendMailButton = createSendMailButton();
-            createEntryIncludingTravelTimes(currentSuggestion);                
-            SuggestionsModel.addToList(currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal), 
-                currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), currentSuggestion.getStartDate(), 
-                currentSuggestion.getEndDate(), sendMailButton, tfAppointmentName.getText());                
-            recurrences--;            
-        } 
-    }    
-
-    private void createEntryIncludingTravelTimes(Entry<String> currentSuggestion) 
-    {
-        int traveltime = 0;
-        if (toggleUseTravelDuration.isSelected()) 
-        {
-            traveltime = travelTimeTo;
-        }
-        String defaultCalendarName = SettingsModel.defaultCalendarForSearchView;
-        entryFactory.createNewUserEntryIncludingTravelTimes(currentSuggestion.getStartDate(),
-                currentSuggestion.getEndDate(), currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal),
-                currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), tfAppointmentName.getText(),
-                 traveltime, defaultCalendarName);
-    }        
-
-    private void startRequest() 
-    {
-        var validatedDates = validateDateInput();
-        var startDateInput = validatedDates[0];
-        var endDateDateInput = validatedDates[1];
-        var validatedTimes = validateTimeInput();
-        var startTimeInput = validatedTimes[0];
-        var endTimeInput = validatedTimes[1];
-        var userPrefs = entryFactory.createUserEntry(startDateInput, endDateDateInput, startTimeInput, endTimeInput);
-        int duration = validateDuration();
-        int travelTime = validateTravelTime();
-        var openingHours = validateOpeningHours();
-        int timeBefore = (int) sliderMarginBeforeAppointment.getValue();
-        int timeAfter = (int) sliderMarginAfterAppointment.getValue();
-        var updatedTimes = compareTimes(timeBefore, timeAfter, travelTime);
-        var weekdays = validateWeekdays();        
-        int intervalDays = calculateInterval();   
-        validateCalendarSelectionInput();    
-        
-        currentSuggestions = smartSearch.findPossibleTimeSlots(userPrefs, duration, weekdays, 
-            openingHours, updatedTimes[0], updatedTimes[1], intervalDays);
-        
-        recurrences = validateReccurrences();  
-        timeBeforeGlobal = updatedTimes[0];      
-        timeAfterGlobal = updatedTimes[1];
-        timeToStartSearch = LocalDateTime.of(startDateInput, startTimeInput); 
-        travelTimeTo = travelTime;
-    }*/
+    }  
 
     private TableView<SuggestionsModel> createTable() 
     {

@@ -9,15 +9,6 @@ public class SearchViewRequestHandlerController extends SearchViewValidationCont
 {
     private ISmartSearchController smartSearch;
     private IDateSuggestionController dateSuggestionController;
-/*
-    public SearchViewRequestHandlerController(IGoogleAPIController api, ICalendarEntriesModel allCalendars, IDateSuggestionController dateSuggestionController,
-        ISmartSearchController smartSearch, IEntryFactory entryFactory, IPopupViewController popupViewController, IMailCreationController mailCreationController) 
-    {
-        super(api, allCalendars, popupViewController, mailCreationController, entryFactory);
-        this.smartSearch = smartSearch;
-        this.entryFactory = entryFactory;
-        this.dateSuggestionController = dateSuggestionController;
-    }*/
     
     public SearchViewRequestHandlerController(IGoogleAPIController api, ICalendarEntriesModel allCalendars,
             IPopupViewController popupViewController, IMailCreationController mailCreationController,
@@ -110,6 +101,5 @@ public class SearchViewRequestHandlerController extends SearchViewValidationCont
         timeAfterGlobal = updatedTimes[1];
         timeToStartSearch = LocalDateTime.of(startDateInput, startTimeInput); 
         travelTimeTo = travelTime;
-    }
-    
+    }    
 }
