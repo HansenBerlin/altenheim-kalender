@@ -28,11 +28,11 @@ public class InjectorFactory
         jMetroStyle.setStyle(settings.getCssStyle());
         
         var customCalendarView = new CustomViewOverride(settings);         
-        var contacts = new ContactModel();
+        ContactModel contacts = new ContactModelImpl();
         IExportController exportCt = new ExportController(settings);
         IImportController importCt = new ImportController();
         IIOController ioCt = new IOController(settings, exportCt, importCt);
-        var mailTemplates = ioCt.loadMailTemplatesFromFile();
+        MailTemplateModel mailTemplates = ioCt.loadMailTemplatesFromFile();
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
         IAnimationController animationController = new AnimationController();
         IPopupViewController popupViewController = new PopupViewsController(settings, importCt, exportCt);
@@ -58,6 +58,7 @@ public class InjectorFactory
         mainWindowController = new MainWindowController(allViews, customCalendarView, settings);
         allViews.setMainWindowController(mainWindowController);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews, settings);
-        initialSettingsLoader = new InitialSetupController(settings, ioCt, popupViewController, websiteCt, systemNotificationsCt, entryFactory, contacts);
+        initialSettingsLoader = new InitialSetupController(settings, ioCt, popupViewController, websiteCt,
+                systemNotificationsCt, entryFactory, contacts);
     }    
 }

@@ -2,7 +2,8 @@ package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.IComboBoxFactory;
 import com.altenheim.kalender.interfaces.IIOController;
-import com.altenheim.kalender.models.MailTemplateModel;
+import com.altenheim.kalender.interfaces.MailTemplateModel;
+import com.altenheim.kalender.models.MailTemplateModelImpl;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,7 +31,7 @@ public class MailTemplateViewController extends ResponsiveController
     @FXML private TextField txtFieldNameTemplate;
     @FXML private Text txtError;    
 
-    public MailTemplateViewController(MailTemplateModel mailTemplateModel, IComboBoxFactory comboBoxFactory, IIOController iOController) 
+    public MailTemplateViewController(MailTemplateModel mailTemplateModel, IComboBoxFactory comboBoxFactory, IIOController iOController)
     {
         this.comboBoxFactory = comboBoxFactory;
         this.mailTemplatesModel = mailTemplateModel;

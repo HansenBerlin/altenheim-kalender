@@ -5,7 +5,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import com.altenheim.kalender.interfaces.IMailCreationController;
-import com.altenheim.kalender.models.MailTemplateModel;
+import com.altenheim.kalender.interfaces.MailTemplateModel;
+import com.altenheim.kalender.models.MailTemplateModelImpl;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
@@ -13,7 +14,7 @@ public class MailCreationController implements IMailCreationController
 {
     private MailTemplateModel mailTemplates;
 
-    public MailCreationController(MailTemplateModel mailTemplates) 
+    public MailCreationController(MailTemplateModel mailTemplates)
     {
         this.mailTemplates = mailTemplates;
     }

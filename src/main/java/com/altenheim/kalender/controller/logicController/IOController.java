@@ -67,7 +67,7 @@ public class IOController implements IIOController
             entryFactory.addCalendarToView(new Calendar(), "Standardkalender");
     }
 
-    public void saveContactsToFile(ContactModel contacts) 
+    public void saveContactsToFile(ContactModel contacts)
     {
         var path = settings.getPathToUserDirectory() + "/contacts/contacts.file";
         try 
@@ -84,7 +84,7 @@ public class IOController implements IIOController
         }
     }
 
-    public void loadContactsFromFile(ContactModel contacts) 
+    public void loadContactsFromFile(ContactModel contacts)
     {
         var file = new File(settings.getPathToUserDirectory() + "/contacts/contacts.file");
         if (file.exists() == false)
@@ -94,7 +94,7 @@ public class IOController implements IIOController
         {
             var loadFile = new FileInputStream(file);
             var inputStream = new ObjectInputStream(loadFile);
-            var loadedContacts = (List<ContactModel>) inputStream.readObject();
+            var loadedContacts = (List<ContactModelImpl>) inputStream.readObject();
             contacts.rebuildObservableListFromSerializedData(loadedContacts);
             inputStream.close();
             loadFile.close();
@@ -105,7 +105,7 @@ public class IOController implements IIOController
         }
     }
 
-    public void saveMailTemplatesToFile(MailTemplateModel templates) 
+    public void saveMailTemplatesToFile(MailTemplateModel templates)
     {
         var path = settings.getPathToUserDirectory() + "/mailTemplates/templates.file";
         try 
@@ -122,16 +122,16 @@ public class IOController implements IIOController
         }
     }
 
-    public MailTemplateModel loadMailTemplatesFromFile() 
+    public MailTemplateModel loadMailTemplatesFromFile()
     {
         var file = new File(settings.getPathToUserDirectory() + "/mailTemplates/templates.file");
         if (!file.exists())
-            return new MailTemplateModel();
+            return new MailTemplateModelImpl();
         try 
         {
             var loadFile = new FileInputStream(file);
             var inputStream = new ObjectInputStream(loadFile);
-            var mailTemplates = (MailTemplateModel) inputStream.readObject();
+            var mailTemplates = (MailTemplateModelImpl) inputStream.readObject();
             inputStream.close();
             loadFile.close();
             return mailTemplates;
@@ -139,7 +139,7 @@ public class IOController implements IIOController
         catch (IOException | ClassNotFoundException e) 
         {
             e.printStackTrace();
-            return new MailTemplateModel();
+            return new MailTemplateModelImpl();
         }
     }
 

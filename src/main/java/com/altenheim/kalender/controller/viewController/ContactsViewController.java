@@ -1,7 +1,8 @@
 package com.altenheim.kalender.controller.viewController;
 
+import com.altenheim.kalender.interfaces.ContactModel;
 import com.altenheim.kalender.interfaces.IIOController;
-import com.altenheim.kalender.models.ContactModel;
+import com.altenheim.kalender.models.ContactModelImpl;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,7 +20,7 @@ public class ContactsViewController extends ResponsiveController
     private IIOController ioController;
     private ContactModel contacts;
 
-    public ContactsViewController(IIOController ioController, ContactModel contacts) 
+    public ContactsViewController(IIOController ioController, ContactModel contacts)
     {
         this.ioController = ioController;
         this.contacts = contacts;
@@ -28,7 +29,7 @@ public class ContactsViewController extends ResponsiveController
     @FXML
     private void initialize() 
     {
-        TableView<ContactModel> contactsTable = createTable();
+        TableView<ContactModelImpl> contactsTable = createTable();
         tableContainer.getChildren().add(contactsTable);
         saveChangesToContacts();
     }
@@ -36,10 +37,10 @@ public class ContactsViewController extends ResponsiveController
     @FXML
     private void buttonClicked(ActionEvent event) 
     {
-        var newContact = new ContactModel(txtFieldFirstName.getText(), txtFieldSurName.getText(),
+        var newContact = new ContactModelImpl(txtFieldFirstName.getText(), txtFieldSurName.getText(),
                 txtFieldMail.getText(), txtFieldStreet.getText(), txtFieldCity.getText(), txtFieldPostalCode.getText(),
                 txtFieldPhone.getText());
-        ContactModel.data.add(newContact);   
+        ContactModelImpl.data.add(newContact);
         clearFields();     
     }
 
@@ -55,9 +56,9 @@ public class ContactsViewController extends ResponsiveController
 
     private void saveChangesToContacts()
     {
-        ContactModel.data.addListener(new ListChangeListener<ContactModel>() 
+        ContactModelImpl.data.addListener(new ListChangeListener<ContactModelImpl>()
         {
-            public void onChanged(Change<? extends ContactModel> c) 
+            public void onChanged(Change<? extends ContactModelImpl> c)
             {
                 try 
                 {
@@ -71,20 +72,20 @@ public class ContactsViewController extends ResponsiveController
         });
     }
 
-    private TableView<ContactModel> createTable() 
+    private TableView<ContactModelImpl> createTable()
     {
-        TableColumn<ContactModel, String> name = new TableColumn<>("Name");
-        TableColumn<ContactModel, String> address = new TableColumn<>("Adresse");
-        TableColumn<ContactModel, String> mail = new TableColumn<>("Mailadresse");
-        TableColumn<ContactModel, String> phone = new TableColumn<>("Telefon");
-        TableColumn<ContactModel, String> button = new TableColumn<>("");
-        TableView<ContactModel> table = new TableView<ContactModel>(ContactModel.data);
+        TableColumn<ContactModelImpl, String> name = new TableColumn<>("Name");
+        TableColumn<ContactModelImpl, String> address = new TableColumn<>("Adresse");
+        TableColumn<ContactModelImpl, String> mail = new TableColumn<>("Mailadresse");
+        TableColumn<ContactModelImpl, String> phone = new TableColumn<>("Telefon");
+        TableColumn<ContactModelImpl, String> button = new TableColumn<>("");
+        TableView<ContactModelImpl> table = new TableView<ContactModelImpl>(ContactModelImpl.data);
 
-        name.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("fullName"));
-        address.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("address"));
-        mail.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("mail"));
-        phone.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("phone"));
-        button.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("button"));
+        name.setCellValueFactory(new PropertyValueFactory<ContactModelImpl, String>("fullName"));
+        address.setCellValueFactory(new PropertyValueFactory<ContactModelImpl, String>("address"));
+        mail.setCellValueFactory(new PropertyValueFactory<ContactModelImpl, String>("mail"));
+        phone.setCellValueFactory(new PropertyValueFactory<ContactModelImpl, String>("phone"));
+        button.setCellValueFactory(new PropertyValueFactory<ContactModelImpl, String>("button"));
 
         name.setPrefWidth(200);
         address.setPrefWidth(400);

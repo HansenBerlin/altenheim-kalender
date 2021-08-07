@@ -272,7 +272,7 @@ public class SearchViewValidationController extends ResponsiveController
     protected String validateRecipient()
     {
         String selectedContact = dropDownContact.getValue();
-        for (var contact : ContactModel.data) 
+        for (var contact : ContactModelImpl.data)
         {
             if (contact.getFullName().equals(selectedContact));
                 return contact.getMail();            

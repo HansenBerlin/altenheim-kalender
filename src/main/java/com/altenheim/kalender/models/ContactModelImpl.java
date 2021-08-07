@@ -3,15 +3,17 @@ package com.altenheim.kalender.models;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
+
+import com.altenheim.kalender.interfaces.ContactModel;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 
-public class ContactModel implements Serializable 
+public class ContactModelImpl implements ContactModel
 {
-    public static ObservableList<ContactModel> data = FXCollections.observableArrayList();
+    public static ObservableList<ContactModelImpl> data = FXCollections.observableArrayList();
     public static ObservableList<String> destinations = FXCollections.observableArrayList();
     public static ObservableList<String> mailadresses = FXCollections.observableArrayList();
     
@@ -21,10 +23,10 @@ public class ContactModel implements Serializable
     private String address; 
     private transient Button button;
     
-    public ContactModel() {}
+    public ContactModelImpl() {}
 
-    public ContactModel(String firstName, String surName, String mail, String streetAndNumber, String city,
-            String postalCode, String phone) 
+    public ContactModelImpl(String firstName, String surName, String mail, String streetAndNumber, String city,
+                            String postalCode, String phone)
     {        
         this.mail = mail;
         this.phone = phone;
@@ -53,18 +55,11 @@ public class ContactModel implements Serializable
                 removeContactModel();
             }
         });
-    }    
+    }
 
-    private void removeContactModel()
-    {
-        data.remove(this);
-        mailadresses.remove(mail);
-        destinations.remove(address);
-    }    
-
-    public List<ContactModel> getDataToSerialize() 
+    public List<ContactModelImpl> getDataToSerialize()
     { 
-        var listFromObservable = new ArrayList<ContactModel>();
+        var listFromObservable = new ArrayList<ContactModelImpl>();
         for (var contactModel : data) 
         {
             listFromObservable.add(contactModel);            
@@ -72,15 +67,22 @@ public class ContactModel implements Serializable
         return listFromObservable; 
     } 
 
-    public void rebuildObservableListFromSerializedData(List<ContactModel> serialized) 
+    public void rebuildObservableListFromSerializedData(List<ContactModelImpl> serialized)
     { 
         for (var contactModel : serialized) 
         {
             contactModel.button = new Button("LÖSCHEN");
             contactModel.registerButtonEvent();
-            ContactModel.data.add(contactModel);
-            ContactModel.destinations.add(contactModel.address);
-            ContactModel.mailadresses.add(contactModel.mail);
+            ContactModelImpl.data.add(contactModel);
+            ContactModelImpl.destinations.add(contactModel.address);
+            ContactModelImpl.mailadresses.add(contactModel.mail);
         }
-    } 
+    }
+
+    private void removeContactModel()
+    {
+        data.remove(this);
+        mailadresses.remove(mail);
+        destinations.remove(address);
+    }
 }

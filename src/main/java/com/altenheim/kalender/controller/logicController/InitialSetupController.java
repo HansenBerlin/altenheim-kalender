@@ -1,7 +1,7 @@
 package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.interfaces.*;
-import com.altenheim.kalender.models.ContactModel;
+import com.altenheim.kalender.models.ContactModelImpl;
 import com.altenheim.kalender.models.SettingsModel;
 
 public class InitialSetupController 

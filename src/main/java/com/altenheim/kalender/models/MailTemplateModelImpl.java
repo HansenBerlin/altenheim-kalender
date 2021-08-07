@@ -1,14 +1,16 @@
 package com.altenheim.kalender.models;
 
+import com.altenheim.kalender.interfaces.MailTemplateModel;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MailTemplateModel implements Serializable 
+public class MailTemplateModelImpl implements MailTemplateModel
 {
     Map<String, String> templates = new HashMap<String, String>();
 
-    public MailTemplateModel() 
+    public MailTemplateModelImpl()
     {
         templates.put("Standard Template", getDefaultTemplate());
     }

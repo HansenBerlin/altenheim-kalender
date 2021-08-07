@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.interfaces.IComboBoxFactory;
 import com.altenheim.kalender.models.CalendarEntriesModel;
-import com.altenheim.kalender.models.ContactModel;
+import com.altenheim.kalender.models.ContactModelImpl;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,9 +29,9 @@ public class ComboBoxFactory implements IComboBoxFactory
     public ComboBoxFactory() 
     {
         vehicles.addAll("zu Fuß", "Fahrrad", "Öffis", "Auto");
-        destinations = ContactModel.destinations;
+        destinations = ContactModelImpl.destinations;
         calendars = CalendarEntriesModel.calendarsComboBox;
-        mailAdresses = ContactModel.mailadresses;
+        mailAdresses = ContactModelImpl.mailadresses;
         recurrenceOptions.addAll("täglich", "wöchentlich", "monatlich", "halbjährlich", "jährlich");
         notificationMin.addAll("5", "15", "30", "60");
         selectionSpecialField.addAll("IP", "Bank", "Bauwesen", "DL", "Elektrotechnik", "FM", "Handel", "IBA",
