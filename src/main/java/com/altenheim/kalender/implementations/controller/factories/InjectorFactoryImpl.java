@@ -30,7 +30,7 @@ public class InjectorFactoryImpl implements InjectorFactory
 
     public void createServices() 
     {     
-        var jsonParser = new JsonParserImpl();
+        JsonParser jsonParser = new JsonParserImpl();
         SettingsModel settings = new SettingsModelImpl();
         settings.loadSettings();
         var jMetroStyle = new JMetro();
@@ -40,7 +40,7 @@ public class InjectorFactoryImpl implements InjectorFactory
         CalendarEntriesModel calendarEntriesModel = new CalendarEntriesModelImpl(customCalendarView);
         ContactModel contacts = new ContactModelImpl();
         ComboBoxFactory comboBoxFactory = new ComboBoxFactoryImpl();
-        EncryptionController encryptionController = new EncryptionControllerImpl();
+        DecryptionController encryptionController = new DecryptionControllerImpl();
         ExportController exportCt = new ExportControllerImpl(settings);
         EntryFactory entryFactory = new EntryFactoryImpl(calendarEntriesModel, customCalendarView);
         ImportController importCt = new ImportControllerImpl(entryFactory);
@@ -65,7 +65,7 @@ public class InjectorFactoryImpl implements InjectorFactory
         var allViews = new ViewRootsModelImpl(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
         mainWindowController = new MainWindowController(allViews, customCalendarView, settings);
         allViews.setMainWindowController(mainWindowController);
-        guiSetup = new GuiUpdateControllerImpl(jMetroStyle, allViews, settings);
+        guiSetup = new GuiUpdateControllerImpl(jMetroStyle, allViews);
         initialSettingsLoader = new InitialSetupControllerImpl(settings, ioCt, popupViewController, websiteCt,
                 systemNotificationsCt, entryFactory, contacts);
     }    

@@ -33,7 +33,7 @@ public class SuggestionsModel
     public String getDayEnd() { return dayEnd; } 
     public Button getButton() { return button; }    
 
-    static public void addToList(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, Button button, String title) 
+    static public void addToList(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, Button button)
     {
         SuggestionsModel.data.add(new SuggestionsModel(startTime, endTime, startDate, endDate, button));
     } 

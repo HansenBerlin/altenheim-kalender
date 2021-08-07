@@ -1,7 +1,6 @@
 package com.altenheim.kalender.implementations.controller.viewController;
 
 import com.altenheim.kalender.interfaces.models.ViewRootsModel;
-import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.altenheim.kalender.interfaces.viewController.GuiUpdateController;
 import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
 import com.altenheim.kalender.resourceClasses.*;
@@ -15,7 +14,7 @@ public class GuiUpdateControllerImpl implements GuiUpdateController
     private final JMetro jMetroStyle;
     private final ViewRootsModel viewsInformation;
 
-    public GuiUpdateControllerImpl(JMetro jMetroStyle, ViewRootsModel viewsInformation, SettingsModel settings)
+    public GuiUpdateControllerImpl(JMetro jMetroStyle, ViewRootsModel viewsInformation)
     {
         this.jMetroStyle = jMetroStyle;
         this.viewsInformation = viewsInformation;

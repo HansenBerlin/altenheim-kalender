@@ -49,7 +49,7 @@ public class SearchViewRequestHandlerController extends SearchViewValidationCont
             SuggestionsModel.addToList(currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal), 
                 currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), 
                 currentSuggestion.getStartDate(), currentSuggestion.getEndDate(), 
-                buttonAdd, tfAppointmentName.getText());
+                buttonAdd);
         } 
     } 
     
@@ -76,7 +76,7 @@ public class SearchViewRequestHandlerController extends SearchViewValidationCont
             createEntryIncludingTravelTimes(currentSuggestion);                
             SuggestionsModel.addToList(currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal), 
                 currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), currentSuggestion.getStartDate(), 
-                currentSuggestion.getEndDate(), sendMailButton, tfAppointmentName.getText());                
+                currentSuggestion.getEndDate(), sendMailButton);
             recurrences--;            
         } 
     }     

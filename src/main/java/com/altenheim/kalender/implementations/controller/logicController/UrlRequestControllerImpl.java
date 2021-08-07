@@ -15,10 +15,14 @@ import java.util.TimerTask;
 public class UrlRequestControllerImpl extends TimerTask implements UrlRequestController
 {
     private final SettingsModel settings;
+    private final ImportController importController;
+    private final EntryFactory entryFactory;
 
     public UrlRequestControllerImpl(SettingsModel settings, ImportController importController, EntryFactory entryFactory)
     {
         this.settings = settings;
+        this.importController = importController;
+        this.entryFactory = entryFactory;
     }
 
     public void startScraperTask() 
@@ -32,14 +36,14 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
         scrapeCalendar();
     }
 
-    public void scrapeCalendar() 
-    {/*
+    private void scrapeCalendar()
+    {
         if (isDownloadIcsSuccessful())
         {
             var calendarFile = settings.getPathToUserDirectory() + "calendars/hwrFile.ics";
             var calendar = importController.importFile(calendarFile);            
             entryFactory.addCalendarToView(calendar, "HWR Calendar");
-        }*/
+        }
     }    
 
     private boolean isDownloadIcsSuccessful() 

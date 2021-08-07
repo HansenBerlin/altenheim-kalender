@@ -146,8 +146,7 @@ public class MainWindowController extends ResponsiveController
         }
     }
 
-    private void setupMenuButtons() throws FileNotFoundException 
-    {
+    private void setupMenuButtons() {
         Button[] buttonsList = { menuBtnPlanner, menuBtnSearch, menuBtnContacts, menuBtnMail, menuBtnSettings, btnAddAppointment, btnSwitchModes };
         Pane[] buttonBackgrounds = { menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneContacts, menuBtnPaneMail, menuBtnPaneSettings, null, null };
         allButtonsWithBackgrounds = createMainMenuButtons(buttonsList, buttonBackgrounds);

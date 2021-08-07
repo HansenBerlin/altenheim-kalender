@@ -1,33 +1,17 @@
 package com.altenheim.kalender.implementations.controller.logicController;
 
-import com.altenheim.kalender.interfaces.logicController.EncryptionController;
+import com.altenheim.kalender.interfaces.logicController.DecryptionController;
 import javafx.util.Pair;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-public class EncryptionControllerImpl implements EncryptionController
+public class DecryptionControllerImpl implements DecryptionController
 {
-    public String encrypt(String password, String salt, String plainText) 
-    {
-        try 
-        {
-            var paramKeyPair = createSpecs(password, salt);
-            var cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, paramKeyPair.getValue(), paramKeyPair.getKey());
-            return Base64.getEncoder().encodeToString(cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8)));
-        } 
-        catch (Exception e) 
-        {
-            e.printStackTrace();
-            return "";
-        }
-    }
 
     public String decrypt(String password, String salt, String cypherText) 
     {

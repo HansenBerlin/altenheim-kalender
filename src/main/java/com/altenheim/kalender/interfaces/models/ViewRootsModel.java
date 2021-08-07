@@ -9,5 +9,4 @@ public interface ViewRootsModel
     ResponsiveController[] getAllViewControllers();
     void addViewRootToList(int atIndex, GridPane view);
     MainWindowController getMainWindowController();
-    void setMainWindowController(MainWindowController mainWindowController);
 }

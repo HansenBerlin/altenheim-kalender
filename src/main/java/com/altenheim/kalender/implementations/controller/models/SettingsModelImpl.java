@@ -16,7 +16,6 @@ public class SettingsModelImpl implements SettingsModel
     public static String hwrWebsiteUrl = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
     public static boolean useAdvancedFeatures = false;
     public static boolean isDarkmodeActive = true;
-    public static boolean isToolTipEnabled = true;
     public long entrySystemMessageIntervalInMinutes = 1;
     public long notificationTimeBeforeEntryInMinutes = 15;
     public long hwrRequestIntervalInMinutes = (long) 1440;    
@@ -30,7 +29,6 @@ public class SettingsModelImpl implements SettingsModel
     public final transient SimpleStringProperty semester = new SimpleStringProperty("Sem.");
     public final transient SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
     public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
-    //public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer; }
     public SimpleBooleanProperty getToolTipEnabled() { return toolTip; }
     public void setNotificationTimeBeforeEntryInMinutes(long value) { notificationTimeBeforeEntryInMinutes = value; }
     public long getNotificationTimeBeforeEntryInMinutes() { return notificationTimeBeforeEntryInMinutes; }

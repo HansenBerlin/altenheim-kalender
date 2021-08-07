@@ -40,17 +40,6 @@ public class CalendarEntriesModelImpl implements CalendarEntriesModel
         return allCalendars; 
     }
 
-    public String[] getAllCalendarNames()
-    {
-        var allCalendars = getAllCalendars();
-        String[] names = new String[allCalendars.size()];
-        for (int i = 0; i < allCalendars.size(); i++) 
-        {
-            names[i] = allCalendars.get(i).getName();            
-        }
-        return names;
-    }
-
     public void addEntryToCalendarWithName(String name, Entry<String> entry)
     {
         for (var calendar : getAllCalendars()) 

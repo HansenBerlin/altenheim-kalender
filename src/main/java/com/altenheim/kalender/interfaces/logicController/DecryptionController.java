@@ -10,8 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-public interface EncryptionController
+public interface DecryptionController
 {
-    String encrypt(String password, String salt, String plainText);
     String decrypt(String password, String salt, String cypherText);
 }

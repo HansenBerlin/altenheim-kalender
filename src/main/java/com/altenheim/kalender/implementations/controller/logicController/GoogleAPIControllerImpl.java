@@ -9,8 +9,9 @@ import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.List;
 import com.altenheim.kalender.interfaces.logicController.GoogleAPIController;
-import com.altenheim.kalender.interfaces.logicController.EncryptionController;
+import com.altenheim.kalender.interfaces.logicController.DecryptionController;
 import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
+import com.altenheim.kalender.interfaces.logicController.JsonParser;
 import com.calendarfx.model.Entry;
 
 import org.json.*;
@@ -21,25 +22,25 @@ public class GoogleAPIControllerImpl implements GoogleAPIController {
     private static final String FINDDESTINATIONSQUERY = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=%s";
     private static final String SALT = "e]<J3Grct{~'HJv-";
 
-    private final JsonParserImpl jsonParserImpl;
-    private final EncryptionController encryptionController;
+    private final JsonParser jsonParser;
+    private final DecryptionController encryptionController;
 
-    public GoogleAPIControllerImpl(JsonParserImpl jsonParserImpl, EncryptionController encryptionController)
+    public GoogleAPIControllerImpl(JsonParser jsonParserImpl, DecryptionController encryptionController)
     {
-        this.jsonParserImpl = jsonParserImpl;
+        this.jsonParser = jsonParserImpl;
         this.encryptionController = encryptionController;
     }
 
     public HashMap<DayOfWeek, List<Entry<String>>> getOpeningHours(String locationSearchUserInput) {
-        var security = new EncryptionControllerImpl();
+        var security = new DecryptionControllerImpl();
         var apiKey = security.decrypt(SettingsModelImpl.decryptedPassword, SALT, SettingsModelImpl.APICYPHERTEXT);
         String input = locationSearchUserInput.replace(" ", "%20");
 
         try {
             var jsonResponse = makeHttpRequest(String.format(FINDPLACEQUERY, input, apiKey));
-            var id = jsonParserImpl.parseJsonForLocationId(jsonResponse);
+            var id = jsonParser.parseJsonForLocationId(jsonResponse);
             var jsonResponseDetail = makeHttpRequest(String.format(OPENINGHOURSQUERY, id, apiKey));
-            return jsonParserImpl.parseJsonForOpeningHours(jsonResponseDetail);
+            return jsonParser.parseJsonForOpeningHours(jsonResponseDetail);
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

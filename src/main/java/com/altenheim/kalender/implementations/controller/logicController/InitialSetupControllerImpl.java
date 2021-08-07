@@ -69,7 +69,7 @@ public class InitialSetupControllerImpl implements InitialSetupController
     private boolean validateUserPassword() 
     {
         var password = popup.showPasswordInputDialog();
-        var security = new EncryptionControllerImpl();
+        var security = new DecryptionControllerImpl();
         var hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_",
                 SettingsModelImpl.PASSWORDHASH);
         while (hashedPasswordAfterUserValidation.isBlank()) 
