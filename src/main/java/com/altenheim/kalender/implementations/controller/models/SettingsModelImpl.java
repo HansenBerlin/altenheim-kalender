@@ -14,6 +14,7 @@ public class SettingsModelImpl implements SettingsModel
     public static String defaultCalendarForSearchView = "";
     public static String decryptedPassword = "";
     public static String hwrWebsiteUrl = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
+    public static final String userDirectory = "userfiles/";
     public static boolean useAdvancedFeatures = false;
     public static boolean isDarkmodeActive = false;
     public long entrySystemMessageIntervalInMinutes = 1;
@@ -37,11 +38,10 @@ public class SettingsModelImpl implements SettingsModel
     public long getEntrySystemMessageIntervalInMinutes() { return entrySystemMessageIntervalInMinutes; }
     public void setHwrWebsiteUrl(String value) { hwrWebsiteUrl = value; }
     public long getHwrRequestIntervalInMinutes() { return hwrRequestIntervalInMinutes; }
-    public String getPathToUserDirectory() { return userDirectory; }
+    public String getSelectedHwrCourseName() { return course.getValue(); }
     public File getPasswordhashFile() { return new File(userDirectory + "savedHash"); }
     private final transient SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
     private final transient SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
-    private final String userDirectory = "userfiles/";
 
     public Style getCssStyle() 
     {

@@ -122,8 +122,9 @@ public class SettingsViewController extends ResponsiveController
             txtError.setVisible(false);
             String resultURL = String.format(
                     "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%s/kurs%s",
-                    comboBoxSelectionSpecialField.getValue(), comboBoxSelectionSemester.getValue(),
-                    comboBoxSelectionCourse.getValue().replaceFirst("keine Kurse", ""));
+                    comboBoxSelectionSpecialField.getValue().toLowerCase(),
+                    comboBoxSelectionSemester.getValue().replace("Sem. ", ""),
+                    comboBoxSelectionCourse.getValue().toLowerCase().replaceFirst("keine kurse", ""));
             settings.specialField.set(comboBoxSelectionSpecialField.getValue());
             settings.course.set(comboBoxSelectionCourse.getValue());
             settings.semester.set(comboBoxSelectionSemester.getValue());            

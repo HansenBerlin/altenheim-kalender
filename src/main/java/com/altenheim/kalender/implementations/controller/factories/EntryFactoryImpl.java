@@ -138,7 +138,7 @@ public class EntryFactoryImpl implements EntryFactory
             var endAt = LocalDateTime.of(dateEnd, timeEnd);
             endAt = endAt.plusMinutes(timeTravel);            
             var entry = createUserEntry(startAt.toLocalDate(), endAt.toLocalDate(), startAt.toLocalTime(), endAt.toLocalTime()); 
-            entry.setTitle("Anfahrtzeit für " + title);
+            entry.setTitle("Abreisezeit für " + title);
             allCalendars.addEntryToCalendarWithName(calName, entry);
         }
         var entry = createUserEntry(dateStart, dateEnd,timeStart, timeEnd); 

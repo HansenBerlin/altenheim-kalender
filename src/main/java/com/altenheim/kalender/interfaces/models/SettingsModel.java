@@ -13,6 +13,7 @@ public interface SettingsModel extends Serializable
     SimpleStringProperty semester = new SimpleStringProperty("Sem.");
     SimpleStringProperty[] getSettingsInputFieldsContainer();
     SimpleBooleanProperty getToolTipEnabled();
+    String getSelectedHwrCourseName();
     long getNotificationTimeBeforeEntryInMinutes();
     void setNotificationTimeBeforeEntryInMinutes(long value);
     void setDefaultCalendarForSearchView(String value);
@@ -20,7 +21,6 @@ public interface SettingsModel extends Serializable
     long getEntrySystemMessageIntervalInMinutes();
     void setHwrWebsiteUrl(String value);
     long getHwrRequestIntervalInMinutes();
-    String getPathToUserDirectory();
     File getPasswordhashFile();
     Style getCssStyle();
     void loadSettings();

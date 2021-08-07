@@ -8,6 +8,11 @@ import com.altenheim.kalender.interfaces.logicController.UrlRequestController;
 import com.altenheim.kalender.interfaces.models.ContactModel;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
+import com.calendarfx.model.Calendar;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public record InitialSetupControllerImpl(IOController ioController,
                                          PopupViewController popup,
@@ -16,18 +21,22 @@ public record InitialSetupControllerImpl(IOController ioController,
                                          EntryFactory entryFactory,
                                          ContactModel contacts) implements InitialSetupController {
 
-    public void initializeSettings() {
+    public void initializeSettings()
+    {
         ioController.createUserPath();
-        try {
-            ioController.loadCalendarsFromFile(entryFactory);
-            ioController.loadContactsFromFile(contacts);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ioController.loadCalendarsFromFile(entryFactory);
+        ioController.loadContactsFromFile(contacts);
         websiteScraper.startScraperTask();
-        if (systemNotifications.initializeSystemTrayAccess()) {
+        if (systemNotifications.isSystemTrayAccessAllowed())
             systemNotifications.startNotificationTask();
-        }
+        createDefaultCalendarWhenDirectoryIsEmpty();
+    }
+
+    private void createDefaultCalendarWhenDirectoryIsEmpty()
+    {
+        var calendarDirectory = new File(SettingsModelImpl.userDirectory + "calendars/");
+        if (calendarDirectory.listFiles().length == 0)
+            entryFactory.addCalendarToView(new Calendar(), "Standardkalender");
     }
 
     public void initialValidationCheck() {
@@ -40,7 +49,6 @@ public record InitialSetupControllerImpl(IOController ioController,
         }
         SettingsModelImpl.decryptedPassword = ioController.loadHashedPassword();
         SettingsModelImpl.useAdvancedFeatures = true;
-
     }
 
     private boolean validateUserPassword() {

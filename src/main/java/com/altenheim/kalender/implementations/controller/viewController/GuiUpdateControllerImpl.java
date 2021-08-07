@@ -30,6 +30,11 @@ public record GuiUpdateControllerImpl(JMetro jMetroStyle, ViewRootsModel viewsIn
         ((PlannerViewController) viewsInformation.getAllViewControllers()[0]).registerButtonEvents();
     }
 
+    public void updateAdvancedFeaturesFields()
+    {
+        ((SearchViewController) viewsInformation.getAllViewControllers()[1]).setupAdvancedOptionsToggles();
+    }
+
     private void setupViews() {
         for (int i = 0; i < FxmlFiles.ALL_FILES.length; i++) {
             var loader = new FXMLLoader();

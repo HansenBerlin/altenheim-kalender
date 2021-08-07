@@ -91,8 +91,10 @@ public class SearchViewRequestHandlerController extends SearchViewValidationCont
         var endTimeInput = validatedTimes[1];
         var userPrefs = entryFactory.createUserEntry(startDateInput, endDateDateInput, startTimeInput, endTimeInput);
         int duration = validateDuration();
+
         int travelTime = validateTravelTime();
         var openingHours = validateOpeningHours();
+
         int timeBefore = (int) sliderMarginBeforeAppointment.getValue();
         int timeAfter = (int) sliderMarginAfterAppointment.getValue();
         var updatedTimes = compareTimes(timeBefore, timeAfter, travelTime);

@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,14 +19,11 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
 {
     private final SettingsModel settings;
     private final ImportController importController;
-    private final EntryFactory entryFactory;
 
     public UrlRequestControllerImpl(SettingsModel settings, ImportController importController, EntryFactory entryFactory)
     {
         this.settings = settings;
         this.importController = importController;
-        this.entryFactory = entryFactory;
-        startScraperTask();
     }
 
     public void startScraperTask()
@@ -43,29 +41,37 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
     public boolean isCalendarImportedSuccesfully()
     {
         clearHwrCalendarFiles();
-        if (isDownloadIcsSuccessful())
+        boolean isCalendarDownloaded = false;
+        try
         {
-            var calendarFilesPath = settings.getPathToUserDirectory() + "hwr-calendars/HWR-Kalender.ics";
+            isCalendarDownloaded = isDownloadIcsSuccessful();
+        }
+        catch (IOException e)
+        {
+            System.err.println(e.getMessage());
+        }
+        if (isCalendarDownloaded)
+        {
+            var calendarFilesPath = SettingsModelImpl.userDirectory + "hwr-calendars/HWR-Kalender.ics";
             if (!importController.canCalendarFileBeImported(calendarFilesPath))
                 return false;
             if (!importController.canCalendarFileBeParsed())
                 return false;
-            importController.importCalendar("HWR-Kalender");
+            importController.importCalendar("HWR-Kalender-" + settings.getSelectedHwrCourseName());
             return true;
         }
         return false;
     }    
 
-    private boolean isDownloadIcsSuccessful() 
-    {
+    private boolean isDownloadIcsSuccessful() throws IOException {
+        FileOutputStream fos = null;
+        ReadableByteChannel rbc = null;
         try 
         {
-            var fos = new FileOutputStream(settings.getPathToUserDirectory() + "hwr-calendars/HWR-Kalender.ics");
+            fos = new FileOutputStream(SettingsModelImpl.userDirectory + "hwr-calendars/HWR-Kalender.ics");
             var url = new URL(SettingsModelImpl.hwrWebsiteUrl);
-            var rbc = Channels.newChannel(url.openStream());
+            rbc = Channels.newChannel(url.openStream());
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            fos.close();
-            rbc.close();
             return true;
         } 
         catch (IOException e) 
@@ -73,11 +79,16 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
             System.err.println(e.getMessage());
             return false;
         }
+        finally
+        {
+            fos.close();
+            rbc.close();
+        }
     }
 
     private void clearHwrCalendarFiles()
     {
-        var directory = new File(settings.getPathToUserDirectory() + "hwr-calendars");
+        var directory = new File(SettingsModelImpl.userDirectory + "hwr-calendars");
         for (var file: directory.listFiles())
             file.delete();
     }

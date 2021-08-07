@@ -42,9 +42,11 @@ public class SearchViewValidationController extends ResponsiveController
     }
 
     @FXML protected ToggleSwitch toggleDateRange, toggleTimeRange, toggleWeekdays, toggleCalendars;   
-    @FXML protected ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin, toggleRecurringDate, toggleAddAutomatically, toggleUseMailTemplate; 
+    @FXML protected ToggleSwitch toggleUseTravelDuration, toggleUseOpeningHours, toggleUseMargin,
+            toggleRecurringDate, toggleAddAutomatically, toggleUseMailTemplate;
     @FXML protected CheckBox tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday;  
-    @FXML protected Slider sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment;
+    @FXML protected Slider sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment,
+            sliderRecurrences, sliderMarginAfterAppointment;
     @FXML protected HBox containerCalendars;
     @FXML protected TimeField timeStart, timeEnd; 
     @FXML protected DatePicker startDate, endDate;
@@ -59,7 +61,8 @@ public class SearchViewValidationController extends ResponsiveController
     @FXML protected RowConstraints firstRow; 
     
 
-    protected ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening, dropdownMailTemplates, dropDownContact;
+    protected ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval,
+            dropdownDestinationOpening, dropdownMailTemplates, dropDownContact;
     protected SplitMenuButton calendarSelection = new SplitMenuButton();
     protected int recurrences = 1;   
     protected int timeAfterGlobal = 0;
@@ -122,7 +125,6 @@ public class SearchViewValidationController extends ResponsiveController
         dropdownStartAtDest.getEditor().setText("");
         dropdownEndAtDest.getEditor().setText("");
         dropdownDestinationOpening.getEditor().setText("");
-         
     }
 
     private void resetToggleStates()

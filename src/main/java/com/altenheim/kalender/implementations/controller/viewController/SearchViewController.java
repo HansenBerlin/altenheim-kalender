@@ -51,7 +51,6 @@ public class SearchViewController extends SearchViewRequestHandlerController
         setDateAndTimeFields();
         registerButtonEvents();
     }
-
        
     public void calendarToggleClicked()
     {        
@@ -72,6 +71,15 @@ public class SearchViewController extends SearchViewRequestHandlerController
         btnBack.setOnAction(this::updateUserStepView);
         btnReset.setOnAction(this::updateUserStepView);
         toggleCalendars.setOnMouseReleased(event -> calendarToggleClicked());
+    }
+
+    public void setupAdvancedOptionsToggles()
+    {
+        if (!SettingsModelImpl.useAdvancedFeatures)
+        {
+            toggleUseOpeningHours.setDisable(true);
+            toggleUseTravelDuration.setDisable(true);
+        }
     }
     
 

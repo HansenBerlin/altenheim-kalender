@@ -38,7 +38,7 @@ public record IOControllerImpl(SettingsModel settings,
 
     public void saveCalendar(Calendar calendar) {
         try {
-            String path = settings.getPathToUserDirectory() + "calendars";
+            String path = SettingsModelImpl.userDirectory + "calendars";
             exportController.exportCalendarAsFile(calendar, path);
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,7 +47,7 @@ public record IOControllerImpl(SettingsModel settings,
 
     public void loadCalendarsFromFile(EntryFactory entryFactory) {
         entryFactory.clearCalendarSourceList();
-        var allCalendarFiles = new File(settings.getPathToUserDirectory() + "calendars").listFiles();
+        var allCalendarFiles = new File(SettingsModelImpl.userDirectory + "calendars").listFiles();
         for (var calendarFile : Objects.requireNonNull(allCalendarFiles)) {
             if (calendarFile.getAbsolutePath().contains(".ics")) {
                 if (!importController.canCalendarFileBeImported(calendarFile.getAbsolutePath()))
@@ -56,12 +56,10 @@ public record IOControllerImpl(SettingsModel settings,
                     importController.importCalendar("");
             }
         }
-        if (allCalendarFiles.length == 0)
-            entryFactory.addCalendarToView(new Calendar(), "Standardkalender");
     }
 
     public void saveContactsToFile(ContactModel contacts) {
-        var path = settings.getPathToUserDirectory() + "contacts/contacts.file";
+        var path = SettingsModelImpl.userDirectory + "contacts/contacts.file";
         try {
             var writeToFile = new FileOutputStream(path);
             var convert = new ObjectOutputStream(writeToFile);
@@ -73,9 +71,8 @@ public record IOControllerImpl(SettingsModel settings,
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void loadContactsFromFile(ContactModel contacts) {
-        var file = new File(settings.getPathToUserDirectory() + "contacts/contacts.file");
+        var file = new File(SettingsModelImpl.userDirectory + "contacts/contacts.file");
         if (!file.exists())
             return;
 
@@ -92,7 +89,7 @@ public record IOControllerImpl(SettingsModel settings,
     }
 
     public void saveMailTemplatesToFile(MailTemplateModel templates) {
-        var path = settings.getPathToUserDirectory() + "mailTemplates/templates.file";
+        var path = SettingsModelImpl.userDirectory + "mailTemplates/templates.file";
         try {
             var writeToFile = new FileOutputStream(path);
             var convert = new ObjectOutputStream(writeToFile);
@@ -105,7 +102,7 @@ public record IOControllerImpl(SettingsModel settings,
     }
 
     public MailTemplateModel loadMailTemplatesFromFile() {
-        var file = new File(settings.getPathToUserDirectory() + "mailTemplates/templates.file");
+        var file = new File(SettingsModelImpl.userDirectory + "mailTemplates/templates.file");
         if (!file.exists())
             return new MailTemplateModelImpl();
         try {
@@ -122,7 +119,7 @@ public record IOControllerImpl(SettingsModel settings,
     }
 
     public void saveHashedPassword(String passwordHash) {
-        var path = settings.getPathToUserDirectory() + "savedHash";
+        var path = SettingsModelImpl.userDirectory + "savedHash";
         try {
             var writeToFile = new FileOutputStream(path);
             var convert = new ObjectOutputStream(writeToFile);
@@ -138,7 +135,7 @@ public record IOControllerImpl(SettingsModel settings,
         if (!file.exists())
             return "";
         try {
-            var loadFile = new FileInputStream(settings.getPathToUserDirectory() + "savedHash");
+            var loadFile = new FileInputStream(SettingsModelImpl.userDirectory + "savedHash");
             var inputStream = new ObjectInputStream(loadFile);
             var passwordHash = (String) inputStream.readObject();
             inputStream.close();

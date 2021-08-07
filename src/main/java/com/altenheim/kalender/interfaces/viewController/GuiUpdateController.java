@@ -8,6 +8,7 @@ public interface GuiUpdateController
     void init();
     void setupColorMode();
     void registerCalendars();
+    void updateAdvancedFeaturesFields();
 }
 
 

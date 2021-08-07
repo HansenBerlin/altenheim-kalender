@@ -62,7 +62,7 @@ public class SystemTrayTrayNotificationControllerImpl extends TimerTask implemen
         }
     }
     
-    public boolean initializeSystemTrayAccess() {
+    public boolean isSystemTrayAccessAllowed() {
         if (SystemTray.isSupported()) {
             Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Penaut.png"));
 
