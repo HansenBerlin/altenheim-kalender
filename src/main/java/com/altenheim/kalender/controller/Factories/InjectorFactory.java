@@ -41,13 +41,15 @@ public class InjectorFactory
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
         IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, ioCt);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt, entryFactory);
-        
+        SearchViewButtonEventHandler test = new SearchViewButtonEventHandler(apiCt, calendarEntriesModel, mailCreationCt, popupViewController, entryFactory);
+        SearchViewRequestHandlerController requestHandler = new SearchViewRequestHandlerController(apiCt, calendarEntriesModel, 
+            dateSuggestionController, smartSearch, entryFactory, test);
+
         var plannerVCt = new PlannerViewController(ioCt, entryFactory, popupViewController, calendarEntriesModel);
         var contactsVCt = new ContactsViewController(ioCt, contacts);
         var settingsVCt = new SettingsViewController(settings, entryFactory, calendarEntriesModel, comboBoxFactory, popupViewController);
         var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory, ioCt);
-        var searchVCt = new SearchViewController(apiCt, calendarEntriesModel, smartSearch, entryFactory, mailCreationCt, 
-            animationController, comboBoxFactory, popupViewController, dateSuggestionController);
+        var searchVCt = new SearchViewController(apiCt, calendarEntriesModel, animationController, comboBoxFactory, requestHandler);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
         var allViews = new ViewRootsModel(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
         mainWindowController = new MainWindowController(allViews, customCalendarView, settings);

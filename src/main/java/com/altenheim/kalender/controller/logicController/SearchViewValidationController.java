@@ -39,6 +39,7 @@ public class SearchViewValidationController extends ResponsiveController
     @FXML protected HBox containerCalendars;
     @FXML protected TimeField timeStart, timeEnd; 
     @FXML protected DatePicker startDate, endDate;
+    @FXML protected TextField tfAppointmentName;
 
     protected ComboBox<String> dropdownVehicle, dropdownStartAtDest, dropdownEndAtDest, dropdownInterval, dropdownDestinationOpening, dropdownMailTemplates, dropDownContact;
     protected SplitMenuButton calendarSelection = new SplitMenuButton();
@@ -130,7 +131,7 @@ public class SearchViewValidationController extends ResponsiveController
         }
     }
 
-    protected final void setDateAndTimeFields()
+    protected void setDateAndTimeFields()
     {
         timeStart.setValue(LocalTime.of(0, 0));
         timeEnd.setValue(LocalTime.of(23, 59)); 
@@ -138,7 +139,7 @@ public class SearchViewValidationController extends ResponsiveController
         endDate.setValue(LocalDate.now().plusDays(365));
     }
 
-    protected final int validateDuration() 
+    protected int validateDuration() 
     {
         int duration = (int)sliderDurationMinutes.getValue() + (int)sliderDurationHours.getValue() * 60;
         if (duration < 15)
@@ -146,7 +147,7 @@ public class SearchViewValidationController extends ResponsiveController
         return duration;
     }
 
-    protected final LocalDate[] validateDateInput() 
+    protected LocalDate[] validateDateInput() 
     {
         var startDateInput = startDate.getValue();
         var endDateDateInput = endDate.getValue();
@@ -158,7 +159,7 @@ public class SearchViewValidationController extends ResponsiveController
         return new LocalDate[] { startDateInput, endDateDateInput };         
     }
 
-    protected final LocalTime[] validateTimeInput() 
+    protected LocalTime[] validateTimeInput() 
     {
         var startTimeInput = timeStart.getValue();
         var endTimeInput = timeEnd.getValue();
@@ -170,7 +171,7 @@ public class SearchViewValidationController extends ResponsiveController
         return new LocalTime[] { startTimeInput, endTimeInput };
     }
 
-    protected final boolean[] validateWeekdays() 
+    protected boolean[] validateWeekdays() 
     {
         if (toggleWeekdays.isSelected() == false) 
         {
@@ -181,7 +182,7 @@ public class SearchViewValidationController extends ResponsiveController
             return new boolean[] { true, true, true, true, true, true, true };
     } 
     
-    protected final int validateTravelTime()
+    protected int validateTravelTime()
     {
         var origin = dropdownStartAtDest.getSelectionModel().getSelectedItem();
         var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
@@ -192,6 +193,71 @@ public class SearchViewValidationController extends ResponsiveController
             travelTime = updateTravelTimeToMinutes(response[0]);
         }
         return travelTime;
+    }    
+
+    protected  HashMap<DayOfWeek, List<Entry<String>>> validateOpeningHours() 
+    {
+        var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
+        var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
+
+        if (toggleUseOpeningHours.isSelected() && destination.isEmpty() == false)
+            openingHours = api.getOpeningHours(destination);
+
+        return openingHours;
+    }
+
+    protected int[] compareTimes(int timeBefore, int timeAfter, int travelTime) 
+    {
+        int[] updatedTimes = new int[2];
+        if (timeBefore > travelTime)
+            updatedTimes[0] = timeBefore;
+        else
+            updatedTimes[0] = travelTime;
+        if (timeAfter > travelTime)
+            updatedTimes[1] = timeAfter;
+        else
+            updatedTimes[1] = travelTime;
+        return updatedTimes;
+    }
+
+    protected int calculateInterval() 
+    {
+        var userInput = dropdownInterval.getSelectionModel().getSelectedItem();
+        if (userInput == null)
+            return 0;
+        int returnValue = switch (userInput) {
+            case "täglich" -> 1;
+            case "wöchentlich" -> 7;
+            case "monatlich" -> 30;
+            case "halbjährlich" -> 182;
+            case "jährlich" -> 365;
+            default -> 0;
+        };
+        return returnValue;
+    }    
+
+    protected int validateReccurrences() 
+    {
+        if (toggleRecurringDate.isSelected())
+            return sliderRecurrences.valueProperty().intValue();
+        else
+            return 1;
+    }
+
+    protected String validateRecipient()
+    {
+        String selectedContact = dropDownContact.getValue();
+        for (var contact : ContactModel.data) 
+        {
+            if (contact.getFullName().equals(selectedContact));
+                return contact.getMail();            
+        }
+        return "";
+    }
+
+    protected void changeContentPosition(double width, double height) 
+    {
+
     }
 
     private String getApiStringFromInput() 
@@ -215,70 +281,5 @@ public class SearchViewValidationController extends ResponsiveController
         if (travelTime != 0)
             travelTime = travelTime / 60;
         return travelTime;
-    }
-
-    protected final HashMap<DayOfWeek, List<Entry<String>>> validateOpeningHours() 
-    {
-        var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
-        var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
-
-        if (toggleUseOpeningHours.isSelected() && destination.isEmpty() == false)
-            openingHours = api.getOpeningHours(destination);
-
-        return openingHours;
-    }
-
-    protected final int[] compareTimes(int timeBefore, int timeAfter, int travelTime) 
-    {
-        int[] updatedTimes = new int[2];
-        if (timeBefore > travelTime)
-            updatedTimes[0] = timeBefore;
-        else
-            updatedTimes[0] = travelTime;
-        if (timeAfter > travelTime)
-            updatedTimes[1] = timeAfter;
-        else
-            updatedTimes[1] = travelTime;
-        return updatedTimes;
-    }
-
-    protected final int calculateInterval() 
-    {
-        var userInput = dropdownInterval.getSelectionModel().getSelectedItem();
-        if (userInput == null)
-            return 0;
-        int returnValue = switch (userInput) {
-            case "täglich" -> 1;
-            case "wöchentlich" -> 7;
-            case "monatlich" -> 30;
-            case "halbjährlich" -> 182;
-            case "jährlich" -> 365;
-            default -> 0;
-        };
-        return returnValue;
-    }    
-
-    protected final int validateReccurrences() 
-    {
-        if (toggleRecurringDate.isSelected())
-            return sliderRecurrences.valueProperty().intValue();
-        else
-            return 1;
-    }
-
-    protected final String validateRecipient()
-    {
-        String selectedContact = dropDownContact.getValue();
-        for (var contact : ContactModel.data) 
-        {
-            if (contact.getFullName().equals(selectedContact));
-                return contact.getMail();            
-        }
-        return "";
-    }
-
-    protected void changeContentPosition(double width, double height) 
-    {
-
     }
 }

@@ -95,6 +95,7 @@ public class EntryFactory implements IEntryFactory
         calendar.addEventHandler(eventHandler);
         calendarView.getCalendarSources().get(0).getCalendars().add(calendar);  
         CalendarEntriesModel.calendarsComboBox.add(calendar.getName());
+        ioController.saveCalendar(calendar);
     }  
 
     public void clearCalendarSourceList()
