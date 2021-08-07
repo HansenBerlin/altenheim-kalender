@@ -1,10 +1,11 @@
 package com.altenheim.kalender.controller.viewController;
 
+import com.altenheim.kalender.interfaces.SettingsModel;
 import com.calendarfx.view.CalendarView;
 import javafx.application.Platform;
 import java.time.LocalTime;
 import java.time.LocalDate;
-import com.altenheim.kalender.models.SettingsModel;
+import com.altenheim.kalender.models.SettingsModelImpl;
 import com.altenheim.kalender.resourceClasses.StylePresets;
 
 public class CustomViewOverride extends CalendarView 
@@ -12,7 +13,7 @@ public class CustomViewOverride extends CalendarView
     private String currentPath;
     private SettingsModel settings;
 
-    public CustomViewOverride(SettingsModel settings) 
+    public CustomViewOverride(SettingsModel settings)
     {
         this.settings = settings;
         initCss();   
@@ -21,7 +22,7 @@ public class CustomViewOverride extends CalendarView
 
     private void initCss()
     {
-        if (settings.isDarkmodeActive)
+        if (SettingsModelImpl.isDarkmodeActive)
             currentPath = StylePresets.LIGHT_CALENDAR_CSS_FILE; 
         else 
             currentPath = StylePresets.DARK_CALENDAR_CSS_FILE;  

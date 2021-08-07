@@ -1,7 +1,7 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
-import com.altenheim.kalender.models.SettingsModel;
+import com.altenheim.kalender.models.SettingsModelImpl;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,7 +19,7 @@ import javafx.scene.text.Text;
 public class SettingsViewController extends ResponsiveController 
 {
     private SettingsModel settings;
-    private ICalendarEntriesModel allCalendars;
+    private CalendarEntriesModel allCalendars;
     private IEntryFactory calendarFactory;
     private IPopupViewController popupViewController;
     private IComboBoxFactory comboBoxFactory;
@@ -35,8 +35,8 @@ public class SettingsViewController extends ResponsiveController
     @FXML private CheckBox cBToolTips;
     @FXML private VBox topContainer, bottomContainer, containerComboBoxNotificationMin, containerComboBoxDefaultCalendar;
 
-    public SettingsViewController(SettingsModel settings, IEntryFactory calendarFactory, ICalendarEntriesModel allCalendars,
-            IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController) 
+    public SettingsViewController(SettingsModel settings, IEntryFactory calendarFactory, CalendarEntriesModel allCalendars,
+                                  IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController)
     {
         this.settings = settings;
         this.allCalendars = allCalendars;
@@ -79,14 +79,14 @@ public class SettingsViewController extends ResponsiveController
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionCourse);
         containerComboBoxSelectorScrapping.getChildren().add(comboBoxSelectionSemester);
         
-        comboBoxNotificationMin.getSelectionModel().select(String.valueOf(settings.notificationTimeBeforeEntryInMinutes));
+        comboBoxNotificationMin.getSelectionModel().select(String.valueOf(settings.getNotificationTimeBeforeEntryInMinutes()));
         comboBoxSelectionSpecialField.getSelectionModel().select(settings.specialField.getValue());
         comboBoxSelectionSemester.getSelectionModel().select(settings.semester.getValue());
         comboBoxSelectionCourse.getSelectionModel().select(settings.course.getValue());
 
         comboBoxDefaultCalendar = comboBoxFactory.create(ComboBoxCreate.CALENDERNAMES);
         containerComboBoxDefaultCalendar.getChildren().add(comboBoxDefaultCalendar);
-        comboBoxDefaultCalendar.getSelectionModel().select(settings.defaultCalendarForSearchView);
+        comboBoxDefaultCalendar.getSelectionModel().select(SettingsModelImpl.defaultCalendarForSearchView);
     }
 
     @FXML
@@ -122,12 +122,12 @@ public class SettingsViewController extends ResponsiveController
             settings.specialField.set(comboBoxSelectionSpecialField.getValue());
             settings.course.set(comboBoxSelectionCourse.getValue());
             settings.semester.set(comboBoxSelectionSemester.getValue());            
-            settings.hwrWebsiteUrl = resultURL;
+            settings.setHwrWebsiteUrl(resultURL);
         }
         //cBToolTips.setTooltip(cBToolTips.getTooltip());
-        settings.notificationTimeBeforeEntryInMinutes = (long) Long.valueOf(comboBoxNotificationMin.getValue());
-        settings.defaultCalendarForSearchView = comboBoxDefaultCalendar.getValue();
-        settings.entrySystemMessageIntervalInMinutes = 1;
+        settings.setNotificationTimeBeforeEntryInMinutes((long) Long.valueOf(comboBoxNotificationMin.getValue()));
+        settings.setDefaultCalendarForSearchView(comboBoxDefaultCalendar.getValue());
+        settings.setEntrySystemMessageIntervalInMinutes(1);
         //settings.toolTip = cBToolTips.selectedProperty();
         settings.saveSettings();
     }

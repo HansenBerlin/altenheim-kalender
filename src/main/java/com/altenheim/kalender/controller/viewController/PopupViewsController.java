@@ -1,7 +1,7 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
-import com.altenheim.kalender.models.SettingsModel;
+import com.altenheim.kalender.models.SettingsModelImpl;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -179,7 +179,7 @@ public class PopupViewsController implements IPopupViewController
         alert.showAndWait();
     }
 
-    public void exportDialog(ICalendarEntriesModel allEntries, Window stage) 
+    public void exportDialog(CalendarEntriesModel allEntries, Window stage)
     {
         var calendars = allEntries.getAllCalendars();
         

@@ -1,6 +1,6 @@
 package com.altenheim.kalender.controller.viewController;
 
-import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.interfaces.CalendarEntriesModel;
 import com.altenheim.kalender.models.StatsModel;
 
 import javafx.event.ActionEvent;
@@ -18,9 +18,9 @@ public class StatsViewController extends ResponsiveController
     private StatsModel statsData;
 
     
-    private ICalendarEntriesModel allEntries;
+    private CalendarEntriesModel allEntries;
 
-    public StatsViewController(ICalendarEntriesModel allEntries)
+    public StatsViewController(CalendarEntriesModel allEntries)
     {
         this.allEntries = allEntries;
         

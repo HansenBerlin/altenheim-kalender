@@ -1,8 +1,7 @@
 package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.interfaces.*;
-import com.altenheim.kalender.models.ContactModelImpl;
-import com.altenheim.kalender.models.SettingsModel;
+import com.altenheim.kalender.models.SettingsModelImpl;
 
 public class InitialSetupController 
 {
@@ -15,8 +14,8 @@ public class InitialSetupController
     private ContactModel contacts;
 
     public InitialSetupController(SettingsModel settings, IIOController ioController, IPopupViewController popup,
-            IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications,
-            IEntryFactory entryFactory, ContactModel contacts)
+                                  IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications,
+                                  IEntryFactory entryFactory, ContactModel contacts)
     {
         this.settings = settings;
         this.ioController = ioController;
@@ -53,12 +52,12 @@ public class InitialSetupController
             var userValidationPassed = validateUserPassword();
             if (!userValidationPassed) 
             {
-                settings.useAdvancedFeatures = false;
+                SettingsModelImpl.useAdvancedFeatures = false;
                 return;
             }
         }
-        settings.decryptedPassword = ioController.loadHashedPassword();
-        settings.useAdvancedFeatures = true;
+        SettingsModelImpl.decryptedPassword = ioController.loadHashedPassword();
+        SettingsModelImpl.useAdvancedFeatures = true;
 
     }
 
@@ -67,14 +66,14 @@ public class InitialSetupController
         var password = popup.showPasswordInputDialog();
         var security = new SecureAesController();
         var hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_",
-                SettingsModel.PASSWORDHASH);
+                SettingsModelImpl.PASSWORDHASH);
         while (hashedPasswordAfterUserValidation.isBlank()) 
         {
             if (popup.isRevalidationWanted()) 
             {
                 password = popup.showPasswordInputDialog();
                 hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_",
-                        SettingsModel.PASSWORDHASH);
+                        SettingsModelImpl.PASSWORDHASH);
             } 
             else 
             {

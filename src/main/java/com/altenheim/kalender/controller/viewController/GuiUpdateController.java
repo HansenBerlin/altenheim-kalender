@@ -1,7 +1,8 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.IViewRootsModel;
-import com.altenheim.kalender.models.SettingsModel;
+import com.altenheim.kalender.interfaces.SettingsModel;
+import com.altenheim.kalender.models.SettingsModelImpl;
 import com.altenheim.kalender.resourceClasses.*;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +20,7 @@ public class GuiUpdateController
         return jMetroStyle;
     }
 
-    public GuiUpdateController(JMetro jMetroStyle, IViewRootsModel viewsInformation, SettingsModel settings) 
+    public GuiUpdateController(JMetro jMetroStyle, IViewRootsModel viewsInformation, SettingsModel settings)
     {
         this.jMetroStyle = jMetroStyle;
         this.viewsInformation = viewsInformation;
@@ -36,7 +37,7 @@ public class GuiUpdateController
     public void setupColorMode() 
     {
         jMetroStyle.getOverridingStylesheets().clear();
-        if (settings.isDarkmodeActive) 
+        if (SettingsModelImpl.isDarkmodeActive)
         {
             jMetroStyle.setStyle(Style.LIGHT);
             jMetroStyle.getOverridingStylesheets().add(StylePresets.LIGHT_APPLICATION_CSS_FILE);

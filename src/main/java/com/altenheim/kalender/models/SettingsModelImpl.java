@@ -1,26 +1,25 @@
 package com.altenheim.kalender.models;
 
 import java.io.*;
+
+import com.altenheim.kalender.interfaces.SettingsModel;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import jfxtras.styles.jmetro.Style;
 
-public class SettingsModel
+public class SettingsModelImpl implements SettingsModel
 {
-    public final static String APICYPHERTEXT = "apCg/0Odtz1r9kYuh011M4sur5xv5UU0hYJQcymI9gpAfMWP1eJWOtgpXu/lawR+";
-    public final static String PASSWORDHASH = "54fvHpgroWTcl6h/4SxMEiwchYBcYzqtrXX4eMySjf94gqHjPhjPCPl4d2IH7jg0";
-
-    private String userDirectory = "userfiles/";
-    public String decryptedPassword = "";
-    public String hwrWebsiteUrl = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
-    //public String cssMode = "Light";
+    public static String APICYPHERTEXT = "apCg/0Odtz1r9kYuh011M4sur5xv5UU0hYJQcymI9gpAfMWP1eJWOtgpXu/lawR+";
+    public static String PASSWORDHASH = "54fvHpgroWTcl6h/4SxMEiwchYBcYzqtrXX4eMySjf94gqHjPhjPCPl4d2IH7jg0";
     public static String defaultCalendarForSearchView = "";
+    public static String decryptedPassword = "";
+    public static String hwrWebsiteUrl = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
+    public static boolean useAdvancedFeatures = false;
+    public static boolean isDarkmodeActive = true;
+    public static boolean isToolTipEnabled = true;
     public long entrySystemMessageIntervalInMinutes = 1;
     public long notificationTimeBeforeEntryInMinutes = 15;
     public long hwrRequestIntervalInMinutes = (long) 1440;    
-    public boolean useAdvancedFeatures = false;
-    public boolean isDarkmodeActive = false;
-
     public transient SimpleStringProperty street = new SimpleStringProperty();
     public transient SimpleStringProperty houseNumber = new SimpleStringProperty();
     public transient SimpleStringProperty zipCode = new SimpleStringProperty();
@@ -30,13 +29,21 @@ public class SettingsModel
     public transient SimpleStringProperty course = new SimpleStringProperty("Kurs");
     public transient SimpleStringProperty semester = new SimpleStringProperty("Sem.");
     public transient SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
-    private transient SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
-    private transient SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
     public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
-    public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer; }  
-    public SimpleBooleanProperty getToolTipEnabled() { return toolTip; } 
+    //public SimpleStringProperty[] getSettingsDropdownTitleCOntainer() { return settingsDropdownTitlesContainer; }
+    public SimpleBooleanProperty getToolTipEnabled() { return toolTip; }
+    public void setNotificationTimeBeforeEntryInMinutes(long value) { notificationTimeBeforeEntryInMinutes = value; }
+    public long getNotificationTimeBeforeEntryInMinutes() { return notificationTimeBeforeEntryInMinutes; }
+    public void setDefaultCalendarForSearchView(String value) { defaultCalendarForSearchView = value; }
+    public void setEntrySystemMessageIntervalInMinutes(int value) { entrySystemMessageIntervalInMinutes = value; }
+    public long getEntrySystemMessageIntervalInMinutes() { return entrySystemMessageIntervalInMinutes; }
+    public void setHwrWebsiteUrl(String value) { hwrWebsiteUrl = value; }
+    public long getHwrRequestIntervalInMinutes() { return hwrRequestIntervalInMinutes; }
     public String getPathToUserDirectory() { return userDirectory; }
     public File getPasswordhashFile() { return new File(userDirectory + "savedHash"); }
+    private transient SimpleStringProperty[] settingsInputFieldsContainer = { street, houseNumber, zipCode, city, mail };
+    private transient SimpleStringProperty[] settingsDropdownTitlesContainer = { specialField, course, semester };
+    private String userDirectory = "userfiles/";
 
     public Style getCssStyle() 
     {

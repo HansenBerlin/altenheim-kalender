@@ -2,36 +2,33 @@ package com.altenheim.kalender.controller.logicController;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.imageio.ImageIO;
-
 import java.awt.TrayIcon.MessageType;
-import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.interfaces.CalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISystemNotificationsController;
-import com.altenheim.kalender.models.SettingsModel;
+import com.altenheim.kalender.interfaces.SettingsModel;
+import com.altenheim.kalender.models.SettingsModelImpl;
 import com.calendarfx.model.Entry;
 
 public class SystemNotificationsController extends TimerTask implements ISystemNotificationsController {
     private SettingsModel settings;
-    private ICalendarEntriesModel administrateEntries;
+    private CalendarEntriesModel administrateEntries;
 
     private TrayIcon trayIcon;
 
-    public SystemNotificationsController(SettingsModel settings, ICalendarEntriesModel administrateEntries) {
+    public SystemNotificationsController(SettingsModel settings, CalendarEntriesModel administrateEntries) {
         this.settings = settings;
         this.administrateEntries = administrateEntries;
     }
 
     public void startNotificationTask() {
         var timer = new Timer();
-        timer.schedule(this, 0, settings.entrySystemMessageIntervalInMinutes * 60000);
+        timer.schedule(this, 0, settings.getNotificationTimeBeforeEntryInMinutes() * 60000);
     }
 
     public void run() {
@@ -40,8 +37,8 @@ public class SystemNotificationsController extends TimerTask implements ISystemN
 
     private void prepareSystemMessagesForEntrys() {
         var start = LocalDateTime.now();
-        var timeToAdd = settings.notificationTimeBeforeEntryInMinutes;
-        var end = start.plusMinutes(settings.entrySystemMessageIntervalInMinutes);
+        var timeToAdd = settings.getNotificationTimeBeforeEntryInMinutes();
+        var end = start.plusMinutes(settings.getEntrySystemMessageIntervalInMinutes());
         var entries = administrateEntries.getEntrysWithStartInSpecificRange(start, end.plusMinutes(timeToAdd));
         var currentEntries = new ArrayList<Entry<String>>();
         for (var entry : entries)

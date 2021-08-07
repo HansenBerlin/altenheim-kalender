@@ -2,7 +2,8 @@ package com.altenheim.kalender.controller.viewController;
 
 
 import com.altenheim.kalender.interfaces.IViewRootsModel;
-import com.altenheim.kalender.models.SettingsModel;
+import com.altenheim.kalender.interfaces.SettingsModel;
+import com.altenheim.kalender.models.SettingsModelImpl;
 import com.altenheim.kalender.resourceClasses.StylePresets;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class MainWindowController extends ResponsiveController
     @FXML private VBox vboxLeftPane;
     @FXML private HBox topButtonRow;
 
-    public MainWindowController(IViewRootsModel allViewsInformation, CustomViewOverride customCalendar, SettingsModel settings) 
+    public MainWindowController(IViewRootsModel allViewsInformation, CustomViewOverride customCalendar, SettingsModel settings)
     {
         this.allViewsInformation = allViewsInformation;
         this.customCalendar = customCalendar;
@@ -96,7 +97,7 @@ public class MainWindowController extends ResponsiveController
 
     public void switchCssMode() 
     {
-        if (settings.isDarkmodeActive == false) 
+        if (SettingsModelImpl.isDarkmodeActive == false)
         {
             setColorsForDarkAndLightMode(Style.DARK, StylePresets.DARK_MENU_BACKGROUND,
                     StylePresets.DARK_MAIN_BACKGROUND, StylePresets.DARK_PRIMARY, StylePresets.DARK_SECONDARY,
@@ -110,7 +111,7 @@ public class MainWindowController extends ResponsiveController
                     StylePresets.LIGHT_SECONDARY_CSS, StylePresets.LIGHT_APPLICATION_CSS_FILE);
             currentSecondaryColor = StylePresets.LIGHT_SECONDARY;
         }    
-        settings.isDarkmodeActive ^= true;          
+        SettingsModelImpl.isDarkmodeActive ^= true;
     }
 
     private void setColorsForDarkAndLightMode(Style style, Background menu, Background background, 
@@ -151,7 +152,7 @@ public class MainWindowController extends ResponsiveController
         Pane[] buttonBackgrounds = { menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneContacts, menuBtnPaneMail, menuBtnPaneSettings, null, null };
         allButtonsWithBackgrounds = createMainMenuButtons(buttonsList, buttonBackgrounds);
         currentlyActive = menuBtnPlanner;
-        if (settings.isDarkmodeActive)
+        if (SettingsModelImpl.isDarkmodeActive)
             menuBtnPanePlanner.setBackground(StylePresets.LIGHT_SECONDARY);
         else
             menuBtnPanePlanner.setBackground(StylePresets.DARK_SECONDARY);

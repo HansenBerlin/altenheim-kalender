@@ -5,7 +5,7 @@ import java.util.List;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 
-public interface ICalendarEntriesModel 
+public interface CalendarEntriesModel
 {   
     void clearCalendarsSelectedByUser();
     void addEntryToCalendarWithName(String name, Entry<String> entry);

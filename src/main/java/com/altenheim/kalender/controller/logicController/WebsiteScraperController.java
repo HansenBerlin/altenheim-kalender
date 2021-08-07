@@ -1,7 +1,7 @@
 package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.interfaces.*;
-import com.altenheim.kalender.models.SettingsModel;
+import com.altenheim.kalender.models.SettingsModelImpl;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -15,7 +15,7 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
     private IImportController importController;
     private IEntryFactory entryFactory;
 
-    public WebsiteScraperController(SettingsModel settings, IImportController importController, IEntryFactory entryFactory) 
+    public WebsiteScraperController(SettingsModel settings, IImportController importController, IEntryFactory entryFactory)
     {
         this.settings = settings;
         this.importController = importController;
@@ -25,7 +25,7 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
     public void startScraperTask() 
     {
         var timer = new Timer();
-        timer.schedule(this, 0, settings.hwrRequestIntervalInMinutes*60*1000);
+        timer.schedule(this, 0, settings.getHwrRequestIntervalInMinutes()*60*1000);
     }
 
     public void run() 
@@ -48,7 +48,7 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
         try 
         {
             var fos = new FileOutputStream(settings.getPathToUserDirectory() + "calendars/hwrFile.ics");
-            var url = new URL(settings.hwrWebsiteUrl);
+            var url = new URL(SettingsModelImpl.hwrWebsiteUrl);
             var rbc = Channels.newChannel(url.openStream());
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             fos.close();

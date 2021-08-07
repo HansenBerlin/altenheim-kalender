@@ -8,7 +8,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.interfaces.CalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
 import com.calendarfx.model.Entry;
 import java.util.HashMap;
@@ -16,9 +16,9 @@ import java.util.LinkedList;
 
 
 public class SmartSearchController implements ISmartSearchController {
-	private ICalendarEntriesModel administrateEntries;
+	private CalendarEntriesModel administrateEntries;
 
-	public SmartSearchController(ICalendarEntriesModel administrateEntries) {
+	public SmartSearchController(CalendarEntriesModel administrateEntries) {
 		this.administrateEntries = administrateEntries;
 	}
 

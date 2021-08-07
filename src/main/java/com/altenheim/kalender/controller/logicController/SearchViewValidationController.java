@@ -27,13 +27,13 @@ import com.calendarfx.view.TimeField;
 public class SearchViewValidationController extends ResponsiveController
 {
     private IGoogleAPIController api;
-    protected ICalendarEntriesModel allCalendars;
+    protected CalendarEntriesModel allCalendars;
     private IPopupViewController popupViewController;
     private IMailCreationController mailCreationController;
     protected IEntryFactory entryFactory;
 
-    public SearchViewValidationController(IGoogleAPIController api, ICalendarEntriesModel allCalendars, IPopupViewController popupViewController,
-        IMailCreationController mailCreationController, IEntryFactory entryFactory)
+    public SearchViewValidationController(IGoogleAPIController api, CalendarEntriesModel allCalendars, IPopupViewController popupViewController,
+                                          IMailCreationController mailCreationController, IEntryFactory entryFactory)
     {
         this.api = api;
         this.allCalendars = allCalendars;
@@ -84,7 +84,7 @@ public class SearchViewValidationController extends ResponsiveController
             var allAvailaibleCalendars = allCalendars.getAllCalendars();
             for (var calendar : allAvailaibleCalendars)
             {
-                if (calendar.getName().equals(SettingsModel.defaultCalendarForSearchView))
+                if (calendar.getName().equals(SettingsModelImpl.defaultCalendarForSearchView))
                 {
                     allCalendars.addToAllCalendarsSelectedByUser(calendar);
                     return;
@@ -369,7 +369,7 @@ public class SearchViewValidationController extends ResponsiveController
         {
             traveltime = travelTimeTo;
         }
-        String defaultCalendarName = SettingsModel.defaultCalendarForSearchView;
+        String defaultCalendarName = SettingsModelImpl.defaultCalendarForSearchView;
         entryFactory.createNewUserEntryIncludingTravelTimes(currentSuggestion.getStartDate(),
                 currentSuggestion.getEndDate(), currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal),
                 currentSuggestion.getEndTime().minusMinutes(timeAfterGlobal), tfAppointmentName.getText(),

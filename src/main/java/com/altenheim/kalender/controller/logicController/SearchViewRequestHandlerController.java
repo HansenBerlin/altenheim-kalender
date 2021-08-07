@@ -10,7 +10,7 @@ public class SearchViewRequestHandlerController extends SearchViewValidationCont
     private ISmartSearchController smartSearch;
     private IDateSuggestionController dateSuggestionController;
     
-    public SearchViewRequestHandlerController(IGoogleAPIController api, ICalendarEntriesModel allCalendars,
+    public SearchViewRequestHandlerController(IGoogleAPIController api, CalendarEntriesModel allCalendars,
             IPopupViewController popupViewController, IMailCreationController mailCreationController,
             IEntryFactory entryFactory, ISmartSearchController smartSearch, IDateSuggestionController dateSuggestionController) 
     {

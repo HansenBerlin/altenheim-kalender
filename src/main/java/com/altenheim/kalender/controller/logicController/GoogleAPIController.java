@@ -9,7 +9,8 @@ import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.List;
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
-import com.altenheim.kalender.models.SettingsModel;
+import com.altenheim.kalender.interfaces.SettingsModel;
+import com.altenheim.kalender.models.SettingsModelImpl;
 import com.calendarfx.model.Entry;
 
 import org.json.*;
@@ -20,17 +21,18 @@ public class GoogleAPIController implements IGoogleAPIController {
     private static final String FINDDESTINATIONSQUERY = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=%s";
     private static final String SALT = "e]<J3Grct{~'HJv-";
 
-    private SettingsModel settings;
+    //private SettingsModel settings;
     private JsonParser jsonParser;
 
-    public GoogleAPIController(SettingsModel settings, JsonParser jsonParser) {
-        this.settings = settings;
+    public GoogleAPIController(JsonParser jsonParser)
+    {
+        //this.settings = settings;
         this.jsonParser = jsonParser;
     }
 
     public HashMap<DayOfWeek, List<Entry<String>>> getOpeningHours(String locationSearchUserInput) {
         var security = new SecureAesController();
-        var apiKey = security.decrypt(settings.decryptedPassword, SALT, SettingsModel.APICYPHERTEXT);
+        var apiKey = security.decrypt(SettingsModelImpl.decryptedPassword, SALT, SettingsModelImpl.APICYPHERTEXT);
         String input = locationSearchUserInput.replace(" ", "%20");
 
         try {
@@ -49,7 +51,7 @@ public class GoogleAPIController implements IGoogleAPIController {
     public int[] searchForDestinationDistance(String startAt, String destination) {
 
         var security = new SecureAesController();
-        var apiKey = security.decrypt(settings.decryptedPassword, SALT, SettingsModel.APICYPHERTEXT);
+        var apiKey = security.decrypt(SettingsModelImpl.decryptedPassword, SALT, SettingsModelImpl.APICYPHERTEXT);
 
         int[] returnValues = new int[2];
         var start = startAt.replace(" ", "%20");
@@ -70,7 +72,7 @@ public class GoogleAPIController implements IGoogleAPIController {
 
     public int[] searchForDestinationDistance(String origin, String destination, String travelMode) {
         var security = new SecureAesController();
-        var apiKey = security.decrypt(settings.decryptedPassword, SALT, SettingsModel.APICYPHERTEXT);
+        var apiKey = security.decrypt(SettingsModelImpl.decryptedPassword, SALT, SettingsModelImpl.APICYPHERTEXT);
 
         int[] returnValues = new int[2];
         var start = origin.replace(" ", "%20");

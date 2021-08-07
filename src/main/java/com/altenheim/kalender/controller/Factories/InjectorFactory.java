@@ -11,10 +11,10 @@ public class InjectorFactory
     private GuiUpdateController guiSetup;
     private MainWindowController mainWindowController;
     private InitialSetupController initialSettingsLoader;
-    private SettingsModel settings;    
+    private SettingsModelImpl settings;
     public GuiUpdateController getGuiController() { return guiSetup; }
     public InitialSetupController getInitialSettingsLoader() { return initialSettingsLoader; }
-    public SettingsModel getSettingsModel() { return settings; }
+    public SettingsModelImpl getSettingsModel() { return settings; }
     public MainWindowController getMainWindowController() { return mainWindowController; }
 
     //public SearchViewController searchVCt;
@@ -22,7 +22,7 @@ public class InjectorFactory
     public void createServices() 
     {     
         var jsonParser = new JsonParser();
-        settings = new SettingsModel();
+        SettingsModel settings = new SettingsModelImpl();
         settings.loadSettings();
         var jMetroStyle = new JMetro();
         jMetroStyle.setStyle(settings.getCssStyle());
@@ -36,9 +36,9 @@ public class InjectorFactory
         IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
         IAnimationController animationController = new AnimationController();
         IPopupViewController popupViewController = new PopupViewsController(settings, importCt, exportCt);
-        IGoogleAPIController apiCt = new GoogleAPIController(settings, jsonParser);
+        IGoogleAPIController apiCt = new GoogleAPIController(jsonParser);
         IMailCreationController mailCreationCt = new MailCreationController(mailTemplates);       
-        ICalendarEntriesModel calendarEntriesModel = new CalendarEntriesModel(customCalendarView);
+        CalendarEntriesModel calendarEntriesModel = new CalendarEntriesModelImpl(customCalendarView);
         IDateSuggestionController dateSuggestionController = new DateSuggestionController();
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
         IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, ioCt);

@@ -3,7 +3,7 @@ package com.altenheim.kalender.controller.Factories;
 import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.interfaces.IComboBoxFactory;
-import com.altenheim.kalender.models.CalendarEntriesModel;
+import com.altenheim.kalender.models.CalendarEntriesModelImpl;
 import com.altenheim.kalender.models.ContactModelImpl;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.collections.FXCollections;
@@ -30,7 +30,7 @@ public class ComboBoxFactory implements IComboBoxFactory
     {
         vehicles.addAll("zu Fuß", "Fahrrad", "Öffis", "Auto");
         destinations = ContactModelImpl.destinations;
-        calendars = CalendarEntriesModel.calendarsComboBox;
+        calendars = CalendarEntriesModelImpl.calendarsComboBox;
         mailAdresses = ContactModelImpl.mailadresses;
         recurrenceOptions.addAll("täglich", "wöchentlich", "monatlich", "halbjährlich", "jährlich");
         notificationMin.addAll("5", "15", "30", "60");

@@ -5,19 +5,19 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.controller.viewController.CustomViewOverride;
-import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
+import com.altenheim.kalender.interfaces.CalendarEntriesModel;
 import com.calendarfx.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 
-public class CalendarEntriesModel implements ICalendarEntriesModel 
+public class CalendarEntriesModelImpl implements CalendarEntriesModel
 {
     private List<Calendar> calendarsSelectedByUser;
     private CustomViewOverride calendarView;
     public static ObservableList<String> calendarsComboBox = FXCollections.observableArrayList();
 
-    public CalendarEntriesModel(CustomViewOverride calendarView) 
+    public CalendarEntriesModelImpl(CustomViewOverride calendarView)
     {
         calendarsSelectedByUser = new ArrayList<Calendar>();
         this.calendarView = calendarView;

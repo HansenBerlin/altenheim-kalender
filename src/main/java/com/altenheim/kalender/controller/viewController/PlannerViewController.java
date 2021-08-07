@@ -15,9 +15,9 @@ public class PlannerViewController extends ResponsiveController
     private IIOController iOController;
     private IEntryFactory entryFactory;
     private IPopupViewController popups;
-    private ICalendarEntriesModel calendars;
+    private CalendarEntriesModel calendars;
 
-    public PlannerViewController(IIOController iOController, IEntryFactory entryFactory, IPopupViewController popups, ICalendarEntriesModel calendars) 
+    public PlannerViewController(IIOController iOController, IEntryFactory entryFactory, IPopupViewController popups, CalendarEntriesModel calendars)
     {
         this.iOController = iOController;
         this.entryFactory = entryFactory;

@@ -1,7 +1,7 @@
 package com.altenheim.kalender.controller.Factories;
 
 import com.altenheim.kalender.interfaces.*;
-import com.altenheim.kalender.models.CalendarEntriesModel;
+import com.altenheim.kalender.models.CalendarEntriesModelImpl;
 import com.calendarfx.model.*;
 import javafx.event.EventHandler;
 import com.altenheim.kalender.controller.viewController.CustomViewOverride;
@@ -19,11 +19,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class EntryFactory implements IEntryFactory 
 {
-    private ICalendarEntriesModel allCalendars;
+    private CalendarEntriesModel allCalendars;
     private CustomViewOverride calendarView;
     private IIOController ioController;    
 
-    public EntryFactory(ICalendarEntriesModel allCalendars, CustomViewOverride calendarView, IIOController ioController) 
+    public EntryFactory(CalendarEntriesModel allCalendars, CustomViewOverride calendarView, IIOController ioController)
     {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;
@@ -94,7 +94,7 @@ public class EntryFactory implements IEntryFactory
         EventHandler<CalendarEvent> eventHandler = event -> handleEvent(event);
         calendar.addEventHandler(eventHandler);
         calendarView.getCalendarSources().get(0).getCalendars().add(calendar);  
-        CalendarEntriesModel.calendarsComboBox.add(calendar.getName());
+        CalendarEntriesModelImpl.calendarsComboBox.add(calendar.getName());
         ioController.saveCalendar(calendar);
     }  
 
