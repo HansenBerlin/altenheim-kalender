@@ -1,7 +1,7 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
-import com.altenheim.kalender.models.SettingsModelImpl;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -152,7 +152,7 @@ public class PopupViewsController implements IPopupViewController
             return "";
     }
 
-    public void importDialog(IEntryFactory entryFactory, Window stage) 
+    public void importDialog(EntryFactory entryFactory, Window stage)
     {
         var filePicker = new FileChooser();
         var file = filePicker.showOpenDialog(stage);

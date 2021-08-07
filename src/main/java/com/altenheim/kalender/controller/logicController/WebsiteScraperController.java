@@ -13,9 +13,9 @@ public class WebsiteScraperController extends TimerTask implements IWebsiteScrap
 {
     private SettingsModel settings;
     private IImportController importController;
-    private IEntryFactory entryFactory;
+    private EntryFactory entryFactory;
 
-    public WebsiteScraperController(SettingsModel settings, IImportController importController, IEntryFactory entryFactory)
+    public WebsiteScraperController(SettingsModel settings, IImportController importController, EntryFactory entryFactory)
     {
         this.settings = settings;
         this.importController = importController;

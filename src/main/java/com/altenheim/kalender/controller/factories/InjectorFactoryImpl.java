@@ -1,12 +1,14 @@
-package com.altenheim.kalender.controller.Factories;
-
+package com.altenheim.kalender.controller.factories;
+import com.altenheim.kalender.interfaces.factorys.InjectorFactory;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
+import com.altenheim.kalender.interfaces.models.ContactModel;
 import jfxtras.styles.jmetro.JMetro;
 import com.altenheim.kalender.controller.logicController.*;
 import com.altenheim.kalender.controller.viewController.*;
 import com.altenheim.kalender.interfaces.*;
 import com.altenheim.kalender.models.*;
 
-public class InjectorFactory
+public class InjectorFactoryImpl implements InjectorFactory
 {   
     private GuiUpdateController guiSetup;
     private MainWindowController mainWindowController;
@@ -17,7 +19,6 @@ public class InjectorFactory
     public SettingsModelImpl getSettingsModel() { return settings; }
     public MainWindowController getMainWindowController() { return mainWindowController; }
 
-    //public SearchViewController searchVCt;
 
     public void createServices() 
     {     
@@ -33,15 +34,15 @@ public class InjectorFactory
         IImportController importCt = new ImportController();
         IIOController ioCt = new IOController(settings, exportCt, importCt);
         MailTemplateModel mailTemplates = ioCt.loadMailTemplatesFromFile();
-        IComboBoxFactory comboBoxFactory = new ComboBoxFactory();
-        IAnimationController animationController = new AnimationController();
+        ComboBoxFactory comboBoxFactory = new ComboBoxFactoryImpl();
+        AnimationController animationController = new AnimationControllerImpl();
         IPopupViewController popupViewController = new PopupViewsController(settings, importCt, exportCt);
         IGoogleAPIController apiCt = new GoogleAPIController(jsonParser);
         IMailCreationController mailCreationCt = new MailCreationController(mailTemplates);       
         CalendarEntriesModel calendarEntriesModel = new CalendarEntriesModelImpl(customCalendarView);
         IDateSuggestionController dateSuggestionController = new DateSuggestionController();
         ISmartSearchController smartSearch = new SmartSearchController(calendarEntriesModel);
-        IEntryFactory entryFactory = new EntryFactory(calendarEntriesModel, customCalendarView, ioCt);
+        EntryFactory entryFactory = new EntryFactoryImpl(calendarEntriesModel, customCalendarView, ioCt);
         IWebsiteScraperController websiteCt = new WebsiteScraperController(settings, importCt, entryFactory);
         //SearchViewRequestHandlerController requestHandler = new SearchViewRequestHandlerController(apiCt, calendarEntriesModel, 
           //  dateSuggestionController, smartSearch, entryFactory, popupViewController, mailCreationCt);
@@ -54,7 +55,7 @@ public class InjectorFactory
         var searchVCt = new SearchViewController(apiCt, calendarEntriesModel, animationController, comboBoxFactory, popupViewController, 
             mailCreationCt, entryFactory, smartSearch, dateSuggestionController);
         var systemNotificationsCt = new SystemNotificationsController(settings, calendarEntriesModel);
-        var allViews = new ViewRootsModel(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
+        var allViews = new ViewRootsModelImpl(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
         mainWindowController = new MainWindowController(allViews, customCalendarView, settings);
         allViews.setMainWindowController(mainWindowController);
         guiSetup = new GuiUpdateController(jMetroStyle, allViews, settings);

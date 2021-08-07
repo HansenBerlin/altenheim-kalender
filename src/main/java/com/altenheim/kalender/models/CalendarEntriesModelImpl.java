@@ -5,7 +5,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import com.altenheim.kalender.controller.viewController.CustomViewOverride;
-import com.altenheim.kalender.interfaces.CalendarEntriesModel;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.calendarfx.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

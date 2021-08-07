@@ -1,4 +1,4 @@
-package com.altenheim.kalender.interfaces;
+package com.altenheim.kalender.interfaces.models;
 
 import com.altenheim.kalender.models.ContactModelImpl;
 

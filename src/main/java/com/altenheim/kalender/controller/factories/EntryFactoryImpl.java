@@ -1,6 +1,7 @@
-package com.altenheim.kalender.controller.Factories;
+package com.altenheim.kalender.controller.factories;
 
 import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.altenheim.kalender.models.CalendarEntriesModelImpl;
 import com.calendarfx.model.*;
 import javafx.event.EventHandler;
@@ -17,13 +18,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class EntryFactory implements IEntryFactory 
+public class EntryFactoryImpl implements EntryFactory
 {
     private CalendarEntriesModel allCalendars;
     private CustomViewOverride calendarView;
     private IIOController ioController;    
 
-    public EntryFactory(CalendarEntriesModel allCalendars, CustomViewOverride calendarView, IIOController ioController)
+    public EntryFactoryImpl(CalendarEntriesModel allCalendars, CustomViewOverride calendarView, IIOController ioController)
     {
         this.allCalendars = allCalendars;
         this.calendarView = calendarView;

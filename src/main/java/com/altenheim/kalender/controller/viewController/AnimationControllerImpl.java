@@ -1,13 +1,13 @@
 package com.altenheim.kalender.controller.viewController;
 
-import com.altenheim.kalender.interfaces.IAnimationController;
+import com.altenheim.kalender.interfaces.AnimationController;
 import javafx.animation.ScaleTransition;
 import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-public class AnimationController implements IAnimationController 
+public class AnimationControllerImpl implements AnimationController
 {
     public void growAndShrinkContainer(Node box, boolean isActivated) 
     {

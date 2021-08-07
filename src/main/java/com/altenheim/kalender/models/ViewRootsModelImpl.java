@@ -1,18 +1,17 @@
 package com.altenheim.kalender.models;
 
-import com.altenheim.kalender.controller.logicController.SearchViewValidationController;
 import com.altenheim.kalender.controller.viewController.*;
-import com.altenheim.kalender.interfaces.IViewRootsModel;
+import com.altenheim.kalender.interfaces.ViewRootsModel;
 import javafx.scene.layout.GridPane;
 
-public class ViewRootsModel implements IViewRootsModel 
+public class ViewRootsModelImpl implements ViewRootsModel
 {
     private GridPane[] allViews;
     private ResponsiveController[] allControllers;
     private MainWindowController mainWindowController;
 
-    public ViewRootsModel(PlannerViewController plannerCt, SearchViewController searchViewCt, ContactsViewController contactsCt, 
-        MailTemplateViewController mailCt, SettingsViewController settingsCt) 
+    public ViewRootsModelImpl(PlannerViewController plannerCt, SearchViewController searchViewCt, ContactsViewController contactsCt,
+                              MailTemplateViewController mailCt, SettingsViewController settingsCt)
     {
         ResponsiveController[] allCt = { plannerCt, searchViewCt, contactsCt, mailCt, settingsCt };
         allViews = new GridPane[allCt.length];

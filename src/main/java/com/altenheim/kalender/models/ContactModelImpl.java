@@ -2,9 +2,8 @@ package com.altenheim.kalender.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.io.Serializable;
 
-import com.altenheim.kalender.interfaces.ContactModel;
+import com.altenheim.kalender.interfaces.models.ContactModel;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

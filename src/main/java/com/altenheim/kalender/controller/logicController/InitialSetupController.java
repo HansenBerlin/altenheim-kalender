@@ -1,6 +1,7 @@
 package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.interfaces.models.ContactModel;
 import com.altenheim.kalender.models.SettingsModelImpl;
 
 public class InitialSetupController 
@@ -9,13 +10,13 @@ public class InitialSetupController
     private IPopupViewController popup;
     private IWebsiteScraperController websiteScraper;
     private ISystemNotificationsController systemNotifications;
-    private IEntryFactory entryFactory;
+    private EntryFactory entryFactory;
     private SettingsModel settings;
     private ContactModel contacts;
 
     public InitialSetupController(SettingsModel settings, IIOController ioController, IPopupViewController popup,
                                   IWebsiteScraperController websiteScraper, ISystemNotificationsController systemNotifications,
-                                  IEntryFactory entryFactory, ContactModel contacts)
+                                  EntryFactory entryFactory, ContactModel contacts)
     {
         this.settings = settings;
         this.ioController = ioController;

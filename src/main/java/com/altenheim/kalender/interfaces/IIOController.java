@@ -1,12 +1,12 @@
 package com.altenheim.kalender.interfaces;
 
-import com.altenheim.kalender.models.*;
+import com.altenheim.kalender.interfaces.models.ContactModel;
 import com.calendarfx.model.Calendar;
 
 public interface IIOController 
 {
     void saveCalendar(Calendar calendar);
-    void loadCalendarsFromFile(IEntryFactory entryFactory);
+    void loadCalendarsFromFile(EntryFactory entryFactory);
     void saveMailTemplatesToFile(MailTemplateModel templates);
     void createUserPath();
     void saveContactsToFile(ContactModel contacts);

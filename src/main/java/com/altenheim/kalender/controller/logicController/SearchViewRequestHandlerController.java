@@ -3,6 +3,7 @@ package com.altenheim.kalender.controller.logicController;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
 import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.altenheim.kalender.models.SuggestionsModel;
 
 public class SearchViewRequestHandlerController extends SearchViewValidationController
@@ -11,8 +12,8 @@ public class SearchViewRequestHandlerController extends SearchViewValidationCont
     private IDateSuggestionController dateSuggestionController;
     
     public SearchViewRequestHandlerController(IGoogleAPIController api, CalendarEntriesModel allCalendars,
-            IPopupViewController popupViewController, IMailCreationController mailCreationController,
-            IEntryFactory entryFactory, ISmartSearchController smartSearch, IDateSuggestionController dateSuggestionController) 
+                                              IPopupViewController popupViewController, IMailCreationController mailCreationController,
+                                              EntryFactory entryFactory, ISmartSearchController smartSearch, IDateSuggestionController dateSuggestionController)
     {
         super(api, allCalendars, popupViewController, mailCreationController, entryFactory);
         this.smartSearch = smartSearch;

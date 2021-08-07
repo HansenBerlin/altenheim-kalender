@@ -9,10 +9,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import java.awt.TrayIcon.MessageType;
-import com.altenheim.kalender.interfaces.CalendarEntriesModel;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISystemNotificationsController;
 import com.altenheim.kalender.interfaces.SettingsModel;
-import com.altenheim.kalender.models.SettingsModelImpl;
 import com.calendarfx.model.Entry;
 
 public class SystemNotificationsController extends TimerTask implements ISystemNotificationsController {

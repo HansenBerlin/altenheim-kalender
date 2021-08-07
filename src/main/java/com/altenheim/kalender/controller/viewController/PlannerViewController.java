@@ -1,6 +1,7 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.calendarfx.model.Calendar;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,11 +14,11 @@ public class PlannerViewController extends ResponsiveController
     @FXML private Button btnImport, btnExport;
 
     private IIOController iOController;
-    private IEntryFactory entryFactory;
+    private EntryFactory entryFactory;
     private IPopupViewController popups;
     private CalendarEntriesModel calendars;
 
-    public PlannerViewController(IIOController iOController, IEntryFactory entryFactory, IPopupViewController popups, CalendarEntriesModel calendars)
+    public PlannerViewController(IIOController iOController, EntryFactory entryFactory, IPopupViewController popups, CalendarEntriesModel calendars)
     {
         this.iOController = iOController;
         this.entryFactory = entryFactory;

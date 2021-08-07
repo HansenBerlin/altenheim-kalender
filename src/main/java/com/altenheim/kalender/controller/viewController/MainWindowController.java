@@ -1,7 +1,7 @@
 package com.altenheim.kalender.controller.viewController;
 
 
-import com.altenheim.kalender.interfaces.IViewRootsModel;
+import com.altenheim.kalender.interfaces.ViewRootsModel;
 import com.altenheim.kalender.interfaces.SettingsModel;
 import com.altenheim.kalender.models.SettingsModelImpl;
 import com.altenheim.kalender.resourceClasses.StylePresets;
@@ -24,7 +24,7 @@ import jfxtras.styles.jmetro.Style;
 
 public class MainWindowController extends ResponsiveController 
 {
-    private IViewRootsModel allViewsInformation;
+    private ViewRootsModel allViewsInformation;
     private CustomViewOverride customCalendar;
     private Stage stage;
     private JMetro jMetro;
@@ -47,7 +47,7 @@ public class MainWindowController extends ResponsiveController
     @FXML private VBox vboxLeftPane;
     @FXML private HBox topButtonRow;
 
-    public MainWindowController(IViewRootsModel allViewsInformation, CustomViewOverride customCalendar, SettingsModel settings)
+    public MainWindowController(ViewRootsModel allViewsInformation, CustomViewOverride customCalendar, SettingsModel settings)
     {
         this.allViewsInformation = allViewsInformation;
         this.customCalendar = customCalendar;

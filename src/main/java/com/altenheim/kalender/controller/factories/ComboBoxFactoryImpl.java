@@ -1,8 +1,8 @@
-package com.altenheim.kalender.controller.Factories;
+package com.altenheim.kalender.controller.factories;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.altenheim.kalender.interfaces.IComboBoxFactory;
+import com.altenheim.kalender.interfaces.ComboBoxFactory;
 import com.altenheim.kalender.models.CalendarEntriesModelImpl;
 import com.altenheim.kalender.models.ContactModelImpl;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
@@ -10,7 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 
-public class ComboBoxFactory implements IComboBoxFactory 
+public class ComboBoxFactoryImpl implements ComboBoxFactory
 {
     private ObservableList<String> vehicles = FXCollections.observableArrayList();
     private ObservableList<String> destinations = FXCollections.observableArrayList();
@@ -26,7 +26,7 @@ public class ComboBoxFactory implements IComboBoxFactory
     private String[] headers = { "Verkehrsmittel", "Start", "Ziel", "Intervall", "Min.", "FB", "Kurs", 
         "Semester", "MailTemplate", "Standardkalender", "Mailadressen" };    
 
-    public ComboBoxFactory() 
+    public ComboBoxFactoryImpl()
     {
         vehicles.addAll("zu Fuß", "Fahrrad", "Öffis", "Auto");
         destinations = ContactModelImpl.destinations;

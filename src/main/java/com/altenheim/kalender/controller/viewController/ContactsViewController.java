@@ -1,6 +1,6 @@
 package com.altenheim.kalender.controller.viewController;
 
-import com.altenheim.kalender.interfaces.ContactModel;
+import com.altenheim.kalender.interfaces.models.ContactModel;
 import com.altenheim.kalender.interfaces.IIOController;
 import com.altenheim.kalender.models.ContactModelImpl;
 import javafx.collections.ListChangeListener;

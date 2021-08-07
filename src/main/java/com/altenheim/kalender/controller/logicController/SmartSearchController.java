@@ -8,7 +8,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import com.altenheim.kalender.interfaces.CalendarEntriesModel;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.altenheim.kalender.interfaces.ISmartSearchController;
 import com.calendarfx.model.Entry;
 import java.util.HashMap;

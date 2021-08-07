@@ -1,4 +1,4 @@
-package com.altenheim.kalender.interfaces;
+package com.altenheim.kalender.interfaces.models;
 
 import java.time.LocalDateTime;
 import java.util.List;

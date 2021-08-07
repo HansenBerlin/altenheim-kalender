@@ -1,6 +1,7 @@
 package com.altenheim.kalender.controller.logicController;
 
 import com.altenheim.kalender.interfaces.IGoogleAPIController;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.DateFormatConverter;
 import com.altenheim.kalender.controller.viewController.ResponsiveController;
@@ -30,10 +31,10 @@ public class SearchViewValidationController extends ResponsiveController
     protected CalendarEntriesModel allCalendars;
     private IPopupViewController popupViewController;
     private IMailCreationController mailCreationController;
-    protected IEntryFactory entryFactory;
+    protected EntryFactory entryFactory;
 
     public SearchViewValidationController(IGoogleAPIController api, CalendarEntriesModel allCalendars, IPopupViewController popupViewController,
-                                          IMailCreationController mailCreationController, IEntryFactory entryFactory)
+                                          IMailCreationController mailCreationController, EntryFactory entryFactory)
     {
         this.api = api;
         this.allCalendars = allCalendars;

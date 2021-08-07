@@ -1,5 +1,6 @@
 package com.altenheim.kalender.controller.viewController;
 
+import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -13,20 +14,20 @@ import javafx.scene.input.MouseEvent;
 import com.altenheim.kalender.models.*;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import com.altenheim.kalender.controller.logicController.*;
-import com.altenheim.kalender.controller.Factories.*;
+import com.altenheim.kalender.controller.factories.*;
 import com.altenheim.kalender.interfaces.*;
 import org.controlsfx.control.ToggleSwitch;
 
 public class SearchViewController extends SearchViewRequestHandlerController
 {
-    private IAnimationController animationController;
-    private IComboBoxFactory comboBoxFactory;    
+    private AnimationController animationController;
+    private ComboBoxFactory comboBoxFactory;
 
     private int userStep = 1;     
 
-    public SearchViewController(IGoogleAPIController api, CalendarEntriesModel allCalendars, IAnimationController animationController,
-                                IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, IMailCreationController mailCreationController,
-                                IEntryFactory entryFactory, ISmartSearchController smartSearch, IDateSuggestionController dateSuggestionController)
+    public SearchViewController(IGoogleAPIController api, CalendarEntriesModel allCalendars, AnimationController animationController,
+                                ComboBoxFactory comboBoxFactory, IPopupViewController popupViewController, IMailCreationController mailCreationController,
+                                EntryFactory entryFactory, ISmartSearchController smartSearch, IDateSuggestionController dateSuggestionController)
     {
         super(api, allCalendars, popupViewController, mailCreationController, entryFactory, smartSearch, dateSuggestionController);        
         this.animationController = animationController;

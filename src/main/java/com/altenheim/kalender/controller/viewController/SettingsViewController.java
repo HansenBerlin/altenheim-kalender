@@ -1,6 +1,7 @@
 package com.altenheim.kalender.controller.viewController;
 
 import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.altenheim.kalender.models.SettingsModelImpl;
 import com.altenheim.kalender.resourceClasses.ComboBoxCreate;
 import javafx.event.ActionEvent;
@@ -20,9 +21,9 @@ public class SettingsViewController extends ResponsiveController
 {
     private SettingsModel settings;
     private CalendarEntriesModel allCalendars;
-    private IEntryFactory calendarFactory;
+    private EntryFactory calendarFactory;
     private IPopupViewController popupViewController;
-    private IComboBoxFactory comboBoxFactory;
+    private ComboBoxFactory comboBoxFactory;
     private ComboBox<String> comboBoxNotificationMin, comboBoxSelectionSpecialField, comboBoxSelectionCourse,
             comboBoxSelectionSemester, comboBoxDefaultCalendar;
 
@@ -35,8 +36,8 @@ public class SettingsViewController extends ResponsiveController
     @FXML private CheckBox cBToolTips;
     @FXML private VBox topContainer, bottomContainer, containerComboBoxNotificationMin, containerComboBoxDefaultCalendar;
 
-    public SettingsViewController(SettingsModel settings, IEntryFactory calendarFactory, CalendarEntriesModel allCalendars,
-                                  IComboBoxFactory comboBoxFactory, IPopupViewController popupViewController)
+    public SettingsViewController(SettingsModel settings, EntryFactory calendarFactory, CalendarEntriesModel allCalendars,
+                                  ComboBoxFactory comboBoxFactory, IPopupViewController popupViewController)
     {
         this.settings = settings;
         this.allCalendars = allCalendars;

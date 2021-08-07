@@ -1,6 +1,6 @@
 package com.altenheim.kalender.controller.viewController;
 
-import com.altenheim.kalender.interfaces.IViewRootsModel;
+import com.altenheim.kalender.interfaces.ViewRootsModel;
 import com.altenheim.kalender.interfaces.SettingsModel;
 import com.altenheim.kalender.models.SettingsModelImpl;
 import com.altenheim.kalender.resourceClasses.*;
@@ -12,7 +12,7 @@ import jfxtras.styles.jmetro.Style;
 public class GuiUpdateController 
 {
     private JMetro jMetroStyle;
-    private IViewRootsModel viewsInformation;
+    private ViewRootsModel viewsInformation;
     private SettingsModel settings;
 
     public JMetro getJMetroStyle() 
@@ -20,7 +20,7 @@ public class GuiUpdateController
         return jMetroStyle;
     }
 
-    public GuiUpdateController(JMetro jMetroStyle, IViewRootsModel viewsInformation, SettingsModel settings)
+    public GuiUpdateController(JMetro jMetroStyle, ViewRootsModel viewsInformation, SettingsModel settings)
     {
         this.jMetroStyle = jMetroStyle;
         this.viewsInformation = viewsInformation;

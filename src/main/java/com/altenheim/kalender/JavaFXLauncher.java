@@ -1,6 +1,7 @@
 package com.altenheim.kalender;
 
-import com.altenheim.kalender.controller.Factories.InjectorFactory;
+import com.altenheim.kalender.controller.factories.InjectorFactoryImpl;
+import com.altenheim.kalender.interfaces.factorys.InjectorFactory;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,7 @@ public class JavaFXLauncher extends Application
     @Override
     public void start(Stage primaryStage) throws Exception 
     {
-        var objectFactory = new InjectorFactory();
+        InjectorFactory objectFactory = new InjectorFactoryImpl();
         objectFactory.createServices();
         var guiSetup = objectFactory.getGuiController();
         guiSetup.init();

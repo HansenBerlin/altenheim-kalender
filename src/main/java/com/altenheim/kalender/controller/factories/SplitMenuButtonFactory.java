@@ -1,4 +1,4 @@
-package com.altenheim.kalender.controller.Factories;
+package com.altenheim.kalender.controller.factories;
 
 import java.util.List;
 import com.calendarfx.model.Calendar;

@@ -2,6 +2,7 @@ package com.altenheim.kalender.controller.logicController;
 
 import java.io.File;
 import com.altenheim.kalender.interfaces.*;
+import com.altenheim.kalender.interfaces.models.ContactModel;
 import com.altenheim.kalender.models.*;
 import com.calendarfx.model.Calendar;
 import java.io.FileInputStream;
@@ -50,7 +51,7 @@ public class IOController implements IIOController
         } 
     }
 
-    public void loadCalendarsFromFile(IEntryFactory entryFactory) 
+    public void loadCalendarsFromFile(EntryFactory entryFactory)
     {
         entryFactory.clearCalendarSourceList();
         var allCalendarFiles = new File(settings.getPathToUserDirectory() + "calendars").listFiles();

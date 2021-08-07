@@ -7,7 +7,7 @@ import java.util.List;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 
-public interface IEntryFactory 
+public interface EntryFactory
 {    
     void clearCalendarSourceList();
     void createRandomCalendarList();

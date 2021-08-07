@@ -3,7 +3,7 @@ package com.altenheim.kalender.interfaces;
 import com.altenheim.kalender.controller.viewController.*;
 import javafx.scene.layout.GridPane;
 
-public interface IViewRootsModel 
+public interface ViewRootsModel
 {
     GridPane[] getAllViews();
     ResponsiveController[] getAllViewControllers();
