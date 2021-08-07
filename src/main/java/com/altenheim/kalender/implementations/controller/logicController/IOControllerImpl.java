@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.Objects;
 
 public record IOControllerImpl(SettingsModel settings,
                                ExportController exportController,
@@ -47,7 +48,7 @@ public record IOControllerImpl(SettingsModel settings,
     public void loadCalendarsFromFile(EntryFactory entryFactory) {
         entryFactory.clearCalendarSourceList();
         var allCalendarFiles = new File(settings.getPathToUserDirectory() + "calendars").listFiles();
-        for (var calendarFile : allCalendarFiles) {
+        for (var calendarFile : Objects.requireNonNull(allCalendarFiles)) {
             if (calendarFile.getAbsolutePath().contains(".ics")) {
                 var calendar = importController.importFile(calendarFile.getAbsolutePath());
                 if (calendar != null)

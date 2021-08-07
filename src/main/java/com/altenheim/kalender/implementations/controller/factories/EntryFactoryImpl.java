@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class EntryFactoryImpl implements EntryFactory
@@ -51,9 +52,9 @@ public class EntryFactoryImpl implements EntryFactory
         var calendar = new Calendar("TestKalender");
         calendar.setName(calendar.getName());
         for (int i = 1; i <= 12; i++) {
-            if (Arrays.asList(new int[] { 1, 3, 5, 7, 8, 10, 12 }).contains(i))
+            if (Collections.singletonList(new int[]{1, 3, 5, 7, 8, 10, 12}).contains(i))
                 dayOfMonth = 31;
-            else if (Arrays.asList(new int[] { 4, 6, 9, 11 }).contains(i))
+            else if (Collections.singletonList(new int[]{4, 6, 9, 11}).contains(i))
                 dayOfMonth = 30;
             else
                 dayOfMonth = 28;

@@ -9,53 +9,31 @@ import com.altenheim.kalender.interfaces.models.ContactModel;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
 
-public class InitialSetupControllerImpl implements InitialSetupController
-{
-    private final IOController ioController;
-    private final PopupViewController popup;
-    private final UrlRequestController websiteScraper;
-    private final SystemTrayNotificationsController systemNotifications;
-    private final EntryFactory entryFactory;
-    private final ContactModel contacts;
+public record InitialSetupControllerImpl(IOController ioController,
+                                         PopupViewController popup,
+                                         UrlRequestController websiteScraper,
+                                         SystemTrayNotificationsController systemNotifications,
+                                         EntryFactory entryFactory,
+                                         ContactModel contacts) implements InitialSetupController {
 
-    public InitialSetupControllerImpl(IOController ioController, PopupViewController popup,
-                                      UrlRequestController websiteScraper, SystemTrayNotificationsController systemNotifications,
-                                      EntryFactory entryFactory, ContactModel contacts)
-    {
-        this.ioController = ioController;
-        this.popup = popup;
-        this.websiteScraper = websiteScraper;
-        this.systemNotifications = systemNotifications;
-        this.entryFactory = entryFactory;
-        this.contacts = contacts;
-    }
-
-    public void initializeSettings() 
-    {
+    public void initializeSettings() {
         ioController.createUserPath();
-        try 
-        {
+        try {
             ioController.loadCalendarsFromFile(entryFactory);
             ioController.loadContactsFromFile(contacts);
-        } 
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         websiteScraper.startScraperTask();
-        if (systemNotifications.initializeSystemTrayAccess()) 
-        {
+        if (systemNotifications.initializeSystemTrayAccess()) {
             systemNotifications.startNotificationTask();
         }
     }
 
-    public void initialValidationCheck() 
-    {
-        if (ioController.loadHashedPassword().isBlank()) 
-        {
+    public void initialValidationCheck() {
+        if (ioController.loadHashedPassword().isBlank()) {
             var userValidationPassed = validateUserPassword();
-            if (!userValidationPassed) 
-            {
+            if (!userValidationPassed) {
                 SettingsModelImpl.useAdvancedFeatures = false;
                 return;
             }
@@ -65,22 +43,17 @@ public class InitialSetupControllerImpl implements InitialSetupController
 
     }
 
-    private boolean validateUserPassword() 
-    {
+    private boolean validateUserPassword() {
         var password = popup.showPasswordInputDialog();
         var security = new DecryptionControllerImpl();
         var hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_",
                 SettingsModelImpl.PASSWORDHASH);
-        while (hashedPasswordAfterUserValidation.isBlank()) 
-        {
-            if (popup.isRevalidationWanted()) 
-            {
+        while (hashedPasswordAfterUserValidation.isBlank()) {
+            if (popup.isRevalidationWanted()) {
                 password = popup.showPasswordInputDialog();
                 hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_",
                         SettingsModelImpl.PASSWORDHASH);
-            } 
-            else 
-            {
+            } else {
                 popup.showCancelDialog();
                 return false;
             }
@@ -88,5 +61,5 @@ public class InitialSetupControllerImpl implements InitialSetupController
         ioController.saveHashedPassword(hashedPasswordAfterUserValidation);
         popup.showConfirmationDialog();
         return true;
-    }    
+    }
 }

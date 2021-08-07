@@ -15,10 +15,10 @@ public class SettingsModelImpl implements SettingsModel
     public static String decryptedPassword = "";
     public static String hwrWebsiteUrl = "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/wi/semester2/kursc";
     public static boolean useAdvancedFeatures = false;
-    public static boolean isDarkmodeActive = true;
+    public static boolean isDarkmodeActive = false;
     public long entrySystemMessageIntervalInMinutes = 1;
     public long notificationTimeBeforeEntryInMinutes = 15;
-    public long hwrRequestIntervalInMinutes = (long) 1440;    
+    public long hwrRequestIntervalInMinutes = 1440;
     public final transient SimpleStringProperty street = new SimpleStringProperty();
     public final transient SimpleStringProperty houseNumber = new SimpleStringProperty();
     public final transient SimpleStringProperty zipCode = new SimpleStringProperty();
@@ -51,7 +51,7 @@ public class SettingsModelImpl implements SettingsModel
             return Style.LIGHT;
     }
 
-    public void saveSettings() 
+    public void saveSettings(boolean isSettingsButtonSource)
     {
         String path = "userFiles/userSettings/settings.file";
         try 
@@ -72,9 +72,10 @@ public class SettingsModelImpl implements SettingsModel
             streamOut.writeLong(notificationTimeBeforeEntryInMinutes);
             streamOut.writeLong(entrySystemMessageIntervalInMinutes);
             streamOut.writeBoolean(useAdvancedFeatures);
-            streamOut.writeBoolean(isDarkmodeActive);
             streamOut.writeUTF(defaultCalendarForSearchView);
             streamOut.writeUTF(hwrWebsiteUrl);
+            if (!isSettingsButtonSource)
+                streamOut.writeBoolean(isDarkmodeActive);
             streamOut.close();
             writeToFile.close();
         } catch (IOException e)
@@ -107,15 +108,16 @@ public class SettingsModelImpl implements SettingsModel
             notificationTimeBeforeEntryInMinutes = inputStream.readLong();
             entrySystemMessageIntervalInMinutes = inputStream.readLong();
             useAdvancedFeatures = inputStream.readBoolean();
-            isDarkmodeActive = inputStream.readBoolean();
             defaultCalendarForSearchView = inputStream.readUTF();
             hwrWebsiteUrl = inputStream.readUTF();
+            isDarkmodeActive = inputStream.readBoolean();
+
             inputStream.close();
             loadFile.close();
         } 
-        catch (Exception e) 
+        catch (IOException e)
         {
-            e.printStackTrace();
+            System.err.println((e.getMessage()));
         }
     }    
 }

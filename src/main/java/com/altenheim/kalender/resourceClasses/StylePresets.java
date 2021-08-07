@@ -6,6 +6,8 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.geometry.Insets;
 
+import java.util.Objects;
+
 public class StylePresets 
 {
     public static final Background DARK_PRIMARY = getPreset(1);
@@ -58,7 +60,7 @@ public class StylePresets
             default:
                 break;
         }
-        return new Background(new BackgroundFill(Color.web(stylesheet), CornerRadii.EMPTY, Insets.EMPTY));
+        return new Background(new BackgroundFill(Color.web(Objects.requireNonNull(stylesheet)), CornerRadii.EMPTY, Insets.EMPTY));
     }
 
     private static String getApplicationCssFile(boolean isDark) {
@@ -73,16 +75,16 @@ public class StylePresets
 
     private String getApplicationTemplate(boolean isDark) {
         if (isDark)
-            return getClass().getResource("/darkMode.css").toExternalForm();
+            return Objects.requireNonNull(getClass().getResource("/darkMode.css")).toExternalForm();
         else
-            return getClass().getResource("/lightMode.css").toExternalForm();
+            return Objects.requireNonNull(getClass().getResource("/lightMode.css")).toExternalForm();
     }
 
     private String getCalendarTemplate(boolean isDark) {
         if (isDark)
-            return getClass().getResource("/calendarDark.css").toExternalForm();
+            return Objects.requireNonNull(getClass().getResource("/calendarDark.css")).toExternalForm();
         else
-            return getClass().getResource("/calendarLight.css").toExternalForm();
+            return Objects.requireNonNull(getClass().getResource("/calendarLight.css")).toExternalForm();
     }
     
 }

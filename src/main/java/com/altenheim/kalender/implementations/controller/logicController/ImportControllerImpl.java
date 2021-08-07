@@ -44,7 +44,7 @@ public record ImportControllerImpl(EntryFactory entryFactory) implements ImportC
         var components = iCalCalendar.getComponents("VEVENT");
         for (net.fortuna.ical4j.model.component.CalendarComponent component : components) {
             var start = (DtStart) (component.getProperties().getProperty("DTSTART"));
-            var end = (DtEnd) ((Property) component.getProperties().getProperty("DTEND"));
+            var end = (DtEnd) component.getProperties().getProperty("DTEND");
             var startMilli = start.getDate().toInstant().toEpochMilli();
             var endMilli = end.getDate().toInstant().toEpochMilli();
             var entry = entryFactory.createCalendarFXEntryFromMillis(startMilli, endMilli);

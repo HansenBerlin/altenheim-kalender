@@ -3,13 +3,13 @@ package com.altenheim.kalender;
 import com.altenheim.kalender.implementations.controller.factories.InjectorFactoryImpl;
 import com.altenheim.kalender.interfaces.factorys.InjectorFactory;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+
+import java.util.Objects;
 
 public class JavaFXLauncher extends Application 
 {
@@ -44,7 +44,7 @@ public class JavaFXLauncher extends Application
         
         primaryStage.setOnCloseRequest(we -> System.exit(0));
 
-        var image = new Image(getClass().getResource("/Penaut.png").toString());
+        var image = new Image(Objects.requireNonNull(getClass().getResource("/Penaut.png")).toString());
         primaryStage.getIcons().add(image);
 
         //objectFactory.searchVCt.initialize2();

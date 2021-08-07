@@ -6,7 +6,6 @@ import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import com.calendarfx.model.Calendar;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -41,7 +40,7 @@ public class PlannerViewController extends ResponsiveController
 
     public void updateCustomCalendarView(CustomViewOverride calendarView) 
     {
-        if (childContainer.getChildren().contains(calendarView)) 
+        if (childContainer.getChildren().contains(calendarView))
         {
             childContainer.getChildren().remove(calendarView);
         }

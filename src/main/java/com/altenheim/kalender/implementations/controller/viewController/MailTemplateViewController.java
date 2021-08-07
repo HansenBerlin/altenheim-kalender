@@ -124,7 +124,7 @@ public class MailTemplateViewController extends ResponsiveController
         if (txtError.getText().contains(txt + "fehlt im Template."))
             txtError.setVisible(false);
         txt = "[" + txt + "] ";
-        mailTemplatetxtArea.setText(text.substring(0, position) + txt + text.substring(position, text.length()));
+        mailTemplatetxtArea.setText(text.substring(0, position) + txt + text.substring(position));
         mailTemplatetxtArea.requestFocus();
         mailTemplatetxtArea.positionCaret(position + txt.length());
     }

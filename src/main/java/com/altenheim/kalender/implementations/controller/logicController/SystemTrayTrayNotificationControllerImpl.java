@@ -43,7 +43,7 @@ public class SystemTrayTrayNotificationControllerImpl extends TimerTask implemen
         for (var entry : entries)
             if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1))
                     && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1)))
-                currentEntries.add((Entry<String>) entry);
+                currentEntries.add(entry);
         outputSystemMessageForEntryList("Termin beginnt jetzt", currentEntries);
 
         currentEntries.clear();
@@ -52,7 +52,7 @@ public class SystemTrayTrayNotificationControllerImpl extends TimerTask implemen
         for (var entry : entries)
             if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1))
                     && entry.getStartAsLocalDateTime().isBefore(end.plusSeconds(1)))
-                currentEntries.add((Entry<String>) entry);
+                currentEntries.add(entry);
         outputSystemMessageForEntryList("Termin beginnt in " + (int) timeToAdd  + " Minuten", currentEntries);
     }
 

@@ -24,5 +24,5 @@ public interface SettingsModel extends Serializable
     File getPasswordhashFile();
     Style getCssStyle();
     void loadSettings();
-    void saveSettings();
+    void saveSettings(boolean isSettingsButtonSource);
 }

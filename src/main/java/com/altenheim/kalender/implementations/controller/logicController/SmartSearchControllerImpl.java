@@ -66,8 +66,8 @@ public record SmartSearchControllerImpl(
 		}
 		var output = new ArrayList<Entry<String>>();
 
-		long start = input.getStartMillis() + before * 60000;
-		long end = input.getEndMillis() - after * 60000;
+		long start = input.getStartMillis() + before * 60000L;
+		long end = input.getEndMillis() - after * 60000L;
 		long userStart = start;
 		long userEnd = end;
 

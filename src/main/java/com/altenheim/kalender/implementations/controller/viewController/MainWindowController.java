@@ -62,8 +62,7 @@ public class MainWindowController extends ResponsiveController
     }
 
     @FXML
-    private void initialize() throws IOException 
-    {
+    private void initialize() {
         ((PlannerViewController)allViewsInformation.getAllViewControllers()[0]).updateCustomCalendarView(customCalendar);
         viewsRoot.getChildren().addAll(allViewsInformation.getAllViews());
         setupMenuButtons();        
@@ -125,7 +124,7 @@ public class MainWindowController extends ResponsiveController
         jMetro.getOverridingStylesheets().clear();
         jMetro.getOverridingStylesheets().add(appCssFile);             
         customCalendar.updateCss();
-        settings.saveSettings(); 
+        settings.saveSettings(false);
         
         for (var view : allViewsInformation.getAllViews())
             view.setBackground(background);  

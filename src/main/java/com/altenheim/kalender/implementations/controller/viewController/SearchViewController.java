@@ -9,8 +9,6 @@ import com.altenheim.kalender.interfaces.logicController.SmartSearchController;
 import com.altenheim.kalender.interfaces.models.CalendarEntriesModel;
 import com.altenheim.kalender.interfaces.viewController.AnimationController;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.*;
@@ -216,7 +214,7 @@ public class SearchViewController extends SearchViewRequestHandlerController
             {
                 Boolean valueToSet;
                 {
-                    if (j > 3 && j < 9)
+                    if (j > 3)
                         valueToSet = newValue;
                     else
                         valueToSet = oldValue;

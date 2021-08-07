@@ -31,10 +31,7 @@ public class CalendarEntriesModelImpl implements CalendarEntriesModel
         var allCalendars = new ArrayList<Calendar>();
         for (var source : calendarView.getCalendarSources()) 
         {
-            for (var calendar : source.getCalendars()) 
-            {
-                allCalendars.add(calendar);                
-            }            
+            allCalendars.addAll(source.getCalendars());
         }
 
         return allCalendars; 

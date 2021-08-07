@@ -11,8 +11,6 @@ import com.altenheim.kalender.implementations.controller.viewController.Responsi
 import org.controlsfx.control.ToggleSwitch;
 import java.time.*;
 import javafx.scene.control.*;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
@@ -235,14 +233,8 @@ public class SearchViewValidationController extends ResponsiveController
     protected int[] compareTimes(int timeBefore, int timeAfter, int travelTime) 
     {
         int[] updatedTimes = new int[2];
-        if (timeBefore > travelTime)
-            updatedTimes[0] = timeBefore;
-        else
-            updatedTimes[0] = travelTime;
-        if (timeAfter > travelTime)
-            updatedTimes[1] = timeAfter;
-        else
-            updatedTimes[1] = travelTime;
+        updatedTimes[0] = Math.max(timeBefore, travelTime);
+        updatedTimes[1] = Math.max(timeAfter, travelTime);
         return updatedTimes;
     }
 
@@ -275,7 +267,7 @@ public class SearchViewValidationController extends ResponsiveController
         for (var contact : ContactModelImpl.data)
         {
             if (contact.getFullName().equals(selectedContact));
-                return contact.getMail();            
+                return contact.getMail();
         }
         return "";
     }

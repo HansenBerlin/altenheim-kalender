@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.altenheim.kalender.interfaces.models.ContactModel;
 import javafx.scene.control.Button;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 
@@ -53,10 +51,7 @@ public class ContactModelImpl implements ContactModel
     public List<ContactModelImpl> getDataToSerialize()
     { 
         var listFromObservable = new ArrayList<ContactModelImpl>();
-        for (var contactModel : data) 
-        {
-            listFromObservable.add(contactModel);            
-        }
+        listFromObservable.addAll(data);
         return listFromObservable; 
     } 
 

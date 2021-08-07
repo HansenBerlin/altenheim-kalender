@@ -127,11 +127,11 @@ public class SettingsViewController extends ResponsiveController
             settings.setHwrWebsiteUrl(resultURL);
         }
         //cBToolTips.setTooltip(cBToolTips.getTooltip());
-        settings.setNotificationTimeBeforeEntryInMinutes((long) Long.parseLong(comboBoxNotificationMin.getValue()));
+        settings.setNotificationTimeBeforeEntryInMinutes(Long.parseLong(comboBoxNotificationMin.getValue()));
         settings.setDefaultCalendarForSearchView(comboBoxDefaultCalendar.getValue());
         settings.setEntrySystemMessageIntervalInMinutes(1);
         //settings.toolTip = cBToolTips.selectedProperty();
-        settings.saveSettings();
+        settings.saveSettings(true);
     }
 
    

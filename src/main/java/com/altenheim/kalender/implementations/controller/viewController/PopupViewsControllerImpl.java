@@ -157,7 +157,7 @@ public record PopupViewsControllerImpl(SettingsModel settings,
     }
 
     private void showCalendarExportedDialog(int exportedCount, boolean isSuccessful) {
-        String message = "";
+        String message;
         if (isSuccessful)
             message = "Es wurden " + exportedCount + " Kalenderdateien exportiert.";
         else
