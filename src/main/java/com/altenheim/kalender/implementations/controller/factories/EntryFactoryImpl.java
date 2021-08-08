@@ -171,10 +171,13 @@ public class EntryFactoryImpl implements EntryFactory
 
     private void deleteCalendar(String calendarName, Calendar calendarNew)
     {
+        
         for (var calendar : calendarView.getCalendarSources().get(0).getCalendars())
         {
-            if (calendar.getName().equals(calendarName))
+            if (calendar.getName().equals(calendarName)){
                 calendarView.getCalendarSources().get(0).getCalendars().remove(calendar);
+                return;
+            }
         }
     }
 

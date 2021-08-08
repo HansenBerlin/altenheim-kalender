@@ -34,7 +34,7 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
 
     public void run() 
     {
-        if(!isCalendarImportedSuccesfully());
+        if(!isCalendarImportedSuccesfully())
             System.out.println("ERROR: Kalender konnte nicht heruntergeladen werden.");
     }
 
