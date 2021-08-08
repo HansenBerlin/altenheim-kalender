@@ -1,5 +1,7 @@
 package com.altenheim.kalender.implementations.controller.viewController;
 
+import java.io.File;
+
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.logicController.ExportController;
 import com.altenheim.kalender.interfaces.logicController.ImportController;
@@ -222,18 +224,28 @@ public record PopupViewsControllerImpl(SettingsModel settings, ImportController 
     {
         var calendars = allEntries.getAllCalendars();
 
+        File path;
+        try 
+        {
+            var directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Speicherort für die Kalender wählen.");
+            path = directoryChooser.showDialog(stage);
+            if (path == null) 
+            {
+                showCalendarExportedDialog(0, false);
+                return;
+            }
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+            showCalendarExportedDialog(0, false);
+            return;
+        }
         for (var calendar : calendars) 
         {
             try 
             {
-                var directoryChooser = new DirectoryChooser();
-                directoryChooser.setTitle("Speicherort für Kalender " + calendar.getName() + " wählen.");
-                var path = directoryChooser.showDialog(stage);
-                if (path == null) 
-                {
-                    showCalendarExportedDialog(0, false);
-                    return;
-                }
                 exportController.exportCalendarAsFile(calendar, path.getAbsolutePath());
             } 
             catch (Exception e)
