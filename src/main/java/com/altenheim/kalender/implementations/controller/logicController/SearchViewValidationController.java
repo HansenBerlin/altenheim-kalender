@@ -222,9 +222,9 @@ public class SearchViewValidationController extends ResponsiveController
     protected  HashMap<DayOfWeek, List<Entry<String>>> validateOpeningHours() 
     {
         var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
-        var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
+        var destination = dropdownDestinationOpening.getSelectionModel().getSelectedItem();
 
-        if (toggleUseOpeningHours.isSelected() && !destination.isEmpty())
+        if (toggleUseOpeningHours.isSelected() && destination != null &&!destination.isEmpty() )
             openingHours = api.getOpeningHours(destination);
 
         return openingHours;

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import com.altenheim.kalender.interfaces.logicController.JsonParser;
 import com.calendarfx.model.Entry;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class JsonParserImpl implements JsonParser 
@@ -15,7 +16,15 @@ public class JsonParserImpl implements JsonParser
     {
         if (jsonBody.isEmpty())
             return jsonBody;
-        var json = new JSONObject(jsonBody).getJSONArray("candidates");
+        JSONArray json;
+        try 
+        {
+            json = new JSONObject(jsonBody).getJSONArray("candidates");
+        } 
+        catch (Exception e) 
+        {
+            return "";
+        }
         var locationId = new ArrayList<String>();
 
         for (int i = 0; i < json.length(); i++)
@@ -26,14 +35,24 @@ public class JsonParserImpl implements JsonParser
 
     public HashMap<DayOfWeek, List<Entry<String>>> parseJsonForOpeningHours(String jsonBody) 
     {
-        if (jsonBody.isEmpty())
-            return null;
-
         var openingHours = new HashMap<DayOfWeek, List<Entry<String>>>();
 
+        if (jsonBody.isEmpty())
+            return openingHours;
+
         var json = new JSONObject(jsonBody);
-        var openingHoursJson = json.getJSONObject("result").getJSONObject("opening_hours");
-        var periods = openingHoursJson.getJSONArray("periods");
+        JSONObject openingHoursJson;
+        JSONArray periods;
+
+        try 
+        {
+            openingHoursJson = json.getJSONObject("result").getJSONObject("opening_hours");
+            periods = openingHoursJson.getJSONArray("periods");
+        }
+         catch (org.json.JSONException e) 
+         {
+            return openingHours;
+        }
 
         for (var day : DayOfWeek.values()) 
         {
