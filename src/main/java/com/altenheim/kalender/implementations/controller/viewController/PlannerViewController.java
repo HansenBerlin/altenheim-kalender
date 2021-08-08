@@ -39,9 +39,7 @@ public class PlannerViewController extends ResponsiveController
 
     public void updateCustomCalendarView(CustomViewOverride calendarView) 
     {
-        if (childContainer.getChildren().contains(calendarView))
-            childContainer.getChildren().remove(calendarView);
-        
+        childContainer.getChildren().remove(calendarView);
         childContainer.add(calendarView, 0, 0, 1, 1);
     }
 

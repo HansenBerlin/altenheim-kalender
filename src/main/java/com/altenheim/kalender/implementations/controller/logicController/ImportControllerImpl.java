@@ -12,7 +12,7 @@ import net.fortuna.ical4j.model.property.DtStart;
 
 public class ImportControllerImpl implements ImportController
 {
-    private EntryFactory entryFactory;
+    private final EntryFactory entryFactory;
     private Calendar tempCalendar;
     private com.calendarfx.model.Calendar tempFxCalendar;
 
@@ -45,8 +45,7 @@ public class ImportControllerImpl implements ImportController
     {
         try
         {
-            var fxCalendar = parseICal(tempCalendar);
-            tempFxCalendar = fxCalendar;
+            tempFxCalendar = parseICal(tempCalendar);
             tempCalendar = null;
             return true;
         }

@@ -10,6 +10,7 @@ import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
 import com.calendarfx.model.Calendar;
 import java.io.File;
+import java.util.Objects;
 
 public record InitialSetupControllerImpl(IOController ioController,
                                          PopupViewController popup,
@@ -32,7 +33,7 @@ public record InitialSetupControllerImpl(IOController ioController,
     private void createDefaultCalendarWhenDirectoryIsEmpty()
     {
         var calendarDirectory = new File(SettingsModelImpl.userDirectory + "calendars/");
-        if (calendarDirectory.listFiles().length == 0)
+        if (Objects.requireNonNull(calendarDirectory.listFiles()).length == 0)
             entryFactory.addCalendarToView(new Calendar(), "Standardkalender");
     }
 

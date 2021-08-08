@@ -6,6 +6,8 @@ import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
@@ -15,17 +17,28 @@ public class DecryptionControllerImpl implements DecryptionController
 
     public String decrypt(String password, String salt, String cypherText) 
     {
+        String decrypted = "";
         try 
         {
             var paramKeyPair = createSpecs(password, salt);
             var cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, paramKeyPair.getValue(), paramKeyPair.getKey());
-            return new String(cipher.doFinal(Base64.getDecoder().decode(cypherText)));
+            decrypted = new String(cipher.doFinal(Base64.getDecoder().decode(cypherText)));
         } 
-        catch (Exception e) 
+        catch (BadPaddingException |
+                NoSuchAlgorithmException |
+                InvalidKeySpecException |
+                NoSuchPaddingException |
+                IllegalBlockSizeException |
+                InvalidAlgorithmParameterException |
+                InvalidKeyException e)
         {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
             return "";
+        }
+        finally
+        {
+            return  decrypted;
         }
     }
 

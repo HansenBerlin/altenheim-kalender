@@ -10,7 +10,6 @@ public interface SettingsModel extends Serializable
 {
     SimpleStringProperty[] getSettingsInputFieldsContainer();
     SimpleStringProperty[] getSettingsDropdownTitlesContainer();
-    SimpleBooleanProperty getToolTipEnabled();
     String getSelectedHwrCourseName();
     File getPasswordhashFile();
     Style getCssStyle();

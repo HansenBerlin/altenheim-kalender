@@ -33,7 +33,6 @@ public class SettingsModelImpl implements SettingsModel
     public final transient SimpleBooleanProperty toolTip = new SimpleBooleanProperty(false);
     public SimpleStringProperty[] getSettingsInputFieldsContainer() { return settingsInputFieldsContainer; }
     public SimpleStringProperty[] getSettingsDropdownTitlesContainer() { return settingsDropdownTitlesContainer; }
-    public SimpleBooleanProperty getToolTipEnabled() { return toolTip; }
     public void setNotificationTimeBeforeEntryInMinutes(long value) { notificationTimeBeforeEntryInMinutes = value; }
     public long getNotificationTimeBeforeEntryInMinutes() { return notificationTimeBeforeEntryInMinutes; }
     public void setDefaultCalendarForSearchView(String value) { defaultCalendarForSearchView = value; }

@@ -22,17 +22,5 @@ public class MailTemplateModelImpl implements MailTemplateModel
                 """;
     }
 
-    public void addTemplate(String key, String value) 
-    {
-        templates.put(key, value);
-    }
-
-    public void removeTemplate(String key) { templates.remove(key); }
     public Map<String, String> getTemplates() { return templates; }
-
-    public void setTemplates(Map<String, String> map) 
-    {
-        this.templates = map;
-    } 
-
 }

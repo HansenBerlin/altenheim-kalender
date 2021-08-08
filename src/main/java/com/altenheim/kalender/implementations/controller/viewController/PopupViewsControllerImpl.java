@@ -191,8 +191,8 @@ public record PopupViewsControllerImpl(SettingsModel settings, ImportController 
     {
         var message = ("""
             Es gab einen Fehler beim Importieren der Kalender.
-            Eventuell ist die Datei nicht vorhanden oder er 
-            konnte nicht von der HWR-Webseite runtergeladen 
+            Eventuell ist die Datei nicht vorhanden oder er
+            konnte nicht von der HWR-Webseite runtergeladen
             werden.""");
 
         showDefaultDialog(message, "Kalender nicht importiert", Alert.AlertType.ERROR);
@@ -201,7 +201,7 @@ public record PopupViewsControllerImpl(SettingsModel settings, ImportController 
     public void showCalendarImportedSuccess()
     {
         var message = ("""
-            Der gewünschte HWR Kalender 
+            Der gewünschte HWR Kalender
             wurde erfolgreich importiert.""");
 
         showDefaultDialog(message, "Kalender erfolgreich importiert", Alert.AlertType.CONFIRMATION);

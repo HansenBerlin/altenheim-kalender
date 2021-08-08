@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -79,7 +80,7 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
         }
         finally
         {
-            fos.close();
+            Objects.requireNonNull(fos).close();
             if (rbc != null)
                 rbc.close();
         }
@@ -88,7 +89,7 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
     private void clearHwrCalendarFiles()
     {
         var directory = new File(SettingsModelImpl.userDirectory + "hwr-calendars");
-        for (var file: directory.listFiles())
+        for (var file: Objects.requireNonNull(directory.listFiles()))
             file.delete();
     }
 }

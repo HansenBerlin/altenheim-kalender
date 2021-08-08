@@ -48,9 +48,8 @@ public class ContactModelImpl implements ContactModel
     }
 
     public List<ContactModelImpl> getDataToSerialize()
-    { 
-        var listFromObservable = new ArrayList<ContactModelImpl>();
-        listFromObservable.addAll(data);
+    {
+        var listFromObservable = new ArrayList<ContactModelImpl>(data);
         return listFromObservable; 
     } 
 
