@@ -1,6 +1,5 @@
 package com.altenheim.kalender.implementations.controller.logicController;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.GregorianCalendar;
@@ -15,10 +14,11 @@ import net.fortuna.ical4j.model.property.*;
 import net.fortuna.ical4j.util.RandomUidGenerator;
 import net.fortuna.ical4j.validate.ValidationException;
 
-public record ExportControllerImpl(SettingsModel settings) implements ExportController
+public record ExportControllerImpl(SettingsModel settings) implements ExportController 
 {
     public void exportCalendarAsFile(com.calendarfx.model.Calendar fxCalendar, String path)
-            throws ValidationException, IOException {
+            throws ValidationException, IOException 
+    {
         var entries = fxCalendar.findEntries("");
         if (entries.size() == 0)
             return;
@@ -26,19 +26,22 @@ public record ExportControllerImpl(SettingsModel settings) implements ExportCont
         var fout = new FileOutputStream(path + "/" + fxCalendarName + ".ics");
         var iCalCalendar = initICalCalendar();
         iCalCalendar.getProperties().add(new XProperty("X-WR-CALNAME", fxCalendarName));
-        for (Entry<?> entry : entries) {
-            iCalCalendar.getComponents().add(createIcalEntryFromCalFXEntry((Entry<String>) entry));
-        }
+        for (Entry<?> entry : entries)
+            iCalCalendar.getComponents().add(createIcalEntryFromCalFXEntry(entry));
+        
         var outputter = new CalendarOutputter();
-        try {
+        try 
+        {
             outputter.output(iCalCalendar, fout);
-        } catch (Exception e) {
+        } catch (Exception e) 
+        {
             e.printStackTrace();
         }
         fout.close();
     }
 
-    private Calendar initICalCalendar() {
+    private Calendar initICalCalendar() 
+    {
         var iCalCalendar = new Calendar();
         iCalCalendar.getProperties().add(new ProdId("-//Smart Planner//iCal4j 1.0//DE"));
         iCalCalendar.getProperties().add(Version.VERSION_2_0);
@@ -46,7 +49,8 @@ public record ExportControllerImpl(SettingsModel settings) implements ExportCont
         return iCalCalendar;
     }
 
-    private VEvent createIcalEntryFromCalFXEntry(Entry<String> entry) {
+    private VEvent createIcalEntryFromCalFXEntry(Entry<?> entry) 
+    {
         var startTime = GregorianCalendar.from(entry.getStartAsZonedDateTime()).getTime();
         var endTime = GregorianCalendar.from(entry.getEndAsZonedDateTime()).getTime();
         var start = new DateTime(startTime);

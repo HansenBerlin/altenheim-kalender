@@ -13,7 +13,8 @@ public class AnimationControllerImpl implements AnimationController
     {
         double x = 0;
         double y = 0;
-        if (isActivated) {
+        if (isActivated) 
+        {
             x = 1;
             y = 1;
         }
@@ -42,5 +43,6 @@ public class AnimationControllerImpl implements AnimationController
             transition.setToY(r);
             transition.play();
         }
-    }    
+    }
+
 }

@@ -5,7 +5,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.geometry.Insets;
-
 import java.util.Objects;
 
 public class StylePresets 
@@ -63,24 +62,28 @@ public class StylePresets
         return new Background(new BackgroundFill(Color.web(Objects.requireNonNull(stylesheet)), CornerRadii.EMPTY, Insets.EMPTY));
     }
 
-    private static String getApplicationCssFile(boolean isDark) {
+    private static String getApplicationCssFile(boolean isDark) 
+    {
         var thisClass = new StylePresets();
         return thisClass.getApplicationTemplate(isDark);
     }
 
-    private static String getCalendarCssFile(boolean isDark) {
+    private static String getCalendarCssFile(boolean isDark) 
+    {
         var thisClass = new StylePresets();
         return thisClass.getCalendarTemplate(isDark);
     }
 
-    private String getApplicationTemplate(boolean isDark) {
+    private String getApplicationTemplate(boolean isDark) 
+    {
         if (isDark)
             return Objects.requireNonNull(getClass().getResource("/darkMode.css")).toExternalForm();
         else
             return Objects.requireNonNull(getClass().getResource("/lightMode.css")).toExternalForm();
     }
 
-    private String getCalendarTemplate(boolean isDark) {
+    private String getCalendarTemplate(boolean isDark) 
+    {
         if (isDark)
             return Objects.requireNonNull(getClass().getResource("/calendarDark.css")).toExternalForm();
         else

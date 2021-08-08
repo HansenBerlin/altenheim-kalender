@@ -7,15 +7,16 @@ import com.altenheim.kalender.resourceClasses.*;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import jfxtras.styles.jmetro.JMetro;
-import jfxtras.styles.jmetro.Style;
 
 public record GuiUpdateControllerImpl(JMetro jMetroStyle, ViewRootsModel viewsInformation) implements GuiUpdateController
 {
-    public JMetro getJMetroStyle() {
+    public JMetro getJMetroStyle() 
+    {
         return jMetroStyle;
     }
 
-    public void init() {
+    public void init() 
+    {
         setupViews();
         initializeViews();
         updateChildContainers();
@@ -26,7 +27,8 @@ public record GuiUpdateControllerImpl(JMetro jMetroStyle, ViewRootsModel viewsIn
         viewsInformation.getMainWindowController().setColorMode(SettingsModelImpl.isDarkmodeActive);
     }
 
-    public void registerCalendars() {
+    public void registerCalendars() 
+    {
         ((PlannerViewController) viewsInformation.getAllViewControllers()[0]).registerButtonEvents();
     }
 
@@ -35,21 +37,28 @@ public record GuiUpdateControllerImpl(JMetro jMetroStyle, ViewRootsModel viewsIn
         ((SearchViewController) viewsInformation.getAllViewControllers()[1]).setupAdvancedOptionsToggles();
     }
 
-    private void setupViews() {
-        for (int i = 0; i < FxmlFiles.ALL_FILES.length; i++) {
+    private void setupViews() 
+    {
+        for (int i = 0; i < FxmlFiles.ALL_FILES.length; i++) 
+        {
             var loader = new FXMLLoader();
             loader.setLocation(getClass().getResource(FxmlFiles.ALL_FILES[i]));
             loader.setController(viewsInformation.getAllViewControllers()[i]);
-            try {
+            try 
+            {
                 viewsInformation.addViewRootToList(i, loader.load());
-            } catch (IOException e) {
+            } 
+            catch (IOException e) 
+            {
                 e.printStackTrace();
             }
         }
     }
 
-    private void initializeViews() {
-        for (var view : viewsInformation.getAllViews()) {
+    private void initializeViews() 
+    {
+        for (var view : viewsInformation.getAllViews()) 
+        {
             view.setDisable(true);
             view.setVisible(false);
         }
@@ -57,8 +66,10 @@ public record GuiUpdateControllerImpl(JMetro jMetroStyle, ViewRootsModel viewsIn
         viewsInformation.getAllViews()[0].setDisable(false);
     }
 
-    private void updateChildContainers() {
+    private void updateChildContainers() 
+    {
         for (int i = 0; i < FxmlFiles.ALL_FILES.length; i++)
             viewsInformation.getAllViewControllers()[i].setChildContainer(viewsInformation.getAllViews()[i]);
     }
+
 }

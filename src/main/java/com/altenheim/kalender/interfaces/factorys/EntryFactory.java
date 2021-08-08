@@ -2,7 +2,6 @@ package com.altenheim.kalender.interfaces.factorys;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
 import com.altenheim.kalender.interfaces.logicController.IOController;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;

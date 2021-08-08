@@ -9,10 +9,7 @@ import com.altenheim.kalender.interfaces.models.ContactModel;
 import com.altenheim.kalender.interfaces.viewController.PopupViewController;
 import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
 import com.calendarfx.model.Calendar;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public record InitialSetupControllerImpl(IOController ioController,
                                          PopupViewController popup,
@@ -39,10 +36,13 @@ public record InitialSetupControllerImpl(IOController ioController,
             entryFactory.addCalendarToView(new Calendar(), "Standardkalender");
     }
 
-    public void initialValidationCheck() {
-        if (ioController.loadHashedPassword().isBlank()) {
+    public void initialValidationCheck() 
+    {
+        if (ioController.loadHashedPassword().isBlank()) 
+        {
             var userValidationPassed = validateUserPassword();
-            if (!userValidationPassed) {
+            if (!userValidationPassed) 
+            {
                 SettingsModelImpl.useAdvancedFeatures = false;
                 return;
             }
@@ -51,17 +51,22 @@ public record InitialSetupControllerImpl(IOController ioController,
         SettingsModelImpl.useAdvancedFeatures = true;
     }
 
-    private boolean validateUserPassword() {
+    private boolean validateUserPassword() 
+    {
         var password = popup.showPasswordInputDialog();
         var security = new DecryptionControllerImpl();
         var hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_",
                 SettingsModelImpl.PASSWORDHASH);
-        while (hashedPasswordAfterUserValidation.isBlank()) {
-            if (popup.isRevalidationWanted()) {
+        while (hashedPasswordAfterUserValidation.isBlank()) 
+        {
+            if (popup.isRevalidationWanted()) 
+            {
                 password = popup.showPasswordInputDialog();
                 hashedPasswordAfterUserValidation = security.decrypt(password, "p:,-XQT3pj/^>)g_",
                         SettingsModelImpl.PASSWORDHASH);
-            } else {
+            } 
+            else 
+            {
                 popup.showPasswordWrongDialog();
                 return false;
             }
@@ -70,4 +75,5 @@ public record InitialSetupControllerImpl(IOController ioController,
         popup.showPasswordCorrectConfirmationDialog();
         return true;
     }
+
 }

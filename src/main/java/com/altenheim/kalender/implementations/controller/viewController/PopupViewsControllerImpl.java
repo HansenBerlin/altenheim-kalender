@@ -16,11 +16,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import jfxtras.styles.jmetro.JMetro;
 
-public record PopupViewsControllerImpl(SettingsModel settings,
-                                       ImportController importController,
-                                       ExportController exportController) implements PopupViewController {
+public record PopupViewsControllerImpl(SettingsModel settings, ImportController importController,
+                                       ExportController exportController) implements PopupViewController 
+{
 
-    public void showEntryAddedDialogWithMailOption(String date, String dateEnd, String start, String end, Button sendMailButton) {
+    public void showEntryAddedDialogWithMailOption(String date, String dateEnd, String start, String end, Button sendMailButton) 
+    {
         var dialog = new Dialog<String>();
         var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(dialog.getDialogPane().getScene());
@@ -43,7 +44,8 @@ public record PopupViewsControllerImpl(SettingsModel settings,
 
     }
 
-    public boolean isRevalidationWanted() {
+    public boolean isRevalidationWanted() 
+    {
         var alert = new Alert(Alert.AlertType.CONFIRMATION);
         var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
@@ -60,7 +62,8 @@ public record PopupViewsControllerImpl(SettingsModel settings,
         return result.get() == ButtonType.OK;
     }
 
-    public void showPasswordCorrectConfirmationDialog() {
+    public void showPasswordCorrectConfirmationDialog() 
+    {
         var alert = new Alert(Alert.AlertType.INFORMATION);
         var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
@@ -73,7 +76,8 @@ public record PopupViewsControllerImpl(SettingsModel settings,
         alert.showAndWait();
     }
 
-    public void showPasswordWrongDialog() {
+    public void showPasswordWrongDialog() 
+    {
         var alert = new Alert(Alert.AlertType.WARNING);
         var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
@@ -86,7 +90,8 @@ public record PopupViewsControllerImpl(SettingsModel settings,
         alert.showAndWait();
     }
 
-    public String showPasswordInputDialog() {
+    public String showPasswordInputDialog() 
+    {
         var dialog = new Dialog<String>();
         var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(dialog.getDialogPane().getScene());
@@ -116,7 +121,8 @@ public record PopupViewsControllerImpl(SettingsModel settings,
         return password.getText();
     }
 
-    public String showChooseCalendarNameDialog() {
+    public String showChooseCalendarNameDialog() 
+    {
         var dialog = new Dialog<String>();
         var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(dialog.getDialogPane().getScene());
@@ -147,7 +153,8 @@ public record PopupViewsControllerImpl(SettingsModel settings,
             return "";
     }
 
-    public void importDialog(EntryFactory entryFactory, Window stage) {
+    public void importDialog(EntryFactory entryFactory, Window stage) 
+    {
         var filePicker = new FileChooser();
         var file = filePicker.showOpenDialog(stage);
         if (file == null)
@@ -160,20 +167,24 @@ public record PopupViewsControllerImpl(SettingsModel settings,
             showCalendarImportedError();
     }
 
-    private void showCalendarExportedDialog(int exportedCount, boolean isSuccessful) {
+    private void showCalendarExportedDialog(int exportedCount, boolean isSuccessful) 
+    {
         String message;
+        String title;
         Alert.AlertType alert;
         if (isSuccessful)
         {
             message = "Es wurden " + exportedCount + " Kalenderdateien exportiert.";
+            title = "Kalender erfolgreich exportiert";
             alert = Alert.AlertType.CONFIRMATION;
         }
         else
         {
             message = "Aufrund eines Fehlers wurde kein Kalender exportiert.";
+            title = "Kalender nicht exportiert"; 
             alert = Alert.AlertType.ERROR;
         }
-        showDefaultDialog(message, alert);
+        showDefaultDialog(message, title, alert);
     }
 
     public void showCalendarImportedError()
@@ -181,10 +192,10 @@ public record PopupViewsControllerImpl(SettingsModel settings,
         var message = ("""
             Es gab einen Fehler beim Importieren der Kalender.
             Eventuell ist die Datei nicht vorhanden oder er 
-            konnte nicht von der Webseite der HWR runtergeladen 
+            konnte nicht von der HWR-Webseite runtergeladen 
             werden.""");
 
-        showDefaultDialog(message, Alert.AlertType.ERROR);
+        showDefaultDialog(message, "Kalender nicht importiert", Alert.AlertType.ERROR);
     }
 
     public void showCalendarImportedSuccess()
@@ -193,15 +204,15 @@ public record PopupViewsControllerImpl(SettingsModel settings,
             Der gewünschte HWR Kalender 
             wurde erfolgreich importiert.""");
 
-        showDefaultDialog(message, Alert.AlertType.CONFIRMATION);
+        showDefaultDialog(message, "Kalender erfolgreich importiert", Alert.AlertType.CONFIRMATION);
     }
 
-    private void showDefaultDialog(String message, Alert.AlertType alertType)
+    private void showDefaultDialog(String message, String title,  Alert.AlertType alertType)
     {
         var alert = new Alert(alertType);
         var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
-        alert.setTitle("Kalender erfolgreich exportiert");
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
@@ -211,17 +222,22 @@ public record PopupViewsControllerImpl(SettingsModel settings,
     {
         var calendars = allEntries.getAllCalendars();
 
-        for (var calendar : calendars) {
-            try {
+        for (var calendar : calendars) 
+        {
+            try 
+            {
                 var directoryChooser = new DirectoryChooser();
                 directoryChooser.setTitle("Speicherort für Kalender " + calendar.getName() + " wählen.");
                 var path = directoryChooser.showDialog(stage);
-                if (path == null) {
+                if (path == null) 
+                {
                     showCalendarExportedDialog(0, false);
                     return;
                 }
                 exportController.exportCalendarAsFile(calendar, path.getAbsolutePath());
-            } catch (Exception e) {
+            } 
+            catch (Exception e)
+             {
                 e.printStackTrace();
                 showCalendarExportedDialog(0, false);
                 return;
@@ -229,4 +245,5 @@ public record PopupViewsControllerImpl(SettingsModel settings,
         }
         showCalendarExportedDialog(calendars.size(), true);
     }
+
 }

@@ -11,7 +11,6 @@ import javafx.scene.control.Button;
 
 public class PlannerViewController extends ResponsiveController 
 {
-
     @FXML private Button btnImport, btnExport;
 
     private final IOController iOController;
@@ -41,21 +40,21 @@ public class PlannerViewController extends ResponsiveController
     public void updateCustomCalendarView(CustomViewOverride calendarView) 
     {
         if (childContainer.getChildren().contains(calendarView))
-        {
             childContainer.getChildren().remove(calendarView);
-        }
+        
         childContainer.add(calendarView, 0, 0, 1, 1);
     }
 
     public void changeContentPosition(double width, double height) 
     {
-        //
+        //currently not used
     } 
     
     public void registerButtonEvents()
     {
         Button addButton = (Button)childContainer.lookup("#add-calendar-button");
-        addButton.setOnAction(event -> {
+        addButton.setOnAction(event -> 
+        {
             var calendar = new Calendar();
             String calName = popups.showChooseCalendarNameDialog();
             if (calName.isBlank())
@@ -64,4 +63,5 @@ public class PlannerViewController extends ResponsiveController
             iOController.saveCalendar(calendar);
         });
     }
+
 }

@@ -4,12 +4,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.altenheim.kalender.interfaces.viewController.CalendarEntriesController;
 import com.calendarfx.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 
 public class CalendarEntriesControllerImpl implements CalendarEntriesController
 {
@@ -62,10 +60,10 @@ public class CalendarEntriesControllerImpl implements CalendarEntriesController
     public List<Entry<String>> getEntrysWithStartInSpecificRange(LocalDateTime start, LocalDateTime end) {
         var returnValue = new ArrayList<Entry<String>>();
         var allEntries = new ArrayList<List<Entry<?>>>();
-        for (Calendar calendar : getAllCalendars()) {
-            allEntries.addAll(
-                    calendar.findEntries(start.toLocalDate(), end.toLocalDate(), ZoneId.systemDefault()).values());
-        }
+        for (Calendar calendar : getAllCalendars())
+            allEntries.addAll(calendar.findEntries(start.toLocalDate(), end.toLocalDate(), 
+                                ZoneId.systemDefault()).values());
+        
         for (var entries : allEntries)
             for (var entry : entries)
                 if (entry.getStartAsLocalDateTime().isAfter(start.minusSeconds(1))
@@ -73,4 +71,5 @@ public class CalendarEntriesControllerImpl implements CalendarEntriesController
                     returnValue.add((Entry<String>) entry);
         return returnValue;
     }
+
 }

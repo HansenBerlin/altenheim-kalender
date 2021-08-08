@@ -2,9 +2,7 @@ package com.altenheim.kalender.implementations.controller.models;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
 import com.altenheim.kalender.resourceClasses.DateFormatConverter;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;

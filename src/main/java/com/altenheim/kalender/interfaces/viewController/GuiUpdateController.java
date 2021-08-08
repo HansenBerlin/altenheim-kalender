@@ -10,7 +10,3 @@ public interface GuiUpdateController
     void registerCalendars();
     void updateAdvancedFeaturesFields();
 }
-
-
-
-
