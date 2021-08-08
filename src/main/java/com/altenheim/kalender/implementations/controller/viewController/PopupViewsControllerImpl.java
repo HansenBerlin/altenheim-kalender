@@ -170,18 +170,21 @@ public record PopupViewsControllerImpl(SettingsModel settings, ImportController 
     private void showCalendarExportedDialog(int exportedCount, boolean isSuccessful) 
     {
         String message;
+        String title;
         Alert.AlertType alert;
         if (isSuccessful)
         {
             message = "Es wurden " + exportedCount + " Kalenderdateien exportiert.";
+            title = "Kalender erfolgreich exportiert";
             alert = Alert.AlertType.CONFIRMATION;
         }
         else
         {
             message = "Aufrund eines Fehlers wurde kein Kalender exportiert.";
+            title = "Kalender nicht exportiert"; 
             alert = Alert.AlertType.ERROR;
         }
-        showDefaultDialog(message, alert);
+        showDefaultDialog(message, title, alert);
     }
 
     public void showCalendarImportedError()
@@ -189,10 +192,10 @@ public record PopupViewsControllerImpl(SettingsModel settings, ImportController 
         var message = ("""
             Es gab einen Fehler beim Importieren der Kalender.
             Eventuell ist die Datei nicht vorhanden oder er 
-            konnte nicht von der Webseite der HWR runtergeladen 
+            konnte nicht von der HWR-Webseite runtergeladen 
             werden.""");
 
-        showDefaultDialog(message, Alert.AlertType.ERROR);
+        showDefaultDialog(message, "Kalender nicht importiert", Alert.AlertType.ERROR);
     }
 
     public void showCalendarImportedSuccess()
@@ -201,15 +204,15 @@ public record PopupViewsControllerImpl(SettingsModel settings, ImportController 
             Der gewünschte HWR Kalender 
             wurde erfolgreich importiert.""");
 
-        showDefaultDialog(message, Alert.AlertType.CONFIRMATION);
+        showDefaultDialog(message, "Kalender erfolgreich importiert", Alert.AlertType.CONFIRMATION);
     }
 
-    private void showDefaultDialog(String message, Alert.AlertType alertType)
+    private void showDefaultDialog(String message, String title,  Alert.AlertType alertType)
     {
         var alert = new Alert(alertType);
         var jmetro = new JMetro(settings.getCssStyle());
         jmetro.setScene(alert.getDialogPane().getScene());
-        alert.setTitle("Kalender erfolgreich exportiert");
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
