@@ -20,5 +20,6 @@ public class SplitMenuButtonFactory
             splitMenuButton.getItems().add(menuItem);           
         }
         return splitMenuButton;
-    }    
+    }
+        
 }

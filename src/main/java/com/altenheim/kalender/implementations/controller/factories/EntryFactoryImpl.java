@@ -7,7 +7,6 @@ import com.altenheim.kalender.implementations.controller.viewController.Calendar
 import com.calendarfx.model.*;
 import javafx.event.EventHandler;
 import com.altenheim.kalender.implementations.controller.viewController.CustomViewOverride;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,6 +31,7 @@ public class EntryFactoryImpl implements EntryFactory
     {
         this.ioController = ioController;
     }
+
     public void handleCalendarPropertyChangedEvent(CalendarEvent event)
     {
         ioController.saveCalendar(event.getCalendar());
@@ -54,7 +54,8 @@ public class EntryFactoryImpl implements EntryFactory
         int dayOfMonth;
         var calendar = new Calendar("TestKalender");
         calendar.setName(calendar.getName());
-        for (int i = 1; i <= 12; i++) {
+        for (int i = 1; i <= 12; i++) 
+        {
             if (Collections.singletonList(new int[]{1, 3, 5, 7, 8, 10, 12}).contains(i))
                 dayOfMonth = 31;
             else if (Collections.singletonList(new int[]{4, 6, 9, 11}).contains(i))
@@ -62,8 +63,10 @@ public class EntryFactoryImpl implements EntryFactory
             else
                 dayOfMonth = 28;
 
-            for (int j = 1; j <= dayOfMonth; j += rG(4)) {
-                for (int k = 8; k < 20; k += 2) {
+            for (int j = 1; j <= dayOfMonth; j += rG(4)) 
+            {
+                for (int k = 8; k < 20; k += 2) 
+                {
                     var entry = createRandomEntry(j, i, k, k + rG(3));
                     calendar.addEntries(entry);
                 }
@@ -75,7 +78,7 @@ public class EntryFactoryImpl implements EntryFactory
 
     public void addCalendarToView(Calendar calendar, String name) 
     {
-        if (shouldProcessBeInterrupted(calendar, name))
+        if (shouldProcessBeInterrupted(name))
             return;
         calendar.setName(name);       
         EventHandler<CalendarEvent> eventHandler = this::handleCalendarPropertyChangedEvent;
@@ -156,25 +159,26 @@ public class EntryFactoryImpl implements EntryFactory
         allCalendars.addEntryToCalendarWithName(calName, entry);
     }
 
-    private boolean shouldProcessBeInterrupted(Calendar calendar, String name)
+    private boolean shouldProcessBeInterrupted(String name)
     {
         if (isHwrCalendar(name))
         {
-            deleteCalendar(name, calendar);
+            deleteCalendar(name);
             return false;
         }
-
-        if(isCalendarDuplicate(name))
-            return true;
-        return false;
+        return isCalendarDuplicate(name);
     }
 
-    private void deleteCalendar(String calendarName, Calendar calendarNew)
+    private void deleteCalendar(String calendarName)
     {
+        
         for (var calendar : calendarView.getCalendarSources().get(0).getCalendars())
         {
             if (calendar.getName().equals(calendarName))
+            {
                 calendarView.getCalendarSources().get(0).getCalendars().remove(calendar);
+                return;
+            }
         }
     }
 
@@ -192,4 +196,5 @@ public class EntryFactoryImpl implements EntryFactory
     {
         return name.contains("HWR-Kalender");
     }
+    
 }

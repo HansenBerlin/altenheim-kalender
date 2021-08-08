@@ -2,7 +2,6 @@ package com.altenheim.kalender.interfaces.logicController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 import com.calendarfx.model.Entry;
 
 public interface DateSuggestionController

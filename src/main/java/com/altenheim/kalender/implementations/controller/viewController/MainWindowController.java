@@ -1,12 +1,9 @@
 package com.altenheim.kalender.implementations.controller.viewController;
 
-
 import com.altenheim.kalender.interfaces.models.ViewRootsModel;
 import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
 import com.altenheim.kalender.resourceClasses.StylePresets;
-
-import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
 import javafx.beans.value.ChangeListener;
@@ -62,7 +59,8 @@ public class MainWindowController extends ResponsiveController
     }
 
     @FXML
-    private void initialize() {
+    private void initialize() 
+    {
         ((PlannerViewController)allViewsInformation.getAllViewControllers()[0]).updateCustomCalendarView(customCalendar);
         viewsRoot.getChildren().addAll(allViewsInformation.getAllViews());
         setupMenuButtons();
@@ -148,7 +146,8 @@ public class MainWindowController extends ResponsiveController
         }
     }
 
-    private void setupMenuButtons() {
+    private void setupMenuButtons() 
+    {
         Button[] buttonsList = { menuBtnPlanner, menuBtnSearch, menuBtnContacts, menuBtnMail, menuBtnSettings, btnAddAppointment, btnSwitchModes };
         Pane[] buttonBackgrounds = { menuBtnPanePlanner, menuBtnPaneSmartSearch, menuBtnPaneContacts, menuBtnPaneMail, menuBtnPaneSettings, null, null };
         allButtonsWithBackgrounds = createMainMenuButtons(buttonsList, buttonBackgrounds);
@@ -161,7 +160,8 @@ public class MainWindowController extends ResponsiveController
 
     private void bindWindowSize() 
     {
-        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> 
+        {
             changeContentPosition(stage.getWidth(), stage.getHeight());
             updateWindowSize();
         };
@@ -189,7 +189,7 @@ public class MainWindowController extends ResponsiveController
             for (String buttonName : allButtonsWithBackgrounds.keySet())
                 allButtonsWithBackgrounds.get(buttonName).getKey().setText("");
             btnLogo.setText("SP");
-            txtVersion.setText("v. 0.1.2");
+            txtVersion.setText("v. 0.4.34");
         } 
         else 
         {
@@ -197,7 +197,7 @@ public class MainWindowController extends ResponsiveController
             for (String buttonName : allButtonsWithBackgrounds.keySet())
                 allButtonsWithBackgrounds.get(buttonName).getKey().setText(buttonName);
             btnLogo.setText("SMARTPLANNER");
-            txtVersion.setText("Version 0.1.2; HWR Gruppe C");
+            txtVersion.setText("Version 0.4.34; HWR Gruppe C");
         }
         if (height < 800)
             topMenuHeight = 50;
@@ -212,7 +212,8 @@ public class MainWindowController extends ResponsiveController
         topRow.setPrefHeight(topMenuHeight);
     }  
 
-    public Map<String, Pair<Button, Pane>> createMainMenuButtons(Button[] buttons, Pane[] buttonBackgrounds) {
+    public Map<String, Pair<Button, Pane>> createMainMenuButtons(Button[] buttons, Pane[] buttonBackgrounds) 
+    {
         setImages(buttons);
 
         String[] buttonCaptions = { "Planer", "Smart Search", "Kontakte", "Mailtemplates", "Einstellungen", "", "" };
@@ -228,7 +229,8 @@ public class MainWindowController extends ResponsiveController
         return buttonsMap;
     }
 
-    private void setImages(Button[] buttonsList) {
+    private void setImages(Button[] buttonsList) 
+    {
         var iconCal = new MDL2IconFont("\uE787");
         var iconSearch = new MDL2IconFont("\uE99A");
         var iconContacts = new MDL2IconFont("\uE779");
@@ -246,4 +248,5 @@ public class MainWindowController extends ResponsiveController
             buttonsList[i].setGraphic(iconListMenuButtons[i]);
         }
     }
+
 }

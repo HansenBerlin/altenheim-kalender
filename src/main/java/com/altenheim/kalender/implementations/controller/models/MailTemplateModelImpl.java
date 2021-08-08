@@ -1,13 +1,12 @@
 package com.altenheim.kalender.implementations.controller.models;
 
 import com.altenheim.kalender.interfaces.models.MailTemplateModel;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class MailTemplateModelImpl implements MailTemplateModel
 {
-    Map<String, String> templates = new HashMap<>();
+    private Map<String, String> templates = new HashMap<>();
 
     public MailTemplateModelImpl()
     {
@@ -35,4 +34,5 @@ public class MailTemplateModelImpl implements MailTemplateModel
     {
         this.templates = map;
     } 
+
 }

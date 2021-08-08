@@ -64,5 +64,6 @@ public class CustomViewOverride extends CalendarView
         updateTimeThread.setPriority(Thread.MIN_PRIORITY);
         updateTimeThread.setDaemon(true);
         updateTimeThread.start();        
-    }  
+    }
+
 }

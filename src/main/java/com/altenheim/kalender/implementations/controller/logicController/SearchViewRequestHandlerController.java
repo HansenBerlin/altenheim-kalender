@@ -2,7 +2,6 @@ package com.altenheim.kalender.implementations.controller.logicController;
 
 import java.time.LocalTime;
 import java.time.LocalDateTime;
-
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.logicController.DateSuggestionController;
 import com.altenheim.kalender.interfaces.logicController.GoogleAPIController;
@@ -110,5 +109,6 @@ public class SearchViewRequestHandlerController extends SearchViewValidationCont
         timeAfterGlobal = updatedTimes[1];
         timeToStartSearch = LocalDateTime.of(startDateInput, startTimeInput); 
         travelTimeTo = travelTime;
-    }    
+    }
+        
 }

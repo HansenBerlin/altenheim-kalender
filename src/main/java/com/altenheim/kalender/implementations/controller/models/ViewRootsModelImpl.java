@@ -22,5 +22,6 @@ public class ViewRootsModelImpl implements ViewRootsModel
     public void addViewRootToList(int atIndex, GridPane view) { allViews[atIndex] = view; } 
     public ResponsiveController[] getAllViewControllers() { return allControllers; }
     public MainWindowController getMainWindowController() { return mainWindowController; }
-    public void setMainWindowController(MainWindowController mainWindowController) { this.mainWindowController = mainWindowController; }   
+    public void setMainWindowController(MainWindowController mainWindowController) { this.mainWindowController = mainWindowController; } 
+
 }

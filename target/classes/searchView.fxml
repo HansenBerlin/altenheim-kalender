@@ -50,7 +50,7 @@
           <Insets left="200.0"/>
         </GridPane.margin>
     </Circle>
-    <Text fx:id="txtHeaderStep" fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Deine Terminwünsche"
+    <Text fx:id="txtHeaderStep" fill="#434343" strokeType="OUTSIDE" strokeWidth="0.0" text="Basisinformationen"
           GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
         <font>
           <Font size="24.0"/>

@@ -82,6 +82,7 @@ public class SettingsModelImpl implements SettingsModel
             streamOut.writeUTF(defaultCalendarForSearchView);
             streamOut.writeUTF(hwrWebsiteUrl);
             streamOut.writeBoolean(isDarkmodeActive);
+            streamOut.writeUTF(currentlySelectedFB);
             streamOut.close();
             writeToFile.close();
         }
@@ -118,6 +119,7 @@ public class SettingsModelImpl implements SettingsModel
             defaultCalendarForSearchView = inputStream.readUTF();
             hwrWebsiteUrl = inputStream.readUTF();
             isDarkmodeActive = inputStream.readBoolean();
+            currentlySelectedFB = inputStream.readUTF();
             inputStream.close();
             loadFile.close();
         } 
@@ -125,5 +127,6 @@ public class SettingsModelImpl implements SettingsModel
         {
             System.err.println((e.getMessage()));
         }
-    }    
+    }  
+      
 }

@@ -2,7 +2,6 @@ package com.altenheim.kalender.implementations.controller.models;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.altenheim.kalender.interfaces.models.ContactModel;
 import javafx.scene.control.Button;
 import javafx.collections.ObservableList;
@@ -73,4 +72,5 @@ public class ContactModelImpl implements ContactModel
         mailadresses.remove(mail);
         destinations.remove(address);
     }
+    
 }
