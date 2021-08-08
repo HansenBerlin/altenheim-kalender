@@ -132,7 +132,7 @@ public class SearchViewController extends SearchViewRequestHandlerController
         int requestedIndex = userStep - 1 + incrementor;
         changeViewState(allSteps[currentIndex], allSteps[requestedIndex], images[currentIndex], images[requestedIndex]);
         userStep += incrementor;
-        txtHeaderStep.setText(headings[currentIndex]);
+        txtHeaderStep.setText(headings[requestedIndex]);
     }    
 
     private void changeViewState(VBox deactivate, VBox activate, Circle currentC, Circle nextC) 
