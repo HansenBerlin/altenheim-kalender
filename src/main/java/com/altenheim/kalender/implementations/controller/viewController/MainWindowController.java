@@ -189,7 +189,7 @@ public class MainWindowController extends ResponsiveController
             for (String buttonName : allButtonsWithBackgrounds.keySet())
                 allButtonsWithBackgrounds.get(buttonName).getKey().setText("");
             btnLogo.setText("SP");
-            txtVersion.setText("v. 0.1.2");
+            txtVersion.setText("v. 0.4.34");
         } 
         else 
         {
@@ -197,7 +197,7 @@ public class MainWindowController extends ResponsiveController
             for (String buttonName : allButtonsWithBackgrounds.keySet())
                 allButtonsWithBackgrounds.get(buttonName).getKey().setText(buttonName);
             btnLogo.setText("SMARTPLANNER");
-            txtVersion.setText("Version 0.1.2; HWR Gruppe C");
+            txtVersion.setText("Version 0.4.34; HWR Gruppe C");
         }
         if (height < 800)
             topMenuHeight = 50;
