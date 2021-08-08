@@ -1,4 +1,5 @@
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\logicController\JsonParser.java
+c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\logicController\SearchViewValidationController.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\viewController\CustomViewOverride.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\interfaces\IImportController.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\models\ViewRootsModel.java
@@ -21,7 +22,6 @@ c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\viewController\AnimationController.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\viewController\PopupViewsController.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\Factories\SplitMenuButtonFactory.java
-c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\interfaces\IContactFactory.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\interfaces\ISmartSearchController.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\viewController\MainWindowController.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\resourceClasses\StylePresets.java
@@ -30,14 +30,16 @@ c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\interfaces\IEntryFactory.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\Factories\EntryFactory.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\models\StatsModel.java
+c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\logicController\SearchViewRequestHandlerController.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\interfaces\IPopupViewController.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\models\ContactModel.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\viewController\ContactsViewController.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\models\SettingsModel.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\interfaces\IAnimationController.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\logicController\InitialSetupController.java
-c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\Factories\ContactFactory.java
+c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\controller\logicController\SearchViewButtonEventHandler.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\interfaces\IWebsiteScraperController.java
+c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\resourceClasses\DateFormatConverter.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\models\SuggestionsModel.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\interfaces\ICalendarEntriesModel.java
 c:\Users\Hannes\Documents\_HWR\SoSe2021\OOP\Kalender\altenheim-kalender\src\main\java\com\altenheim\kalender\interfaces\IIOController.java

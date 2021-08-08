@@ -9,20 +9,19 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <GridPane alignment="CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" />
-      <ColumnConstraints hgrow="SOMETIMES" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints vgrow="SOMETIMES" />
-      <RowConstraints vgrow="SOMETIMES" />
-   </rowConstraints>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-   <children>
-      <PieChart GridPane.columnIndex="1" />
-      <Button fx:id="testbutton" mnemonicParsing="false" onAction="#testclick" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Pane fx:id="addedEntriesContainer" GridPane.columnIndex="1" />
-   </children>
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES"/>
+        <ColumnConstraints hgrow="SOMETIMES"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="SOMETIMES"/>
+        <RowConstraints vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <PieChart GridPane.columnIndex="1"/>
+    <Button fx:id="testbutton" mnemonicParsing="false" onAction="#testclick" text="Button" GridPane.columnIndex="1"
+            GridPane.rowIndex="1"/>
+    <Pane fx:id="addedEntriesContainer" GridPane.columnIndex="1"/>
 </GridPane>

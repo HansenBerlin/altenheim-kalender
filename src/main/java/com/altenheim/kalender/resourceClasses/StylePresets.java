@@ -5,6 +5,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.geometry.Insets;
+import java.util.Objects;
 
 public class StylePresets 
 {
@@ -58,31 +59,35 @@ public class StylePresets
             default:
                 break;
         }
-        return new Background(new BackgroundFill(Color.web(stylesheet), CornerRadii.EMPTY, Insets.EMPTY));
+        return new Background(new BackgroundFill(Color.web(Objects.requireNonNull(stylesheet)), CornerRadii.EMPTY, Insets.EMPTY));
     }
 
-    private static String getApplicationCssFile(boolean isDark) {
+    private static String getApplicationCssFile(boolean isDark) 
+    {
         var thisClass = new StylePresets();
         return thisClass.getApplicationTemplate(isDark);
     }
 
-    private static String getCalendarCssFile(boolean isDark) {
+    private static String getCalendarCssFile(boolean isDark) 
+    {
         var thisClass = new StylePresets();
         return thisClass.getCalendarTemplate(isDark);
     }
 
-    private String getApplicationTemplate(boolean isDark) {
+    private String getApplicationTemplate(boolean isDark) 
+    {
         if (isDark)
-            return getClass().getResource("/darkMode.css").toExternalForm();
+            return Objects.requireNonNull(getClass().getResource("/darkMode.css")).toExternalForm();
         else
-            return getClass().getResource("/lightMode.css").toExternalForm();
+            return Objects.requireNonNull(getClass().getResource("/lightMode.css")).toExternalForm();
     }
 
-    private String getCalendarTemplate(boolean isDark) {
+    private String getCalendarTemplate(boolean isDark) 
+    {
         if (isDark)
-            return getClass().getResource("/calendarDark.css").toExternalForm();
+            return Objects.requireNonNull(getClass().getResource("/calendarDark.css")).toExternalForm();
         else
-            return getClass().getResource("/calendarLight.css").toExternalForm();
+            return Objects.requireNonNull(getClass().getResource("/calendarLight.css")).toExternalForm();
     }
     
 }
