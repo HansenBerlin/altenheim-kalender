@@ -75,6 +75,7 @@ public class SearchViewValidationController extends ResponsiveController
     @FXML
     public void initialize()
     {
+        //currently not used
     }
     
     
@@ -101,9 +102,7 @@ public class SearchViewValidationController extends ResponsiveController
             {
                 var checkbox = (CheckBox)menuItem.getGraphic();
                 if (checkbox.isSelected())
-                {
-                    allCalendars.addToAllCalendarsSelectedByUserByCalendarName(checkbox.getText());
-                }                
+                    allCalendars.addToAllCalendarsSelectedByUserByCalendarName(checkbox.getText());          
             }
         }
     }
@@ -146,15 +145,11 @@ public class SearchViewValidationController extends ResponsiveController
         Slider[] allSliders = { sliderDurationHours, sliderDurationMinutes, sliderMarginBeforeAppointment, sliderRecurrences, sliderMarginAfterAppointment };
         CheckBox[] allTicks = { tickMonday, tickTuesday, tickWednesday, tickThursday, tickFriday, tickSaturday, tickSunday };
 
-        for (var checkBox : allTicks) 
-        {
+        for (var checkBox : allTicks)
             checkBox.setSelected(false);            
-        }
-
+        
         for (var slider : allSliders)
-        {
-            slider.setValue(0);
-        }
+            slider.setValue(0);    
     }
 
     protected void setDateAndTimeFields()
@@ -190,7 +185,8 @@ public class SearchViewValidationController extends ResponsiveController
         var startTimeInput = timeStart.getValue();
         var endTimeInput = timeEnd.getValue();
 
-        if (toggleTimeRange.isSelected()) {
+        if (toggleTimeRange.isSelected()) 
+        {
             startTimeInput = LocalTime.of(0, 0, 0);
             endTimeInput = LocalTime.of(23, 59, 59);
         }
@@ -204,7 +200,8 @@ public class SearchViewValidationController extends ResponsiveController
             return new boolean[] { tickMonday.isSelected(), tickTuesday.isSelected(), tickWednesday.isSelected(),
                     tickThursday.isSelected(), tickFriday.isSelected(), tickSaturday.isSelected(),
                     tickSunday.isSelected() };
-        } else
+        } 
+        else
             return new boolean[] { true, true, true, true, true, true, true };
     } 
     
@@ -214,7 +211,8 @@ public class SearchViewValidationController extends ResponsiveController
         var destination = dropdownEndAtDest.getSelectionModel().getSelectedItem();
         int travelTime = 0;
 
-        if (toggleUseTravelDuration.isSelected() && !origin.isEmpty() && !destination.isEmpty()) {
+        if (toggleUseTravelDuration.isSelected() && !origin.isEmpty() && !destination.isEmpty()) 
+        {
             var response = api.searchForDestinationDistance(origin, destination, getApiStringFromInput());
             travelTime = updateTravelTimeToMinutes(response[0]);
         }
@@ -245,7 +243,8 @@ public class SearchViewValidationController extends ResponsiveController
         var userInput = dropdownInterval.getSelectionModel().getSelectedItem();
         if (userInput == null)
             return 0;
-        return switch (userInput) {
+        return switch (userInput) 
+        {
             case "täglich" -> 1;
             case "wöchentlich" -> 7;
             case "monatlich" -> 30;
@@ -268,7 +267,7 @@ public class SearchViewValidationController extends ResponsiveController
         String selectedContact = dropDownContact.getValue();
         for (var contact : ContactModelImpl.data)
         {
-            if (contact.getFullName().equals(selectedContact));
+            if (contact.getFullName().equals(selectedContact))
                 return contact.getMail();
         }
         return "";
@@ -276,7 +275,7 @@ public class SearchViewValidationController extends ResponsiveController
 
     protected void changeContentPosition(double width, double height) 
     {
-
+        //currently not used
     }
 
     private String getApiStringFromInput() 
@@ -285,7 +284,8 @@ public class SearchViewValidationController extends ResponsiveController
         if (input == null)
             return "";
 
-        return switch (dropdownVehicle.getSelectionModel().getSelectedItem()) {
+        return switch (dropdownVehicle.getSelectionModel().getSelectedItem()) 
+        {
             case "Fußgänger" -> "walking";
             case "Fahrrad" -> "bicycling";
             case "Öffis" -> "transit";
@@ -319,26 +319,27 @@ public class SearchViewValidationController extends ResponsiveController
     public Button createAddEntryButton(Entry<String> currSug)
     {
         var button = new Button("EINTRAGEN");
-        String startDate = DateFormatConverter.formatDate(currSug.getStartDate());
-        String endDate = DateFormatConverter.formatDate(currSug.getEndDate());
+        String startDateString = DateFormatConverter.formatDate(currSug.getStartDate());
+        String endDateString = DateFormatConverter.formatDate(currSug.getEndDate());
         String startTime = DateFormatConverter.formatTime(currSug.getStartTime());
         String endTime = DateFormatConverter.formatTime(currSug.getEndTime());
-        String title = currSug.getTitle();
         var sendMailButton = createSendMailButton();
 
-        button.setOnAction(e -> {
+        button.setOnAction(e -> 
+        {
             if (!toggleUseTravelDuration.isSelected())
                 travelTimeTo = 0;
             createEntryIncludingTravelTimes(currSug);
 
-            popupViewController.showEntryAddedDialogWithMailOption(startDate, endDate, startTime, endTime, sendMailButton);
+            popupViewController.showEntryAddedDialogWithMailOption(startDateString, endDateString, startTime, endTime, sendMailButton);
         });
         return button;      
     }
 
     public void registerButtonSendMailEvent(Button button)
     {
-        button.setOnAction(e -> {
+        button.setOnAction(e -> 
+        {
             String templateName = dropdownMailTemplates.getValue();
             String recipient = validateRecipient();
             String date = DateFormatConverter.formatDate(currentSuggestion.getStartDate());
@@ -350,10 +351,9 @@ public class SearchViewValidationController extends ResponsiveController
     public void createEntryIncludingTravelTimes(Entry<String> currentSuggestion) 
     {
         int traveltime = 0;
-        if (toggleUseTravelDuration.isSelected()) 
-        {
+        if (toggleUseTravelDuration.isSelected())
             traveltime = travelTimeTo;
-        }
+        
         String defaultCalendarName = SettingsModelImpl.defaultCalendarForSearchView;
         entryFactory.createNewUserEntryIncludingTravelTimes(currentSuggestion.getStartDate(),
                 currentSuggestion.getEndDate(), currentSuggestion.getStartTime().plusMinutes(timeBeforeGlobal),

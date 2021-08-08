@@ -122,11 +122,11 @@ public class SettingsModelImpl implements SettingsModel
             currentlySelectedFB = inputStream.readUTF();
             inputStream.close();
             loadFile.close();
-            System.out.println(currentlySelectedFB);
         } 
         catch (IOException e)
         {
             System.err.println((e.getMessage()));
         }
-    }    
+    }  
+      
 }

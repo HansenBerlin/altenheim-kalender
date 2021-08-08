@@ -70,15 +70,18 @@ public class ImportControllerImpl implements ImportController
     private com.calendarfx.model.Calendar parseICal(Calendar iCalCalendar)
     {
         com.calendarfx.model.Calendar fxCalendar;
-        if (iCalCalendar.getProperties().getProperty("X-WR-CALNAME") != null) {
+        if (iCalCalendar.getProperties().getProperty("X-WR-CALNAME") != null) 
+        {
             var iCalCalendarName = ((Property) iCalCalendar.getProperties().getProperty("X-WR-CALNAME")).getValue();
             fxCalendar = new com.calendarfx.model.Calendar(iCalCalendarName);
 
-        } else
+        } 
+        else
             fxCalendar = new com.calendarfx.model.Calendar("Standardkalender");
 
         var components = iCalCalendar.getComponents("VEVENT");
-        for (net.fortuna.ical4j.model.component.CalendarComponent component : components) {
+        for (net.fortuna.ical4j.model.component.CalendarComponent component : components) 
+        {
             var start = (DtStart) (component.getProperties().getProperty("DTSTART"));
             var end = (DtEnd) component.getProperties().getProperty("DTEND");
             var startMilli = start.getDate().toInstant().toEpochMilli();
@@ -93,4 +96,5 @@ public class ImportControllerImpl implements ImportController
         }
         return fxCalendar;
     }
+
 }

@@ -55,9 +55,7 @@ public class SearchViewController extends SearchViewRequestHandlerController
     public void calendarToggleClicked()
     {        
         if (toggleCalendars.isSelected())
-        {
             containerCalendars.getChildren().remove(calendarSelection);
-        }
         else
         {
             calendarSelection = SplitMenuButtonFactory.createButtonForAvailableCalendars(allCalendars.getAllCalendars());
@@ -273,4 +271,5 @@ public class SearchViewController extends SearchViewRequestHandlerController
         firstRow.setMaxHeight(rowHeight);
         animationController.growAndShrinkCircle(circles, headers, isWindowSmall);
     }
+
 }

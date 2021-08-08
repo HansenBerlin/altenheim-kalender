@@ -1,11 +1,9 @@
 package com.altenheim.kalender.implementations.controller.logicController;
 
-import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.logicController.ImportController;
 import com.altenheim.kalender.interfaces.logicController.UrlRequestController;
 import com.altenheim.kalender.interfaces.models.SettingsModel;
 import com.altenheim.kalender.implementations.controller.models.SettingsModelImpl;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,7 +18,7 @@ public class UrlRequestControllerImpl extends TimerTask implements UrlRequestCon
     private final SettingsModel settings;
     private final ImportController importController;
 
-    public UrlRequestControllerImpl(SettingsModel settings, ImportController importController, EntryFactory entryFactory)
+    public UrlRequestControllerImpl(SettingsModel settings, ImportController importController)
     {
         this.settings = settings;
         this.importController = importController;

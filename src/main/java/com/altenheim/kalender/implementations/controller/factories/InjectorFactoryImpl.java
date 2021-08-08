@@ -1,4 +1,5 @@
 package com.altenheim.kalender.implementations.controller.factories;
+
 import com.altenheim.kalender.interfaces.factorys.ComboBoxFactory;
 import com.altenheim.kalender.interfaces.factorys.EntryFactory;
 import com.altenheim.kalender.interfaces.factorys.InitialSetupController;
@@ -25,7 +26,6 @@ public class InjectorFactoryImpl implements InjectorFactory
     public InitialSetupController getInitialSettingsLoader() { return initialSettingsLoader; }
     public MainWindowController getMainWindowController() { return mainWindowController; }
 
-
     public void createServices() 
     {     
         JsonParser jsonParser = new JsonParserImpl();
@@ -50,15 +50,16 @@ public class InjectorFactoryImpl implements InjectorFactory
         MailClientAccessController mailCreationCt = new MailClientAccessControllerImpl(mailTemplates);
         DateSuggestionController dateSuggestionController = new DateSuggestionControllerImpl();
         SmartSearchController smartSearch = new SmartSearchControllerImpl(calendarEntriesController, entryFactory);
-        UrlRequestController urlRequestController = new UrlRequestControllerImpl(settings, importCt, entryFactory);
+        UrlRequestController urlRequestController = new UrlRequestControllerImpl(settings, importCt);
         PopupViewController popupViewController = new PopupViewsControllerImpl(settings, importCt, exportCt);
 
         var plannerVCt = new PlannerViewController(ioCt, entryFactory, popupViewController, calendarEntriesController);
         var contactsVCt = new ContactsViewController(ioCt, contacts);
-        var settingsVCt = new SettingsViewController(settings, entryFactory, calendarEntriesController, comboBoxFactory, popupViewController, urlRequestController);
+        var settingsVCt = new SettingsViewController(settings, entryFactory, calendarEntriesController, comboBoxFactory, 
+                popupViewController, urlRequestController);
         var mailVCt = new MailTemplateViewController(mailTemplates, comboBoxFactory, ioCt);
-        var searchVCt = new SearchViewController(apiCt, calendarEntriesController, animationController, comboBoxFactory, popupViewController,
-            mailCreationCt, entryFactory, smartSearch, dateSuggestionController);
+        var searchVCt = new SearchViewController(apiCt, calendarEntriesController, animationController, comboBoxFactory, 
+                popupViewController, mailCreationCt, entryFactory, smartSearch, dateSuggestionController);
         var systemNotificationsCt = new SystemTrayTrayNotificationControllerImpl(settings, calendarEntriesController);
         var allViews = new ViewRootsModelImpl(plannerVCt, searchVCt, contactsVCt, mailVCt, settingsVCt);
         mainWindowController = new MainWindowController(allViews, customCalendarView, settings);
@@ -66,5 +67,6 @@ public class InjectorFactoryImpl implements InjectorFactory
         guiSetup = new GuiUpdateControllerImpl(jMetroStyle, allViews);
         initialSettingsLoader = new InitialSetupControllerImpl(ioCt, popupViewController, urlRequestController,
                 systemNotificationsCt, entryFactory, contacts);
-    }    
+    }
+        
 }

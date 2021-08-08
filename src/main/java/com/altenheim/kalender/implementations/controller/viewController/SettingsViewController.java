@@ -72,7 +72,6 @@ public class SettingsViewController extends ResponsiveController
             stringPropertiesCollectionText[i].textProperty()
                     .bindBidirectional(settings.getSettingsInputFieldsContainer()[i]);
         }
-        cBToolTips.selectedProperty().bindBidirectional(settings.getToolTipEnabled());
     }
 
     private void createComboBoxes() 
@@ -97,27 +96,32 @@ public class SettingsViewController extends ResponsiveController
     }
 
     @FXML
-    private void buttonClicked(ActionEvent event) {
+    private void buttonClicked(ActionEvent event) 
+    {
         var button = (Button) event.getSource();
 
-        if (button.equals(btnImport)) {
+        if (button.equals(btnImport)) 
+        {
             var stage = button.getScene().getWindow();
             popupViewController.importDialog(calendarFactory, stage);
-        } else if (button.equals(btnExport)) {
+        } 
+        else if (button.equals(btnExport)) 
+        {
             var stage = button.getScene().getWindow();
             popupViewController.exportDialog(allCalendars, stage);
-        } else if (button.equals(btnGenerate)) {
-            calendarFactory.createRandomCalendarList();
-        }
+        } 
+        else if (button.equals(btnGenerate)) 
+            calendarFactory.createRandomCalendarList();   
     }
 
     @FXML
     private void saveSettings()
     {
         if (comboBoxSelectionSpecialField.getValue() == null || comboBoxSelectionCourse.getValue() == null
-                || comboBoxSelectionSemester.getValue() == null) {
+                || comboBoxSelectionSemester.getValue() == null) 
             txtError.setVisible(true);
-        } else {
+        else 
+        {
             txtError.setVisible(false);
             String resultURL = String.format(
                     "https://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/%s/semester%s/kurs%s",
@@ -142,10 +146,9 @@ public class SettingsViewController extends ResponsiveController
         }
     }
 
-   
-
     public void changeContentPosition(double width, double height) 
     {
-        //
-    }    
+        //currently not used
+    }
+
 }

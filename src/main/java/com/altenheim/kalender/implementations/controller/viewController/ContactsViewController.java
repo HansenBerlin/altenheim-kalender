@@ -47,10 +47,8 @@ public class ContactsViewController extends ResponsiveController
     {
         TextField[] allTextFields = { txtFieldFirstName, txtFieldSurName, txtFieldMail, 
             txtFieldStreet, txtFieldPostalCode, txtFieldCity, txtFieldPhone };
-        for (var textField : allTextFields) 
-        {
-            textField.clear();            
-        }        
+        for (var textField : allTextFields)
+            textField.clear();                     
     }
 
     private void saveChangesToContacts()
@@ -99,6 +97,7 @@ public class ContactsViewController extends ResponsiveController
 
     protected void changeContentPosition(double width, double height) 
     {
-        
-    }    
+        //currently not used
+    } 
+       
 }
