@@ -6,7 +6,7 @@
 
   <groupId>com.altenheim.kalender</groupId>
   <artifactId>altenheim-kalender</artifactId>
-  <version>0.4.32-SNAPSHOT</version>
+  <version>0.4.33-RELEASE</version>
   <name>altenheim-kalender</name>
   <url/>
   <properties>
