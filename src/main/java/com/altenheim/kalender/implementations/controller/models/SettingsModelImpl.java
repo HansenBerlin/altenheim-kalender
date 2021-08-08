@@ -20,7 +20,7 @@ public class SettingsModelImpl implements SettingsModel
     public long entrySystemMessageIntervalInMinutes = 1;
     public long notificationTimeBeforeEntryInMinutes = 15;
     public long hwrRequestIntervalInMinutes = 1440;
-    public final transient SimpleStringProperty notification = new SimpleStringProperty("Minuten");
+    public final transient SimpleStringProperty notification = new SimpleStringProperty("15");
     public final transient SimpleStringProperty calendar = new SimpleStringProperty("");
     public final transient SimpleStringProperty street = new SimpleStringProperty();
     public final transient SimpleStringProperty houseNumber = new SimpleStringProperty();
