@@ -29,7 +29,7 @@ public record SmartSearchControllerImpl(
 		var date = input.getStartDate();
 
 		int i = -1;
-		while (date.isBefore(input.getEndDate()) && output.size() < 1000) {
+		while ((date.isBefore(input.getEndDate()) || date.equals(input.getEndDate())) && output.size() < 1000) {
 			i++;
 
 			int index = date.getDayOfWeek().getValue() - 1;
@@ -39,12 +39,12 @@ public record SmartSearchControllerImpl(
 			}
 
 			if (openingHours.get(DayOfWeek.of((i % 7) + 1)) == null) {
-				var entry = createEntry(date, startTime, endTime);
+				var entry = entryFactory.createEntry(date, startTime, endTime);
 				output.addAll(findAvailableTimeSlot(entry, duration, timeBefore, timeAfter));
 				date = date.plusDays(intervalDays);
 			} else {
 				for (var day : openingHours.get(DayOfWeek.of((i % 7) + 1))) {
-					var entry = createEntry(date, startTime, endTime);
+					var entry = entryFactory.createEntry(date, startTime, endTime);
 					if (endTime.isBefore(day.getStartTime()) || startTime.isAfter(day.getEndTime()))
 						continue;
 					if (startTime.isBefore(day.getStartTime()))
@@ -92,15 +92,6 @@ public record SmartSearchControllerImpl(
 			output.add(input);
 
 		return output;
-	}
-
-	private Entry<String> createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end) {
-		var entry = new Entry<String>();
-		entry.changeStartTime(start);
-		entry.changeEndTime(end);
-		entry.changeStartDate(startAndEnd);
-		entry.changeEndDate(startAndEnd);
-		return entry;
 	}
 
 	private boolean checkForDuplicates(ArrayList<Entry<String>> currentEntries) {

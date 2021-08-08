@@ -95,8 +95,8 @@ public class EntryFactoryImpl implements EntryFactory
     private Entry<String> createRandomEntry(int day, int month, int startT, int endT)
     {
         var startAndEndDate = LocalDate.of(2021, month, day);
-        var startTime = LocalTime.of(startT, 0);
-        var endTime = LocalTime.of(endT, 0);
+        var startTime = java.time.LocalTime.of(startT, 0);
+        var endTime = java.time.LocalTime.of(endT, 0);
         var entry = new Entry<String>();
         entry.changeStartDate(startAndEndDate);
         entry.changeEndDate(startAndEndDate);
@@ -104,6 +104,16 @@ public class EntryFactoryImpl implements EntryFactory
         entry.changeEndTime(endTime);
         return entry;
     }
+
+    public Entry<String> createEntry(LocalDate startAndEnd, LocalTime start, LocalTime end) 
+    {
+		var entry = new Entry<String>();
+		entry.changeStartTime(start);
+		entry.changeEndTime(end);
+		entry.changeStartDate(startAndEnd);
+		entry.changeEndDate(startAndEnd);
+		return entry;
+	}
 
     public Entry<String> createUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd) 
     {

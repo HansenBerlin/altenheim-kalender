@@ -14,10 +14,8 @@ public interface EntryFactory
     void addCalendarToView(Calendar calendar, String name);
     void createNewUserEntryIncludingTravelTimes(LocalDate dateStart, LocalDate dateEnd,
         LocalTime timeStart, LocalTime timeEnd, String title, int timeTravel, String calName);
-    //HashMap<String, List<Entry<String>>> createEntryListForEachCalendar();
+    void addIOController(IOController ioController);
+    Entry<String> createEntry(LocalDate startDate, LocalTime startTime, LocalTime endTime);
     Entry<String> createUserEntry(LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
     Entry<String> createCalendarFXEntryFromMillis(long start, long end);
-    void addIOController(IOController ioController);
-
-
 }
