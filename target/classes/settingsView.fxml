@@ -16,124 +16,114 @@
 <?import javafx.scene.text.Text?>
 
 <GridPane alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" />
-      <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="30.0" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints vgrow="SOMETIMES" />
-      <RowConstraints vgrow="SOMETIMES" />
-   </rowConstraints>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-   <children>
-      <VBox fx:id="topContainer" alignment="BOTTOM_CENTER" fillWidth="false" spacing="15.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="HWR Kalenderauswahl" />
-            <HBox fx:id="containerComboBoxSelectorScrapping" alignment="TOP_CENTER" spacing="20.0" />
-            <Separator maxWidth="550.0" />
-            <HBox alignment="TOP_CENTER" spacing="30.0">
-               <children>
-                  <Button fx:id="btnImport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Import">
-                     <tooltip>
-                        <Tooltip fx:id="ttBtnImport" text="Import von ICS Dateien" />
-                     </tooltip></Button>
-                  <MenuButton fx:id="btnMenuImportColour" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Colour" visible="false">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="Farbe 1 " />
-                        <MenuItem mnemonicParsing="false" text="Farbe 2" />
-                        <MenuItem mnemonicParsing="false" text="Farbe 3" />
-                        <MenuItem mnemonicParsing="false" text="Farbe 4" />
-                        <MenuItem mnemonicParsing="false" text="Farbe 5" />
-                     </items>
-                  </MenuButton>
-               </children>
-            </HBox>
-            <HBox alignment="TOP_CENTER" spacing="30.0">
-               <children>
-                  <Button fx:id="btnExport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Export">
-                     <tooltip>
-                        <Tooltip fx:id="ttBtnExport" text="Export als ICS Datei" />
-                     </tooltip></Button>
-                  <Button fx:id="btnGenerate" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked" prefWidth="100.0" text="Dummy">
-                     <tooltip>
-                        <Tooltip fx:id="ttBtnGenerate" text="zufälligen Kalender erzeugen" />
-                     </tooltip></Button>
-               </children>
-            </HBox>
-            <Separator maxWidth="550.0" />
-            <VBox fx:id="containerComboBoxNotificationMin" alignment="TOP_CENTER" spacing="5.0">
-               <children>
-                  <Text fx:id="txtNotificationHour" strokeType="OUTSIDE" strokeWidth="0.0" text="Benachrichtigung vor dem Termin in Minuten" />
-               </children>
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES"/>
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="30.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="SOMETIMES"/>
+        <RowConstraints vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <VBox fx:id="topContainer" alignment="BOTTOM_CENTER" fillWidth="false" spacing="15.0" GridPane.halignment="LEFT"
+          GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+        <opaqueInsets>
+            <Insets/>
+        </opaqueInsets>
+        <GridPane.margin>
+            <Insets/>
+        </GridPane.margin>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="HWR Kalenderauswahl"/>
+        <HBox fx:id="containerComboBoxSelectorScrapping" alignment="TOP_CENTER" spacing="20.0"/>
+        <Separator maxWidth="550.0"/>
+        <HBox alignment="TOP_CENTER" spacing="30.0">
+            <Button fx:id="btnImport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked"
+                    prefWidth="100.0" text="Import">
+                <tooltip>
+                    <Tooltip fx:id="ttBtnImport" text="Import von ICS Dateien"/>
+                </tooltip>
+            </Button>
+            <MenuButton fx:id="btnMenuImportColour" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0"
+                        text="Colour" visible="false">
+                <items>
+                    <MenuItem mnemonicParsing="false" text="Farbe 1 "/>
+                    <MenuItem mnemonicParsing="false" text="Farbe 2"/>
+                    <MenuItem mnemonicParsing="false" text="Farbe 3"/>
+                    <MenuItem mnemonicParsing="false" text="Farbe 4"/>
+                    <MenuItem mnemonicParsing="false" text="Farbe 5"/>
+                </items>
+            </MenuButton>
+        </HBox>
+        <HBox alignment="TOP_CENTER" spacing="30.0">
+            <Button fx:id="btnExport" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked"
+                    prefWidth="100.0" text="Export">
+                <tooltip>
+                    <Tooltip fx:id="ttBtnExport" text="Export als ICS Datei"/>
+                </tooltip>
+            </Button>
+            <Button fx:id="btnGenerate" minWidth="100.0" mnemonicParsing="false" onAction="#buttonClicked"
+                    prefWidth="100.0" text="Dummy">
+                <tooltip>
+                    <Tooltip fx:id="ttBtnGenerate" text="zufälligen Kalender erzeugen"/>
+                </tooltip>
+            </Button>
+        </HBox>
+        <Separator maxWidth="550.0"/>
+        <VBox fx:id="containerComboBoxNotificationMin" alignment="TOP_CENTER" spacing="5.0">
+            <Text fx:id="txtNotificationHour" strokeType="OUTSIDE" strokeWidth="0.0"
+                  text="Benachrichtigung vor dem Termin in Minuten"/>
+        </VBox>
+        <VBox fx:id="containerComboBoxDefaultCalendar" alignment="TOP_CENTER" spacing="5.0">
+            <Text fx:id="txtNotificationHour1" strokeType="OUTSIDE" strokeWidth="0.0" text="Standardkalender"/>
+        </VBox>
+    </VBox>
+    <VBox fx:id="bottomContainer" alignment="TOP_CENTER" spacing="10.0" GridPane.halignment="LEFT"
+          GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+        <opaqueInsets>
+            <Insets/>
+        </opaqueInsets>
+        <GridPane.margin>
+            <Insets/>
+        </GridPane.margin>
+        <Separator maxWidth="550.0"/>
+        <HBox alignment="TOP_CENTER" spacing="10.0">
+            <VBox spacing="5.0">
+                <opaqueInsets>
+                    <Insets/>
+                </opaqueInsets>
+                <HBox.margin>
+                    <Insets top="20.0"/>
+                </HBox.margin>
+                <TextField fx:id="txtTFStreet" alignment="CENTER" promptText="Straße"/>
+                <TextField fx:id="txtTFHouseNumber" alignment="CENTER" promptText="Hausnummer"/>
+                <TextField fx:id="txtTFZipCode" alignment="CENTER" promptText="Plz"/>
+                <TextField fx:id="txtTFCity" alignment="CENTER" promptText="Stadt"/>
+                <TextField fx:id="txtTFMail" alignment="CENTER" promptText="E-Mail Adresse"/>
             </VBox>
-            <VBox fx:id="containerComboBoxDefaultCalendar" alignment="TOP_CENTER" spacing="5.0">
-               <children>
-                  <Text fx:id="txtNotificationHour1" strokeType="OUTSIDE" strokeWidth="0.0" text="Standardkalender" />
-               </children>
+            <Separator orientation="VERTICAL" prefHeight="200.0"/>
+            <VBox spacing="14.0">
+                <Text fx:id="txtAdressTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="gespeicherte Adresse"/>
+                <Text fx:id="txtStreet" strokeType="OUTSIDE" strokeWidth="0.0"/>
+                <Text fx:id="txtHouseNumber" strokeType="OUTSIDE" strokeWidth="0.0"/>
+                <Text fx:id="txtZipCode" strokeType="OUTSIDE" strokeWidth="0.0"/>
+                <Text fx:id="txtCity" strokeType="OUTSIDE" strokeWidth="0.0"/>
+                <Text fx:id="txtMail" strokeType="OUTSIDE" strokeWidth="0.0"/>
             </VBox>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
-      </VBox>
-      <VBox fx:id="bottomContainer" alignment="TOP_CENTER" spacing="10.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
-         <children>
-            <Separator maxWidth="550.0" />
-            <HBox alignment="TOP_CENTER" spacing="10.0">
-               <children>
-                  <VBox spacing="5.0">
-                     <children>
-                        <TextField fx:id="txtTFStreet" alignment="CENTER" promptText="Straße" />
-                        <TextField fx:id="txtTFHouseNumber" alignment="CENTER" promptText="Hausnummer" />
-                        <TextField fx:id="txtTFZipCode" alignment="CENTER" promptText="Plz" />
-                        <TextField fx:id="txtTFCity" alignment="CENTER" promptText="Stadt" />
-                        <TextField fx:id="txtTFMail" alignment="CENTER" promptText="E-Mail Adresse" />
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <HBox.margin>
-                        <Insets top="20.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <VBox spacing="14.0">
-                     <children>
-                        <Text fx:id="txtAdressTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="gespeicherte Adresse" />
-                        <Text fx:id="txtStreet" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text fx:id="txtHouseNumber" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text fx:id="txtZipCode" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text fx:id="txtCity" strokeType="OUTSIDE" strokeWidth="0.0" />
-                        <Text fx:id="txtMail" strokeType="OUTSIDE" strokeWidth="0.0" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <Separator maxWidth="550.0" />
-            <CheckBox fx:id="cBToolTips" mnemonicParsing="false" text="Tool Tips">
-               <tooltip>
-                  <Tooltip fx:id="ttCBToolTips" text="Ein-/ Ausschalten von Tool Tips" />
-               </tooltip></CheckBox>
-            <Separator maxWidth="550.0" />
-            <Text fx:id="txtError" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" />
+        </HBox>
+        <Separator maxWidth="550.0"/>
+        <CheckBox fx:id="cBToolTips" mnemonicParsing="false" text="Tool Tips">
+            <tooltip>
+                <Tooltip fx:id="ttCBToolTips" text="Ein-/ Ausschalten von Tool Tips"/>
+            </tooltip>
+        </CheckBox>
+        <Separator maxWidth="550.0"/>
+        <Text fx:id="txtError" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false"/>
 
-                  <HBox alignment="TOP_CENTER">
-               <children>
-                  <Button fx:id="btnSave" alignment="CENTER" minWidth="300.0" mnemonicParsing="false" onAction="#saveSettings" prefWidth="300.0" style="-fx-background-color: ;" text="Speichern" />
-               </children>
-            </HBox>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
-      </VBox>
-   </children>
+        <HBox alignment="TOP_CENTER">
+            <Button fx:id="btnSave" alignment="CENTER" minWidth="300.0" mnemonicParsing="false"
+                    onAction="#saveSettings" prefWidth="300.0" text="Speichern"/>
+        </HBox>
+    </VBox>
 </GridPane>

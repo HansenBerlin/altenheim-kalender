@@ -2,18 +2,6 @@ package com.altenheim.kalender;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import com.altenheim.kalender.controller.logicController.SmartSearchController;
-import com.altenheim.kalender.interfaces.ICalendarEntriesModel;
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.Entry;
-import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class SmartSearchControllerTest {/*
     @Test

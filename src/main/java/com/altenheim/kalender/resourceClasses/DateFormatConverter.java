@@ -2,7 +2,6 @@ package com.altenheim.kalender.resourceClasses;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -17,7 +16,4 @@ public class DateFormatConverter {
         return time.format(DateTimeFormatter.ofPattern("HH:mm"));        
     }
 
-    public static String formatDateTime(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy"));
-    }
 }

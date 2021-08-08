@@ -1,21 +1,22 @@
 package com.altenheim.kalender;
 
-import com.altenheim.kalender.controller.Factories.InjectorFactory;
+import com.altenheim.kalender.implementations.controller.factories.InjectorFactoryImpl;
+import com.altenheim.kalender.interfaces.factorys.InjectorFactory;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+
+import java.util.Objects;
 
 public class JavaFXLauncher extends Application 
 {
     @Override
     public void start(Stage primaryStage) throws Exception 
     {
-        var objectFactory = new InjectorFactory();
+        InjectorFactory objectFactory = new InjectorFactoryImpl();
         objectFactory.createServices();
         var guiSetup = objectFactory.getGuiController();
         guiSetup.init();
@@ -41,19 +42,13 @@ public class JavaFXLauncher extends Application
         initialSettingsLoader.initializeSettings();
         initialSettingsLoader.initialValidationCheck();
         
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() 
-        {
-            public void handle(WindowEvent we) 
-            {              
-                System.exit(0);
-            }
-        });
+        primaryStage.setOnCloseRequest(we -> System.exit(0));
 
-        var image = new Image(getClass().getResource("/Penaut.png").toString());
+        var image = new Image(Objects.requireNonNull(getClass().getResource("/Penaut.png")).toString());
         primaryStage.getIcons().add(image);
-        
         primaryStage.show();
         guiSetup.registerCalendars();
+        guiSetup.updateAdvancedFeaturesFields();
     }
 
     public static void main(String[] args) 
